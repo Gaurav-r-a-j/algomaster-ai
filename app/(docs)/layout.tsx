@@ -1,11 +1,7 @@
-/**
- * Docs Layout
- * 
- * Used for documentation pages
- * - Documentation-focused navigation
- * - Sidebar for docs navigation
- * - Readable content layout
- */
+import Link from "next/link";
+
+// Docs Layout - Used for documentation pages
+// Documentation-focused navigation, sidebar for docs navigation, readable content layout
 export default function DocsLayout({
   children,
 }: {
@@ -18,12 +14,12 @@ export default function DocsLayout({
         <aside className="w-64 border-r bg-muted/40 p-6">
           <nav className="space-y-2">
             <h2 className="font-semibold mb-4">Documentation</h2>
-            <a href="/docs" className="block text-sm hover:underline">
+            <Link href="/docs" className="block text-sm hover:underline">
               Overview
-            </a>
-            <a href="/docs/getting-started" className="block text-sm hover:underline">
+            </Link>
+            <Link href="/docs/getting-started" className="block text-sm hover:underline">
               Getting Started
-            </a>
+            </Link>
             {/* Add more nav items as needed */}
           </nav>
         </aside>

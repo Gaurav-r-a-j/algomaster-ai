@@ -1,9 +1,5 @@
-/**
- * Icon Registry - Centralized icon definitions and exports
- * 
- * This file provides a unified way to import and use icons from different libraries.
- * Supports both Huge Icons and Hero Icons.
- */
+// Icon Registry - Centralized icon definitions and exports
+// Provides unified way to import and use icons from different libraries (Huge Icons & Hero Icons)
 
 // Huge Icons - Commonly used icons
 export {
@@ -94,8 +90,7 @@ export {
 } from "@hugeicons/core-free-icons";
 
 // Hero Icons - Commonly used icons
-// Import from @heroicons/react/24/outline for outline style
-// Use /24/solid for filled style variants
+// Import from @heroicons/react/24/outline for outline style, use /24/solid for filled variants
 import {
   HomeIcon,
   MagnifyingGlassIcon,

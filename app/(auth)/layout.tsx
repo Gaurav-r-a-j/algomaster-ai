@@ -1,11 +1,5 @@
-/**
- * Auth Layout
- * 
- * Minimal layout for authentication pages (login, register, forgot-password)
- * - No header/footer navigation
- * - Centered content
- * - Focus on authentication forms
- */
+// Auth Layout - Minimal layout for authentication pages (login, register, forgot-password)
+// No header/footer navigation, centered content, focus on authentication forms
 export default function AuthLayout({
   children,
 }: {

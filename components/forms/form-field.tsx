@@ -13,8 +13,8 @@ export interface FormFieldProps {
   description?: string;
   className?: string;
   children: (field: {
-    value: any;
-    onChange: (value: any) => void;
+    value: unknown;
+    onChange: (value: unknown) => void;
     onBlur: () => void;
     name: string;
     error?: string;

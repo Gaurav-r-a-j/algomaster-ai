@@ -1,13 +1,7 @@
 import { AdminLayout as AdminLayoutComponent } from "@/components/layouts/admin-layout";
 
-/**
- * Admin Layout
- * 
- * Used for admin pages: admin dashboard, users, analytics, settings
- * - Admin-specific sidebar
- * - Restricted access
- * - Admin-focused design
- */
+// Admin Layout - Used for admin pages (dashboard, users, analytics, settings)
+// Admin-specific sidebar, restricted access, admin-focused design
 export default function AdminLayout({
   children,
 }: {

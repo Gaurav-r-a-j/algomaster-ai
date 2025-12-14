@@ -1,8 +1,6 @@
 import { cn } from "@/utils/common/class-names";
 
-/**
- * Icon utility functions
- */
+// Icon utility functions
 
 export interface IconSize {
   xs: string | number;
@@ -20,16 +18,12 @@ export const ICON_SIZES: IconSize = {
   xl: 40,
 } as const;
 
-/**
- * Get icon size by preset name
- */
+// Get icon size by preset name
 export function getIconSize(size: keyof IconSize = "md"): string | number {
   return ICON_SIZES[size];
 }
 
-/**
- * Get icon class names with proper sizing
- */
+// Get icon class names with proper sizing
 export function getIconClassName(
   size?: keyof IconSize | string | number,
   className?: string

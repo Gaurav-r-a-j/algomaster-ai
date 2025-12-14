@@ -1,6 +1,4 @@
-/**
- * Icon exports - Central entry point for all icon-related utilities
- */
+// Icon exports - Central entry point for all icon-related utilities
 
 // Re-export icon registry
 export * from "./icon-registry";

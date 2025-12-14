@@ -1,37 +1,23 @@
-import { HugeiconsIcon } from "@hugeicons/react";
+// Icon component - Use direct icon imports from @/lib/icons instead
+// This component is kept for backward compatibility but direct imports are preferred
+// Example: import { Home01Icon } from "@/lib/icons" then <Home01Icon size={24} />
+
 import type { SVGProps } from "react";
 
 export type IconLibrary = "hugeicons" | "heroicons";
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
-  name: string;
+  name?: string;
   library?: IconLibrary;
   size?: number | string;
   className?: string;
 }
 
-// Unified Icon component that supports multiple icon libraries
-// Example: <Icon name="Home01" library="hugeicons" size={24} />
-export function Icon({
-  name,
-  library = "hugeicons",
-  size = 24,
-  className = "",
-  ...props
-}: IconProps) {
-  if (library === "hugeicons") {
-    return (
-      <HugeiconsIcon
-        name={name}
-        size={size}
-        className={className}
-        {...props}
-      />
-    );
-  }
-
-  // For Hero Icons, we'll dynamically import (handled differently)
-  // This is a placeholder - see icon-registry.ts for full implementation
+// Note: Direct icon imports are preferred over this wrapper
+// Use: import { Home01Icon } from "@/lib/icons" then <Home01Icon size={24} />
+export function Icon(_props: IconProps) {
+  // This component is deprecated - use direct icon imports from @/lib/icons
+  console.warn("Icon component is deprecated. Use direct icon imports from @/lib/icons instead.");
   return null;
 }
 
