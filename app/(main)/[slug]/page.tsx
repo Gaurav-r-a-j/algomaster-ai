@@ -271,7 +271,7 @@ export default function SlugPage({ params }: SlugPageProps) {
               </motion.div>
             </TabsContent>
 
-            <TabsContent value="code" className="mt-0 h-full w-full">
+            <TabsContent value="code" className="mt-0 h-[calc(100vh-120px)] w-full">
               <motion.div
                 key="code"
                 initial={{ opacity: 0 }}

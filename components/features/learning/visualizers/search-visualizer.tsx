@@ -25,9 +25,9 @@ interface SearchVisualizerProps {
 
 export function SearchVisualizer({ topic }: SearchVisualizerProps) {
   const [array] = useState<number[]>(
-    Array.from({ length: 15 }, (_, i) => (i + 1) * 5).sort((a, b) => a - b)
+    Array.from({ length: 8 }, (_, i) => (i + 1) * 5).sort((a, b) => a - b)
   )
-  const [target, setTarget] = useState<number>(40)
+  const [target, setTarget] = useState<number>(25)
   const [steps, setSteps] = useState<VisualizationStep[]>([])
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
