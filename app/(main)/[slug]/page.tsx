@@ -6,12 +6,12 @@ import { notFound } from "next/navigation"
 import { ROUTES } from "@/constants/routes"
 import { useProgress } from "@/context/progress-context"
 import {
+  TOPICS,
   getModuleBySlug,
   getModules,
   getTopicBySlug,
   getTopicsByModule,
   isModuleSlug,
-  TOPICS,
 } from "@/data/curriculum"
 import { removeModulePrefix } from "@/utils/common/path-utils"
 import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug"

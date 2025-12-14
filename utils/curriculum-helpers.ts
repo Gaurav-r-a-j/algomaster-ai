@@ -3,7 +3,7 @@
  */
 
 import { ROUTES } from "@/constants/routes"
-import { getModules, TOPICS } from "@/data/curriculum"
+import { TOPICS, getModules } from "@/data/curriculum"
 import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug"
 
 /**

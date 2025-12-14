@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ROUTES } from "@/constants/routes"
 import { useProgress } from "@/context/progress-context"
-import { getModules, TOPICS } from "@/data/curriculum"
+import { TOPICS, getModules } from "@/data/curriculum"
 import {
   extractModuleNumber,
   isActivePath,

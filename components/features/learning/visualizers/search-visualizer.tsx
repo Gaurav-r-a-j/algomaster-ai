@@ -8,7 +8,7 @@ import {
 import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
-import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
+import { staggerItem, transitions } from "@/lib/animations"
 import { SearchIcon } from "@/lib/icons"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -56,7 +56,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
   }, [topic.id, array, target])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
     generateSteps()
   }, [generateSteps, topic.id, target])
 
@@ -159,12 +159,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <motion.div
-        initial="initial"
-        animate="animate"
-        variants={staggerContainer}
-        className="flex flex-col gap-6"
-      >
+      <motion.div className="flex flex-col gap-6">
         <Card>
           <CardContent className="p-8">
             <div className="flex min-h-[200px] flex-wrap items-center justify-center gap-4">

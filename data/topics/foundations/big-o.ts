@@ -14,6 +14,18 @@ export const bigO: Topic = {
 
 Big O notation describes how the runtime or space requirements of an algorithm grow as input size increases. It's the language we use to talk about algorithm efficiency.
 
+## The Restaurant Analogy
+
+- **O(1) - Order a Drink**: It takes 30 seconds to pour a soda, whether it's just you or you are one of many. The time for *your* drink is constant.
+- **O(n) - Taking Orders**: The waiter takes orders one by one. If there are 10 people, it takes 10x longer than for 1 person.
+- **O(n²) - The Toast**: If everyone clinks glasses with everyone else at a party of \`n\` people, the number of clinks grows rapidly!
+
+## The Backpack Analogy (Space Complexity)
+
+- **O(1)**: You read a book. You don't need extra space, just the book in your hand.
+- **O(n)**: You copy the book onto flashcards. You need a stack of cards proportional to the book's size.
+
+
 ## What is Big O?
 
 Big O describes the **worst-case** scenario for how an algorithm performs as input size grows. We focus on the dominant term and ignore constants.

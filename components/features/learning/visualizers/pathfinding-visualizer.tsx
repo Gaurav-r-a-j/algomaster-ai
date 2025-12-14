@@ -5,7 +5,7 @@ import { generateBFSSteps, generateDFSSteps } from "@/utils/algorithm-logic"
 import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
-import { cellAnimation, staggerContainer, transitions } from "@/lib/animations"
+import { cellAnimation, transitions } from "@/lib/animations"
 import { CodeIcon, PauseIcon, PlayIcon, RefreshCwIcon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
 import { IconWrapper } from "@/components/common/icon-wrapper"
@@ -22,7 +22,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
   const [steps, setSteps] = useState<VisualizationStep[]>([])
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
+  const [playbackSpeed, _setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
   const timerRef = useRef<number | null>(null)
 
   const generateData = useCallback(() => {
@@ -34,7 +34,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
   }, [topic.id])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
     generateData()
   }, [generateData])
 
@@ -140,12 +140,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <motion.div
-        initial="initial"
-        animate="animate"
-        variants={staggerContainer}
-        className="mx-auto grid w-full max-w-[400px] grid-cols-5 gap-2"
-      >
+      <motion.div className="mx-auto grid w-full max-w-[400px] grid-cols-5 gap-2">
         {currentData.array.map((val, idx) => {
           const isStart = val === 2
           const isEnd = val === 3

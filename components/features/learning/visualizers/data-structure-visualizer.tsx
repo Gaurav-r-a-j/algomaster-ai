@@ -11,7 +11,7 @@ import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
 import { VisualizerType } from "@/types/curriculum"
-import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
+import { staggerItem, transitions } from "@/lib/animations"
 import { Card, CardContent } from "@/components/ui/card"
 
 import { VisualizerControls } from "./visualizer-controls"
@@ -262,12 +262,7 @@ export function DataStructureVisualizer({
       case VisualizerType.LINKED_LIST:
         return (
           <div className="w-full overflow-x-auto py-8">
-            <motion.div
-              initial="initial"
-              animate="animate"
-              variants={staggerContainer}
-              className="mx-auto flex min-w-fit items-center justify-center gap-0 px-4"
-            >
+            <motion.div className="mx-auto flex min-w-fit items-center justify-center gap-0 px-4">
               {currentData.array.map((val, idx) => {
                 const isActive = currentData.activeIndices.includes(idx)
                 return (
@@ -360,12 +355,7 @@ export function DataStructureVisualizer({
         const tree =
           (currentData.auxiliary as { tree?: (number | null)[] })?.tree || []
         return (
-          <motion.div
-            initial="initial"
-            animate="animate"
-            variants={staggerContainer}
-            className="relative h-full min-h-[300px] w-full"
-          >
+          <motion.div className="relative h-full min-h-[300px] w-full">
             {tree.map((val, idx) => (
               <motion.div key={idx} variants={staggerItem}>
                 <TreeNode

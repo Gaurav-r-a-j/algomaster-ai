@@ -14,6 +14,20 @@ export const recursion: Topic = {
 
 Recursion is a powerful technique where a function calls itself to solve a problem by breaking it down into smaller subproblems.
 
+## The Nesting Doll Analogy
+
+Think of recursion like a set of **Russian Nesting Dolls**.
+1. You open a doll (function call) to find a smaller one inside (recursive call).
+2. You keep opening them until you find the tiniest solid doll that cannot be opened (the **Base Case**).
+3. Once you reach the base case, you can close them all back up (unwinding the stack).
+
+## Real World Application
+
+- **File Systems**: Folders can contain files and other folders. Searching for a file requires searching the current folder and recursively searching any sub-folders.
+- **DNA Replication**: Biological processes often follow recursive patterns to build complex structures from simple rules.
+- **Org Charts**: To find all employees under a CEO, you ask the CEO's reports, then their reports, and so on.
+
+
 ## Key Concepts
 
 ### Base Case

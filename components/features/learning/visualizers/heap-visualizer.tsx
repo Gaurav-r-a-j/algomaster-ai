@@ -18,11 +18,12 @@ interface HeapVisualizerProps {
 
 const DEFAULT_SPEED_MS = 800
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 export function HeapVisualizer({ topic }: HeapVisualizerProps) {
   const [steps, setSteps] = useState<VisualizationStep[]>([])
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
+  const [playbackSpeed, _setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
   const timerRef = useRef<number | null>(null)
 
   const generateData = useCallback(() => {
@@ -33,7 +34,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
   }, [])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
     generateData()
   }, [generateData])
 

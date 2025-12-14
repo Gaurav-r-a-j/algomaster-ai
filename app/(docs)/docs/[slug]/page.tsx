@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm"
 
 import "highlight.js/styles/github-dark.css"
 
-import { getTopicBySlug, TOPICS } from "@/data/curriculum"
+import { TOPICS, getTopicBySlug } from "@/data/curriculum"
 import { generateTopicSlug } from "@/utils/common/slug"
 import {
   ChevronLeftIcon,

@@ -12,7 +12,7 @@ import { ChartBarIcon } from "@heroicons/react/24/outline"
 import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
-import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
+import { staggerItem, transitions } from "@/lib/animations"
 import { Card, CardContent } from "@/components/ui/card"
 
 import { VisualizerControls } from "./visualizer-controls"
@@ -231,12 +231,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <motion.div
-        initial="initial"
-        animate="animate"
-        variants={staggerContainer}
-        className="flex flex-col gap-6"
-      >
+      <motion.div className="flex flex-col gap-6">
         {/* Number-based visualization */}
         <Card>
           <CardContent className="p-8">
