@@ -1,46 +1,39 @@
 import { ReactNode } from "react";
 import { Sidebar } from "@/components/shared/sidebar";
 
-/**
- * Dashboard Layout Component
- * 
- * Used for main application pages (dashboard, profile, settings, account)
- * - Includes sidebar navigation
- * - Consistent app workspace layout
- */
-export function DashboardLayout({ children }: { children: ReactNode }) {
+export function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <div className="flex">
-        {/* App Sidebar */}
+        {/* Admin Sidebar */}
         <aside className="w-64 border-r bg-muted/40 p-6">
           <div className="mb-6">
-            <h1 className="text-xl font-bold">DSA Platform</h1>
+            <h1 className="text-xl font-bold">Admin Panel</h1>
           </div>
           <nav className="space-y-2">
             <a
-              href="/dashboard"
+              href="/admin"
               className="block px-3 py-2 rounded-md hover:bg-muted transition-colors"
             >
               Dashboard
             </a>
             <a
-              href="/profile"
+              href="/admin/users"
               className="block px-3 py-2 rounded-md hover:bg-muted transition-colors"
             >
-              Profile
+              Users
             </a>
             <a
-              href="/settings"
+              href="/admin/analytics"
+              className="block px-3 py-2 rounded-md hover:bg-muted transition-colors"
+            >
+              Analytics
+            </a>
+            <a
+              href="/admin/settings"
               className="block px-3 py-2 rounded-md hover:bg-muted transition-colors"
             >
               Settings
-            </a>
-            <a
-              href="/account"
-              className="block px-3 py-2 rounded-md hover:bg-muted transition-colors"
-            >
-              Account
             </a>
           </nav>
         </aside>
