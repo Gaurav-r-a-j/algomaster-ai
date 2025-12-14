@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { CheckmarkCircleIcon } from "@/lib/icons";
 import { useProgress } from "@/context/progress-context";
@@ -13,9 +15,18 @@ import { cn } from "@/lib/utils";
 interface QuizSectionProps {
   topicId: string;
   questions: QuizQuestion[];
+  useAIQuestions?: boolean;
+  onToggleAIQuestions?: (useAI: boolean) => void;
+  hasAIQuestions?: boolean;
 }
 
-export function QuizSection({ topicId, questions }: QuizSectionProps) {
+export function QuizSection({ 
+  topicId, 
+  questions, 
+  useAIQuestions = false,
+  onToggleAIQuestions,
+  hasAIQuestions = false,
+}: QuizSectionProps) {
   const { markAsCompleted, isCompleted } = useProgress();
   const [selectedAnswers, setSelectedAnswers] = useState<
     Record<number, number>
@@ -40,8 +51,8 @@ export function QuizSection({ topicId, questions }: QuizSectionProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex justify-between items-center">
-          <div>
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex-1">
             <CardTitle className="text-xl font-bold flex items-center gap-2">
               <IconWrapper
                 icon={CheckmarkCircleIcon}
@@ -53,11 +64,24 @@ export function QuizSection({ topicId, questions }: QuizSectionProps) {
             <p className="text-muted-foreground text-sm mt-1">
               Complete this quiz to mark the lesson as done.
             </p>
+            {/* AI Questions Toggle */}
+            {hasAIQuestions && onToggleAIQuestions && (
+              <div className="flex items-center gap-2 mt-3">
+                <Switch
+                  id="ai-questions"
+                  checked={useAIQuestions}
+                  onCheckedChange={onToggleAIQuestions}
+                />
+                <Label htmlFor="ai-questions" className="text-xs text-muted-foreground cursor-pointer">
+                  Use AI-generated questions (optional)
+                </Label>
+              </div>
+            )}
           </div>
           {isAlreadyCompleted && (
             <Badge
               variant="secondary"
-              className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-none"
+              className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-none shrink-0"
             >
               Completed
             </Badge>

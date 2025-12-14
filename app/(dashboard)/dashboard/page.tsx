@@ -1,6 +1,5 @@
 "use client";
 
-import { PageHeader } from "@/components/common/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -33,17 +32,20 @@ export default function DashboardPage() {
     .slice(0, 6);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="px-6 py-8">
-          <PageHeader
-            title="Welcome Back!"
-            description="Continue your DSA learning journey"
-          />
+    <div className="space-y-6">
+      {/* Compact Page Header */}
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl md:text-2xl font-bold text-foreground tracking-tight">
+            Welcome Back!
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Continue your DSA learning journey
+          </p>
         </div>
       </div>
 
-      <div className="p-6">
+      <div className="space-y-6">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
             {/* Progress Card */}
             <Card>

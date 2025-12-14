@@ -23,6 +23,7 @@ interface SortingVisualizerProps {
 }
 
 export function SortingVisualizer({ topic }: SortingVisualizerProps) {
+  const [arraySize, setArraySize] = useState(DEFAULT_ARRAY_SIZE);
   const [array, setArray] = useState<number[]>([]);
   const [steps, setSteps] = useState<VisualizationStep[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
@@ -30,8 +31,8 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
   const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS);
   const timerRef = useRef<number | null>(null);
 
-  const generateArray = useCallback(() => {
-    const newArray = Array.from({ length: DEFAULT_ARRAY_SIZE }, () =>
+  const generateArray = useCallback((size: number = arraySize) => {
+    const newArray = Array.from({ length: size }, () =>
       Math.floor(Math.random() * 90) + 10
     );
     setArray(newArray);
@@ -67,7 +68,12 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     setSteps(newSteps);
     setCurrentStep(0);
     setIsPlaying(false);
-  }, [topic.id]);
+  }, [topic.id, arraySize]);
+
+  const handleArraySizeChange = useCallback((size: number) => {
+    setArraySize(size);
+    generateArray(size);
+  }, [generateArray]);
 
   const handlePreviousStep = () => {
     if (currentStep > 0) {
@@ -97,7 +103,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     // Initialize on mount and when topic changes
     // Use setTimeout to defer state updates and avoid cascading renders
     const timer = setTimeout(() => {
-      const newArray = Array.from({ length: DEFAULT_ARRAY_SIZE }, () =>
+      const newArray = Array.from({ length: arraySize }, () =>
         Math.floor(Math.random() * 90) + 10
       );
       setArray(newArray);
@@ -136,7 +142,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     }, 0);
     
     return () => clearTimeout(timer);
-  }, [topic.id]);
+  }, [topic.id, arraySize]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -180,6 +186,9 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
       onSpeedChange={setPlaybackSpeed}
       disabled={steps.length === 0}
       showSpeedControl={true}
+      arraySize={arraySize}
+      onArraySizeChange={handleArraySizeChange}
+      showArraySizeControl={true}
     />
   );
 

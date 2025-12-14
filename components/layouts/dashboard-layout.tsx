@@ -136,13 +136,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       </Sidebar>
 
       <SidebarInset>
-        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background px-4">
-          <SidebarTrigger />
-          <Separator orientation="vertical" className="h-6" />
-          <div className="flex-1" />
-        </header>
-        <main className="flex-1 overflow-y-auto p-6">
-          {children}
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-7xl mx-auto p-6">
+            {children}
+          </div>
         </main>
       </SidebarInset>
     </SidebarProvider>

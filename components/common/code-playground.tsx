@@ -52,11 +52,22 @@ export function CodePlayground({
   const handleRun = async () => {
     setIsRunning(true);
     setOutput("Compiling and executing...");
-    // TODO: Integrate with code execution service
-    setTimeout(() => {
-      setOutput("Code execution coming soon. This will integrate with Gemini API.");
+    
+    try {
+      // Import and use custom code executor (not AI-based)
+      const { executeCode } = await import("@/services/code-execution/code-executor");
+      const result = await executeCode(code, language);
+      
+      if (result.error) {
+        setOutput(`Error: ${result.error}\n\nExecution time: ${result.executionTime.toFixed(2)}ms`);
+      } else {
+        setOutput(`${result.output}\n\nExecution time: ${result.executionTime.toFixed(2)}ms`);
+      }
+    } catch (error) {
+      setOutput(`Error: ${error instanceof Error ? error.message : String(error)}`);
+    } finally {
       setIsRunning(false);
-    }, 1000);
+    }
   };
 
   const handleReset = () => {

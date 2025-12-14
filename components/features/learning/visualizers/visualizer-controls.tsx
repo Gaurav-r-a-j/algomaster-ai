@@ -18,6 +18,9 @@ interface VisualizerControlsProps {
   onSpeedChange: (speed: number) => void;
   disabled?: boolean;
   showSpeedControl?: boolean;
+  arraySize?: number;
+  onArraySizeChange?: (size: number) => void;
+  showArraySizeControl?: boolean;
 }
 
 export function VisualizerControls({
@@ -33,14 +36,17 @@ export function VisualizerControls({
   onSpeedChange,
   disabled = false,
   showSpeedControl = true,
+  arraySize,
+  onArraySizeChange,
+  showArraySizeControl = false,
 }: VisualizerControlsProps) {
   const canGoPrevious = currentStep > 0;
   const canGoNext = currentStep < totalSteps - 1;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       {/* Main Controls */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-wrap">
         <Button
           variant="outline"
           size="sm"
@@ -94,6 +100,27 @@ export function VisualizerControls({
           </span>
         </div>
       </div>
+
+      {/* Array Size Control */}
+      {showArraySizeControl && arraySize !== undefined && onArraySizeChange && (
+        <div className="flex items-center gap-4">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider min-w-[80px]">
+            Array Size
+          </span>
+          <Slider
+            value={[arraySize]}
+            onValueChange={([value]) => onArraySizeChange(value)}
+            min={5}
+            max={30}
+            step={1}
+            className="flex-1"
+            disabled={disabled || isPlaying}
+          />
+          <span className="text-xs font-mono text-muted-foreground min-w-[40px] text-right">
+            {arraySize}
+          </span>
+        </div>
+      )}
 
       {/* Speed Control */}
       {showSpeedControl && (
