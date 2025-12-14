@@ -14,11 +14,11 @@ export function Header() {
           <Link href={ROUTES.FEATURES} className="text-sm hover:underline">
             Features
           </Link>
+          <Link href={ROUTES.DESIGN_SYSTEM} className="text-sm hover:underline">
+            Design System
+          </Link>
           <Link href={ROUTES.PRICING} className="text-sm hover:underline">
             Pricing
-          </Link>
-          <Link href={ROUTES.BLOG} className="text-sm hover:underline">
-            Blog
           </Link>
           <Link href={ROUTES.ABOUT} className="text-sm hover:underline">
             About

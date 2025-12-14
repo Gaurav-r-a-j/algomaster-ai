@@ -8,6 +8,7 @@ export interface SectionProps {
   containerClassName?: string;
   containerSize?: "sm" | "md" | "lg" | "xl" | "full";
   spacing?: "none" | "sm" | "md" | "lg" | "xl";
+  id?: string;
 }
 
 const spacingClasses = {
@@ -19,16 +20,17 @@ const spacingClasses = {
 };
 
 // Section - Page section with consistent spacing and container
-// Example: <Section spacing="lg" containerSize="lg"><Content /></Section>
+// Example: <Section spacing="lg" containerSize="lg" id="features"><Content /></Section>
 export function Section({
   children,
   className,
   containerClassName,
   containerSize = "xl",
   spacing = "md",
+  id,
 }: SectionProps) {
   return (
-    <section className={cn(spacingClasses[spacing], className)}>
+    <section id={id} className={cn(spacingClasses[spacing], className)}>
       <Container size={containerSize} className={containerClassName}>
         {children}
       </Container>

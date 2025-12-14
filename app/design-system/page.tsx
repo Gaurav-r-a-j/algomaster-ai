@@ -2,6 +2,7 @@
 
 // Design System Page - Centralized showcase of all UI components, icons, and design patterns
 
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import {
+  ArrowLeftIcon,
   HeroHomeIcon,
   HeroSearchIcon,
   HeroUserIcon,
@@ -29,7 +31,6 @@ import {
 } from "@/lib/icons";
 import {
   CardWrapper,
-  Container,
   EmptyState,
   ErrorMessage,
   LoadingSpinner,
@@ -43,6 +44,7 @@ import {
   SelectField,
   TextareaField,
 } from "@/components/forms";
+import { ROUTES } from "@/constants/routes";
 
 // Example form schema for design system
 const exampleFormSchema = z.object({
@@ -73,18 +75,63 @@ export default function DesignSystemPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Container size="xl" className="py-8">
+      <Section spacing="lg" containerSize="xl">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-2">Design System</h1>
-          <p className="text-muted-foreground text-lg">
-            Complete showcase of UI components, icons, and design patterns for
-            the DSA Learning Platform.
-          </p>
+          <Link href={ROUTES.HOME}>
+            <Button variant="ghost" size="sm" className="mb-4">
+              <ArrowLeftIcon size={16} className="mr-2" />
+              Back to Home
+            </Button>
+          </Link>
+          <div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-2">
+              Design System
+            </h1>
+            <p className="text-muted-foreground text-lg max-w-3xl">
+              Complete showcase of UI components, icons, and design patterns.
+              Use this as a reference for building consistent interfaces.
+            </p>
+          </div>
         </div>
 
-        {/* Icons Section */}
-        <Section spacing="lg">
+        {/* Quick Navigation */}
+        <div className="mb-12 flex flex-wrap gap-2">
+          <a
+            href="#icons"
+            className="px-4 py-2 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors"
+          >
+            Icons
+          </a>
+          <a
+            href="#buttons"
+            className="px-4 py-2 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors"
+          >
+            Buttons
+          </a>
+          <a
+            href="#forms"
+            className="px-4 py-2 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors"
+          >
+            Forms
+          </a>
+          <a
+            href="#common"
+            className="px-4 py-2 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors"
+          >
+            Common Components
+          </a>
+          <a
+            href="#badges"
+            className="px-4 py-2 text-sm bg-muted hover:bg-muted/80 rounded-md transition-colors"
+          >
+            Badges
+          </a>
+        </div>
+      </Section>
+
+      {/* Icons Section */}
+      <Section spacing="lg" containerSize="xl" id="icons">
           <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-2">Icons</h2>
             <p className="text-muted-foreground">
@@ -218,7 +265,7 @@ export default function DesignSystemPage() {
         <Separator className="my-12" />
 
         {/* Buttons Section */}
-        <Section spacing="lg">
+        <Section spacing="lg" containerSize="xl" id="buttons">
           <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-2">Buttons</h2>
             <p className="text-muted-foreground">
@@ -260,7 +307,7 @@ export default function DesignSystemPage() {
         <Separator className="my-12" />
 
         {/* Common Components Section */}
-        <Section spacing="lg">
+        <Section spacing="lg" containerSize="xl" id="common">
           <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-2">Common Components</h2>
             <p className="text-muted-foreground">
@@ -396,7 +443,7 @@ export default function DesignSystemPage() {
         <Separator className="my-12" />
 
         {/* Forms Section */}
-        <Section spacing="lg">
+        <Section spacing="lg" containerSize="xl" id="forms">
           <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-2">Form Components</h2>
             <p className="text-muted-foreground mb-2">
@@ -481,7 +528,7 @@ export default function DesignSystemPage() {
         <Separator className="my-12" />
 
         {/* Badges Section */}
-        <Section spacing="lg">
+        <Section spacing="lg" containerSize="xl" id="badges">
           <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-2">Badges</h2>
             <p className="text-muted-foreground">Badge component variants.</p>
@@ -500,7 +547,26 @@ export default function DesignSystemPage() {
             </CardContent>
           </Card>
         </Section>
-      </Container>
+
+        {/* Footer Navigation */}
+        <Section spacing="lg" containerSize="xl" className="mt-12">
+          <div className="text-center pt-8 border-t">
+            <p className="text-muted-foreground mb-4">
+              Need help? Check out the documentation or get started building.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Link href={ROUTES.HOME}>
+                <Button variant="outline">
+                  <Home01Icon size={16} className="mr-2" />
+                  Back to Home
+                </Button>
+              </Link>
+              <Link href={ROUTES.DOCS}>
+                <Button variant="outline">View Documentation</Button>
+              </Link>
+            </div>
+          </div>
+        </Section>
     </div>
   );
 }
