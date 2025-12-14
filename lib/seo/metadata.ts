@@ -120,7 +120,7 @@ export function generateMetadata(config: MetadataConfig): Metadata {
 export const defaultMetadata = generateMetadata({
   title: APP_CONFIG.name,
   description: APP_CONFIG.description,
-  keywords: APP_CONFIG.keywords,
+  keywords: [...APP_CONFIG.keywords],
   openGraph: {
     type: "website",
   },

@@ -78,12 +78,12 @@ export default function DesignSystemPage() {
       <Section spacing="lg" containerSize="xl">
         {/* Header */}
         <div className="mb-12">
-          <Link href={ROUTES.HOME}>
-            <Button variant="ghost" size="sm" className="mb-4">
-              <ArrowLeftIcon size={16} className="mr-2" />
+          <Button variant="ghost" size="sm" asChild className="mb-4">
+            <Link href={ROUTES.HOME}>
+              <IconWrapper icon={ArrowLeftIcon} size={16} className="mr-2" />
               Back to Home
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <div>
             <h1 className="text-4xl md:text-5xl font-bold mb-2">
               Design System
@@ -151,12 +151,12 @@ export default function DesignSystemPage() {
               </CardHeader>
               <CardContent>
                 <div className="flex gap-4 items-center flex-wrap">
-                  <Home01Icon size={24} className="text-blue-500" />
-                  <SearchIcon size={24} className="text-green-500" />
-                  <UserIcon size={24} className="text-purple-500" />
-                  <SettingsIcon size={32} className="text-orange-500" />
-                  <SunIcon size={24} className="text-yellow-500" />
-                  <MoonIcon size={24} className="text-blue-400" />
+                  <IconWrapper icon={Home01Icon} size={24} className="text-blue-500" />
+                  <IconWrapper icon={SearchIcon} size={24} className="text-green-500" />
+                  <IconWrapper icon={UserIcon} size={24} className="text-purple-500" />
+                  <IconWrapper icon={SettingsIcon} size={32} className="text-orange-500" />
+                  <IconWrapper icon={SunIcon} size={24} className="text-yellow-500" />
+                  <IconWrapper icon={MoonIcon} size={24} className="text-blue-400" />
                 </div>
               </CardContent>
             </Card>
@@ -227,31 +227,31 @@ export default function DesignSystemPage() {
               <CardContent>
                 <div className="flex gap-6 items-end">
                   <div className="flex flex-col items-center gap-2">
-                    <Home01Icon size={16} />
+                    <IconWrapper icon={Home01Icon} size={16} />
                     <span className="text-xs text-muted-foreground">
                       xs (16px)
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-2">
-                    <Home01Icon size={20} />
+                    <IconWrapper icon={Home01Icon} size={20} />
                     <span className="text-xs text-muted-foreground">
                       sm (20px)
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-2">
-                    <Home01Icon size={24} />
+                    <IconWrapper icon={Home01Icon} size={24} />
                     <span className="text-xs text-muted-foreground">
                       md (24px)
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-2">
-                    <Home01Icon size={32} />
+                    <IconWrapper icon={Home01Icon} size={32} />
                     <span className="text-xs text-muted-foreground">
                       lg (32px)
                     </span>
                   </div>
                   <div className="flex flex-col items-center gap-2">
-                    <Home01Icon size={40} />
+                    <IconWrapper icon={Home01Icon} size={40} />
                     <span className="text-xs text-muted-foreground">
                       xl (40px)
                     </span>
@@ -555,12 +555,12 @@ export default function DesignSystemPage() {
               Need help? Check out the documentation or get started building.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Link href={ROUTES.HOME}>
-                <Button variant="outline">
-                  <Home01Icon size={16} className="mr-2" />
+              <Button variant="outline" asChild>
+                <Link href={ROUTES.HOME}>
+                  <IconWrapper icon={Home01Icon} size={16} className="mr-2" />
                   Back to Home
-                </Button>
-              </Link>
+                </Link>
+              </Button>
               <Link href={ROUTES.DOCS}>
                 <Button variant="outline">View Documentation</Button>
               </Link>

@@ -42,7 +42,7 @@ export const TextareaField = forwardRef<HTMLDivElement, TextareaFieldProps>(
         {({ value, onChange, onBlur, error }) => (
           <Textarea
             id={name}
-            value={value}
+            value={value as string}
             onChange={(e) => onChange(e.target.value)}
             onBlur={onBlur}
             placeholder={placeholder}

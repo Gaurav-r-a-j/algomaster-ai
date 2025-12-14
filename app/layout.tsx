@@ -8,6 +8,7 @@ import {
 } from "@/lib/seo/json-ld";
 import { JsonLd } from "@/components/seo/json-ld";
 import { APP_CONFIG } from "@/config/app";
+import { Providers } from "./providers";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -43,7 +44,7 @@ export default function RootLayout({
   });
 
   return (
-    <html lang="en" className={figtree.variable}>
+    <html lang="en" className={figtree.variable} suppressHydrationWarning>
       <head>
         <JsonLd data={organizationJsonLd} />
         <JsonLd data={websiteJsonLd} />
@@ -51,7 +52,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

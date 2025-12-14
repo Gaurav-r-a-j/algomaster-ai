@@ -43,7 +43,7 @@ export const InputField = forwardRef<HTMLDivElement, InputFieldProps>(
           <Input
             id={name}
             type={type}
-            value={value}
+            value={value as string}
             onChange={(e) => onChange(e.target.value)}
             onBlur={onBlur}
             placeholder={placeholder}
