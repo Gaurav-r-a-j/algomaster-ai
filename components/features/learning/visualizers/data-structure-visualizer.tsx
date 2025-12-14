@@ -268,7 +268,7 @@ export function DataStructureVisualizer({
       case VisualizerType.LINKED_LIST:
         return (
           <div className="w-full overflow-x-auto py-8">
-            <div className="flex items-center justify-center gap-0 min-w-fit mx-auto">
+            <div className="flex items-center justify-center gap-0 min-w-fit mx-auto px-4">
               {currentData.array.map((val, idx) => {
                 const isActive = currentData.activeIndices.includes(idx);
                 return (
@@ -276,35 +276,71 @@ export function DataStructureVisualizer({
                     {/* Node */}
                     <div className="flex flex-col items-center">
                       <div
-                        className={`w-20 h-20 rounded-xl border-2 flex items-center justify-center font-bold text-xl transition-all duration-300 ${
+                        className={`w-20 h-20 rounded-2xl border-2 flex items-center justify-center font-bold text-xl transition-all duration-300 ${
                           isActive
-                            ? "border-foreground bg-muted scale-105 shadow-lg"
+                            ? "border-foreground bg-muted/80 scale-105 shadow-lg ring-2 ring-foreground/20"
                             : "border-border bg-card"
                         }`}
                       >
                         {val}
                       </div>
-                      <div className="mt-2 text-xs font-mono text-muted-foreground">
+                      <div className="mt-2 text-xs font-mono text-muted-foreground font-semibold">
                         Node {idx}
                       </div>
                     </div>
                     {/* Arrow */}
                     {idx < currentData.array.length - 1 && (
-                      <div className="flex items-center mx-2">
-                        <div className="w-16 h-0.5 bg-border relative">
-                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-b-[6px] border-l-[10px] border-transparent border-l-border"></div>
-                        </div>
+                      <div className="flex items-center mx-3">
+                        <svg
+                          width="48"
+                          height="2"
+                          viewBox="0 0 48 2"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-border"
+                        >
+                          <line
+                            x1="0"
+                            y1="1"
+                            x2="40"
+                            y2="1"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          />
+                          <path
+                            d="M40 1L36 0L36 2L40 1Z"
+                            fill="currentColor"
+                          />
+                        </svg>
                       </div>
                     )}
                   </div>
                 );
               })}
               {/* NULL pointer */}
-              <div className="flex items-center ml-2">
-                <div className="w-12 h-0.5 bg-border relative mr-2">
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-b-[6px] border-l-[10px] border-transparent border-l-border"></div>
-                </div>
-                <div className="px-3 py-1.5 bg-muted rounded-md border border-border">
+              <div className="flex items-center ml-3">
+                <svg
+                  width="32"
+                  height="2"
+                  viewBox="0 0 32 2"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-border mr-2"
+                >
+                  <line
+                    x1="0"
+                    y1="1"
+                    x2="24"
+                    y2="1"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                  <path
+                    d="M24 1L20 0L20 2L24 1Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <div className="px-4 py-2 bg-muted rounded-lg border border-border">
                   <span className="text-sm font-mono font-semibold text-muted-foreground">
                     NULL
                   </span>
