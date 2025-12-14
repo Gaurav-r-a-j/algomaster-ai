@@ -1,17 +1,20 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { IconWrapper } from "@/components/common/icon-wrapper";
-import { PlayIcon, RefreshCwIcon, SearchIcon } from "@/lib/icons";
+import { SearchIcon } from "@/lib/icons";
 import { VisualizerLayout } from "./visualizer-layout";
+import { VisualizerControls } from "./visualizer-controls";
 import type { Topic } from "@/types/curriculum";
 import type { VisualizationStep } from "@/types/curriculum";
 import {
   generateBinarySearchSteps,
   generateLinearSearchSteps,
 } from "@/utils/algorithm-logic";
+
+const DEFAULT_SPEED_MS = 800;
 
 interface SearchVisualizerProps {
   topic: Topic;
@@ -25,6 +28,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
   const [steps, setSteps] = useState<VisualizationStep[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS);
   const timerRef = useRef<number | null>(null);
 
   const generateSteps = useCallback(() => {
@@ -81,14 +85,38 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
           }
           return prev + 1;
         });
-      }, 800);
+      }, playbackSpeed);
     } else if (timerRef.current) {
       clearInterval(timerRef.current);
     }
     return () => {
       if (timerRef.current) {clearInterval(timerRef.current);}
     };
-  }, [isPlaying, steps.length]);
+  }, [isPlaying, steps.length, playbackSpeed]);
+
+  const handlePreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleReset = () => {
+    generateSteps();
+  };
 
   const currentData =
     steps[currentStep] ||
@@ -100,7 +128,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
     } as VisualizationStep);
 
   const controls = (
-    <>
+    <div className="flex items-center gap-2">
       <Input
         type="number"
         value={target}
@@ -108,21 +136,23 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
         className="w-24"
         min={Math.min(...array)}
         max={Math.max(...array)}
-      />
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={generateSteps}
         disabled={isPlaying}
-      >
-        <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
-        Reset
-      </Button>
-      <Button size="sm" onClick={() => setIsPlaying(!isPlaying)}>
-        <IconWrapper icon={PlayIcon} size={16} className="mr-2" />
-        {isPlaying ? "Pause" : "Play"}
-      </Button>
-    </>
+      />
+      <VisualizerControls
+        isPlaying={isPlaying}
+        currentStep={currentStep}
+        totalSteps={steps.length}
+        playbackSpeed={playbackSpeed}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onReset={handleReset}
+        onPreviousStep={handlePreviousStep}
+        onNextStep={handleNextStep}
+        onSpeedChange={setPlaybackSpeed}
+        disabled={steps.length === 0}
+        showSpeedControl={true}
+      />
+    </div>
   );
 
   const description = (
@@ -138,27 +168,50 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <div className="h-64 flex items-center justify-center gap-3 px-4 py-8 bg-muted rounded-lg border border-border">
-        {currentData.array.map((value, idx) => {
-          const isActive = currentData.activeIndices.includes(idx);
-          const isFound = currentData.sortedIndices.includes(idx);
-          const colorClass = isFound
-            ? "bg-emerald-500"
-            : isActive
-              ? "bg-amber-500"
-              : "bg-primary";
-          return (
-            <div
-              key={idx}
-              className={`w-12 h-12 rounded-lg transition-all duration-200 ${colorClass} flex items-center justify-center text-white font-bold shadow-sm`}
-            >
-              {value}
+      <div className="flex flex-col gap-6">
+        <Card>
+          <CardContent className="p-8">
+            <div className="flex flex-wrap items-center justify-center gap-4 min-h-[200px]">
+              {currentData.array.map((value, idx) => {
+                const isActive = currentData.activeIndices.includes(idx);
+                const isFound = currentData.sortedIndices.includes(idx);
+                
+                return (
+                  <div
+                    key={idx}
+                    className={`flex flex-col items-center gap-2 transition-all duration-200 ${
+                      isActive ? "scale-110 z-10" : ""
+                    }`}
+                  >
+                    <div
+                      className={`w-20 h-20 rounded-xl border-2 flex items-center justify-center font-bold text-xl transition-all duration-200 ${
+                        isFound
+                          ? "border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 shadow-lg ring-2 ring-emerald-500/20"
+                          : isActive
+                            ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-400 shadow-lg ring-2 ring-amber-500/20"
+                            : "border-border bg-card"
+                      }`}
+                    >
+                      {value}
+                    </div>
+                    <span className="text-xs font-mono text-muted-foreground font-semibold">
+                      [{idx}]
+                    </span>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
-      </div>
-      <div className="text-center text-sm text-muted-foreground">
-        Searching for: <span className="font-bold text-foreground">{target}</span>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="p-4">
+            <div className="text-center">
+              <span className="text-sm text-muted-foreground">Searching for: </span>
+              <span className="font-bold text-foreground text-lg">{target}</span>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </VisualizerLayout>
   );

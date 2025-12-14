@@ -1,11 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { PlayIcon, RefreshCwIcon } from "@/lib/icons";
+import { Card, CardContent } from "@/components/ui/card";
 import { ChartBarIcon } from "@heroicons/react/24/outline";
 import { VisualizerLayout } from "./visualizer-layout";
+import { VisualizerControls } from "./visualizer-controls";
 import type { Topic } from "@/types/curriculum";
 import type { VisualizationStep } from "@/types/curriculum";
 import {
@@ -17,7 +16,7 @@ import {
 } from "@/utils/algorithm-logic";
 
 const DEFAULT_ARRAY_SIZE = 15;
-const ANIMATION_SPEED_MS = 500;
+const DEFAULT_SPEED_MS = 500;
 
 interface SortingVisualizerProps {
   topic: Topic;
@@ -28,7 +27,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
   const [steps, setSteps] = useState<VisualizationStep[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState(ANIMATION_SPEED_MS);
+  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS);
   const timerRef = useRef<number | null>(null);
 
   const generateArray = useCallback(() => {
@@ -69,6 +68,30 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     setCurrentStep(0);
     setIsPlaying(false);
   }, [topic.id]);
+
+  const handlePreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleReset = () => {
+    generateArray();
+  };
 
   useEffect(() => {
     // Initialize on mount and when topic changes
@@ -144,21 +167,20 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     } as VisualizationStep);
 
   const controls = (
-    <>
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={generateArray}
-        disabled={isPlaying}
-      >
-        <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
-        Reset
-      </Button>
-      <Button size="sm" onClick={() => setIsPlaying(!isPlaying)}>
-        <IconWrapper icon={PlayIcon} size={16} className="mr-2" />
-        {isPlaying ? "Pause" : "Play"}
-      </Button>
-    </>
+    <VisualizerControls
+      isPlaying={isPlaying}
+      currentStep={currentStep}
+      totalSteps={steps.length}
+      playbackSpeed={playbackSpeed}
+      onPlay={handlePlay}
+      onPause={handlePause}
+      onReset={handleReset}
+      onPreviousStep={handlePreviousStep}
+      onNextStep={handleNextStep}
+      onSpeedChange={setPlaybackSpeed}
+      disabled={steps.length === 0}
+      showSpeedControl={true}
+    />
   );
 
   const description = (
@@ -182,45 +204,61 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
 
   return (
     <VisualizerLayout
-      title="Live Visualization"
+      title="Sorting Visualization"
       icon={<ChartBarIcon className="w-5 h-5 text-primary" />}
       controls={controls}
       description={description}
     >
-      <div className="h-64 flex items-end justify-center gap-2 px-4 py-8 bg-muted rounded-lg border border-border relative overflow-hidden">
-        {currentData.array.map((value, idx) => {
-          const isActive = currentData.activeIndices.includes(idx);
-          const isSorted = currentData.sortedIndices.includes(idx);
-          const colorClass = isActive
-            ? "bg-amber-500"
-            : isSorted
-              ? "bg-emerald-500"
-              : "bg-primary";
-          return (
-            <div
-              key={idx}
-              className={`w-8 rounded-t-md transition-all duration-200 ${colorClass} relative group shadow-sm`}
-              style={{ height: `${value}%` }}
-            >
-              <span className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-mono font-bold text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                {value}
-              </span>
+      <div className="flex flex-col gap-6">
+        {/* Number-based visualization */}
+        <Card>
+          <CardContent className="p-8">
+            <div className="flex flex-wrap items-center justify-center gap-4 min-h-[200px]">
+              {currentData.array.map((value, idx) => {
+                const isActive = currentData.activeIndices.includes(idx);
+                const isSorted = currentData.sortedIndices.includes(idx);
+                
+                return (
+                  <div
+                    key={idx}
+                    className={`flex flex-col items-center gap-2 transition-all duration-200 ${
+                      isActive ? "scale-110 z-10" : isSorted ? "opacity-75" : ""
+                    }`}
+                  >
+                    <div
+                      className={`w-20 h-20 rounded-xl border-2 flex items-center justify-center font-bold text-xl transition-all duration-200 ${
+                        isActive
+                          ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-400 shadow-lg ring-2 ring-amber-500/20"
+                          : isSorted
+                            ? "border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+                            : "border-border bg-card"
+                      }`}
+                    >
+                      {value}
+                    </div>
+                    <span className="text-xs font-mono text-muted-foreground font-semibold">
+                      [{idx}]
+                    </span>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
-      </div>
-      <div className="mt-6 flex items-center gap-4">
-        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-          Speed
-        </span>
-        <input
-          type="range"
-          min="50"
-          max="1000"
-          value={1050 - playbackSpeed}
-          onChange={(e) => setPlaybackSpeed(1050 - Number(e.target.value))}
-          className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
-        />
+          </CardContent>
+        </Card>
+        
+        {/* Array representation */}
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Array:
+              </span>
+              <code className="text-sm font-mono text-foreground bg-muted px-2 py-1 rounded">
+                [{currentData.array.join(", ")}]
+              </code>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </VisualizerLayout>
   );

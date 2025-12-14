@@ -1,11 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { PlayIcon, RefreshCwIcon } from "@/lib/icons";
+import { Card, CardContent } from "@/components/ui/card";
 import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import { VisualizerLayout } from "./visualizer-layout";
+import { VisualizerControls } from "./visualizer-controls";
 import type { Topic } from "@/types/curriculum";
 import type { VisualizationStep } from "@/types/curriculum";
 import { VisualizerType } from "@/types/curriculum";
@@ -14,6 +13,8 @@ import {
   generateQueueSteps,
   generateStackSteps,
 } from "@/utils/algorithm-logic";
+
+const DEFAULT_SPEED_MS = 1000;
 
 interface DataStructureVisualizerProps {
   topic: Topic;
@@ -55,6 +56,7 @@ export function DataStructureVisualizer({
   const [steps, setSteps] = useState<VisualizationStep[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS);
   const timerRef = useRef<number | null>(null);
 
   const generateData = useCallback(() => {
@@ -152,14 +154,38 @@ export function DataStructureVisualizer({
           }
           return prev + 1;
         });
-      }, 1000);
+      }, playbackSpeed);
     } else if (timerRef.current) {
       clearInterval(timerRef.current);
     }
     return () => {
       if (timerRef.current) {clearInterval(timerRef.current);}
     };
-  }, [isPlaying, steps.length]);
+  }, [isPlaying, steps.length, playbackSpeed]);
+
+  const handlePreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleReset = () => {
+    generateData();
+  };
 
   const currentData =
     steps[currentStep] ||
@@ -172,21 +198,20 @@ export function DataStructureVisualizer({
     } as VisualizationStep);
 
   const controls = (
-    <>
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={generateData}
-        disabled={isPlaying}
-      >
-        <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
-        Reset
-      </Button>
-      <Button size="sm" onClick={() => setIsPlaying(!isPlaying)}>
-        <IconWrapper icon={PlayIcon} size={16} className="mr-2" />
-        {isPlaying ? "Pause" : "Play"}
-      </Button>
-    </>
+    <VisualizerControls
+      isPlaying={isPlaying}
+      currentStep={currentStep}
+      totalSteps={steps.length}
+      playbackSpeed={playbackSpeed}
+      onPlay={handlePlay}
+      onPause={handlePause}
+      onReset={handleReset}
+      onPreviousStep={handlePreviousStep}
+      onNextStep={handleNextStep}
+      onSpeedChange={setPlaybackSpeed}
+      disabled={steps.length === 0}
+      showSpeedControl={true}
+    />
   );
 
   const description = <p className="text-sm text-foreground font-medium">{currentData.description}</p>;
@@ -195,65 +220,96 @@ export function DataStructureVisualizer({
     switch (topic.visualizerType) {
       case VisualizerType.STACK:
         return (
-          <div className="flex flex-col items-center gap-2 p-4 border-t-4 border-b-4 border-border min-w-[300px] min-h-[80px] bg-muted/50 overflow-x-auto rounded-lg relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 -ml-16 text-xs font-mono text-muted-foreground font-bold">
-              TOP
-            </div>
-            {currentData.array.map((val, idx) => (
-              <div
-                key={idx}
-                className="min-w-[50px] h-12 bg-primary rounded flex items-center justify-center text-white font-bold animate-in fade-in slide-in-from-right-4 duration-300 shadow-md"
-              >
-                {val}
+          <div className="w-full">
+            <div className="flex flex-col items-center gap-3 p-6 border-2 border-border rounded-lg bg-muted/30 relative min-h-[200px]">
+              <div className="absolute -left-20 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground font-bold uppercase">
+                TOP
               </div>
-            ))}
+              {currentData.array.length === 0 ? (
+                <div className="text-sm text-muted-foreground italic">Stack is empty</div>
+              ) : (
+                currentData.array.map((val, idx) => (
+                  <div
+                    key={idx}
+                    className="w-20 h-16 rounded-lg border-2 border-primary bg-primary/10 flex items-center justify-center font-bold text-lg transition-all duration-300 shadow-md"
+                  >
+                    {val}
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         );
       case VisualizerType.QUEUE:
         return (
-          <div className="flex items-center gap-2 p-4 border-t-4 border-b-4 border-border min-w-[300px] min-h-[80px] bg-muted/50 overflow-x-auto rounded-lg relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 -ml-16 text-xs font-mono text-muted-foreground font-bold">
-              FRONT
-            </div>
-            {currentData.array.map((val, idx) => (
-              <div
-                key={idx}
-                className="min-w-[50px] h-12 bg-emerald-500 rounded flex items-center justify-center text-white font-bold animate-in fade-in slide-in-from-right-4 duration-300 shadow-md"
-              >
-                {val}
+          <div className="w-full">
+            <div className="flex items-center gap-3 p-6 border-2 border-border rounded-lg bg-muted/30 relative min-h-[120px]">
+              <div className="absolute -left-20 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground font-bold uppercase">
+                FRONT
               </div>
-            ))}
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 -mr-16 text-xs font-mono text-muted-foreground font-bold">
-              BACK
+              {currentData.array.length === 0 ? (
+                <div className="text-sm text-muted-foreground italic flex-1 text-center">Queue is empty</div>
+              ) : (
+                currentData.array.map((val, idx) => (
+                  <div
+                    key={idx}
+                    className="w-20 h-16 rounded-lg border-2 border-emerald-500 bg-emerald-500/10 flex items-center justify-center font-bold text-lg transition-all duration-300 shadow-md"
+                  >
+                    {val}
+                  </div>
+                ))
+              )}
+              <div className="absolute -right-20 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground font-bold uppercase">
+                BACK
+              </div>
             </div>
           </div>
         );
       case VisualizerType.LINKED_LIST:
         return (
-          <div className="flex items-center gap-0 overflow-x-auto w-full justify-center">
-            {currentData.array.map((val, idx) => (
-              <div key={idx} className="flex items-center group">
-                <div
-                  className={`w-14 h-14 md:w-16 md:h-16 rounded-full border-4 flex items-center justify-center font-bold text-lg transition-all duration-300 relative z-10 ${
-                    currentData.activeIndices.includes(idx)
-                      ? "border-primary bg-primary/10 text-primary scale-110 shadow-lg"
-                      : "border-border bg-card text-foreground"
-                  }`}
-                >
-                  {val}
-                  <div className="absolute -bottom-6 text-[10px] text-muted-foreground font-mono">
-                    Node {idx}
+          <div className="w-full overflow-x-auto py-8">
+            <div className="flex items-center justify-center gap-0 min-w-fit mx-auto">
+              {currentData.array.map((val, idx) => {
+                const isActive = currentData.activeIndices.includes(idx);
+                return (
+                  <div key={idx} className="flex items-center">
+                    {/* Node */}
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={`w-20 h-20 rounded-xl border-2 flex items-center justify-center font-bold text-xl transition-all duration-300 ${
+                          isActive
+                            ? "border-foreground bg-muted scale-105 shadow-lg"
+                            : "border-border bg-card"
+                        }`}
+                      >
+                        {val}
+                      </div>
+                      <div className="mt-2 text-xs font-mono text-muted-foreground">
+                        Node {idx}
+                      </div>
+                    </div>
+                    {/* Arrow */}
+                    {idx < currentData.array.length - 1 && (
+                      <div className="flex items-center mx-2">
+                        <div className="w-16 h-0.5 bg-border relative">
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-b-[6px] border-l-[10px] border-transparent border-l-border"></div>
+                        </div>
+                      </div>
+                    )}
                   </div>
+                );
+              })}
+              {/* NULL pointer */}
+              <div className="flex items-center ml-2">
+                <div className="w-12 h-0.5 bg-border relative mr-2">
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[6px] border-b-[6px] border-l-[10px] border-transparent border-l-border"></div>
                 </div>
-                {idx < currentData.array.length - 1 && (
-                  <div className="w-12 h-1.5 bg-border relative">
-                    <div className="absolute right-0 -top-1.5 border-t-[6px] border-b-[6px] border-l-[10px] border-transparent border-l-border"></div>
-                  </div>
-                )}
+                <div className="px-3 py-1.5 bg-muted rounded-md border border-border">
+                  <span className="text-sm font-mono font-semibold text-muted-foreground">
+                    NULL
+                  </span>
+                </div>
               </div>
-            ))}
-            <div className="ml-2 px-2 py-1 bg-muted rounded text-muted-foreground font-mono text-xs">
-              NULL
             </div>
           </div>
         );
@@ -285,9 +341,11 @@ export function DataStructureVisualizer({
       controls={controls}
       description={description}
     >
-      <div className="flex-1 min-h-[300px] flex items-center justify-center p-8 bg-muted rounded-lg border border-border overflow-hidden relative">
-        {renderVisualization()}
-      </div>
+      <Card className="flex-1 min-h-[400px]">
+        <CardContent className="p-8 h-full flex items-center justify-center">
+          {renderVisualization()}
+        </CardContent>
+      </Card>
     </VisualizerLayout>
   );
 }

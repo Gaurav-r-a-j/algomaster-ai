@@ -124,9 +124,9 @@ export default function SlugPage({ params }: SlugPageProps) {
     <div className="flex flex-col h-full overflow-hidden bg-background">
       <Tabs defaultValue="learn" className="flex-1 flex flex-col overflow-hidden">
         <header className="sticky top-0 z-50 shrink-0 bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/80 border-b border-border shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex flex-col gap-4">
-              {/* Breadcrumb */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Sticky Breadcrumb */}
+            <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/80 border-b border-border/50 py-2 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mb-4">
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
@@ -156,9 +156,13 @@ export default function SlugPage({ params }: SlugPageProps) {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
+            </div>
+            
+            <div className="py-4">
+              <div className="flex flex-col gap-4">
 
-              {/* Title and Badges */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                {/* Title and Badges */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                     <span className="text-primary font-bold text-lg font-mono">
@@ -216,6 +220,7 @@ export default function SlugPage({ params }: SlugPageProps) {
                     <span className="hidden sm:inline">Practice</span>
                   </TabsTrigger>
                 </TabsList>
+                </div>
               </div>
             </div>
           </div>
