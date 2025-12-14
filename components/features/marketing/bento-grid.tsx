@@ -11,11 +11,9 @@ export function BentoGrid() {
           {/* Card 1: The Editor Preview */}
           <div className="md:col-span-2 bg-primary rounded-3xl p-10 text-primary-foreground relative overflow-hidden group min-h-[440px] flex flex-col justify-between shadow-2xl shadow-primary/20 ring-1 ring-primary-foreground/10">
             <div className="relative z-10">
-              <h3 className="text-2xl font-bold mb-3">Interactive Learning</h3>
+              <h3 className="text-2xl font-bold mb-3">Interactive Visualizations</h3>
               <p className="text-primary-foreground/80 max-w-sm text-sm leading-relaxed">
-                Visualize algorithms step-by-step with our interactive playground.
-                Understand how data structures work with real-time animations and
-                code execution.
+                Watch algorithms come to life with step-by-step visualizations. See how data structures work in real-time with animated code execution and interactive diagrams.
               </p>
             </div>
 
@@ -50,11 +48,10 @@ export function BentoGrid() {
                 <IconWrapper icon={SparklesIcon} size={24} />
               </div>
               <h3 className="text-lg font-bold text-foreground mb-2">
-                AI-Powered Help
+                AI-Powered Tutor
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Get instant explanations and hints when you&apos;re stuck. Our AI
-                tutor guides you through complex problems.
+                Get instant explanations, hints, and step-by-step guidance. Our AI tutor adapts to your learning pace and helps you understand complex concepts.
               </p>
             </div>
 
@@ -63,11 +60,10 @@ export function BentoGrid() {
                 <IconWrapper icon={PenIcon} size={24} />
               </div>
               <h3 className="text-lg font-bold text-foreground mb-2">
-                Practice Problems
+                Curated Problems
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Solve curated problems with detailed solutions. Track your
-                progress and master each concept.
+                Solve 500+ problems from easy to hard. Each problem includes detailed solutions, time complexity analysis, and multiple approaches.
               </p>
             </div>
           </div>

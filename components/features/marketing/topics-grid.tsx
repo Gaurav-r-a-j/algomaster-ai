@@ -2,27 +2,29 @@
 
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import {
-  BanknoteIcon,
   BriefcaseIcon,
   CodeIcon,
+  ComputerIcon,
   FileTextIcon,
   Home01Icon,
+  SearchIcon,
   SettingsIcon,
   ShieldIcon,
+  SparklesIcon,
   UsersIcon,
 } from "@/lib/icons";
 
 const topics = [
-  { icon: BriefcaseIcon, label: "Arrays" },
+  { icon: CodeIcon, label: "Arrays" },
   { icon: ShieldIcon, label: "Linked Lists" },
-  { icon: BriefcaseIcon, label: "Stacks" },
-  { icon: BriefcaseIcon, label: "Queues" },
-  { icon: CodeIcon, label: "Trees" },
-  { icon: Home01Icon, label: "Graphs" },
-  { icon: UsersIcon, label: "Sorting" },
-  { icon: BanknoteIcon, label: "Searching" },
+  { icon: BriefcaseIcon, label: "Stacks & Queues" },
+  { icon: Home01Icon, label: "Trees" },
+  { icon: UsersIcon, label: "Graphs" },
+  { icon: SettingsIcon, label: "Sorting" },
+  { icon: SearchIcon, label: "Searching" },
   { icon: FileTextIcon, label: "Dynamic Programming" },
-  { icon: SettingsIcon, label: "Greedy Algorithms" },
+  { icon: SparklesIcon, label: "Greedy Algorithms" },
+  { icon: ComputerIcon, label: "Backtracking" },
 ];
 
 export function TopicsGrid() {
@@ -38,7 +40,7 @@ export function TopicsGrid() {
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-4 px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-4 px-4 sm:px-6">
         {topics.map((item, i) => (
           <div
             key={i}

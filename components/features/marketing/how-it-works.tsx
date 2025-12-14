@@ -32,12 +32,11 @@ export function HowItWorks() {
           <div className="inline-block px-3 py-1 rounded-full bg-muted text-muted-foreground text-[10px] font-bold uppercase tracking-widest mb-4">
             The Process
           </div>
-          <h2 className="text-3xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Learn DSA in Three Simple Steps
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            From beginner to interview-ready. Master data structures and
-            algorithms at your own pace.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            From beginner to interview-ready. Master data structures and algorithms at your own pace with our structured learning path.
           </p>
         </div>
 

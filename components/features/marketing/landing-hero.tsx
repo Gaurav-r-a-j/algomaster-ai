@@ -26,20 +26,19 @@ export function LandingHero() {
           className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700"
         >
           <IconWrapper icon={SparklesIcon} size={14} className="mr-1.5" />
-          Professional Learning Suite
+          AI-Powered Learning Platform
         </Badge>
 
         <h1 className="text-5xl md:text-7xl font-extrabold text-foreground tracking-tight mb-8 leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
           Master Data Structures <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-foreground">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-foreground">
             & Algorithms
           </span>
         </h1>
 
-        <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 font-light">
-          Learn DSA concepts with interactive visualizations, practice problems,
-          and AI-powered explanations. Build your problem-solving skills step by
-          step.
+        <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 font-light">
+          Learn DSA with interactive visualizations, solve practice problems, and get
+          AI-powered explanations. From beginner to interview-ready in weeks, not months.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
