@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/common/container";
 import { Section } from "@/components/common/section";
 import { HeroArrowRightIcon } from "@/lib/icons";
-import { ROUTES } from "@/constants/routes";
+import { getFirstModuleUrl, getFirstTopicUrl } from "@/utils/curriculum-helpers";
 
 export function CTASection() {
   return (
@@ -20,7 +20,7 @@ export function CTASection() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild className="w-full sm:w-auto group">
-              <Link href={ROUTES.DASHBOARD}>
+              <Link href={getFirstTopicUrl()}>
                 Start Learning
                 <HeroArrowRightIcon
                   className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
@@ -28,7 +28,7 @@ export function CTASection() {
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
-              <Link href={ROUTES.DASHBOARD}>
+              <Link href={getFirstModuleUrl()}>
                 Browse All Topics
               </Link>
             </Button>

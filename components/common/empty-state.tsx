@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode } from "react";
 import { cn } from "@/utils/common/class-names";
 import { Button } from "@/components/ui/button";

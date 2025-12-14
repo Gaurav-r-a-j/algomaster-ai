@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
@@ -36,8 +36,8 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
   return <PostHogProvider client={posthogClient}>{children}</PostHogProvider>;
 }
 
-// Component to track pageviews
-export function PostHogPageView() {
+// Component to track pageviews (internal, wrapped in Suspense)
+function PostHogPageViewInternal() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -54,4 +54,13 @@ export function PostHogPageView() {
   }, [pathname, searchParams]);
 
   return null;
+}
+
+// Wrapped in Suspense to handle useSearchParams
+export function PostHogPageView() {
+  return (
+    <Suspense fallback={null}>
+      <PostHogPageViewInternal />
+    </Suspense>
+  );
 }

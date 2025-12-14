@@ -1,5 +1,5 @@
 import { Topic } from "@/types/curriculum";
-import { generateSlug } from "@/utils/common/slug";
+import { generateTopicSlug } from "@/utils/common/slug";
 
 // Module 1: Foundations
 import { variablesDatatypes } from "./topics/foundations/variables-datatypes";
@@ -135,7 +135,7 @@ export function isModuleSlug(slug: string): boolean {
  */
 export function getTopicBySlug(slug: string): Topic | undefined {
   return TOPICS.find((topic) => {
-    const topicSlug = generateSlug(topic.title);
+    const topicSlug = generateTopicSlug(topic.title);
     return topicSlug === slug || topic.id === slug;
   });
 }

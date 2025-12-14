@@ -48,6 +48,8 @@ const componentCategories = [
   },
 ];
 
+export const dynamic = "force-dynamic";
+
 export default function ComponentsDocsPage() {
   return (
     <Section className="py-12">

@@ -1,8 +1,9 @@
 import { Container } from "@/components/common/container";
 import { Section } from "@/components/common/section";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { EmptyState, IconWrapper, LoadingSpinner, MarkdownRenderer, PageHeader } from "@/components/common";
+import { IconWrapper, LoadingSpinner, MarkdownRenderer, PageHeader } from "@/components/common";
+import { EmptyStateExample } from "@/components/features/design-system/empty-state-example";
+import { PageHeaderExample } from "@/components/features/design-system/page-header-example";
 import { Home01Icon } from "@/lib/icons";
 import Link from "next/link";
 import { ROUTES } from "@/constants/routes";
@@ -18,6 +19,8 @@ async function getCommonComponentsDoc(): Promise<string> {
     return "";
   }
 }
+
+export const dynamic = "force-dynamic";
 
 export default async function CommonComponentsDocsPage() {
   const markdownContent = await getCommonComponentsDoc();
@@ -146,11 +149,7 @@ export default async function CommonComponentsDocsPage() {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Live Example</h4>
-                  <PageHeader
-                    title="Example Header"
-                    description="This is an example page header"
-                    actions={<Button size="sm">Action</Button>}
-                  />
+                  <PageHeaderExample />
                 </div>
               </div>
             </CardContent>
@@ -176,14 +175,7 @@ export default async function CommonComponentsDocsPage() {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Live Example</h4>
-                  <EmptyState
-                    title="No items found"
-                    description="Get started by creating your first item"
-                    action={{
-                      label: "Create Item",
-                      onClick: () => alert("Create clicked"),
-                    }}
-                  />
+                  <EmptyStateExample />
                 </div>
               </div>
             </CardContent>

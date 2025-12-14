@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
+import { getFirstTopicUrl } from "@/utils/curriculum-helpers";
 import { cn } from "@/lib/utils";
 
 export function LandingNav() {
@@ -27,7 +28,7 @@ export function LandingNav() {
             Login
           </Link>
           <Button asChild size="sm" className="rounded-full">
-            <Link href={ROUTES.DASHBOARD}>Get Started</Link>
+            <Link href={getFirstTopicUrl()}>Get Started</Link>
           </Button>
         </div>
       </div>

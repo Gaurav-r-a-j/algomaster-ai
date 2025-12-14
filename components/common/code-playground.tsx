@@ -38,9 +38,10 @@ export function CodePlayground({
   const [output, setOutput] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
 
+  // Initialize code when language or initialCode changes
   useEffect(() => {
     const newCode = initialCode?.[language] || DEFAULT_CODE[language];
-    // Use setTimeout to avoid synchronous setState in effect
+    // Use startTransition or setTimeout to defer state updates
     const timer = setTimeout(() => {
       setCode(newCode);
       setOutput(null);
@@ -111,20 +112,53 @@ export function CodePlayground({
 
       {/* Editor Area */}
       <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
-        <textarea
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          className="flex-1 w-full p-4 font-mono text-sm bg-background text-foreground resize-none focus:outline-none"
-          placeholder="Write your code here..."
-        />
+        <div className="flex-1 relative flex overflow-hidden">
+          {/* Line Numbers */}
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-muted/30 pt-4 flex flex-col items-end pr-3 text-muted-foreground select-none pointer-events-none font-mono text-sm leading-relaxed">
+            {code.split("\n").map((_, i) => (
+              <div key={i}>{i + 1}</div>
+            ))}
+          </div>
+          <textarea
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            className="flex-1 w-full pl-16 pr-4 py-4 bg-background text-foreground resize-none focus:outline-none font-mono text-sm leading-relaxed selection:bg-primary/20"
+            placeholder="Write your code here..."
+            spellCheck={false}
+          />
+        </div>
         {output && (
-          <div className="border-t border-border p-4 bg-muted/50">
-            <div className="text-xs font-semibold text-muted-foreground mb-2">
-              OUTPUT:
+          <div className="border-t border-border flex flex-col h-[35%]">
+            <div className="px-4 py-2 bg-muted/50 border-b border-border flex justify-between items-center shrink-0">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                <IconWrapper icon={CodeIcon} size={12} />
+                CONSOLE OUTPUT
+              </span>
+              <button
+                onClick={() => setOutput(null)}
+                className="text-[10px] text-muted-foreground hover:text-destructive uppercase font-bold transition-colors"
+              >
+                Clear
+              </button>
             </div>
-            <pre className="text-sm text-foreground whitespace-pre-wrap font-mono">
-              {output}
-            </pre>
+            <div className="flex-1 p-4 font-mono text-xs overflow-auto">
+              {isRunning ? (
+                <div className="flex items-center gap-2 text-muted-foreground animate-pulse">
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  Running...
+                </div>
+              ) : (
+                <pre
+                  className={`whitespace-pre-wrap leading-relaxed ${
+                    output.startsWith("Error") || output.startsWith("error")
+                      ? "text-destructive"
+                      : "text-foreground"
+                  }`}
+                >
+                  {output}
+                </pre>
+              )}
+            </div>
           </div>
         )}
       </CardContent>

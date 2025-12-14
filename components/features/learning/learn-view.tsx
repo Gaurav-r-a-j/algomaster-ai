@@ -50,7 +50,7 @@ export function LearnView({ topic }: LearnViewProps) {
         const topicContent = await getTopicContent(topic);
         setContent(topicContent.markdown);
         setCodeExamples(topicContent.codeExamples);
-      } catch (error) {
+      } catch {
         // Fallback to topic.content
         setContent(topic.content);
       } finally {

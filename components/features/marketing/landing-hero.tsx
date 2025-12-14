@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { HeroArrowRightIcon, SparklesIcon } from "@/lib/icons";
-import { ROUTES } from "@/constants/routes";
+import { getFirstTopicUrl, getFirstModuleUrl } from "@/utils/curriculum-helpers";
 
 export function LandingHero() {
   return (
@@ -43,7 +43,7 @@ export function LandingHero() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
           <Button asChild size="lg" className="h-14 px-10 rounded-full text-lg w-full sm:w-auto shadow-xl shadow-primary/10">
-            <Link href={ROUTES.DASHBOARD}>
+            <Link href={getFirstTopicUrl()}>
               Start Learning Now
               <HeroArrowRightIcon className="ml-2 h-5 w-5" />
             </Link>
@@ -54,7 +54,7 @@ export function LandingHero() {
             asChild
             className="h-14 px-10 rounded-full text-lg w-full sm:w-auto bg-background hover:bg-muted"
           >
-            <Link href={ROUTES.DASHBOARD}>Browse Topics</Link>
+            <Link href={getFirstModuleUrl()}>Browse Topics</Link>
           </Button>
         </div>
 

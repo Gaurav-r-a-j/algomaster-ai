@@ -135,6 +135,7 @@ import {
   BellIcon,
   BookOpenIcon,
   BriefcaseIcon,
+  ChartBarIcon,
   ChatBubbleLeftRightIcon,
   CheckIcon,
   ChevronDownIcon,
@@ -159,8 +160,8 @@ import {
   PencilIcon,
   PlusIcon,
   SparklesIcon,
+  Squares2X2Icon,
   TrashIcon,
-
   UserGroupIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -199,6 +200,8 @@ export {
   SparklesIcon as HeroSparklesIcon,
   BookOpenIcon as HeroBookOpenIcon,
   ArrowPathIcon as HeroRefreshCwIcon,
+  ChartBarIcon as HeroChartBarIcon,
+  Squares2X2Icon as HeroLayersIcon,
 
 };
 
@@ -216,6 +219,8 @@ export {
   ArrowPathIcon as RefreshCwIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  ChartBarIcon as ChartBarIcon,
+  Squares2X2Icon as LayersIcon,
 };
 
 // Type exports for icon usage

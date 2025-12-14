@@ -23,7 +23,6 @@ type ExampleFormData = z.infer<typeof exampleSchema>;
 
 export default function FormsDocsPage() {
   const exampleForm = useForm<ExampleFormData>({
-    // @ts-expect-error - zodResolver version mismatch, works at runtime
     resolver: zodResolver(exampleSchema),
     defaultValues: {
       name: "",

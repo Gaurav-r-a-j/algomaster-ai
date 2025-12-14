@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons";
 import { ROUTES } from "@/constants/routes";
-
+import { generateTopicSlug } from "@/utils/common/slug";
 import type { Topic } from "@/types/curriculum";
 
 interface TopicNavigationProps {
@@ -17,13 +17,6 @@ export function TopicNavigation({
   prevTopic,
   nextTopic,
 }: TopicNavigationProps) {
-  const getTopicSlug = (topic: Topic) => {
-    return topic.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-  };
-
   return (
     <div className="shrink-0 border-t border-border bg-background/80 backdrop-blur-md px-6 py-4 flex justify-between items-center gap-4">
       {prevTopic ? (

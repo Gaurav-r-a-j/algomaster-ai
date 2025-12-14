@@ -40,7 +40,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
             starterCode: topic.starterCode,
           });
         }
-      } catch (error) {
+      } catch {
         // Fallback to topic starter code
         setSelectedProblem({
           id: "default",
