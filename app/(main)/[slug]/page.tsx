@@ -123,104 +123,121 @@ export default function SlugPage({ params }: SlugPageProps) {
   return (
     <div className="flex flex-col h-full overflow-hidden bg-background">
       <Tabs defaultValue="learn" className="flex-1 flex flex-col overflow-hidden">
-        <header className="sticky top-0 z-40 shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border px-6 py-4 md:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <Breadcrumb className="mb-2">
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <Link
-                      href={ROUTES.HOME}
-                      className="flex items-center gap-1 hover:text-primary"
-                    >
-                      Home
-                    </Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <Link
-                      href={ROUTES.MODULE(moduleSlug)}
-                      className="hover:text-primary"
-                    >
-                      {topic.module}
-                    </Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>{topic.title}</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-            <h1 className="text-xl md:text-2xl font-extrabold text-foreground tracking-tight flex items-center gap-3">
-              <span className="text-muted-foreground font-mono text-lg">
-                #{topic.order + 1}
-              </span>
-              {topic.title}
-              <div className="hidden sm:flex gap-2">
-                <Badge
-                  variant={
-                    topic.difficulty === "Easy"
-                      ? "default"
-                      : topic.difficulty === "Hard"
-                        ? "destructive"
-                        : "secondary"
-                  }
-                  className="uppercase"
-                >
-                  {topic.difficulty}
-                </Badge>
-                <Badge variant="outline" className="text-muted-foreground">
-                  {topic.complexity.time}
-                </Badge>
-              </div>
-            </h1>
-          </div>
+        <header className="sticky top-0 z-50 shrink-0 bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/80 border-b border-border shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex flex-col gap-4">
+              {/* Breadcrumb */}
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink asChild>
+                      <Link
+                        href={ROUTES.HOME}
+                        className="flex items-center gap-1 hover:text-primary transition-colors text-sm"
+                      >
+                        Home
+                      </Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink asChild>
+                      <Link
+                        href={ROUTES.MODULE(moduleSlug)}
+                        className="hover:text-primary transition-colors text-sm"
+                      >
+                        {removeModulePrefix(topic.module)}
+                      </Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage className="text-sm">{topic.title}</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
 
-          <TabsList className="grid w-full md:w-auto grid-cols-3">
-            <TabsTrigger value="learn" className="flex items-center gap-2">
-              <IconWrapper icon={BookOpenIcon} size={16} />
-              Learn
-            </TabsTrigger>
-            <TabsTrigger
-              value="visualize"
-              disabled={topic.visualizerType === VisualizerType.NONE}
-              className="flex items-center gap-2"
-              title={
-                topic.visualizerType === VisualizerType.NONE
-                  ? "No visualizer available"
-                  : "Interactive Mode"
-              }
-            >
-              <IconWrapper icon={PlayIcon} size={16} />
-              Visualize
-            </TabsTrigger>
-            <TabsTrigger value="code" className="flex items-center gap-2">
-              <IconWrapper icon={CodeIcon} size={16} />
-              Practice
-            </TabsTrigger>
-          </TabsList>
+              {/* Title and Badges */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <span className="text-primary font-bold text-lg font-mono">
+                      #{topic.order + 1}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-2">
+                      {topic.title}
+                    </h1>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge
+                        variant={
+                          topic.difficulty === "Easy"
+                            ? "default"
+                            : topic.difficulty === "Hard"
+                              ? "destructive"
+                              : "secondary"
+                        }
+                        className="uppercase text-xs font-semibold"
+                      >
+                        {topic.difficulty}
+                      </Badge>
+                      <Badge variant="outline" className="text-xs font-mono">
+                        {topic.complexity.time}
+                      </Badge>
+                      <Badge variant="outline" className="text-xs font-mono">
+                        {topic.complexity.space}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tabs */}
+                <TabsList className="grid w-full sm:w-auto grid-cols-3 shrink-0">
+                  <TabsTrigger value="learn" className="flex items-center gap-2">
+                    <IconWrapper icon={BookOpenIcon} size={16} />
+                    <span className="hidden sm:inline">Learn</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="visualize"
+                    disabled={topic.visualizerType === VisualizerType.NONE}
+                    className="flex items-center gap-2"
+                    title={
+                      topic.visualizerType === VisualizerType.NONE
+                        ? "No visualizer available"
+                        : "Interactive Mode"
+                    }
+                  >
+                    <IconWrapper icon={PlayIcon} size={16} />
+                    <span className="hidden sm:inline">Visualize</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="code" className="flex items-center gap-2">
+                    <IconWrapper icon={CodeIcon} size={16} />
+                    <span className="hidden sm:inline">Practice</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+            </div>
+          </div>
         </header>
 
         <div className="flex-1 overflow-hidden relative">
           <ScrollArea className="h-full">
             <div className="w-full h-full">
               <TabsContent value="learn" className="mt-0 h-full">
-                <div className="max-w-7xl mx-auto px-4 py-8 md:px-8 md:py-10 pb-48">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 pb-32">
                   <LearnView topic={topic} />
                 </div>
               </TabsContent>
 
               <TabsContent value="visualize" className="mt-0 h-full">
-                <div className="max-w-7xl mx-auto px-4 py-8 md:px-8 md:py-10 pb-48">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 pb-32">
                   <VisualizeView topic={topic} />
                 </div>
               </TabsContent>
 
               <TabsContent value="code" className="mt-0 h-full">
-                <div className="p-4 md:p-6 pb-48 h-full">
+                <div className="p-4 sm:p-6 lg:p-8 pb-32 h-full">
                   <div className="animate-in fade-in duration-300 h-full">
                     <PracticeView topic={topic} />
                   </div>

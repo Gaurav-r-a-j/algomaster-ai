@@ -40,34 +40,34 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
         ]}
         components={{
           h1: ({ ...props }: any) => (
-            <h1 className="text-4xl font-semibold tracking-tight text-foreground mb-6 mt-0 pb-4 border-b border-border scroll-mt-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8" {...props} />
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-6 mt-0 pb-4 border-b border-border scroll-mt-24" {...props} />
           ),
           h2: ({ ...props }: any) => (
-            <h2 className="text-3xl font-semibold tracking-tight text-foreground mb-4 mt-8 pt-6 border-t border-border first:border-t-0 first:pt-0 scroll-mt-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8" {...props} />
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4 mt-10 pt-6 border-t border-border first:border-t-0 first:pt-0 first:mt-0 scroll-mt-24" {...props} />
           ),
           h3: ({ ...props }: any) => (
-            <h3 className="text-2xl font-semibold tracking-tight text-foreground mb-3 mt-6 scroll-mt-20" {...props} />
+            <h3 className="text-xl md:text-2xl font-semibold tracking-tight text-foreground mb-3 mt-8 scroll-mt-24" {...props} />
           ),
           h4: ({ ...props }: any) => (
-            <h4 className="text-xl font-semibold tracking-tight text-foreground mb-2 mt-5 scroll-mt-20" {...props} />
+            <h4 className="text-lg md:text-xl font-semibold tracking-tight text-foreground mb-2 mt-6 scroll-mt-24" {...props} />
           ),
           p: ({ ...props }: any) => (
-            <p className="mb-4 text-foreground/90 leading-relaxed" {...props} />
+            <p className="mb-5 text-foreground/90 leading-relaxed text-base md:text-lg" {...props} />
           ),
           ul: ({ ...props }: any) => (
-            <ul className="list-disc list-outside space-y-2 mb-4 text-foreground ml-6" {...props} />
+            <ul className="list-disc list-outside space-y-2.5 mb-5 text-foreground ml-6 text-base md:text-lg" {...props} />
           ),
           ol: ({ ...props }: any) => (
-            <ol className="list-decimal list-outside space-y-2 mb-4 text-foreground ml-6" {...props} />
+            <ol className="list-decimal list-outside space-y-2.5 mb-5 text-foreground ml-6 text-base md:text-lg" {...props} />
           ),
           li: ({ ...props }: any) => (
-            <li className="mb-1.5 text-foreground/90 leading-relaxed" {...props} />
+            <li className="mb-2 text-foreground/90 leading-relaxed pl-1" {...props} />
           ),
           a: ({ ...props }: any) => (
-            <a className="text-primary hover:underline font-medium" {...props} />
+            <a className="text-primary hover:underline font-medium transition-colors" target="_blank" rel="noopener noreferrer" {...props} />
           ),
           blockquote: ({ ...props }: any) => (
-            <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground my-4" {...props} />
+            <blockquote className="border-l-4 border-primary/50 bg-primary/5 pl-6 pr-4 py-3 italic text-foreground/80 my-6 rounded-r-lg" {...props} />
           ),
           hr: ({ ...props }: any) => (
             <hr className="border-border my-8" {...props} />

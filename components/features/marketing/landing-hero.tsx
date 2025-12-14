@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { HeroArrowRightIcon, SparklesIcon } from "@/lib/icons";
-import { getFirstTopicUrl, getFirstModuleUrl } from "@/utils/curriculum-helpers";
+import { getFirstModuleUrl, getFirstTopicUrl } from "@/utils/curriculum-helpers";
 
 export function LandingHero() {
   return (

@@ -18,28 +18,34 @@ export function TopicNavigation({
   nextTopic,
 }: TopicNavigationProps) {
   return (
-    <div className="shrink-0 border-t border-border bg-background/80 backdrop-blur-md px-6 py-4 flex justify-between items-center gap-4">
-      {prevTopic ? (
-        <Button variant="outline" asChild>
-          <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
-            <IconWrapper icon={ChevronLeftIcon} size={16} className="mr-2" />
-            Previous: {prevTopic.title}
-          </Link>
-        </Button>
-      ) : (
-        <div />
-      )}
+    <div className="sticky bottom-0 z-40 shrink-0 border-t border-border bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="flex justify-between items-center gap-4">
+          {prevTopic ? (
+            <Button variant="outline" asChild size="lg" className="flex-1 sm:flex-initial">
+              <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
+                <IconWrapper icon={ChevronLeftIcon} size={16} className="mr-2" />
+                <span className="hidden sm:inline">Previous: </span>
+                <span className="truncate">{prevTopic.title}</span>
+              </Link>
+            </Button>
+          ) : (
+            <div className="flex-1 sm:flex-initial" />
+          )}
 
-      {nextTopic ? (
-        <Button variant="outline" asChild>
-          <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
-            Next: {nextTopic.title}
-            <IconWrapper icon={ChevronRightIcon} size={16} className="ml-2" />
-          </Link>
-        </Button>
-      ) : (
-        <div />
-      )}
+          {nextTopic ? (
+            <Button variant="outline" asChild size="lg" className="flex-1 sm:flex-initial">
+              <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
+                <span className="hidden sm:inline">Next: </span>
+                <span className="truncate">{nextTopic.title}</span>
+                <IconWrapper icon={ChevronRightIcon} size={16} className="ml-2" />
+              </Link>
+            </Button>
+          ) : (
+            <div className="flex-1 sm:flex-initial" />
+          )}
+        </div>
+      </div>
     </div>
   );
 }

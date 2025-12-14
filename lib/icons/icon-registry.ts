@@ -219,6 +219,7 @@ export {
   ArrowPathIcon as RefreshCwIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  ChevronDownIcon,
   ChartBarIcon as ChartBarIcon,
   Squares2X2Icon as LayersIcon,
 };

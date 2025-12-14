@@ -71,11 +71,13 @@ export function LearnView({ topic }: LearnViewProps) {
   }
 
   return (
-    <div className="grid lg:grid-cols-4 gap-8 animate-in fade-in duration-500">
-      <div className="lg:col-span-3 space-y-8">
-        <Card>
-          <CardContent className="p-8 md:p-12">
-            <MarkdownRenderer content={content} />
+    <div className="grid lg:grid-cols-[1fr_320px] gap-8 animate-in fade-in duration-500">
+      {/* Main Content */}
+      <div className="space-y-8 min-w-0">
+        {/* Markdown Content */}
+        <Card className="overflow-hidden">
+          <CardContent className="p-6 md:p-8 lg:p-10">
+            <MarkdownRenderer content={content} className="prose-lg" />
           </CardContent>
         </Card>
 
@@ -83,12 +85,12 @@ export function LearnView({ topic }: LearnViewProps) {
         {codeExamples.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Code Examples</CardTitle>
+              <CardTitle className="text-xl font-bold">Code Examples</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               {codeExamples.map((example) => (
-                <div key={example.id}>
-                  <h4 className="font-semibold text-foreground mb-2">
+                <div key={example.id} className="space-y-3">
+                  <h4 className="font-semibold text-lg text-foreground">
                     {example.title}
                   </h4>
                   <CodePreview
@@ -97,7 +99,7 @@ export function LearnView({ topic }: LearnViewProps) {
                     preview={null}
                   />
                   {example.explanation && (
-                    <p className="text-sm text-muted-foreground mt-2">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       {example.explanation}
                     </p>
                   )}
@@ -107,41 +109,44 @@ export function LearnView({ topic }: LearnViewProps) {
           </Card>
         )}
 
+        {/* Quiz Section */}
         <QuizSection topicId={topic.id} questions={quizQuestions} />
       </div>
-      <div className="lg:col-span-1 space-y-6">
-        <Card className="lg:sticky lg:top-4 z-10">
+
+      {/* Sidebar */}
+      <div className="space-y-6">
+        <Card className="lg:sticky lg:top-24 z-10">
           <CardHeader>
-            <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+            <CardTitle className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
               Complexity Analysis
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-muted-foreground font-medium">Time</span>
-                <Badge variant="secondary" className="font-mono font-bold">
+              <div className="flex justify-between items-center text-sm mb-3">
+                <span className="text-muted-foreground font-medium">Time Complexity</span>
+                <Badge variant="secondary" className="font-mono font-bold text-xs">
                   {topic.complexity.time}
                 </Badge>
               </div>
-              <div className="h-2 w-full bg-muted rounded-full">
+              <div className="h-2.5 w-full bg-muted rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-primary rounded-full"
-                  style={{ width: "60%" }}
+                  className="h-full bg-primary rounded-full transition-all duration-500"
+                  style={{ width: "75%" }}
                 />
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-muted-foreground font-medium">Space</span>
-                <Badge variant="secondary" className="font-mono font-bold">
+              <div className="flex justify-between items-center text-sm mb-3">
+                <span className="text-muted-foreground font-medium">Space Complexity</span>
+                <Badge variant="secondary" className="font-mono font-bold text-xs">
                   {topic.complexity.space}
                 </Badge>
               </div>
-              <div className="h-2 w-full bg-muted rounded-full">
+              <div className="h-2.5 w-full bg-muted rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-emerald-500 rounded-full"
-                  style={{ width: "40%" }}
+                  className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                  style={{ width: "50%" }}
                 />
               </div>
             </div>
@@ -150,15 +155,15 @@ export function LearnView({ topic }: LearnViewProps) {
                 Concepts
               </h4>
               <div className="flex flex-wrap gap-2">
-                <Badge variant="outline" className="text-xs">
-                  {topic.category.replace("_", " ")}
+                <Badge variant="outline" className="text-xs font-medium">
+                  {topic.category.replace(/_/g, " ")}
                 </Badge>
                 {topic.visualizerType !== VisualizerType.NONE && (
                   <Badge
                     variant="secondary"
-                    className="text-xs flex items-center gap-1"
+                    className="text-xs flex items-center gap-1.5 font-medium"
                   >
-                    <IconWrapper icon={PlayIcon} size={10} />
+                    <IconWrapper icon={PlayIcon} size={12} />
                     Interactive
                   </Badge>
                 )}

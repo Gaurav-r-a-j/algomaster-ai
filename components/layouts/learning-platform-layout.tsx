@@ -14,12 +14,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { useProgress } from "@/context/progress-context";
 import { TOPICS, getModules } from "@/data/curriculum";
@@ -27,6 +27,7 @@ import { ROUTES } from "@/constants/routes";
 import {
   BookOpenIcon,
   CheckmarkCircleIcon,
+  ChevronRightIcon,
   Home01Icon,
   SearchIcon,
 } from "@/lib/icons";
@@ -248,42 +249,97 @@ export function LearningPlatformLayout({
                       {modules.map((module) => {
                         const moduleTopics = TOPICS.filter(
                           (t) => t.module === module
-                        );
+                        ).sort((a, b) => a.order - b.order);
                         const completedCount = moduleTopics.filter((t) =>
                           completedTopics.includes(t.id)
                         ).length;
-                          const moduleSlug = generateModuleSlug(module);
-                          const modulePath = ROUTES.MODULE(moduleSlug);
-                          const isModuleActive = isActive(modulePath);
-                          const moduleNumber = extractModuleNumber(module);
-                          const moduleTitle = removeModulePrefix(module);
+                        const moduleSlug = generateModuleSlug(module);
+                        const modulePath = ROUTES.MODULE(moduleSlug);
+                        const isModuleActive = isActive(modulePath);
+                        const moduleNumber = extractModuleNumber(module);
+                        const moduleTitle = removeModulePrefix(module);
+                        
+                        // Check if any topic in this module is active
+                        const hasActiveTopic = moduleTopics.some((topic) => {
+                          const topicSlug = generateTopicSlug(topic.title);
+                          const topicPath = ROUTES.TOPIC(topicSlug);
+                          return isActive(topicPath);
+                        });
+                        
+                        // Default open if module is active or has active topic
+                        const defaultOpen = isModuleActive || hasActiveTopic;
 
-                          return (
-                            <SidebarMenuItem key={module}>
-                              <SidebarMenuButton
-                                asChild
-                                isActive={isModuleActive}
-                                tooltip={moduleTitle}
-                              >
-                                <Link href={modulePath}>
+                        return (
+                          <Collapsible
+                            key={module}
+                            defaultOpen={defaultOpen}
+                            className="group/collapsible"
+                          >
+                            <SidebarMenuItem>
+                              <CollapsibleTrigger asChild>
+                                <SidebarMenuButton
+                                  isActive={isModuleActive || hasActiveTopic}
+                                  tooltip={moduleTitle}
+                                  className="w-full"
+                                >
+                                  <IconWrapper
+                                    icon={ChevronRightIcon}
+                                    size={14}
+                                    className="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
+                                  />
                                   <span className="text-xs font-mono text-muted-foreground">
                                     {moduleNumber}
                                   </span>
-                                  <span className="truncate">
-                                    {moduleTitle.slice(0, 20)}
-                                    {moduleTitle.length > 20 && "..."}
+                                  <span className="truncate flex-1 text-left">
+                                    {moduleTitle}
                                   </span>
-                                {completedCount > 0 && (
-                                  <Badge
-                                    variant="secondary"
-                                    className="ml-auto h-5 px-1.5 text-xs"
-                                  >
-                                    {completedCount}/{moduleTopics.length}
-                                  </Badge>
-                                )}
-                              </Link>
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
+                                  {completedCount > 0 && (
+                                    <Badge
+                                      variant="secondary"
+                                      className="ml-auto h-5 px-1.5 text-xs shrink-0"
+                                    >
+                                      {completedCount}/{moduleTopics.length}
+                                    </Badge>
+                                  )}
+                                </SidebarMenuButton>
+                              </CollapsibleTrigger>
+                              <CollapsibleContent>
+                                <SidebarMenu className="ml-2 mt-1 space-y-0.5">
+                                  {moduleTopics.map((topic) => {
+                                    const topicSlug = generateTopicSlug(topic.title);
+                                    const topicPath = ROUTES.TOPIC(topicSlug);
+                                    const isTopicActive = isActive(topicPath);
+                                    const isDone = completedTopics.includes(topic.id);
+
+                                    return (
+                                      <SidebarMenuItem key={topic.id}>
+                                        <SidebarMenuButton
+                                          asChild
+                                          isActive={isTopicActive}
+                                          tooltip={topic.title}
+                                          size="sm"
+                                          className="pl-8"
+                                        >
+                                          <Link href={topicPath}>
+                                            {isDone && (
+                                              <IconWrapper
+                                                icon={CheckmarkCircleIcon}
+                                                size={12}
+                                                className="text-emerald-500 shrink-0"
+                                              />
+                                            )}
+                                            <span className="truncate text-sm">
+                                              {topic.title}
+                                            </span>
+                                          </Link>
+                                        </SidebarMenuButton>
+                                      </SidebarMenuItem>
+                                    );
+                                  })}
+                                </SidebarMenu>
+                              </CollapsibleContent>
+                            </SidebarMenuItem>
+                          </Collapsible>
                         );
                       })}
                     </SidebarMenu>
@@ -354,11 +410,6 @@ export function LearningPlatformLayout({
       </Sidebar>
 
       <SidebarInset>
-        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
-          <SidebarTrigger />
-          <Separator orientation="vertical" className="h-6" />
-          <div className="flex-1" />
-        </header>
         <main className="flex-1 overflow-y-auto">
           {children}
         </main>
