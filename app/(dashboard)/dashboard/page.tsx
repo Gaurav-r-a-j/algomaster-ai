@@ -32,7 +32,7 @@ export default function DashboardPage() {
   const stats = useProgressStats()
 
   // Get recent topics (last 5)
-  const recentTopics = TOPICS.slice(0, 5)
+  const _recentTopics = TOPICS.slice(0, 5)
 
   // Get recommended next topics (not completed, ordered)
   const recommendedTopics = TOPICS.filter(
@@ -239,7 +239,7 @@ export default function DashboardPage() {
                   animate="animate"
                   className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
                 >
-                  {recommendedTopics.map((topic, idx) => {
+                  {TOPICS.slice(0, 3).map((topic, _idx) => {
                     const topicSlug = generateTopicSlug(topic.title)
                     return (
                       <motion.div
@@ -311,7 +311,7 @@ export default function DashboardPage() {
                   {completedTopics
                     .slice(-5)
                     .reverse()
-                    .map((topicId, idx) => {
+                    .map((topicId, _idx) => {
                       const topic = TOPICS.find((t) => t.id === topicId)
                       if (!topic) {
                         return null

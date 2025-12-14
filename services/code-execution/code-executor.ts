@@ -1,6 +1,6 @@
 // Custom code execution service (not AI-based)
 // This service handles code execution using Web Workers or API endpoints
-import { JavaScriptExecutor } from "./javascript-executor"
+import { JavascriptExecutor } from "./javascript-executor"
 import { PythonExecutor } from "./python-executor"
 import { CodeExecutor, ExecutionResult, SupportedLanguage } from "./types"
 
@@ -13,6 +13,7 @@ class CppExecutor implements CodeExecutor {
       output:
         "C++ execution requires a backend service. This is a placeholder.",
       error: null,
+      status: "error",
       executionTime: 0,
     }
   }
@@ -25,6 +26,7 @@ class JavaExecutor implements CodeExecutor {
       output:
         "Java execution requires a backend service. This is a placeholder.",
       error: null,
+      status: "error",
       executionTime: 0,
     }
   }
@@ -34,7 +36,7 @@ class JavaExecutor implements CodeExecutor {
 export function getCodeExecutor(language: SupportedLanguage): CodeExecutor {
   switch (language) {
     case "javascript":
-      return new JavaScriptExecutor()
+      return new JavascriptExecutor()
     case "python":
       return new PythonExecutor()
     case "cpp":
@@ -42,7 +44,7 @@ export function getCodeExecutor(language: SupportedLanguage): CodeExecutor {
     case "java":
       return new JavaExecutor()
     default:
-      return new JavaScriptExecutor()
+      return new JavascriptExecutor()
   }
 }
 

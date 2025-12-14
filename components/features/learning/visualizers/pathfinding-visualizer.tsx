@@ -5,7 +5,7 @@ import { generateBFSSteps, generateDFSSteps } from "@/utils/algorithm-logic"
 import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
-import { cellAnimation, transitions } from "@/lib/animations"
+import { staggerItem, transitions } from "@/lib/animations"
 import { CodeIcon, PauseIcon, PlayIcon, RefreshCwIcon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
 import { IconWrapper } from "@/components/common/icon-wrapper"
@@ -34,7 +34,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
   }, [topic.id])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     generateData()
   }, [generateData])
 
@@ -167,7 +167,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
           return (
             <motion.div
               key={idx}
-              variants={cellAnimation}
+              variants={staggerItem}
               layout
               animate={{
                 backgroundColor: bgColor,

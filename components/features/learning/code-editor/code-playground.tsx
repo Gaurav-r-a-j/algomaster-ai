@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { javascriptExecutor } from "@/services/code-executor/javascript-executor"
+import { javascriptExecutor } from "@/services/code-execution/javascript-executor"
 import { ArrowPathIcon, PlayIcon } from "@heroicons/react/24/solid"
 import Editor, { OnMount } from "@monaco-editor/react"
 
@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/select"
 
 interface CodePlaygroundProps {
-  topic: Topic
+  topic?: Topic
+  initialCode?: Record<SupportedLanguage, string>
 }
 
 const LANGUAGES: { value: SupportedLanguage; label: string }[] = [
@@ -27,7 +28,7 @@ const LANGUAGES: { value: SupportedLanguage; label: string }[] = [
   { value: "java", label: "Java" },
 ]
 
-export function CodePlayground({ topic }: CodePlaygroundProps) {
+export function CodePlayground({ topic, initialCode }: CodePlaygroundProps) {
   const [language, setLanguage] = useState<SupportedLanguage>("javascript")
   const [code, setCode] = useState("")
   const [output, setOutput] = useState<string>("")
@@ -36,21 +37,24 @@ export function CodePlayground({ topic }: CodePlaygroundProps) {
     "idle" | "running" | "success" | "error" | "timeout"
   >("idle")
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorRef = useRef<any>(null)
 
   useEffect(() => {
-    // Reset code when topic or language changes
+    // Reset code when topic, language, or initialCode changes
     const starter =
-      topic.starterCode?.[language] || getDefaultStarterCode(language)
+      initialCode?.[language] ||
+      topic?.starterCode?.[language] ||
+      getDefaultStarterCode(language)
     setCode(starter)
     if (editorRef.current) {
       editorRef.current.setValue(starter)
     }
     setOutput("")
     setStatus("idle")
-  }, [topic, language])
+  }, [topic, language, initialCode])
 
-  const handleEditorDidMount: OnMount = (editor, monaco) => {
+  const handleEditorDidMount: OnMount = (editor, _monaco) => {
     editorRef.current = editor
   }
 

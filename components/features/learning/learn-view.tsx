@@ -64,7 +64,7 @@ export function LearnView({ topic }: LearnViewProps) {
   const [codeExamples, setCodeExamples] = useState<CodeExample[]>([])
   const [loading, setLoading] = useState(true)
   const [useAIQuestions, setUseAIQuestions] = useState(false)
-  const { completedTopics, isCompleted } = useProgress()
+  const { completedTopics: _completedTopics, isCompleted } = useProgress()
 
   useEffect(() => {
     async function loadContent() {

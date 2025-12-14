@@ -56,7 +56,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
   }, [topic.id, array, target])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     generateSteps()
   }, [generateSteps, topic.id, target])
 

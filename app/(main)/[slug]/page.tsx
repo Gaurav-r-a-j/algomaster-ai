@@ -14,7 +14,7 @@ import {
   isModuleSlug,
 } from "@/data/curriculum"
 import { removeModulePrefix } from "@/utils/common/path-utils"
-import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug"
+import { generateModuleSlug } from "@/utils/common/slug"
 import { motion } from "motion/react"
 
 import { VisualizerType } from "@/types/curriculum"
@@ -120,12 +120,12 @@ export default function SlugPage({ params }: SlugPageProps) {
     notFound()
   }
 
-  const prevTopic = topicIndex > 0 ? TOPICS[topicIndex - 1] : null
-  const nextTopic =
+  const _prevTopic = topicIndex > 0 ? TOPICS[topicIndex - 1] : null
+  const _nextTopic =
     topicIndex < TOPICS.length - 1 ? TOPICS[topicIndex + 1] : null
 
   // Generate slugs
-  const topicSlug = generateTopicSlug(topic.title)
+  const _topicSlug = slug || "arrays"
   const moduleSlug = generateModuleSlug(topic.module)
 
   return (

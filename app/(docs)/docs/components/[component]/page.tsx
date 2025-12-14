@@ -51,6 +51,7 @@ export default async function ComponentDocsPage({
 }: ComponentDocsPageProps) {
   const { component } = await params
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (!componentDocs.includes(component as any)) {
     notFound()
   }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CodeExecutor, ExecutionResult } from "./types"
 
 declare global {

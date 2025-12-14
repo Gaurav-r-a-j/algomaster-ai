@@ -76,11 +76,6 @@ export default async function DesignSystemPage({
     notFound()
   }
 
-  const title = sectionSlug
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ")
-
   // If it's overview or no content, show the default overview page
   if (sectionSlug === "overview" || !content) {
     const { default: OverviewContent } = await import("../overview-content")
@@ -90,6 +85,8 @@ export default async function DesignSystemPage({
       </DesignSystemLayout>
     )
   }
+
+
 
   // Otherwise render markdown content
   return (

@@ -51,7 +51,7 @@ export default async function DocsArticlePage({
   }
 
   // 2. Navigation Logic (Prev/Next)
-  const currentIndex = TOPICS.findIndex((t) => t.id === topic!.id)
+  const currentIndex = TOPICS.findIndex((t) => t.id === topic.id)
   const prevTopic = currentIndex > 0 ? TOPICS[currentIndex - 1] : null
   const nextTopic =
     currentIndex < TOPICS.length - 1 ? TOPICS[currentIndex + 1] : null
@@ -120,7 +120,7 @@ export default async function DocsArticlePage({
                     remarkPlugins={[remarkGfm]}
                     rehypePlugins={[rehypeHighlight, rehypeSlug]}
                     components={{
-                      pre: ({ node, ...props }) => (
+                      pre: ({ node: _node, ...props }) => (
                         <div className="bg-muted/50 relative my-6 rounded-lg border p-4">
                           <pre
                             {...props}

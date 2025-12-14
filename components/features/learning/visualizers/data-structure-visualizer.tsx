@@ -28,7 +28,7 @@ const TreeNode: React.FC<{
   idx: number
   isActive: boolean
   totalLevels: number
-}> = ({ val, idx, isActive, totalLevels }) => {
+}> = ({ val, idx, isActive, totalLevels: _totalLevels }) => {
   if (val === null) {
     return null
   }
