@@ -45,6 +45,59 @@ app/
 │   │   └── page.tsx
 │   └── settings/
 │       └── page.tsx
+├── (account)/              # Route group for account management
+│   ├── layout.tsx
+│   ├── account/
+│   │   └── page.tsx
+│   ├── billing/
+│   │   └── page.tsx
+│   ├── subscription/
+│   │   └── page.tsx
+│   └── notifications/
+│       └── page.tsx
+├── (marketing)/            # Route group for marketing pages
+│   ├── layout.tsx
+│   ├── about/
+│   │   └── page.tsx
+│   ├── contact/
+│   │   └── page.tsx
+│   ├── pricing/
+│   │   └── page.tsx
+│   ├── features/
+│   │   └── page.tsx
+│   └── blog/
+│       ├── page.tsx
+│       └── [slug]/
+│           └── page.tsx
+├── (admin)/                # Route group for admin pages
+│   ├── layout.tsx
+│   └── admin/
+│       ├── page.tsx
+│       ├── users/
+│       │   └── page.tsx
+│       ├── analytics/
+│       │   └── page.tsx
+│       └── settings/
+│           └── page.tsx
+├── (docs)/                 # Route group for documentation
+│   ├── layout.tsx
+│   └── docs/
+│       ├── page.tsx
+│       └── [slug]/
+│           └── page.tsx
+├── (shop)/                 # Route group for e-commerce/shop
+│   ├── layout.tsx
+│   └── shop/
+│       ├── page.tsx
+│       ├── products/
+│       │   └── [id]/
+│       │       └── page.tsx
+│       ├── cart/
+│       │   └── page.tsx
+│       ├── checkout/
+│       │   └── page.tsx
+│       └── orders/
+│           └── page.tsx
 ├── api/                    # API routes
 │   └── health/
 │       └── route.ts

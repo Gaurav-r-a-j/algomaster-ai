@@ -28,6 +28,41 @@ next-web-app/
 │   │   ├── dashboard/page.tsx
 │   │   ├── profile/page.tsx
 │   │   └── settings/page.tsx
+│   ├── (account)/                # Route group - account pages
+│   │   ├── layout.tsx
+│   │   ├── account/page.tsx
+│   │   ├── billing/page.tsx
+│   │   ├── subscription/page.tsx
+│   │   └── notifications/page.tsx
+│   ├── (marketing)/              # Route group - marketing pages
+│   │   ├── layout.tsx
+│   │   ├── about/page.tsx
+│   │   ├── contact/page.tsx
+│   │   ├── pricing/page.tsx
+│   │   ├── features/page.tsx
+│   │   └── blog/
+│   │       ├── page.tsx
+│   │       └── [slug]/page.tsx
+│   ├── (admin)/                  # Route group - admin pages
+│   │   ├── layout.tsx
+│   │   └── admin/
+│   │       ├── page.tsx
+│   │       ├── users/page.tsx
+│   │       ├── analytics/page.tsx
+│   │       └── settings/page.tsx
+│   ├── (docs)/                   # Route group - documentation
+│   │   ├── layout.tsx
+│   │   └── docs/
+│   │       ├── page.tsx
+│   │       └── [slug]/page.tsx
+│   ├── (shop)/                   # Route group - shop/e-commerce
+│   │   ├── layout.tsx
+│   │   └── shop/
+│   │       ├── page.tsx
+│   │       ├── products/[id]/page.tsx
+│   │       ├── cart/page.tsx
+│   │       ├── checkout/page.tsx
+│   │       └── orders/page.tsx
 │   ├── api/                      # API routes
 │   │   └── [route]/route.ts
 │   ├── layout.tsx                # Root layout
