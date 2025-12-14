@@ -98,7 +98,7 @@ export function DesignSystemLayout({ children }: DesignSystemLayoutProps) {
 
         {/* Scrollable Main Content with sidebar offset */}
         <main className="flex-1 lg:ml-64 overflow-y-auto bg-background">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
             {children}
           </div>
         </main>

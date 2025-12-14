@@ -86,13 +86,8 @@ export default async function DesignSystemPage({ params }: DesignSystemPageProps
   // Otherwise render markdown content
   return (
     <DesignSystemLayout>
-      <div className="space-y-8">
-        <div className="border-b border-border pb-4">
-          <h1 className="text-4xl font-semibold tracking-tight text-foreground">{title}</h1>
-        </div>
-        <div className="prose-wrapper">
-          <MarkdownRenderer content={content} />
-        </div>
+      <div className="w-full">
+        <MarkdownRenderer content={content} />
       </div>
     </DesignSystemLayout>
   );
