@@ -109,10 +109,11 @@ export function VisualizeView({ topic }: VisualizeViewProps) {
       <motion.div
         variants={slideUp}
         transition={{ ...transitions.spring, delay: 0.1 }}
+        className="flex-1 min-h-0"
       >
-        <Card className="relative min-h-[500px] flex-1 overflow-hidden">
+        <div className="relative h-full w-full overflow-hidden border-0 bg-background">
           {renderVisualizer(topic)}
-        </Card>
+        </div>
       </motion.div>
     </motion.div>
   )

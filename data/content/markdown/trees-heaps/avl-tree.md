@@ -1,0 +1,70 @@
+# AVL Tree
+
+An AVL tree is a self-balancing binary search tree where the difference between heights of left and right subtrees cannot be more than one for all nodes.
+
+## Why AVL Trees?
+
+Regular BSTs can become skewed (unbalanced), degrading to O(n) operations. AVL trees maintain balance, guaranteeing O(log n) operations.
+
+## Balance Factor
+
+For each node: `Balance Factor = Height(Left Subtree) - Height(Right Subtree)`
+
+Valid balance factors: **-1, 0, 1**
+
+## Rotations
+
+When a tree becomes unbalanced after insertion/deletion, we use rotations to rebalance.
+
+### Right Rotation (LL Case)
+```python
+def right_rotate(y):
+    x = y.left
+    T2 = x.right
+    
+    x.right = y
+    y.left = T2
+    
+    y.height = 1 + max(height(y.left), height(y.right))
+    x.height = 1 + max(height(x.left), height(x.right))
+    
+    return x
+```
+
+### Left Rotation (RR Case)
+```python
+def left_rotate(x):
+    y = x.right
+    T2 = y.left
+    
+    y.left = x
+    x.right = T2
+    
+    x.height = 1 + max(height(x.left), height(x.right))
+    y.height = 1 + max(height(y.left), height(y.right))
+    
+    return y
+```
+
+## Four Imbalance Cases
+
+1. **Left-Left (LL):** Right rotation
+2. **Right-Right (RR):** Left rotation
+3. **Left-Right (LR):** Left rotation on left child, then right rotation
+4. **Right-Left (RL):** Right rotation on right child, then left rotation
+
+## Time Complexity
+
+| Operation | Time     |
+|-----------|----------|
+| Search    | O(log n) |
+| Insert    | O(log n) |
+| Delete    | O(log n) |
+
+All operations are **guaranteed** O(log n) due to self-balancing.
+
+## When to Use
+
+- When you need guaranteed O(log n) operations
+- Databases and file systems
+- When frequent lookups are needed

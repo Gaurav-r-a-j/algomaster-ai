@@ -110,7 +110,7 @@ export function CodePlayground({
   }
 
   return (
-    <div className="bg-card flex h-full min-h-[600px] flex-col overflow-hidden rounded-lg border">
+    <div className="bg-card flex h-full min-h-[600px] flex-col overflow-hidden">
       {/* Toolbar */}
       <div className="bg-muted/30 flex items-center justify-between border-b p-3 backdrop-blur-sm">
         <div className="flex items-center gap-3">

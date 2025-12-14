@@ -157,8 +157,8 @@ export function LearnView({ topic }: LearnViewProps) {
           animate="animate"
           variants={slideUpWithDelay(0.1)}
         >
-          <Card className="border-border/50 overflow-hidden shadow-sm transition-shadow hover:shadow-md">
-            <CardContent className="p-6 md:p-8 lg:p-10">
+          <div className="border-border/50 border-b pb-8">
+            <div className="px-1">
               {displayContent && displayContent.trim() ? (
                 <MarkdownRenderer
                   content={displayContent}
@@ -169,8 +169,8 @@ export function LearnView({ topic }: LearnViewProps) {
                   <p>Content is being prepared. Please check back soon.</p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </motion.div>
 
         {/* Code Examples Section */}
@@ -180,55 +180,55 @@ export function LearnView({ topic }: LearnViewProps) {
             animate="animate"
             variants={slideUpWithDelay(0.2)}
           >
-            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
-              <CardHeader className="border-border/50 border-b pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg font-bold">
-                  <div className="bg-primary/10 rounded-md p-1.5">
-                    <IconWrapper
-                      icon={PlayIcon}
-                      size={16}
-                      className="text-primary"
-                    />
-                  </div>
-                  Code Examples
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {codeExamples.map((example, idx) => (
-                  <motion.div
-                    key={example.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: idx * 0.1 }}
-                    className={cn(
-                      "space-y-3",
-                      idx > 0 && "border-border/50 border-t pt-6"
-                    )}
-                  >
-                    <h4 className="text-foreground flex items-center gap-2 text-base font-semibold">
-                      <motion.span
-                        whileHover={{ scale: 1.1, rotate: 360 }}
-                        transition={{ duration: 0.3 }}
-                        className="bg-primary/10 text-primary flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
-                      >
-                        {idx + 1}
-                      </motion.span>
-                      {example.title}
-                    </h4>
-                    <CodePreview
-                      code={example.code}
-                      language={example.language}
-                      preview={null}
-                    />
-                    {example.explanation && (
-                      <p className="text-muted-foreground text-sm leading-relaxed">
-                        {example.explanation}
-                      </p>
-                    )}
-                  </motion.div>
-                ))}
-              </CardContent>
-            </Card>
+              <div className="border-border/50 border-b pb-8">
+                <div className="mb-6 border-b border-border/50 pb-4">
+                  <h3 className="flex items-center gap-2 text-lg font-bold">
+                    <div className="bg-primary/10 rounded-md p-1.5">
+                      <IconWrapper
+                        icon={PlayIcon}
+                        size={16}
+                        className="text-primary"
+                      />
+                    </div>
+                    Code Examples
+                  </h3>
+                </div>
+                <div className="space-y-6">
+                  {codeExamples.map((example, idx) => (
+                    <motion.div
+                      key={example.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: idx * 0.1 }}
+                      className={cn(
+                        "space-y-3",
+                        idx > 0 && "border-border/50 border-t pt-6"
+                      )}
+                    >
+                      <h4 className="text-foreground flex items-center gap-2 text-base font-semibold">
+                        <motion.span
+                          whileHover={{ scale: 1.1, rotate: 360 }}
+                          transition={{ duration: 0.3 }}
+                          className="bg-primary/10 text-primary flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
+                        >
+                          {idx + 1}
+                        </motion.span>
+                        {example.title}
+                      </h4>
+                      <CodePreview
+                        code={example.code}
+                        language={example.language}
+                        preview={null}
+                      />
+                      {example.explanation && (
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                          {example.explanation}
+                        </p>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
           </motion.div>
         )}
 

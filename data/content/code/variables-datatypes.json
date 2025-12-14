@@ -1,0 +1,16 @@
+[
+  {
+    "id": "ex1",
+    "title": "Primitives vs. References",
+    "language": "javascript",
+    "code": "// 1. Primitive (Copy by Value)\nlet x = 50;\nlet y = x;\ny = 100;\nconsole.log(\"x:\", x); // 50 (Unchanged)\nconsole.log(\"y:\", y); // 100 (Changed)\n\n// 2. Reference (Copy by Link)\nlet car1 = { model: \"Tesla\", color: \"Red\" };\nlet car2 = car1; // Copy the Reference!\n\ncar2.color = \"Blue\"; // Mutate the SHARED object\n\nconsole.log(\"car1:\", car1.color); // \"Blue\" (Shocking? They share the same memory!)\nconsole.log(\"car2:\", car2.color); // \"Blue\"",
+    "explanation": "Notice how changing 'y' didn't touch 'x', but changing 'car2' changed 'car1'? That's the power (and danger) of References."
+  },
+  {
+    "id": "ex2",
+    "title": "The 'const' Trap",
+    "language": "javascript",
+    "code": "const score = 10;\n// score = 20; // ERROR! You can't stick a new label.\n\nconst user = { name: \"Alice\" };\nuser.name = \"Bob\"; // WORK! \n\n// Why?\n// 'const' protects the LABEL (Reference), not the CONTENTS (Heap Object).\n// You can't point the remote to a new TV, but you CAN change the channel!",
+    "explanation": "Many devs think 'const' makes objects immutable. It doesn't! It only locks the variable alignment."
+  }
+]

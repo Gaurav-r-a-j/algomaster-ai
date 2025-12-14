@@ -129,19 +129,19 @@ export default function SlugPage({ params }: SlugPageProps) {
   const moduleSlug = generateModuleSlug(topic.module)
 
   return (
-    <div className="bg-background flex h-screen flex-col overflow-hidden">
+    <div className="bg-background flex h-full flex-col overflow-y-auto">
       <Tabs
         defaultValue="learn"
-        className="flex flex-1 flex-col overflow-hidden"
+        className="flex flex-1 flex-col"
       >
         <motion.header
           initial="initial"
           animate="animate"
           variants={slideDown}
           transition={transitions.smooth}
-          className="bg-background/95 supports-backdrop-filter:bg-background/80 border-border fixed top-0 right-0 left-0 z-50 shrink-0 border-b shadow-sm backdrop-blur-md md:left-[16rem]"
+          className="bg-background/95 supports-backdrop-filter:bg-background/80 border-border/40 sticky top-0 z-50 shrink-0 border-b backdrop-blur-md"
         >
-          <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
+          <div className="h-full w-full px-4 sm:px-6 lg:px-8">
             {/* SEO Breadcrumbs - Hidden visually but present for SEO */}
             <Breadcrumb className="sr-only">
               <BreadcrumbList>
@@ -235,17 +235,16 @@ export default function SlugPage({ params }: SlugPageProps) {
           </div>
         </motion.header>
 
-        {/* Spacer for fixed header - matches header height, only on mobile since desktop header starts after sidebar */}
-        <div className="h-[60px] shrink-0 md:hidden" />
+
 
         <motion.div
           initial="initial"
           animate="animate"
           variants={fadeIn}
           transition={transitions.smooth}
-          className="relative flex-1 overflow-y-auto md:pt-[60px]"
+          className="relative flex-1 h-full"
         >
-          <div className="h-full w-full">
+          <div className="h-full w-full flex flex-col">
             <TabsContent value="learn" className="mt-0">
               <motion.div
                 key="learn"
@@ -253,7 +252,7 @@ export default function SlugPage({ params }: SlugPageProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={transitions.smooth}
-                className="mx-auto max-w-7xl px-4 py-6 pb-24 sm:px-6 md:py-8 lg:px-8"
+                className="h-full w-full px-4 py-6 pb-24 sm:px-6 md:py-8 lg:px-8"
               >
                 <LearnView topic={topic} />
               </motion.div>
@@ -266,20 +265,20 @@ export default function SlugPage({ params }: SlugPageProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={transitions.smooth}
-                className="mx-auto max-w-7xl px-4 py-6 pb-24 sm:px-6 md:py-8 lg:px-8"
+                className="h-full w-full px-4 py-6 pb-24 sm:px-6 md:py-8 lg:px-8"
               >
                 <VisualizeView topic={topic} />
               </motion.div>
             </TabsContent>
 
-            <TabsContent value="code" className="mt-0">
+            <TabsContent value="code" className="mt-0 h-full w-full">
               <motion.div
                 key="code"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={transitions.smooth}
-                className="mx-auto h-full w-full max-w-7xl p-4 pb-24 sm:p-6 lg:p-8 xl:p-10"
+                className="h-full w-full"
               >
                 <PracticeView topic={topic} />
               </motion.div>

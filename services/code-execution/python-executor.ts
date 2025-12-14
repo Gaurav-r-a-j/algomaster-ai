@@ -92,6 +92,7 @@ sys.stdout = io.StringIO()
       return {
         output: stdout,
         error: null,
+        status: "success",
         executionTime,
       }
     } catch (err) {
@@ -99,6 +100,7 @@ sys.stdout = io.StringIO()
       return {
         output: "",
         error: errorMessage,
+        status: "error",
         executionTime: performance.now() - startTime,
       }
     }

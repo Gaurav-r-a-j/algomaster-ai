@@ -426,7 +426,7 @@ export function LearningPlatformLayout({
         </SidebarFooter>
       </Sidebar>
 
-      <SidebarInset>
+      <SidebarInset className="h-svh overflow-hidden">
         <main className="flex-1 overflow-y-auto">{children}</main>
       </SidebarInset>
     </SidebarProvider>

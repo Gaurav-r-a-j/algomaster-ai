@@ -39,8 +39,8 @@ export function InstructionsPanel({
       transition={transitions.smooth}
       className="h-full"
     >
-      <Card className="border-border/50 flex h-full flex-col shadow-sm">
-        <CardHeader className="border-border/50 border-b">
+      <Card className="border-border/50 flex h-full flex-col border-0 rounded-none shadow-none">
+        <CardHeader className="border-border/50 border-b px-6 py-4">
           <motion.div
             variants={slideUp}
             className="flex items-center justify-between gap-3"
@@ -66,7 +66,7 @@ export function InstructionsPanel({
               <h4 className="text-foreground mb-3 text-sm font-semibold tracking-wider uppercase">
                 Problem Description
               </h4>
-              <p className="text-muted-foreground bg-muted/30 border-border/50 rounded-lg border p-4 text-sm leading-relaxed whitespace-pre-wrap">
+              <p className="text-muted-foreground bg-muted/30 border-border/50 border-y p-4 text-sm leading-relaxed whitespace-pre-wrap">
                 {problem.description}
               </p>
             </div>

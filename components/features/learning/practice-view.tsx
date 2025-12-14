@@ -101,7 +101,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
   }
 
   return (
-    <div className="h-[calc(100vh-140px)] w-full overflow-hidden rounded-lg border bg-background">
+    <div className="h-full w-full overflow-hidden bg-background">
       <ResizablePanelGroup direction="horizontal">
         {/* LEFT PANE: Problem Description & Collapsible List */}
         <ResizablePanel 
@@ -150,7 +150,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
                              key={problem.id}
                              onClick={() => setSelectedProblem(problem)}
                              className={cn(
-                               "w-full rounded-md px-3 py-2 text-left text-sm transition-colors",
+                               "w-full border-b px-3 py-3 text-left text-sm transition-colors first:border-t",
                                selectedProblem?.id === problem.id
                                  ? "bg-primary/10 text-primary font-medium"
                                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
