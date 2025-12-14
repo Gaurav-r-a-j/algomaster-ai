@@ -318,7 +318,7 @@ export function DataStructureVisualizer({
                         </svg>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 );
               })}
               {/* NULL pointer */}
@@ -349,7 +349,7 @@ export function DataStructureVisualizer({
                     NULL
                   </span>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           </div>
         );

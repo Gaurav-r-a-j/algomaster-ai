@@ -1,35 +1,33 @@
-import Link from "next/link";
+import { DocsSidebar } from "@/components/features/docs/docs-sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 
-// Docs Layout - Used for documentation pages
-// Documentation-focused navigation, sidebar for docs navigation, readable content layout
+// Docs Layout - Uses shadcn/ui Sidebar
 export default function DocsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="flex">
-        {/* Docs Sidebar */}
-        <aside className="w-64 border-r bg-muted/40 p-6">
-          <nav className="space-y-2">
-            <h2 className="font-semibold mb-4">Documentation</h2>
-            <Link href="/docs" className="block text-sm hover:underline">
-              Overview
-            </Link>
-            <Link
-              href="/docs/getting-started"
-              className="block text-sm hover:underline"
-            >
-              Getting Started
-            </Link>
-            {/* Add more nav items as needed */}
-          </nav>
-        </aside>
-
-        {/* Docs Content */}
-        <main className="flex-1 p-8 max-w-4xl">{children}</main>
-      </div>
-    </div>
+    <SidebarProvider>
+      <DocsSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+            {/* Breadcrumb replacement or dynamic title could go here */}
+            <span>Documentation</span>
+          </div>
+        </header>
+        <div className="flex-1 p-4 md:p-8 max-w-4xl mx-auto w-full">
+          {children}
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
