@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { IconWrapper } from "@/components/common/icon-wrapper";
@@ -13,6 +14,7 @@ import {
   generateBinarySearchSteps,
   generateLinearSearchSteps,
 } from "@/utils/algorithm-logic";
+import { staggerContainer, staggerItem, transitions } from "@/lib/animations";
 
 const DEFAULT_SPEED_MS = 800;
 
@@ -53,30 +55,11 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
   }, [topic.id, array, target]);
 
   useEffect(() => {
-    // Initialize steps when topic or target changes
-    let newSteps: VisualizationStep[] = [];
-    if (topic.id === "binary-search") {
-      newSteps = generateBinarySearchSteps(array, target);
-    } else if (topic.id === "linear-search") {
-      newSteps = generateLinearSearchSteps(array, target);
-    } else {
-      newSteps = [
-        {
-          array: array,
-          activeIndices: [],
-          sortedIndices: [],
-          description: "Visualization not implemented.",
-        },
-      ];
-    }
-    setSteps(newSteps);
-    setCurrentStep(0);
-    setIsPlaying(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topic.id, target]);
+    generateSteps();
+  }, [generateSteps, topic.id, target]);
 
   useEffect(() => {
-    if (isPlaying) {
+    if (isPlaying && steps.length > 0) {
       timerRef.current = window.setInterval(() => {
         setCurrentStep((prev) => {
           if (prev >= steps.length - 1) {
@@ -88,9 +71,13 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       }, playbackSpeed);
     } else if (timerRef.current) {
       clearInterval(timerRef.current);
+      timerRef.current = null;
     }
     return () => {
-      if (timerRef.current) {clearInterval(timerRef.current);}
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     };
   }, [isPlaying, steps.length, playbackSpeed]);
 
@@ -168,7 +155,12 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <div className="flex flex-col gap-6">
+      <motion.div
+        initial="initial"
+        animate="animate"
+        variants={staggerContainer}
+        className="flex flex-col gap-6"
+      >
         <Card>
           <CardContent className="p-8">
             <div className="flex flex-wrap items-center justify-center gap-4 min-h-[200px]">
@@ -177,42 +169,76 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
                 const isFound = currentData.sortedIndices.includes(idx);
                 
                 return (
-                  <div
-                    key={idx}
-                    className={`flex flex-col items-center gap-2 transition-all duration-200 ${
-                      isActive ? "scale-110 z-10" : ""
-                    }`}
+                  <motion.div
+                    key={`${idx}-${value}`}
+                    variants={staggerItem}
+                    layout
+                    animate={{
+                      scale: isActive ? 1.15 : 1,
+                      zIndex: isActive ? 10 : 1,
+                    }}
+                    transition={transitions.spring}
+                    className="flex flex-col items-center gap-2"
                   >
-                    <div
-                      className={`w-20 h-20 rounded-xl border-2 flex items-center justify-center font-bold text-xl transition-all duration-200 ${
-                        isFound
-                          ? "border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 shadow-lg ring-2 ring-emerald-500/20"
+                    <motion.div
+                      animate={{
+                        borderColor: isFound
+                          ? "rgb(16 185 129)"
                           : isActive
-                            ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-400 shadow-lg ring-2 ring-amber-500/20"
-                            : "border-border bg-card"
-                      }`}
+                            ? "rgb(245 158 11)"
+                            : "hsl(var(--border))",
+                        backgroundColor: isFound
+                          ? "rgb(16 185 129 / 0.1)"
+                          : isActive
+                            ? "rgb(245 158 11 / 0.1)"
+                            : "hsl(var(--card))",
+                        color: isFound
+                          ? "rgb(5 150 105)"
+                          : isActive
+                            ? "rgb(180 83 9)"
+                            : "hsl(var(--foreground))",
+                        boxShadow: isFound || isActive
+                          ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+                          : "none",
+                      }}
+                      transition={transitions.smooth}
+                      className="w-20 h-20 rounded-xl border-2 flex items-center justify-center font-bold text-xl"
                     >
                       {value}
-                    </div>
+                    </motion.div>
                     <span className="text-xs font-mono text-muted-foreground font-semibold">
                       [{idx}]
                     </span>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
           </CardContent>
         </Card>
         
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-center">
-              <span className="text-sm text-muted-foreground">Searching for: </span>
-              <span className="font-bold text-foreground text-lg">{target}</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={transitions.smooth}
+        >
+          <Card>
+            <CardContent className="p-4">
+              <div className="text-center">
+                <span className="text-sm text-muted-foreground">Searching for: </span>
+                <motion.span
+                  key={target}
+                  initial={{ scale: 1.2 }}
+                  animate={{ scale: 1 }}
+                  transition={transitions.spring}
+                  className="font-bold text-foreground text-lg"
+                >
+                  {target}
+                </motion.span>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </motion.div>
     </VisualizerLayout>
   );
 }

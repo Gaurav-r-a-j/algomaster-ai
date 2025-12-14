@@ -22,6 +22,7 @@ import { ROUTES } from "@/constants/routes";
 import { generateTopicSlug } from "@/utils/common/slug";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { fadeIn, fadeInWithDelay, slideUp, slideUpWithDelay, transitions } from "@/lib/animations";
 
 interface LearnViewProps {
   topic: Topic;
@@ -127,18 +128,19 @@ export function LearnView({ topic }: LearnViewProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      initial="initial"
+      animate="animate"
+      variants={fadeIn}
+      transition={transitions.smooth}
       className="grid lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_360px] gap-6 lg:gap-8"
     >
       {/* Main Content - Full Width */}
       <div className="space-y-6 lg:space-y-8 min-w-0">
         {/* Markdown Content */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
+          initial="initial"
+          animate="animate"
+          variants={slideUpWithDelay(0.1)}
         >
           <Card className="overflow-hidden shadow-sm border-border/50 transition-shadow hover:shadow-md">
           <CardContent className="p-6 md:p-8 lg:p-10">
@@ -156,9 +158,9 @@ export function LearnView({ topic }: LearnViewProps) {
         {/* Code Examples Section */}
         {codeExamples.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
+            initial="initial"
+            animate="animate"
+            variants={slideUpWithDelay(0.2)}
           >
             <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
             <CardHeader className="pb-4 border-b border-border/50">
@@ -207,9 +209,9 @@ export function LearnView({ topic }: LearnViewProps) {
 
         {/* Quiz Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.3 }}
+          initial="initial"
+          animate="animate"
+          variants={slideUpWithDelay(0.3)}
         >
           <QuizSection 
           topicId={topic.id} 
@@ -225,7 +227,7 @@ export function LearnView({ topic }: LearnViewProps) {
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.4, delay: 0.2 }}
+        transition={{ ...transitions.smooth, delay: 0.2 }}
         className="lg:sticky lg:top-[76px] lg:self-start space-y-4 lg:space-y-5 z-10"
       >
         {/* Quick Navigation */}
@@ -303,19 +305,16 @@ export function LearnView({ topic }: LearnViewProps) {
                 </span>
                 <span className="font-bold text-foreground">{moduleProgress}%</span>
               </div>
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
-                <Progress value={moduleProgress} className="h-2.5 bg-muted" />
-              </motion.div>
+              <Progress 
+                value={moduleProgress} 
+                className="h-2.5 bg-muted"
+              />
             </div>
             <Separator className="my-3" />
             <div>
               <p className="text-xs text-muted-foreground mb-2">Topics in this module:</p>
               <div className="space-y-1 max-h-48 overflow-y-auto">
-                {moduleTopics.map((t) => {
+                {moduleTopics.map((t, idx) => {
                   const isCompletedTopic = isCompleted(t.id);
                   const isCurrent = t.id === topic.id;
                   return (

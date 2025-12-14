@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import { Card } from "@/components/ui/card";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { HelpCircleIcon } from "@/lib/icons";
@@ -11,6 +12,7 @@ import { DataStructureVisualizer } from "./visualizers/data-structure-visualizer
 import { PathfindingVisualizer } from "./visualizers/pathfinding-visualizer";
 import { HeapVisualizer } from "./visualizers/heap-visualizer";
 import { DPVisualizer } from "./visualizers/dp-visualizer";
+import { fadeIn, slideUp, transitions } from "@/lib/animations";
 
 interface VisualizeViewProps {
   topic: Topic;
@@ -36,16 +38,30 @@ function renderVisualizer(topic: Topic) {
       return <DPVisualizer topic={topic} />;
     default:
       return (
-        <div className="h-full flex items-center justify-center p-10 text-center text-muted-foreground">
-          <div className="flex flex-col items-center gap-4">
-            <IconWrapper
-              icon={HelpCircleIcon}
-              size={40}
-              className="text-muted-foreground"
-            />
+        <motion.div
+          initial="initial"
+          animate="animate"
+          variants={fadeIn}
+          transition={transitions.smooth}
+          className="h-full flex items-center justify-center p-10 text-center text-muted-foreground"
+        >
+          <motion.div
+            variants={slideUp}
+            className="flex flex-col items-center gap-4"
+          >
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            >
+              <IconWrapper
+                icon={HelpCircleIcon}
+                size={40}
+                className="text-muted-foreground"
+              />
+            </motion.div>
             <span>No interactive visualizer available for this topic.</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       );
   }
 }
@@ -53,24 +69,49 @@ function renderVisualizer(topic: Topic) {
 export function VisualizeView({ topic }: VisualizeViewProps) {
   if (topic.visualizerType === VisualizerType.NONE) {
     return (
-      <div className="h-full flex items-center justify-center p-10 text-center text-muted-foreground">
-        <div className="flex flex-col items-center gap-4">
-          <IconWrapper
-            icon={HelpCircleIcon}
-            size={40}
-            className="text-muted-foreground"
-          />
+      <motion.div
+        initial="initial"
+        animate="animate"
+        variants={fadeIn}
+        transition={transitions.smooth}
+        className="h-full flex items-center justify-center p-10 text-center text-muted-foreground"
+      >
+        <motion.div
+          variants={slideUp}
+          className="flex flex-col items-center gap-4"
+        >
+          <motion.div
+            animate={{ rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+          >
+            <IconWrapper
+              icon={HelpCircleIcon}
+              size={40}
+              className="text-muted-foreground"
+            />
+          </motion.div>
           <span>No interactive visualizer available for this topic.</span>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="h-full flex flex-col animate-in slide-in-from-bottom-4 duration-500">
-      <Card className="flex-1 relative min-h-[500px] overflow-hidden">
-        {renderVisualizer(topic)}
-      </Card>
-    </div>
+    <motion.div
+      initial="initial"
+      animate="animate"
+      variants={fadeIn}
+      transition={transitions.smooth}
+      className="h-full flex flex-col"
+    >
+      <motion.div
+        variants={slideUp}
+        transition={{ ...transitions.spring, delay: 0.1 }}
+      >
+        <Card className="flex-1 relative min-h-[500px] overflow-hidden">
+          {renderVisualizer(topic)}
+        </Card>
+      </motion.div>
+    </motion.div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { PlayIcon, PauseIcon, RefreshCwIcon, ArrowUp01Icon } from "@/lib/icons";
@@ -8,6 +9,7 @@ import type { Topic } from "@/types/curriculum";
 import type { VisualizationStep } from "@/types/curriculum";
 import { generateDPSteps } from "@/utils/algorithm-logic";
 import { VisualizerLayout } from "./visualizer-layout";
+import { staggerContainer, staggerItem, transitions } from "@/lib/animations";
 
 interface DPVisualizerProps {
   topic: Topic;
@@ -108,7 +110,12 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <div className="flex items-center justify-center p-8 bg-muted rounded-lg border border-border overflow-x-auto">
+      <motion.div
+        initial="initial"
+        animate="animate"
+        variants={staggerContainer}
+        className="flex items-center justify-center p-8 bg-muted rounded-lg border border-border overflow-x-auto"
+      >
         <div className="flex gap-2">
           {dp.map((val: number | null, idx: number) => {
             const isActive = currentData.activeIndices.includes(idx);
@@ -117,28 +124,53 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
               currentData.activeIndices.length > 1 &&
               currentData.activeIndices.slice(1).includes(idx);
             return (
-              <div key={idx} className="flex flex-col items-center">
-                <div
-                  className={`w-14 h-14 flex items-center justify-center rounded-lg font-bold text-lg border-2 transition-all duration-300 ${
-                    isActive
-                      ? "bg-emerald-500 border-emerald-600 text-white scale-110 shadow-lg"
+              <motion.div
+                key={idx}
+                variants={staggerItem}
+                whileHover={{ scale: 1.1, y: -4 }}
+                className="flex flex-col items-center"
+              >
+                <motion.div
+                  animate={{
+                    scale: isActive ? 1.1 : 1,
+                    backgroundColor: isActive
+                      ? "rgb(16 185 129)"
                       : isDependency
-                        ? "bg-blue-100 dark:bg-blue-900/50 border-blue-400 text-blue-700 dark:text-blue-300"
+                        ? "rgb(191 219 254)"
                         : isCalculated
-                          ? "bg-background border-emerald-200 dark:border-emerald-800 text-foreground"
-                          : "bg-muted border-border text-muted-foreground"
-                  }`}
+                          ? "hsl(var(--background))"
+                          : "hsl(var(--muted))",
+                    borderColor: isActive
+                      ? "rgb(5 150 105)"
+                      : isDependency
+                        ? "rgb(96 165 250)"
+                        : isCalculated
+                          ? "rgb(167 243 208)"
+                          : "hsl(var(--border))",
+                    color: isActive
+                      ? "white"
+                      : isDependency
+                        ? "rgb(30 64 175)"
+                        : isCalculated
+                          ? "hsl(var(--foreground))"
+                          : "hsl(var(--muted-foreground))",
+                    boxShadow: isActive
+                      ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+                      : "none",
+                  }}
+                  transition={transitions.spring}
+                  className="w-14 h-14 flex items-center justify-center rounded-lg font-bold text-lg border-2"
                 >
                   {val !== null ? val : "?"}
-                </div>
+                </motion.div>
                 <span className="text-xs font-mono text-muted-foreground mt-2">
                   index {idx}
                 </span>
-              </div>
+              </motion.div>
             );
           })}
         </div>
-      </div>
+      </motion.div>
     </VisualizerLayout>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "motion/react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { IconWrapper } from "@/components/common/icon-wrapper";
@@ -15,6 +16,7 @@ import {
 import { ROUTES } from "@/constants/routes";
 
 import { cn } from "@/lib/utils";
+import { hoverScaleSmall, transitions } from "@/lib/animations";
 
 interface TopicCardProps {
   topic: Topic;
@@ -42,14 +44,19 @@ export function TopicCard({ topic }: TopicCardProps) {
 
   return (
     <Link href={ROUTES.TOPIC(topicSlug)}>
-      <Card
-        className={cn(
-          "h-full group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden",
-          isDone
-            ? "border-emerald-200 dark:border-emerald-900/50 hover:border-emerald-400"
-            : "hover:border-primary"
-        )}
+      <motion.div
+        whileHover={{ y: -4, scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        transition={transitions.springGentle}
       >
+        <Card
+          className={cn(
+            "h-full group overflow-hidden shadow-sm border-border/50 transition-shadow hover:shadow-lg",
+            isDone
+              ? "border-emerald-200 dark:border-emerald-900/50 hover:border-emerald-400"
+              : "hover:border-primary"
+          )}
+        >
         <CardContent className="p-6">
           <div className="flex justify-between items-start mb-4">
             <div
@@ -105,6 +112,7 @@ export function TopicCard({ topic }: TopicCardProps) {
           />
         </CardFooter>
       </Card>
+      </motion.div>
     </Link>
   );
 }

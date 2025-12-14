@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { PlayIcon, PauseIcon, RefreshCwIcon, LayersIcon } from "@/lib/icons";
@@ -8,6 +9,7 @@ import type { Topic } from "@/types/curriculum";
 import type { VisualizationStep } from "@/types/curriculum";
 import { generateHeapSteps } from "@/utils/algorithm-logic";
 import { VisualizerLayout } from "./visualizer-layout";
+import { staggerContainer, staggerItem, transitions } from "@/lib/animations";
 
 interface HeapVisualizerProps {
   topic: Topic;
@@ -108,7 +110,12 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <div className="flex flex-col gap-8">
+      <motion.div
+        initial="initial"
+        animate="animate"
+        variants={staggerContainer}
+        className="flex flex-col gap-8"
+      >
         <div className="h-64 flex items-start justify-center p-4 bg-muted rounded-lg border border-border relative overflow-hidden">
           {heap.map((val: number, idx: number) => {
             const level = Math.floor(Math.log2(idx + 1));
@@ -120,13 +127,24 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
             const top = level * 60 + 20;
             const isActive = currentData.activeIndices.includes(idx);
             return (
-              <div
+              <motion.div
                 key={idx}
-                className={`absolute w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 transition-all duration-300 z-10 ${
-                  isActive
-                    ? "bg-amber-400 border-amber-500 text-white scale-125"
-                    : "bg-background border-border text-foreground"
-                }`}
+                variants={staggerItem}
+                layout
+                animate={{
+                  scale: isActive ? 1.25 : 1,
+                  backgroundColor: isActive
+                    ? "rgb(251 191 36)"
+                    : "hsl(var(--background))",
+                  borderColor: isActive
+                    ? "rgb(245 158 11)"
+                    : "hsl(var(--border))",
+                  color: isActive
+                    ? "white"
+                    : "hsl(var(--foreground))",
+                }}
+                transition={transitions.spring}
+                className="absolute w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 z-10"
                 style={{
                   left: `${left}%`,
                   top: `${top}px`,
@@ -134,32 +152,48 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                 }}
               >
                 {val}
-              </div>
+              </motion.div>
             );
           })}
         </div>
-        <div className="flex items-center justify-center gap-1 overflow-x-auto p-4 bg-muted/50 rounded-lg">
+        <motion.div
+          variants={staggerContainer}
+          className="flex items-center justify-center gap-1 overflow-x-auto p-4 bg-muted/50 rounded-lg"
+        >
           {heap.map((val: number, idx: number) => {
             const isActive = currentData.activeIndices.includes(idx);
             return (
-              <div key={idx} className="flex flex-col items-center">
-                <div
-                  className={`w-10 h-10 flex items-center justify-center border rounded font-bold transition-colors ${
-                    isActive
-                      ? "bg-amber-400 text-white border-amber-500"
-                      : "bg-background text-foreground border-border"
-                  }`}
+              <motion.div
+                key={idx}
+                variants={staggerItem}
+                whileHover={{ scale: 1.1, y: -4 }}
+                className="flex flex-col items-center"
+              >
+                <motion.div
+                  animate={{
+                    backgroundColor: isActive
+                      ? "rgb(251 191 36)"
+                      : "hsl(var(--background))",
+                    borderColor: isActive
+                      ? "rgb(245 158 11)"
+                      : "hsl(var(--border))",
+                    color: isActive
+                      ? "white"
+                      : "hsl(var(--foreground))",
+                  }}
+                  transition={transitions.smooth}
+                  className="w-10 h-10 flex items-center justify-center border rounded font-bold"
                 >
                   {val}
-                </div>
+                </motion.div>
                 <span className="text-[10px] text-muted-foreground mt-1">
                   {idx}
                 </span>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </VisualizerLayout>
   );
 }

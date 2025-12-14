@@ -159,7 +159,7 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
             const isInline = !className || !className.includes("language-");
             if (isInline) {
               return (
-                <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground" {...props}>
+                <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-primary border border-border/50" {...props}>
                   {children}
                 </code>
               );

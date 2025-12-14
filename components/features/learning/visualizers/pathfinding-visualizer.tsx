@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { PlayIcon, PauseIcon, RefreshCwIcon } from "@/lib/icons";
@@ -9,6 +10,7 @@ import type { Topic } from "@/types/curriculum";
 import type { VisualizationStep } from "@/types/curriculum";
 import { generateBFSSteps, generateDFSSteps } from "@/utils/algorithm-logic";
 import { VisualizerLayout } from "./visualizer-layout";
+import { cellAnimation, staggerContainer, transitions } from "@/lib/animations";
 
 interface PathfindingVisualizerProps {
   topic: Topic;
@@ -133,7 +135,12 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <div className="grid grid-cols-5 gap-2 w-full max-w-[400px] mx-auto">
+      <motion.div
+        initial="initial"
+        animate="animate"
+        variants={staggerContainer}
+        className="grid grid-cols-5 gap-2 w-full max-w-[400px] mx-auto"
+      >
         {currentData.array.map((val, idx) => {
           const isStart = val === 2;
           const isEnd = val === 3;
@@ -142,22 +149,32 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
           const isPath = pathSet.has(idx);
           const isActive = currentData.activeIndices.includes(idx);
 
-          let bgClass = "bg-muted";
-          if (isWall) bgClass = "bg-slate-800 dark:bg-slate-600";
-          else if (isPath) bgClass = "bg-yellow-400";
-          else if (isActive) bgClass = "bg-primary scale-110 shadow-lg";
-          else if (isStart) bgClass = "bg-emerald-500";
-          else if (isEnd) bgClass = "bg-red-500";
-          else if (isVisited) bgClass = "bg-blue-200 dark:bg-blue-900";
+          let bgColor = "hsl(var(--muted))";
+          if (isWall) bgColor = "rgb(30 41 59)";
+          else if (isPath) bgColor = "rgb(250 204 21)";
+          else if (isActive) bgColor = "hsl(var(--primary))";
+          else if (isStart) bgColor = "rgb(16 185 129)";
+          else if (isEnd) bgColor = "rgb(239 68 68)";
+          else if (isVisited) bgColor = "rgb(191 219 254)";
 
           return (
-            <div
+            <motion.div
               key={idx}
-              className={`aspect-square rounded border border-border transition-all duration-300 ${bgClass}`}
+              variants={cellAnimation}
+              layout
+              animate={{
+                backgroundColor: bgColor,
+                scale: isActive ? 1.15 : 1,
+                boxShadow: isActive
+                  ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+                  : "none",
+              }}
+              transition={transitions.spring}
+              className="aspect-square rounded border border-border"
             />
           );
         })}
-      </div>
+      </motion.div>
     </VisualizerLayout>
   );
 }

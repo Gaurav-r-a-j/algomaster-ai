@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import { VisualizerLayout } from "./visualizer-layout";
@@ -13,6 +14,7 @@ import {
   generateQueueSteps,
   generateStackSteps,
 } from "@/utils/algorithm-logic";
+import { staggerContainer, staggerItem, transitions } from "@/lib/animations";
 
 const DEFAULT_SPEED_MS = 1000;
 
@@ -33,12 +35,25 @@ const TreeNode: React.FC<{
   const left = (posInLevel / levelWidth) * 100;
 
   return (
-    <div
-      className={`absolute transition-all duration-300 ${
-        isActive
-          ? "border-primary bg-primary/10 text-primary scale-110 shadow-lg"
-          : "border-border bg-card text-foreground"
-      } w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-sm`}
+    <motion.div
+      layout
+      animate={{
+        scale: isActive ? 1.1 : 1,
+        borderColor: isActive
+          ? "hsl(var(--primary))"
+          : "hsl(var(--border))",
+        backgroundColor: isActive
+          ? "hsl(var(--primary) / 0.1)"
+          : "hsl(var(--card))",
+        color: isActive
+          ? "hsl(var(--primary))"
+          : "hsl(var(--foreground))",
+        boxShadow: isActive
+          ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+          : "none",
+      }}
+      transition={transitions.spring}
+      className="absolute w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-sm"
       style={{
         top: `${level * 80 + 20}px`,
         left: `${left}%`,
@@ -46,7 +61,7 @@ const TreeNode: React.FC<{
       }}
     >
       {val}
-    </div>
+    </motion.div>
   );
 };
 
@@ -100,52 +115,11 @@ export function DataStructureVisualizer({
   }, [topic.visualizerType]);
 
   useEffect(() => {
-    // Initialize data when visualizer type changes
-    // Use setTimeout to defer state updates and avoid cascading renders
-    const timer = setTimeout(() => {
-      let newSteps: VisualizationStep[] = [];
-      switch (topic.visualizerType) {
-        case VisualizerType.STACK:
-          newSteps = generateStackSteps();
-          break;
-        case VisualizerType.QUEUE:
-          newSteps = generateQueueSteps();
-          break;
-        case VisualizerType.LINKED_LIST:
-          newSteps = generateLinkedListSteps();
-          break;
-        case VisualizerType.BINARY_TREE:
-        case VisualizerType.AVL_TREE:
-          newSteps = [
-            {
-              array: [],
-              activeIndices: [],
-              sortedIndices: [],
-              description: "Tree visualization coming soon.",
-              auxiliary: { tree: [] },
-            },
-          ];
-          break;
-        default:
-          newSteps = [
-            {
-              array: [],
-              activeIndices: [],
-              sortedIndices: [],
-              description: "Visualization not implemented.",
-            },
-          ];
-      }
-      setSteps(newSteps);
-      setCurrentStep(0);
-      setIsPlaying(false);
-    }, 0);
-    
-    return () => clearTimeout(timer);
-  }, [topic.visualizerType]);
+    generateData();
+  }, [generateData, topic.visualizerType]);
 
   useEffect(() => {
-    if (isPlaying) {
+    if (isPlaying && steps.length > 0) {
       timerRef.current = window.setInterval(() => {
         setCurrentStep((prev) => {
           if (prev >= steps.length - 1) {
@@ -157,9 +131,13 @@ export function DataStructureVisualizer({
       }, playbackSpeed);
     } else if (timerRef.current) {
       clearInterval(timerRef.current);
+      timerRef.current = null;
     }
     return () => {
-      if (timerRef.current) {clearInterval(timerRef.current);}
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     };
   }, [isPlaying, steps.length, playbackSpeed]);
 
@@ -229,12 +207,16 @@ export function DataStructureVisualizer({
                 <div className="text-sm text-muted-foreground italic">Stack is empty</div>
               ) : (
                 currentData.array.map((val, idx) => (
-                  <div
+                  <motion.div
                     key={idx}
-                    className="w-20 h-16 rounded-lg border-2 border-primary bg-primary/10 flex items-center justify-center font-bold text-lg transition-all duration-300 shadow-md"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ ...transitions.spring, delay: idx * 0.1 }}
+                    layout
+                    className="w-20 h-16 rounded-lg border-2 border-primary bg-primary/10 flex items-center justify-center font-bold text-lg shadow-md"
                   >
                     {val}
-                  </div>
+                  </motion.div>
                 ))
               )}
             </div>
@@ -251,12 +233,16 @@ export function DataStructureVisualizer({
                 <div className="text-sm text-muted-foreground italic flex-1 text-center">Queue is empty</div>
               ) : (
                 currentData.array.map((val, idx) => (
-                  <div
+                  <motion.div
                     key={idx}
-                    className="w-20 h-16 rounded-lg border-2 border-emerald-500 bg-emerald-500/10 flex items-center justify-center font-bold text-lg transition-all duration-300 shadow-md"
+                    initial={{ opacity: 0, x: idx === 0 ? -20 : 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ ...transitions.spring, delay: idx * 0.1 }}
+                    layout
+                    className="w-20 h-16 rounded-lg border-2 border-emerald-500 bg-emerald-500/10 flex items-center justify-center font-bold text-lg shadow-md"
                   >
                     {val}
-                  </div>
+                  </motion.div>
                 ))
               )}
               <div className="absolute -right-20 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground font-bold uppercase">
@@ -268,22 +254,40 @@ export function DataStructureVisualizer({
       case VisualizerType.LINKED_LIST:
         return (
           <div className="w-full overflow-x-auto py-8">
-            <div className="flex items-center justify-center gap-0 min-w-fit mx-auto px-4">
+            <motion.div
+              initial="initial"
+              animate="animate"
+              variants={staggerContainer}
+              className="flex items-center justify-center gap-0 min-w-fit mx-auto px-4"
+            >
               {currentData.array.map((val, idx) => {
                 const isActive = currentData.activeIndices.includes(idx);
                 return (
-                  <div key={idx} className="flex items-center">
+                  <motion.div
+                    key={idx}
+                    variants={staggerItem}
+                    className="flex items-center"
+                  >
                     {/* Node */}
                     <div className="flex flex-col items-center">
-                      <div
-                        className={`w-20 h-20 rounded-2xl border-2 flex items-center justify-center font-bold text-xl transition-all duration-300 ${
-                          isActive
-                            ? "border-foreground bg-muted/80 scale-105 shadow-lg ring-2 ring-foreground/20"
-                            : "border-border bg-card"
-                        }`}
+                      <motion.div
+                        animate={{
+                          scale: isActive ? 1.05 : 1,
+                          borderColor: isActive
+                            ? "hsl(var(--foreground))"
+                            : "hsl(var(--border))",
+                          backgroundColor: isActive
+                            ? "hsl(var(--muted) / 0.8)"
+                            : "hsl(var(--card))",
+                          boxShadow: isActive
+                            ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+                            : "none",
+                        }}
+                        transition={transitions.spring}
+                        className="w-20 h-20 rounded-2xl border-2 flex items-center justify-center font-bold text-xl"
                       >
                         {val}
-                      </div>
+                      </motion.div>
                       <div className="mt-2 text-xs font-mono text-muted-foreground font-semibold">
                         Node {idx}
                       </div>
@@ -345,25 +349,34 @@ export function DataStructureVisualizer({
                     NULL
                   </span>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         );
       case VisualizerType.BINARY_TREE:
       case VisualizerType.AVL_TREE:
         const tree = (currentData.auxiliary as { tree?: (number | null)[] })?.tree || [];
         return (
-          <div className="w-full h-full relative min-h-[300px]">
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={staggerContainer}
+            className="w-full h-full relative min-h-[300px]"
+          >
             {tree.map((val, idx) => (
-              <TreeNode
+              <motion.div
                 key={idx}
-                val={val}
-                idx={idx}
-                isActive={currentData.activeIndices.includes(idx)}
-                totalLevels={4}
-              />
+                variants={staggerItem}
+              >
+                <TreeNode
+                  val={val}
+                  idx={idx}
+                  isActive={currentData.activeIndices.includes(idx)}
+                  totalLevels={4}
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         );
       default:
         return null;

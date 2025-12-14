@@ -1,9 +1,11 @@
 "use client";
 
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon, RefreshCwIcon } from "@/lib/icons";
 import { Slider } from "@/components/ui/slider";
+import { hoverScaleSmall, tapScale, transitions } from "@/lib/animations";
 
 interface VisualizerControlsProps {
   isPlaying: boolean;
@@ -47,58 +49,81 @@ export function VisualizerControls({
     <div className="flex flex-col gap-3">
       {/* Main Controls */}
       <div className="flex items-center gap-2 flex-wrap">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onReset}
-          disabled={disabled || isPlaying}
-          title="Reset visualization"
-        >
-          <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
-          Reset
-        </Button>
+        <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onReset}
+            disabled={disabled || isPlaying}
+            title="Reset visualization"
+          >
+            <motion.div
+              animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
+              transition={transitions.quick}
+            >
+              <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
+            </motion.div>
+            Reset
+          </Button>
+        </motion.div>
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onPreviousStep}
-          disabled={disabled || isPlaying || !canGoPrevious}
-          title="Previous step"
-        >
-          <IconWrapper icon={ChevronLeftIcon} size={16} />
-        </Button>
+        <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onPreviousStep}
+            disabled={disabled || isPlaying || !canGoPrevious}
+            title="Previous step"
+          >
+            <IconWrapper icon={ChevronLeftIcon} size={16} />
+          </Button>
+        </motion.div>
 
-        <Button
-          size="sm"
-          onClick={isPlaying ? onPause : onPlay}
-          disabled={disabled}
-          title={isPlaying ? "Pause" : "Play"}
-          className="min-w-[100px]"
-        >
-          <IconWrapper
-            icon={isPlaying ? PauseIcon : PlayIcon}
-            size={16}
-            className="mr-2"
-          />
-          {isPlaying ? "Pause" : "Play"}
-        </Button>
+        <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
+          <Button
+            size="sm"
+            onClick={isPlaying ? onPause : onPlay}
+            disabled={disabled}
+            title={isPlaying ? "Pause" : "Play"}
+            className="min-w-[100px]"
+          >
+            <motion.div
+              animate={isPlaying ? { scale: [1, 1.1, 1] } : {}}
+              transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <IconWrapper
+                icon={isPlaying ? PauseIcon : PlayIcon}
+                size={16}
+                className="mr-2"
+              />
+            </motion.div>
+            {isPlaying ? "Pause" : "Play"}
+          </Button>
+        </motion.div>
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onNextStep}
-          disabled={disabled || isPlaying || !canGoNext}
-          title="Next step"
-        >
-          <IconWrapper icon={ChevronRightIcon} size={16} />
-        </Button>
+        <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onNextStep}
+            disabled={disabled || isPlaying || !canGoNext}
+            title="Next step"
+          >
+            <IconWrapper icon={ChevronRightIcon} size={16} />
+          </Button>
+        </motion.div>
 
         {/* Step Counter */}
-        <div className="ml-auto flex items-center gap-2 px-3 py-1.5 bg-muted rounded-md">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={transitions.smooth}
+          className="ml-auto flex items-center gap-2 px-3 py-1.5 bg-muted rounded-md"
+        >
           <span className="text-xs font-mono text-muted-foreground">
             Step {currentStep + 1} / {totalSteps}
           </span>
-        </div>
+        </motion.div>
       </div>
 
       {/* Array Size Control */}

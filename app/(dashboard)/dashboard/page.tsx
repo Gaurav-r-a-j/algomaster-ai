@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ import {
   PlayIcon,
 } from "@/lib/icons";
 import { generateTopicSlug } from "@/utils/common/slug";
+import { fadeIn, slideUp, staggerContainer, staggerItem, transitions, hoverScaleSmall } from "@/lib/animations";
 
 export default function DashboardPage() {
   const { completedTopics } = useProgress();
@@ -32,9 +34,18 @@ export default function DashboardPage() {
     .slice(0, 6);
 
   return (
-    <div className="space-y-6">
+    <motion.div
+      initial="initial"
+      animate="animate"
+      variants={fadeIn}
+      transition={transitions.smooth}
+      className="space-y-6"
+    >
       {/* Compact Page Header */}
-      <div className="flex items-center justify-between gap-4">
+      <motion.div
+        variants={slideUp}
+        className="flex items-center justify-between gap-4"
+      >
         <div>
           <h1 className="text-xl md:text-2xl font-bold text-foreground tracking-tight">
             Welcome Back!
@@ -43,12 +54,18 @@ export default function DashboardPage() {
             Continue your DSA learning journey
           </p>
         </div>
-      </div>
+      </motion.div>
 
       <div className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={staggerContainer}
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8"
+          >
             {/* Progress Card */}
-            <Card>
+            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   Overall Progress
@@ -64,9 +81,11 @@ export default function DashboardPage() {
                 </p>
               </CardContent>
             </Card>
+            </motion.div>
 
             {/* Completed Topics */}
-            <Card>
+            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   Completed
@@ -81,9 +100,11 @@ export default function DashboardPage() {
                 </p>
               </CardContent>
             </Card>
+            </motion.div>
 
             {/* In Progress */}
-            <Card>
+            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   In Progress
@@ -98,9 +119,11 @@ export default function DashboardPage() {
                 </p>
               </CardContent>
             </Card>
+            </motion.div>
 
             {/* Remaining */}
-            <Card>
+            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   Remaining
@@ -115,11 +138,18 @@ export default function DashboardPage() {
                 </p>
               </CardContent>
             </Card>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Quick Actions */}
-          <div className="grid gap-6 md:grid-cols-2 mb-8">
-            <Card>
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={staggerContainer}
+            className="grid gap-6 md:grid-cols-2 mb-8"
+          >
+            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <IconWrapper icon={BookOpenIcon} size={20} />
@@ -140,8 +170,10 @@ export default function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
+            </motion.div>
 
-            <Card>
+            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <IconWrapper icon={ArrowUp01Icon} size={20} />
@@ -174,27 +206,44 @@ export default function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Recommended Next Topics */}
           {recommendedTopics.length > 0 && (
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <IconWrapper icon={PlayIcon} size={20} />
-                  Recommended Next
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {recommendedTopics.map((topic) => {
-                    const topicSlug = generateTopicSlug(topic.title);
-                    return (
-                    <Link
-                      key={topic.id}
-                      href={ROUTES.TOPIC(topicSlug)}
-                      className="p-4 rounded-lg border border-border hover:border-primary transition-colors"
-                    >
+            <motion.div
+              initial="initial"
+              animate="animate"
+              variants={fadeIn}
+              transition={transitions.smooth}
+            >
+              <Card className="mb-8 shadow-sm border-border/50">
+                <CardHeader className="border-b border-border/50">
+                  <CardTitle className="flex items-center gap-2">
+                    <IconWrapper icon={PlayIcon} size={20} />
+                    Recommended Next
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <motion.div
+                    variants={staggerContainer}
+                    initial="initial"
+                    animate="animate"
+                    className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+                  >
+                    {recommendedTopics.map((topic, idx) => {
+                      const topicSlug = generateTopicSlug(topic.title);
+                      return (
+                        <motion.div
+                          key={topic.id}
+                          variants={staggerItem}
+                          whileHover={{ y: -2, scale: 1.02 }}
+                          transition={transitions.springGentle}
+                        >
+                          <Link
+                            href={ROUTES.TOPIC(topicSlug)}
+                            className="block p-4 rounded-lg border border-border/50 hover:border-primary transition-colors shadow-sm hover:shadow-md"
+                          >
                       <div className="flex items-start justify-between mb-2">
                         <h3 className="font-semibold text-foreground">
                           {topic.title}
@@ -218,37 +267,53 @@ export default function DashboardPage() {
                         >
                           {topic.difficulty}
                         </span>
-                      </div>
-                    </Link>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
+                        </div>
+                      </Link>
+                        </motion.div>
+                      );
+                    })}
+                  </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
           )}
 
           {/* Recent Activity */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <IconWrapper icon={CheckmarkCircleIcon} size={20} />
-                Recent Completions
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {completedTopics.length > 0 ? (
-                <div className="space-y-2">
-                  {completedTopics
-                    .slice(-5)
-                    .reverse()
-                    .map((topicId) => {
-                      const topic = TOPICS.find((t) => t.id === topicId);
-                      if (!topic) {return null;}
-                      return (
-                        <div
-                          key={topicId}
-                          className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
-                        >
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={fadeIn}
+            transition={{ ...transitions.smooth, delay: 0.2 }}
+          >
+            <Card className="shadow-sm border-border/50">
+              <CardHeader className="border-b border-border/50">
+                <CardTitle className="flex items-center gap-2">
+                  <IconWrapper icon={CheckmarkCircleIcon} size={20} />
+                  Recent Completions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {completedTopics.length > 0 ? (
+                  <motion.div
+                    variants={staggerContainer}
+                    initial="initial"
+                    animate="animate"
+                    className="space-y-2"
+                  >
+                    {completedTopics
+                      .slice(-5)
+                      .reverse()
+                      .map((topicId, idx) => {
+                        const topic = TOPICS.find((t) => t.id === topicId);
+                        if (!topic) {return null;}
+                        return (
+                          <motion.div
+                            key={topicId}
+                            variants={staggerItem}
+                            whileHover={{ x: 4 }}
+                            transition={transitions.quick}
+                            className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border/50 hover:border-primary/50 transition-colors"
+                          >
                           <div>
                             <p className="font-medium text-foreground">
                               {topic.title}
@@ -262,19 +327,20 @@ export default function DashboardPage() {
                               Review
                             </Link>
                           </Button>
-                        </div>
-                      );
-                    })}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  No completed topics yet. Start learning to see your progress
-                  here!
-                </p>
-              )}
-            </CardContent>
-          </Card>
-      </div>
-    </div>
+                          </motion.div>
+                        );
+                      })}
+                  </motion.div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    No completed topics yet. Start learning to see your progress
+                    here!
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+    </motion.div>
   );
 }

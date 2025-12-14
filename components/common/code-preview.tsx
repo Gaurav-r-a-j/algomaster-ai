@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
+import { motion } from "motion/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { FileIcon, PlayIcon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
+import { fadeIn, slideUp, transitions } from "@/lib/animations";
 
 interface CodePreviewProps {
   code: string;
@@ -19,9 +21,15 @@ export function CodePreview({ code, language = "tsx", preview, className }: Code
   const [activeTab, setActiveTab] = React.useState<"preview" | "code">(preview ? "preview" : "code");
 
   return (
-    <div className={cn("border border-border rounded-lg overflow-hidden my-4", className)}>
+    <motion.div
+      initial="initial"
+      animate="animate"
+      variants={fadeIn}
+      transition={transitions.smooth}
+      className={cn("border border-border/50 rounded-lg overflow-hidden my-4 shadow-sm", className)}
+    >
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "preview" | "code")}>
-        <div className="flex items-center justify-between border-b border-border px-4 py-2 bg-muted/50">
+        <div className="flex items-center justify-between border-b border-border/50 px-4 py-2 bg-muted/50">
           <TabsList className="h-8">
             {preview && (
               <TabsTrigger value="preview" className="text-xs">
@@ -45,12 +53,17 @@ export function CodePreview({ code, language = "tsx", preview, className }: Code
         )}
 
         <TabsContent value="code" className="m-0">
-          <pre className="bg-muted p-4 overflow-x-auto text-sm font-mono m-0">
+          <motion.pre
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={transitions.smooth}
+            className="bg-muted p-4 overflow-x-auto text-sm font-mono m-0"
+          >
             <code className={`language-${language}`}>{code}</code>
-          </pre>
+          </motion.pre>
         </TabsContent>
       </Tabs>
-    </div>
+    </motion.div>
   );
 }
 

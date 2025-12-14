@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "motion/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +12,7 @@ import { CheckmarkCircleIcon } from "@/lib/icons";
 import { useProgress } from "@/context/progress-context";
 import type { QuizQuestion } from "@/types/curriculum";
 import { cn } from "@/lib/utils";
+import { fadeIn, slideUp, staggerContainer, staggerItem, transitions, hoverScaleSmall, tapScale } from "@/lib/animations";
 
 interface QuizSectionProps {
   topicId: string;
@@ -49,21 +51,35 @@ export function QuizSection({
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between items-start gap-4">
-          <div className="flex-1">
-            <CardTitle className="text-xl font-bold flex items-center gap-2">
-              <IconWrapper
-                icon={CheckmarkCircleIcon}
-                size={20}
-                className="text-emerald-500"
-              />
-              Knowledge Check
-            </CardTitle>
-            <p className="text-muted-foreground text-sm mt-1">
-              Complete this quiz to mark the lesson as done.
-            </p>
+    <motion.div
+      initial="initial"
+      animate="animate"
+      variants={fadeIn}
+      transition={transitions.smooth}
+    >
+      <Card className="shadow-sm border-border/50">
+        <CardHeader className="border-b border-border/50">
+          <motion.div
+            variants={slideUp}
+            className="flex justify-between items-start gap-4"
+          >
+            <div className="flex-1">
+              <CardTitle className="text-xl font-bold flex items-center gap-2">
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                >
+                  <IconWrapper
+                    icon={CheckmarkCircleIcon}
+                    size={20}
+                    className="text-emerald-500"
+                  />
+                </motion.div>
+                Knowledge Check
+              </CardTitle>
+              <p className="text-muted-foreground text-sm mt-1">
+                Complete this quiz to mark the lesson as done.
+              </p>
             {/* AI Questions Toggle */}
             {hasAIQuestions && onToggleAIQuestions && (
               <div className="flex items-center gap-2 mt-3">
@@ -86,21 +102,36 @@ export function QuizSection({
               Completed
             </Badge>
           )}
-        </div>
-      </CardHeader>
-      <CardContent className="p-8 space-y-8">
-        {questions.map((q, idx) => {
-          const isCorrect = selectedAnswers[q.id] === q.correctAnswer;
-          const hasAnswered = selectedAnswers[q.id] !== undefined;
+          </motion.div>
+        </CardHeader>
+        <CardContent className="p-8 space-y-8">
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+          >
+            {questions.map((q, idx) => {
+              const isCorrect = selectedAnswers[q.id] === q.correctAnswer;
+              const hasAnswered = selectedAnswers[q.id] !== undefined;
 
-          return (
-            <div key={q.id}>
-              <p className="text-foreground font-medium mb-4 flex gap-3">
-                <span className="text-muted-foreground">{idx + 1}.</span>{" "}
-                {q.question}
-              </p>
-              <div className="space-y-3 pl-6">
-                {q.options.map((opt, optIdx) => {
+              return (
+                <motion.div
+                  key={q.id}
+                  variants={staggerItem}
+                  className={cn(idx > 0 && "pt-8 border-t border-border/50")}
+                >
+                  <p className="text-foreground font-medium mb-4 flex gap-3">
+                    <motion.span
+                      whileHover={{ scale: 1.2, rotate: 360 }}
+                      transition={transitions.quick}
+                      className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold shrink-0"
+                    >
+                      {idx + 1}
+                    </motion.span>
+                    {q.question}
+                  </p>
+                  <div className="space-y-3 pl-6">
+                    {q.options.map((opt, optIdx) => {
                   let btnClass =
                     "w-full text-left p-3 rounded-lg border text-sm transition-all ";
 
@@ -125,48 +156,64 @@ export function QuizSection({
                     }
                   }
 
-                  return (
-                    <button
-                      key={optIdx}
-                      onClick={() => handleSelect(q.id, optIdx)}
-                      className={cn(btnClass)}
-                      disabled={showResults}
+                      return (
+                        <motion.button
+                          key={optIdx}
+                          whileHover={hoverScaleSmall}
+                          whileTap={tapScale}
+                          onClick={() => handleSelect(q.id, optIdx)}
+                          className={cn(btnClass)}
+                          disabled={showResults}
+                        >
+                          {opt}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                  {showResults && hasAnswered && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={transitions.smooth}
+                      className={cn(
+                        "mt-3 pl-6 text-sm p-3 rounded-lg",
+                        isCorrect
+                          ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800"
+                          : "text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
+                      )}
                     >
-                      {opt}
-                    </button>
-                  );
-                })}
-              </div>
-              {showResults && hasAnswered && (
-                <p
-                  className={cn(
-                    "mt-3 pl-6 text-sm",
-                    isCorrect
-                      ? "text-emerald-600 dark:text-emerald-400"
-                      : "text-red-600 dark:text-red-400"
+                      <span className="font-semibold">
+                        {isCorrect ? "✓ Correct! " : "✗ Incorrect. "}
+                      </span>
+                      {q.explanation}
+                    </motion.p>
                   )}
-                >
-                  {isCorrect ? "✓ Correct! " : "✗ Incorrect. "}
-                  {q.explanation}
-                </p>
-              )}
-            </div>
-          );
-        })}
+                </motion.div>
+              );
+            })}
+          </motion.div>
 
-        {!showResults && (
-          <div className="pt-4">
-            <Button
-              onClick={handleSubmit}
-              disabled={!allAnswered}
-              className="w-full"
+          {!showResults && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ ...transitions.smooth, delay: 0.2 }}
+              className="pt-4"
             >
-              Submit Answers
-            </Button>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+              <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!allAnswered}
+                  className="w-full"
+                >
+                  Submit Answers
+                </Button>
+              </motion.div>
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
 

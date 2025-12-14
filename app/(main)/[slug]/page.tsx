@@ -33,6 +33,8 @@ import { cn } from "@/lib/utils";
 import { getModules } from "@/data/curriculum";
 import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug";
 import { removeModulePrefix } from "@/utils/common/path-utils";
+import { motion } from "motion/react";
+import { fadeIn, slideDown, transitions } from "@/lib/animations";
 
 interface SlugPageProps {
   params: Promise<{ slug: string }>;
@@ -123,7 +125,13 @@ export default function SlugPage({ params }: SlugPageProps) {
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-background">
       <Tabs defaultValue="learn" className="flex-1 flex flex-col overflow-hidden">
-        <header className="fixed top-0 left-0 md:left-[16rem] right-0 z-50 shrink-0 bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/80 border-b border-border shadow-sm">
+        <motion.header
+          initial="initial"
+          animate="animate"
+          variants={slideDown}
+          transition={transitions.smooth}
+          className="fixed top-0 left-0 md:left-[16rem] right-0 z-50 shrink-0 bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/80 border-b border-border shadow-sm"
+        >
           <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
             {/* SEO Breadcrumbs - Hidden visually but present for SEO */}
             <Breadcrumb className="sr-only">
@@ -207,34 +215,59 @@ export default function SlugPage({ params }: SlugPageProps) {
               </TabsList>
             </div>
           </div>
-        </header>
+        </motion.header>
         
         {/* Spacer for fixed header - matches header height, only on mobile since desktop header starts after sidebar */}
         <div className="h-[60px] shrink-0 md:hidden" />
 
-        <div className="flex-1 overflow-y-auto relative md:pt-[60px]">
-          <div className="w-full h-full">
-            <TabsContent value="learn" className="mt-0">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 pb-24">
-                <LearnView topic={topic} />
-              </div>
-            </TabsContent>
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={fadeIn}
+            transition={transitions.smooth}
+            className="flex-1 overflow-y-auto relative md:pt-[60px]"
+          >
+            <div className="w-full h-full">
+              <TabsContent value="learn" className="mt-0">
+                <motion.div
+                  key="learn"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={transitions.smooth}
+                  className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 pb-24"
+                >
+                  <LearnView topic={topic} />
+                </motion.div>
+              </TabsContent>
 
-            <TabsContent value="visualize" className="mt-0">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 pb-24">
-                <VisualizeView topic={topic} />
-              </div>
-            </TabsContent>
+              <TabsContent value="visualize" className="mt-0">
+                <motion.div
+                  key="visualize"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={transitions.smooth}
+                  className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 pb-24"
+                >
+                  <VisualizeView topic={topic} />
+                </motion.div>
+              </TabsContent>
 
-            <TabsContent value="code" className="mt-0">
-              <div className="p-4 sm:p-6 lg:p-8 xl:p-10 pb-24 h-full max-w-7xl mx-auto w-full">
-                <div className="animate-in fade-in duration-300 h-full">
+              <TabsContent value="code" className="mt-0">
+                <motion.div
+                  key="code"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={transitions.smooth}
+                  className="p-4 sm:p-6 lg:p-8 xl:p-10 pb-24 h-full max-w-7xl mx-auto w-full"
+                >
                   <PracticeView topic={topic} />
-                </div>
-              </div>
-            </TabsContent>
-          </div>
-        </div>
+                </motion.div>
+              </TabsContent>
+            </div>
+          </motion.div>
       </Tabs>
     </div>
   );

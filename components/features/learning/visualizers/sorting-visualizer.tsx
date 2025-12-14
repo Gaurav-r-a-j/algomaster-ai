@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChartBarIcon } from "@heroicons/react/24/outline";
 import { VisualizerLayout } from "./visualizer-layout";
@@ -14,6 +15,7 @@ import {
   generateQuickSortSteps,
   generateSelectionSortSteps,
 } from "@/utils/algorithm-logic";
+import { barAnimation, staggerContainer, staggerItem, transitions } from "@/lib/animations";
 
 const DEFAULT_ARRAY_SIZE = 15;
 const DEFAULT_SPEED_MS = 500;
@@ -218,7 +220,12 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <div className="flex flex-col gap-6">
+      <motion.div
+        initial="initial"
+        animate="animate"
+        variants={staggerContainer}
+        className="flex flex-col gap-6"
+      >
         {/* Number-based visualization */}
         <Card>
           <CardContent className="p-8">
@@ -228,27 +235,48 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
                 const isSorted = currentData.sortedIndices.includes(idx);
                 
                 return (
-                  <div
-                    key={idx}
-                    className={`flex flex-col items-center gap-2 transition-all duration-200 ${
-                      isActive ? "scale-110 z-10" : isSorted ? "opacity-75" : ""
-                    }`}
+                  <motion.div
+                    key={`${idx}-${value}`}
+                    variants={staggerItem}
+                    layout
+                    animate={{
+                      scale: isActive ? 1.15 : 1,
+                      zIndex: isActive ? 10 : 1,
+                      opacity: isSorted ? 0.75 : 1,
+                    }}
+                    transition={transitions.spring}
+                    className="flex flex-col items-center gap-2"
                   >
-                    <div
-                      className={`w-20 h-20 rounded-xl border-2 flex items-center justify-center font-bold text-xl transition-all duration-200 ${
-                        isActive
-                          ? "border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-400 shadow-lg ring-2 ring-amber-500/20"
+                    <motion.div
+                      animate={{
+                        borderColor: isActive
+                          ? "rgb(245 158 11)"
                           : isSorted
-                            ? "border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
-                            : "border-border bg-card"
-                      }`}
+                            ? "rgb(16 185 129)"
+                            : "hsl(var(--border))",
+                        backgroundColor: isActive
+                          ? "rgb(245 158 11 / 0.1)"
+                          : isSorted
+                            ? "rgb(16 185 129 / 0.1)"
+                            : "hsl(var(--card))",
+                        color: isActive
+                          ? "rgb(180 83 9)"
+                          : isSorted
+                            ? "rgb(5 150 105)"
+                            : "hsl(var(--foreground))",
+                        boxShadow: isActive
+                          ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+                          : "none",
+                      }}
+                      transition={transitions.smooth}
+                      className="w-20 h-20 rounded-xl border-2 flex items-center justify-center font-bold text-xl"
                     >
                       {value}
-                    </div>
+                    </motion.div>
                     <span className="text-xs font-mono text-muted-foreground font-semibold">
                       [{idx}]
                     </span>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -256,19 +284,25 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
         </Card>
         
         {/* Array representation */}
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Array:
-              </span>
-              <code className="text-sm font-mono text-foreground bg-muted px-2 py-1 rounded">
-                [{currentData.array.join(", ")}]
-              </code>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={transitions.smooth}
+        >
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Array:
+                </span>
+                <code className="text-sm font-mono text-foreground bg-muted px-2 py-1 rounded">
+                  [{currentData.array.join(", ")}]
+                </code>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </motion.div>
     </VisualizerLayout>
   );
 }
