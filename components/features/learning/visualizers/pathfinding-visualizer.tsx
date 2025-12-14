@@ -66,8 +66,9 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
       auxiliary: { visited: [], path: [] },
     } as VisualizationStep);
 
-  const visitedSet = new Set(currentData.auxiliary?.visited || []);
-  const pathSet = new Set(currentData.auxiliary?.path || []);
+  const auxiliary = (currentData.auxiliary as { visited?: number[], path?: number[] }) || {};
+  const visitedSet = new Set(auxiliary.visited || []);
+  const pathSet = new Set(auxiliary.path || []);
 
   const controls = (
     <div className="flex items-center gap-2">

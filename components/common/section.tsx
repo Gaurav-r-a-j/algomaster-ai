@@ -15,8 +15,8 @@ const spacingClasses = {
   none: "",
   sm: "py-8",
   md: "py-12",
-  lg: "py-16",
-  xl: "py-20",
+  lg: "py-24",
+  xl: "py-32",
 };
 
 // Section - Page section with consistent spacing and container

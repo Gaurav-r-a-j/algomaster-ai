@@ -64,7 +64,8 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
       auxiliary: { heap: [] },
     } as VisualizationStep);
 
-  const heap = (currentData.auxiliary?.heap as number[]) || [];
+  const auxiliary = currentData.auxiliary as { heap?: number[] };
+  const heap = auxiliary?.heap || [];
 
   const controls = (
     <div className="flex items-center gap-2">

@@ -64,7 +64,8 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
       auxiliary: { dp: [] },
     } as VisualizationStep);
 
-  const dp = (currentData.auxiliary?.dp as (number | null)[]) || [];
+  const auxiliary = currentData.auxiliary as { dp?: (number | null)[] };
+  const dp = auxiliary?.dp || [];
 
   const controls = (
     <div className="flex items-center gap-2">
