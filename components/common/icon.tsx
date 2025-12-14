@@ -10,15 +10,8 @@ export interface IconProps extends SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-/**
- * Unified Icon component that supports multiple icon libraries
- * 
- * @example
- * ```tsx
- * <Icon name="Home01" library="hugeicons" size={24} />
- * <Icon name="HomeIcon" library="heroicons" className="text-blue-500" />
- * ```
- */
+// Unified Icon component that supports multiple icon libraries
+// Example: <Icon name="Home01" library="hugeicons" size={24} />
 export function Icon({
   name,
   library = "hugeicons",

@@ -10,17 +10,8 @@ export interface IconWrapperProps extends Omit<SVGProps<SVGSVGElement>, "size"> 
   className?: string;
 }
 
-/**
- * Icon wrapper component that provides consistent sizing and styling
- * Works with any icon component (Huge Icons, Hero Icons, etc.)
- * 
- * @example
- * ```tsx
- * import { Home01Icon } from "@/lib/icons/icon-registry";
- * 
- * <IconWrapper icon={Home01Icon} size="lg" className="text-blue-500" />
- * ```
- */
+// IconWrapper - Provides consistent sizing and styling for icons
+// Example: <IconWrapper icon={Home01Icon} size="lg" className="text-blue-500" />
 export function IconWrapper({
   icon: IconComponent,
   size = "md",

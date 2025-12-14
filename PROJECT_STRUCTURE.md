@@ -126,10 +126,27 @@ components/
 │   ├── header.tsx
 │   ├── footer.tsx
 │   └── sidebar.tsx
+├── forms/                  # Form components (react-hook-form)
+│   ├── form.tsx            # Form wrapper component
+│   ├── form-field.tsx      # Base form field component
+│   ├── input-field.tsx     # Input field component
+│   ├── textarea-field.tsx  # Textarea field component
+│   ├── select-field.tsx    # Select field component
+│   ├── index.ts            # Form components exports
+│   └── FORMS.md            # Form components documentation
 └── common/                 # Common reusable components
+    ├── container.tsx       # Responsive container
+    ├── section.tsx         # Page section component
+    ├── adaptive-wrapper.tsx # Adaptive content wrapper
+    ├── page-header.tsx     # Page header component
+    ├── card-wrapper.tsx    # Card wrapper component
+    ├── empty-state.tsx     # Empty state component
     ├── loading-spinner.tsx
     ├── error-message.tsx
-    └── success-message.tsx
+    ├── success-message.tsx
+    ├── icon.tsx            # Icon component
+    ├── icon-wrapper.tsx    # Icon wrapper component
+    └── index.ts            # Common components exports
 ```
 
 **Component Organization**:

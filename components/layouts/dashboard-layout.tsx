@@ -1,13 +1,8 @@
 import { ReactNode } from "react";
 import { Sidebar } from "@/components/shared/sidebar";
 
-/**
- * Dashboard Layout Component
- * 
- * Used for main application pages (dashboard, profile, settings, account)
- * - Includes sidebar navigation
- * - Consistent app workspace layout
- */
+// Dashboard Layout Component - Used for main application pages
+// Includes sidebar navigation, consistent app workspace layout
 export function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
