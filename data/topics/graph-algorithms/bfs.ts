@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const bfs: Topic = {
   id: "bfs",
   title: "Breadth-First Search (BFS)",
-  description: "Graph traversal algorithm that explores nodes level by level using a queue.",
+  description:
+    "Graph traversal algorithm that explores nodes level by level using a queue.",
   category: AlgorithmType.GRAPH,
   complexity: { time: "O(V + E)", space: "O(V)" },
   visualizerType: VisualizerType.PATHFINDING,
@@ -160,4 +161,4 @@ def bfs_shortest_path(graph, start, end):
       difficulty: "Medium",
     },
   ],
-};
+}

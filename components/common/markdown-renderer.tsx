@@ -1,18 +1,20 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/github-dark.css";
-import { CodePreview } from "./code-preview";
-import { getPreviewComponent } from "./preview-registry";
+import * as React from "react"
+import ReactMarkdown from "react-markdown"
+import rehypeAutolinkHeadings from "rehype-autolink-headings"
+import rehypeHighlight from "rehype-highlight"
+import rehypeSlug from "rehype-slug"
+import remarkGfm from "remark-gfm"
+
+import "highlight.js/styles/github-dark.css"
+
+import { CodePreview } from "./code-preview"
+import { getPreviewComponent } from "./preview-registry"
 
 interface MarkdownRendererProps {
-  content: string;
-  className?: string;
+  content: string
+  className?: string
 }
 
 // MarkdownRenderer - Component to render markdown content with syntax highlighting
@@ -20,9 +22,14 @@ interface MarkdownRendererProps {
 // Uses rehype-highlight for syntax highlighting (client-compatible)
 // Uses rehype-slug and rehype-autolink-headings for heading links
 // Example: <MarkdownRenderer content={markdownContent} />
-export function MarkdownRenderer({ content, className }: MarkdownRendererProps) {
+export function MarkdownRenderer({
+  content,
+  className,
+}: MarkdownRendererProps) {
   return (
-    <div className={`prose prose-slate dark:prose-invert max-w-none w-full ${className || ""}`}>
+    <div
+      className={`prose prose-slate dark:prose-invert w-full max-w-none ${className || ""}`}
+    >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[
@@ -40,136 +47,191 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
         ]}
         components={{
           h1: ({ ...props }: any) => (
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-6 mt-0 pb-4 border-b border-border scroll-mt-24" {...props} />
+            <h1
+              className="text-foreground border-border mt-0 mb-6 scroll-mt-24 border-b pb-4 text-3xl font-bold tracking-tight md:text-4xl"
+              {...props}
+            />
           ),
           h2: ({ ...props }: any) => (
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4 mt-10 pt-6 border-t border-border first:border-t-0 first:pt-0 first:mt-0 scroll-mt-24" {...props} />
+            <h2
+              className="text-foreground border-border mt-10 mb-4 scroll-mt-24 border-t pt-6 text-2xl font-bold tracking-tight first:mt-0 first:border-t-0 first:pt-0 md:text-3xl"
+              {...props}
+            />
           ),
           h3: ({ ...props }: any) => (
-            <h3 className="text-xl md:text-2xl font-semibold tracking-tight text-foreground mb-3 mt-8 scroll-mt-24" {...props} />
+            <h3
+              className="text-foreground mt-8 mb-3 scroll-mt-24 text-xl font-semibold tracking-tight md:text-2xl"
+              {...props}
+            />
           ),
           h4: ({ ...props }: any) => (
-            <h4 className="text-lg md:text-xl font-semibold tracking-tight text-foreground mb-2 mt-6 scroll-mt-24" {...props} />
+            <h4
+              className="text-foreground mt-6 mb-2 scroll-mt-24 text-lg font-semibold tracking-tight md:text-xl"
+              {...props}
+            />
           ),
           p: ({ ...props }: any) => (
-            <p className="mb-5 text-foreground/90 leading-relaxed text-base md:text-lg" {...props} />
+            <p
+              className="text-foreground/90 mb-5 text-base leading-relaxed md:text-lg"
+              {...props}
+            />
           ),
           ul: ({ ...props }: any) => (
-            <ul className="list-disc list-outside space-y-2.5 mb-5 text-foreground ml-6 text-base md:text-lg" {...props} />
+            <ul
+              className="text-foreground mb-5 ml-6 list-outside list-disc space-y-2.5 text-base md:text-lg"
+              {...props}
+            />
           ),
           ol: ({ ...props }: any) => (
-            <ol className="list-decimal list-outside space-y-2.5 mb-5 text-foreground ml-6 text-base md:text-lg" {...props} />
+            <ol
+              className="text-foreground mb-5 ml-6 list-outside list-decimal space-y-2.5 text-base md:text-lg"
+              {...props}
+            />
           ),
           li: ({ ...props }: any) => (
-            <li className="mb-2 text-foreground/90 leading-relaxed pl-1" {...props} />
+            <li
+              className="text-foreground/90 mb-2 pl-1 leading-relaxed"
+              {...props}
+            />
           ),
           a: ({ ...props }: any) => (
-            <a className="text-primary hover:underline font-medium transition-colors" target="_blank" rel="noopener noreferrer" {...props} />
+            <a
+              className="text-primary font-medium transition-colors hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              {...props}
+            />
           ),
           blockquote: ({ ...props }: any) => (
-            <blockquote className="border-l-4 border-primary/50 bg-primary/5 pl-6 pr-4 py-3 italic text-foreground/80 my-6 rounded-r-lg" {...props} />
+            <blockquote
+              className="border-primary/50 bg-primary/5 text-foreground/80 my-6 rounded-r-lg border-l-4 py-3 pr-4 pl-6 italic"
+              {...props}
+            />
           ),
           hr: ({ ...props }: any) => (
             <hr className="border-border my-8" {...props} />
           ),
           table: ({ ...props }: any) => (
-            <div className="overflow-x-auto my-4">
-              <table className="min-w-full border-collapse border border-border rounded-lg" {...props} />
+            <div className="my-4 overflow-x-auto">
+              <table
+                className="border-border min-w-full border-collapse rounded-lg border"
+                {...props}
+              />
             </div>
           ),
           th: ({ ...props }: any) => (
-            <th className="border border-border p-3 text-left bg-muted font-semibold text-foreground" {...props} />
+            <th
+              className="border-border bg-muted text-foreground border p-3 text-left font-semibold"
+              {...props}
+            />
           ),
           td: ({ ...props }: any) => (
-            <td className="border border-border p-3 text-foreground/90" {...props} />
+            <td
+              className="border-border text-foreground/90 border p-3"
+              {...props}
+            />
           ),
           strong: ({ ...props }: any) => (
-            <strong className="font-semibold text-foreground" {...props} />
+            <strong className="text-foreground font-semibold" {...props} />
           ),
           em: ({ ...props }: any) => (
-            <em className="italic text-foreground/90" {...props} />
+            <em className="text-foreground/90 italic" {...props} />
           ),
           pre: ({ children, ...props }: any) => {
             // Check if this is a code block with preview
             const codeElement = React.Children.toArray(children).find(
               (child: any) => child?.type === "code"
-            ) as any;
-            
+            ) as any
+
             if (codeElement?.props?.className) {
-              const className = codeElement.props.className;
-              const languageMatch = className.match(/language-([^:]+)(:preview)?/);
-              
+              const className = codeElement.props.className
+              const languageMatch = className.match(
+                /language-([^:]+)(:preview)?/
+              )
+
               if (languageMatch && languageMatch[2] === ":preview") {
                 // This is a preview code block
-                const language = languageMatch[1];
-                const code = String(codeElement.props.children || "").trim();
-                
+                const language = languageMatch[1]
+                const code = String(codeElement.props.children || "").trim()
+
                 // Try to render a preview from the code
-                let preview: React.ReactNode = null;
-                
+                let preview: React.ReactNode = null
+
                 // Simple JSX parser for common patterns
                 if (language === "tsx" || language === "jsx") {
                   // Try to extract component usage and render it
-                  const jsxMatch = code.match(/<(\w+)([^>]*)>([\s\S]*?)<\/\1>/);
+                  const jsxMatch = code.match(/<(\w+)([^>]*)>([\s\S]*?)<\/\1>/)
                   if (jsxMatch) {
-                    const componentName = jsxMatch[1];
-                    const Component = getPreviewComponent(componentName);
-                    
+                    const componentName = jsxMatch[1]
+                    const Component = getPreviewComponent(componentName)
+
                     if (Component) {
                       // Parse props (simple implementation)
-                      const propsString = jsxMatch[2];
-                      const props: Record<string, any> = {};
-                      
+                      const propsString = jsxMatch[2]
+                      const props: Record<string, any> = {}
+
                       // Extract props like variant="default" or size="lg"
-                      const propMatches = propsString.matchAll(/(\w+)=["']([^"']+)["']/g);
+                      const propMatches = propsString.matchAll(
+                        /(\w+)=["']([^"']+)["']/g
+                      )
                       for (const match of propMatches) {
-                        props[match[1]] = match[2];
+                        props[match[1]] = match[2]
                       }
-                      
+
                       // Extract children
-                      const childrenText = jsxMatch[3]?.trim();
+                      const childrenText = jsxMatch[3]?.trim()
                       if (childrenText) {
-                        props.children = childrenText;
+                        props.children = childrenText
                       }
-                      
-                      preview = <Component {...props} />;
+
+                      preview = <Component {...props} />
                     }
                   }
                 }
-                
+
                 return (
-                  <CodePreview 
-                    code={code} 
+                  <CodePreview
+                    code={code}
                     language={language}
                     preview={preview || undefined}
                     className="my-4"
                   />
-                );
+                )
               }
             }
-            
+
             // Regular code block
             return (
-              <pre className="bg-muted border border-border rounded-lg overflow-x-auto my-4 p-4 font-mono text-sm" {...props}>
+              <pre
+                className="bg-muted border-border my-4 overflow-x-auto rounded-lg border p-4 font-mono text-sm"
+                {...props}
+              >
                 {children}
               </pre>
-            );
+            )
           },
           code: ({ className, children, ...props }: any) => {
-            const isInline = !className || !className.includes("language-");
+            const isInline = !className || !className.includes("language-")
             if (isInline) {
               return (
-                <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-primary border border-border/50" {...props}>
+                <code
+                  className="bg-muted text-primary border-border/50 rounded border px-1.5 py-0.5 font-mono text-sm"
+                  {...props}
+                >
                   {children}
                 </code>
-              );
+              )
             }
-            return <code className={className} {...props}>{children}</code>;
+            return (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            )
           },
         }}
       >
         {content}
       </ReactMarkdown>
     </div>
-  );
+  )
 }

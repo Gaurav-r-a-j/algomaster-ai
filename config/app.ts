@@ -1,4 +1,4 @@
-import { env } from "./common/env";
+import { env } from "./common/env"
 
 // Application configuration - centralized app settings
 export const APP_CONFIG = {
@@ -24,5 +24,4 @@ export const APP_CONFIG = {
     yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
     bing: process.env.NEXT_PUBLIC_BING_VERIFICATION,
   },
-} as const;
-
+} as const

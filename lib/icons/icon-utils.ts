@@ -1,13 +1,13 @@
-import { cn } from "@/utils/common/class-names";
+import { cn } from "@/utils/common/class-names"
 
 // Icon utility functions
 
 export interface IconSize {
-  xs: string | number;
-  sm: string | number;
-  md: string | number;
-  lg: string | number;
-  xl: string | number;
+  xs: string | number
+  sm: string | number
+  md: string | number
+  lg: string | number
+  xl: string | number
 }
 
 export const ICON_SIZES: IconSize = {
@@ -16,11 +16,11 @@ export const ICON_SIZES: IconSize = {
   md: 24,
   lg: 32,
   xl: 40,
-} as const;
+} as const
 
 // Get icon size by preset name
 export function getIconSize(size: keyof IconSize = "md"): string | number {
-  return ICON_SIZES[size];
+  return ICON_SIZES[size]
 }
 
 // Get icon class names with proper sizing
@@ -34,11 +34,11 @@ export function getIconClassName(
     md: "w-6 h-6",
     lg: "w-8 h-8",
     xl: "w-10 h-10",
-  };
-
-  if (typeof size === "string" && size in sizeClasses) {
-    return cn(sizeClasses[size as keyof typeof sizeClasses], className);
   }
 
-  return cn(className);
+  if (typeof size === "string" && size in sizeClasses) {
+    return cn(sizeClasses[size as keyof typeof sizeClasses], className)
+  }
+
+  return cn(className)
 }

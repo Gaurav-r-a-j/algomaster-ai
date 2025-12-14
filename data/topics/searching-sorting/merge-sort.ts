@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const mergeSort: Topic = {
   id: "merge-sort",
   title: "Merge Sort",
-  description: "Efficient divide-and-conquer sorting algorithm with guaranteed O(n log n) performance.",
+  description:
+    "Efficient divide-and-conquer sorting algorithm with guaranteed O(n log n) performance.",
   category: AlgorithmType.SORTING,
   complexity: { time: "O(n log n)", space: "O(n)" },
   visualizerType: VisualizerType.BAR_CHART,
@@ -117,7 +118,8 @@ O(n) - Requires additional space for the temporary arrays during merging.
       question: "What is the space complexity of Merge Sort?",
       options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
       correctAnswer: 2,
-      explanation: "Merge Sort requires O(n) extra space for temporary arrays during merging.",
+      explanation:
+        "Merge Sort requires O(n) extra space for temporary arrays during merging.",
     },
   ],
   practiceLinks: [
@@ -142,4 +144,4 @@ O(n) - Requires additional space for the temporary arrays during merging.
       difficulty: "Medium",
     },
   ],
-};
+}

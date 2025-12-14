@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const graphReps: Topic = {
   id: "graph-reps",
   title: "Graph Representations",
-  description: "Different ways to represent graphs: adjacency list, adjacency matrix, and edge list.",
+  description:
+    "Different ways to represent graphs: adjacency list, adjacency matrix, and edge list.",
   category: AlgorithmType.GRAPH,
   complexity: { time: "O(V + E)", space: "O(V + E)" },
   visualizerType: VisualizerType.NONE,
@@ -165,9 +166,15 @@ class GraphMatrix:
     {
       id: 1,
       question: "Which representation is best for sparse graphs?",
-      options: ["Adjacency Matrix", "Adjacency List", "Edge List", "All are equal"],
+      options: [
+        "Adjacency Matrix",
+        "Adjacency List",
+        "Edge List",
+        "All are equal",
+      ],
       correctAnswer: 1,
-      explanation: "Adjacency list is most space-efficient for sparse graphs (few edges relative to vertices).",
+      explanation:
+        "Adjacency list is most space-efficient for sparse graphs (few edges relative to vertices).",
     },
   ],
   practiceLinks: [
@@ -182,4 +189,4 @@ class GraphMatrix:
       difficulty: "Medium",
     },
   ],
-};
+}

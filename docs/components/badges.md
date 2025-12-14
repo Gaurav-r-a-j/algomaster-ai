@@ -5,9 +5,9 @@ Badge component for labels, tags, and status indicators.
 ## Usage
 
 ```tsx
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge"
 
-<Badge variant="default">New</Badge>
+;<Badge variant="default">New</Badge>
 ```
 
 ## Variants
@@ -25,4 +25,3 @@ import { Badge } from "@/components/ui/badge";
 ```
 
 See the design system overview page for live examples.
-

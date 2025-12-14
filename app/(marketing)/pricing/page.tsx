@@ -3,5 +3,5 @@ export default function PricingPage() {
     <div>
       <h1>Pricing Page</h1>
     </div>
-  );
+  )
 }

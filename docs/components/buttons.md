@@ -65,10 +65,9 @@ Button component variants and sizes from shadcn/ui.
 Use the `asChild` prop when wrapping with Next.js `Link`:
 
 ```tsx
-import Link from "next/link";
+import Link from "next/link"
 
-<Button variant="outline" asChild>
+;<Button variant="outline" asChild>
   <Link href="/dashboard">Go to Dashboard</Link>
 </Button>
 ```
-

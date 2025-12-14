@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { QuoteIcon } from "@/lib/icons";
+import { QuoteIcon } from "@/lib/icons"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 const testimonials = [
   {
@@ -22,44 +22,45 @@ const testimonials = [
     author: "Jessica Alverez",
     role: "Full Stack Developer",
   },
-];
+]
 
 export function Testimonials() {
   return (
-    <section className="py-24 bg-background border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+    <section className="bg-background border-border border-b py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mb-16 text-center">
+          <h2 className="text-foreground mb-4 text-3xl font-bold md:text-4xl">
             Trusted by Students & Developers
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of learners who have improved their DSA skills and landed their dream jobs.
+          <p className="text-muted-foreground mx-auto max-w-2xl">
+            Join thousands of learners who have improved their DSA skills and
+            landed their dream jobs.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="bg-muted/50 p-8 rounded-2xl border border-border relative"
+              className="bg-muted/50 border-border relative rounded-2xl border p-8"
             >
               <IconWrapper
                 icon={QuoteIcon}
                 size={40}
                 className="text-primary/20 absolute top-6 left-6"
               />
-              <p className="text-foreground/80 italic mb-6 mt-8 relative z-10 leading-relaxed">
+              <p className="text-foreground/80 relative z-10 mt-8 mb-6 leading-relaxed italic">
                 &quot;{t.quote}&quot;
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-xs font-bold text-muted-foreground">
+                <div className="bg-muted text-muted-foreground flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold">
                   {t.author.charAt(0)}
                 </div>
                 <div>
-                  <div className="text-sm font-bold text-foreground">
+                  <div className="text-foreground text-sm font-bold">
                     {t.author}
                   </div>
-                  <div className="text-xs text-muted-foreground">{t.role}</div>
+                  <div className="text-muted-foreground text-xs">{t.role}</div>
                 </div>
               </div>
             </div>
@@ -67,6 +68,5 @@ export function Testimonials() {
         </div>
       </div>
     </section>
-  );
+  )
 }
-

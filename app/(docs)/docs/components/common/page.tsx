@@ -1,29 +1,46 @@
-import { Container } from "@/components/common/container";
-import { Section } from "@/components/common/section";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { IconWrapper, LoadingSpinner, MarkdownRenderer, PageHeader } from "@/components/common";
-import { EmptyStateExample } from "@/components/features/design-system/empty-state-example";
-import { PageHeaderExample } from "@/components/features/design-system/page-header-example";
-import { Home01Icon } from "@/lib/icons";
-import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
-import { readFile } from "fs/promises";
-import { join } from "path";
+import { readFile } from "fs/promises"
+import { join } from "path"
+import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
+
+import { Home01Icon } from "@/lib/icons"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  IconWrapper,
+  LoadingSpinner,
+  MarkdownRenderer,
+  PageHeader,
+} from "@/components/common"
+import { Container } from "@/components/common/container"
+import { Section } from "@/components/common/section"
+import { EmptyStateExample } from "@/components/features/design-system/empty-state-example"
+import { PageHeaderExample } from "@/components/features/design-system/page-header-example"
 
 async function getCommonComponentsDoc(): Promise<string> {
   try {
-    const filePath = join(process.cwd(), "docs", "components", "common-components.md");
-    const content = await readFile(filePath, "utf-8");
-    return content;
+    const filePath = join(
+      process.cwd(),
+      "docs",
+      "components",
+      "common-components.md"
+    )
+    const content = await readFile(filePath, "utf-8")
+    return content
   } catch {
-    return "";
+    return ""
   }
 }
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic"
 
 export default async function CommonComponentsDocsPage() {
-  const markdownContent = await getCommonComponentsDoc();
+  const markdownContent = await getCommonComponentsDoc()
   return (
     <Section className="py-12">
       <Container>
@@ -39,8 +56,10 @@ export default async function CommonComponentsDocsPage() {
         )}
 
         <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-6">Individual Component Documentation</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <h2 className="mb-6 text-2xl font-bold">
+            Individual Component Documentation
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[
               { name: "Container", slug: "container" },
               { name: "Section", slug: "section" },
@@ -56,37 +75,46 @@ export default async function CommonComponentsDocsPage() {
               <Link
                 key={component.slug}
                 href={`${ROUTES.DOCS}/components/${component.slug}`}
-                className="block p-4 border rounded-lg hover:bg-muted transition-colors"
+                className="hover:bg-muted block rounded-lg border p-4 transition-colors"
               >
                 <h3 className="font-semibold">{component.name}</h3>
-                <p className="text-sm text-muted-foreground mt-1">View documentation →</p>
+                <p className="text-muted-foreground mt-1 text-sm">
+                  View documentation →
+                </p>
               </Link>
             ))}
           </div>
         </div>
 
-        <div className="space-y-12 mt-12">
+        <div className="mt-12 space-y-12">
           {/* Container */}
           <Card>
             <CardHeader>
               <CardTitle>Container</CardTitle>
               <CardDescription>
-                Responsive container component with preset sizes (sm, md, lg, xl, full)
+                Responsive container component with preset sizes (sm, md, lg,
+                xl, full)
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Props</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li><code>size</code>: &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot; | &quot;full&quot; (default: &quot;xl&quot;)</li>
-                    <li><code>className</code>: Additional CSS classes</li>
+                  <h4 className="mb-2 font-semibold">Props</h4>
+                  <ul className="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+                    <li>
+                      <code>size</code>: &quot;sm&quot; | &quot;md&quot; |
+                      &quot;lg&quot; | &quot;xl&quot; | &quot;full&quot;
+                      (default: &quot;xl&quot;)
+                    </li>
+                    <li>
+                      <code>className</code>: Additional CSS classes
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Example</h4>
-                  <pre className="bg-muted p-4 rounded text-sm overflow-x-auto">
-{`import { Container } from "@/components/common/container";
+                  <h4 className="mb-2 font-semibold">Example</h4>
+                  <pre className="bg-muted overflow-x-auto rounded p-4 text-sm">
+                    {`import { Container } from "@/components/common/container";
 
 <Container size="lg">
   Content here
@@ -102,23 +130,31 @@ export default async function CommonComponentsDocsPage() {
             <CardHeader>
               <CardTitle>Section</CardTitle>
               <CardDescription>
-                Page section component with consistent spacing and optional container wrapper
+                Page section component with consistent spacing and optional
+                container wrapper
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Props</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li><code>spacing</code>: &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; (default: &quot;md&quot;)</li>
-                    <li><code>containerSize</code>: Optional container size</li>
-                    <li><code>id</code>: Section ID for anchor navigation</li>
+                  <h4 className="mb-2 font-semibold">Props</h4>
+                  <ul className="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+                    <li>
+                      <code>spacing</code>: &quot;sm&quot; | &quot;md&quot; |
+                      &quot;lg&quot; (default: &quot;md&quot;)
+                    </li>
+                    <li>
+                      <code>containerSize</code>: Optional container size
+                    </li>
+                    <li>
+                      <code>id</code>: Section ID for anchor navigation
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Example</h4>
-                  <pre className="bg-muted p-4 rounded text-sm overflow-x-auto">
-{`import { Section } from "@/components/common/section";
+                  <h4 className="mb-2 font-semibold">Example</h4>
+                  <pre className="bg-muted overflow-x-auto rounded p-4 text-sm">
+                    {`import { Section } from "@/components/common/section";
 
 <Section spacing="lg" id="features">
   Content here
@@ -134,21 +170,28 @@ export default async function CommonComponentsDocsPage() {
             <CardHeader>
               <CardTitle>PageHeader</CardTitle>
               <CardDescription>
-                Consistent page header with title, description, and optional actions
+                Consistent page header with title, description, and optional
+                actions
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Props</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li><code>title</code>: string (required)</li>
-                    <li><code>description</code>: string</li>
-                    <li><code>actions</code>: ReactNode</li>
+                  <h4 className="mb-2 font-semibold">Props</h4>
+                  <ul className="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+                    <li>
+                      <code>title</code>: string (required)
+                    </li>
+                    <li>
+                      <code>description</code>: string
+                    </li>
+                    <li>
+                      <code>actions</code>: ReactNode
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Live Example</h4>
+                  <h4 className="mb-2 font-semibold">Live Example</h4>
                   <PageHeaderExample />
                 </div>
               </div>
@@ -166,15 +209,22 @@ export default async function CommonComponentsDocsPage() {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Props</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li><code>title</code>: string (required)</li>
-                    <li><code>description</code>: string</li>
-                    <li><code>action</code>: {`{ label: string; onClick: () => void }`}</li>
+                  <h4 className="mb-2 font-semibold">Props</h4>
+                  <ul className="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+                    <li>
+                      <code>title</code>: string (required)
+                    </li>
+                    <li>
+                      <code>description</code>: string
+                    </li>
+                    <li>
+                      <code>action</code>:{" "}
+                      {`{ label: string; onClick: () => void }`}
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Live Example</h4>
+                  <h4 className="mb-2 font-semibold">Live Example</h4>
                   <EmptyStateExample />
                 </div>
               </div>
@@ -186,27 +236,56 @@ export default async function CommonComponentsDocsPage() {
             <CardHeader>
               <CardTitle>IconWrapper</CardTitle>
               <CardDescription>
-                Wrapper for consistent icon sizing. Works with Huge Icons and Hero Icons.
+                Wrapper for consistent icon sizing. Works with Huge Icons and
+                Hero Icons.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Props</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li><code>icon</code>: ComponentType | IconSvgObject (required)</li>
-                    <li><code>size</code>: &quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot; | number</li>
-                    <li><code>className</code>: Additional CSS classes</li>
+                  <h4 className="mb-2 font-semibold">Props</h4>
+                  <ul className="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+                    <li>
+                      <code>icon</code>: ComponentType | IconSvgObject
+                      (required)
+                    </li>
+                    <li>
+                      <code>size</code>: &quot;xs&quot; | &quot;sm&quot; |
+                      &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot; | number
+                    </li>
+                    <li>
+                      <code>className</code>: Additional CSS classes
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Live Example</h4>
-                  <div className="flex gap-4 items-center">
-                    <IconWrapper icon={Home01Icon} size="xs" className="text-primary" />
-                    <IconWrapper icon={Home01Icon} size="sm" className="text-primary" />
-                    <IconWrapper icon={Home01Icon} size="md" className="text-primary" />
-                    <IconWrapper icon={Home01Icon} size="lg" className="text-primary" />
-                    <IconWrapper icon={Home01Icon} size="xl" className="text-primary" />
+                  <h4 className="mb-2 font-semibold">Live Example</h4>
+                  <div className="flex items-center gap-4">
+                    <IconWrapper
+                      icon={Home01Icon}
+                      size="xs"
+                      className="text-primary"
+                    />
+                    <IconWrapper
+                      icon={Home01Icon}
+                      size="sm"
+                      className="text-primary"
+                    />
+                    <IconWrapper
+                      icon={Home01Icon}
+                      size="md"
+                      className="text-primary"
+                    />
+                    <IconWrapper
+                      icon={Home01Icon}
+                      size="lg"
+                      className="text-primary"
+                    />
+                    <IconWrapper
+                      icon={Home01Icon}
+                      size="xl"
+                      className="text-primary"
+                    />
                   </div>
                 </div>
               </div>
@@ -224,25 +303,34 @@ export default async function CommonComponentsDocsPage() {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Props</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li><code>size</code>: &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; (default: &quot;md&quot;)</li>
+                  <h4 className="mb-2 font-semibold">Props</h4>
+                  <ul className="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+                    <li>
+                      <code>size</code>: &quot;sm&quot; | &quot;md&quot; |
+                      &quot;lg&quot; (default: &quot;md&quot;)
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Live Example</h4>
-                  <div className="flex gap-6 items-center">
+                  <h4 className="mb-2 font-semibold">Live Example</h4>
+                  <div className="flex items-center gap-6">
                     <div className="flex flex-col items-center gap-2">
                       <LoadingSpinner size="sm" />
-                      <span className="text-xs text-muted-foreground">Small</span>
+                      <span className="text-muted-foreground text-xs">
+                        Small
+                      </span>
                     </div>
                     <div className="flex flex-col items-center gap-2">
                       <LoadingSpinner size="md" />
-                      <span className="text-xs text-muted-foreground">Medium</span>
+                      <span className="text-muted-foreground text-xs">
+                        Medium
+                      </span>
                     </div>
                     <div className="flex flex-col items-center gap-2">
                       <LoadingSpinner size="lg" />
-                      <span className="text-xs text-muted-foreground">Large</span>
+                      <span className="text-muted-foreground text-xs">
+                        Large
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -252,6 +340,5 @@ export default async function CommonComponentsDocsPage() {
         </div>
       </Container>
     </Section>
-  );
+  )
 }
-

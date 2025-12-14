@@ -1,7 +1,21 @@
-"use client";
+"use client"
 
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { ROUTES } from "@/constants/routes"
+import { useProgress } from "@/context/progress-context"
+import { getModules, TOPICS } from "@/data/curriculum"
+import {
+  extractModuleNumber,
+  isActivePath,
+  removeModulePrefix,
+} from "@/utils/common/path-utils"
+import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug"
+
+import { BookOpenIcon, CheckmarkCircleIcon, Home01Icon } from "@/lib/icons"
+import { Badge } from "@/components/ui/badge"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -9,38 +23,25 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { useProgress } from "@/context/progress-context";
-import { TOPICS, getModules } from "@/data/curriculum";
-import { ROUTES } from "@/constants/routes";
-import {
-  BookOpenIcon,
-  CheckmarkCircleIcon,
-  Home01Icon,
-} from "@/lib/icons";
-import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug";
-import { extractModuleNumber, isActivePath, removeModulePrefix } from "@/utils/common/path-utils";
+} from "@/components/ui/sidebar"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 interface LearningPlatformSidebarProps {
-  onNavigate?: () => void;
+  onNavigate?: () => void
 }
 
 export function LearningPlatformSidebar({
   onNavigate,
 }: LearningPlatformSidebarProps) {
-  const pathname = usePathname();
-  const { completedTopics } = useProgress();
-  const modules = getModules();
+  const pathname = usePathname()
+  const { completedTopics } = useProgress()
+  const modules = getModules()
 
-  const isActive = (path: string) => isActivePath(pathname, path);
+  const isActive = (path: string) => isActivePath(pathname, path)
 
   return (
     <ScrollArea className="flex-1">
-      <div className="p-4 space-y-6">
+      <div className="space-y-6 p-4">
         {/* Quick Links */}
         <SidebarGroup>
           <SidebarGroupLabel>Quick Links</SidebarGroupLabel>
@@ -82,15 +83,15 @@ export function LearningPlatformSidebar({
           <SidebarGroupContent>
             <SidebarMenu>
               {modules.map((module) => {
-                const moduleTopics = TOPICS.filter((t) => t.module === module);
+                const moduleTopics = TOPICS.filter((t) => t.module === module)
                 const completedCount = moduleTopics.filter((t) =>
                   completedTopics.includes(t.id)
-                ).length;
-                const moduleSlug = generateModuleSlug(module);
-                const modulePath = ROUTES.MODULE(moduleSlug);
-                const isModuleActive = isActive(modulePath);
-                const moduleNumber = extractModuleNumber(module);
-                const moduleTitle = removeModulePrefix(module);
+                ).length
+                const moduleSlug = generateModuleSlug(module)
+                const modulePath = ROUTES.MODULE(moduleSlug)
+                const isModuleActive = isActive(modulePath)
+                const moduleNumber = extractModuleNumber(module)
+                const moduleTitle = removeModulePrefix(module)
 
                 return (
                   <SidebarMenuItem key={module}>
@@ -100,7 +101,7 @@ export function LearningPlatformSidebar({
                       tooltip={moduleTitle}
                     >
                       <Link href={modulePath} onClick={onNavigate}>
-                        <span className="text-xs font-mono text-muted-foreground">
+                        <span className="text-muted-foreground font-mono text-xs">
                           {moduleNumber}
                         </span>
                         <span className="truncate">
@@ -118,7 +119,7 @@ export function LearningPlatformSidebar({
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                );
+                )
               })}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -139,12 +140,12 @@ export function LearningPlatformSidebar({
                     .slice(-5)
                     .reverse()
                     .map((topicId) => {
-                      const topic = TOPICS.find((t) => t.id === topicId);
+                      const topic = TOPICS.find((t) => t.id === topicId)
                       if (!topic) {
-                        return null;
+                        return null
                       }
-                      const topicSlug = generateTopicSlug(topic.title);
-                      const topicPath = ROUTES.TOPIC(topicSlug);
+                      const topicSlug = generateTopicSlug(topic.title)
+                      const topicPath = ROUTES.TOPIC(topicSlug)
                       return (
                         <SidebarMenuItem key={topicId}>
                           <SidebarMenuButton
@@ -156,13 +157,13 @@ export function LearningPlatformSidebar({
                               <IconWrapper
                                 icon={CheckmarkCircleIcon}
                                 size={12}
-                                className="text-emerald-500 shrink-0"
+                                className="shrink-0 text-emerald-500"
                               />
                               <span className="truncate">{topic.title}</span>
                             </Link>
                           </SidebarMenuButton>
                         </SidebarMenuItem>
-                      );
+                      )
                     })}
                 </SidebarMenu>
               </SidebarGroupContent>
@@ -171,5 +172,5 @@ export function LearningPlatformSidebar({
         )}
       </div>
     </ScrollArea>
-  );
+  )
 }

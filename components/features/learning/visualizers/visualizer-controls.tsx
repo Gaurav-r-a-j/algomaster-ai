@@ -1,28 +1,35 @@
-"use client";
+"use client"
 
-import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon, RefreshCwIcon } from "@/lib/icons";
-import { Slider } from "@/components/ui/slider";
-import { hoverScaleSmall, tapScale, transitions } from "@/lib/animations";
+import { motion } from "motion/react"
+
+import { hoverScaleSmall, tapScale, transitions } from "@/lib/animations"
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  PauseIcon,
+  PlayIcon,
+  RefreshCwIcon,
+} from "@/lib/icons"
+import { Button } from "@/components/ui/button"
+import { Slider } from "@/components/ui/slider"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 interface VisualizerControlsProps {
-  isPlaying: boolean;
-  currentStep: number;
-  totalSteps: number;
-  playbackSpeed: number;
-  onPlay: () => void;
-  onPause: () => void;
-  onReset: () => void;
-  onPreviousStep: () => void;
-  onNextStep: () => void;
-  onSpeedChange: (speed: number) => void;
-  disabled?: boolean;
-  showSpeedControl?: boolean;
-  arraySize?: number;
-  onArraySizeChange?: (size: number) => void;
-  showArraySizeControl?: boolean;
+  isPlaying: boolean
+  currentStep: number
+  totalSteps: number
+  playbackSpeed: number
+  onPlay: () => void
+  onPause: () => void
+  onReset: () => void
+  onPreviousStep: () => void
+  onNextStep: () => void
+  onSpeedChange: (speed: number) => void
+  disabled?: boolean
+  showSpeedControl?: boolean
+  arraySize?: number
+  onArraySizeChange?: (size: number) => void
+  showArraySizeControl?: boolean
 }
 
 export function VisualizerControls({
@@ -42,13 +49,13 @@ export function VisualizerControls({
   onArraySizeChange,
   showArraySizeControl = false,
 }: VisualizerControlsProps) {
-  const canGoPrevious = currentStep > 0;
-  const canGoNext = currentStep < totalSteps - 1;
+  const canGoPrevious = currentStep > 0
+  const canGoNext = currentStep < totalSteps - 1
 
   return (
     <div className="flex flex-col gap-3">
       {/* Main Controls */}
-      <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex flex-wrap items-center gap-2">
         <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
           <Button
             variant="outline"
@@ -118,9 +125,9 @@ export function VisualizerControls({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={transitions.smooth}
-          className="ml-auto flex items-center gap-2 px-3 py-1.5 bg-muted rounded-md"
+          className="bg-muted ml-auto flex items-center gap-2 rounded-md px-3 py-1.5"
         >
-          <span className="text-xs font-mono text-muted-foreground">
+          <span className="text-muted-foreground font-mono text-xs">
             Step {currentStep + 1} / {totalSteps}
           </span>
         </motion.div>
@@ -129,7 +136,7 @@ export function VisualizerControls({
       {/* Array Size Control */}
       {showArraySizeControl && arraySize !== undefined && onArraySizeChange && (
         <div className="flex items-center gap-4">
-          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider min-w-[80px]">
+          <span className="text-muted-foreground min-w-[80px] text-xs font-semibold tracking-wider uppercase">
             Array Size
           </span>
           <Slider
@@ -141,7 +148,7 @@ export function VisualizerControls({
             className="flex-1"
             disabled={disabled || isPlaying}
           />
-          <span className="text-xs font-mono text-muted-foreground min-w-[40px] text-right">
+          <span className="text-muted-foreground min-w-[40px] text-right font-mono text-xs">
             {arraySize}
           </span>
         </div>
@@ -150,7 +157,7 @@ export function VisualizerControls({
       {/* Speed Control */}
       {showSpeedControl && (
         <div className="flex items-center gap-4">
-          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider min-w-[60px]">
+          <span className="text-muted-foreground min-w-[60px] text-xs font-semibold tracking-wider uppercase">
             Speed
           </span>
           <Slider
@@ -162,12 +169,11 @@ export function VisualizerControls({
             className="flex-1"
             disabled={disabled}
           />
-          <span className="text-xs font-mono text-muted-foreground min-w-[50px] text-right">
+          <span className="text-muted-foreground min-w-[50px] text-right font-mono text-xs">
             {playbackSpeed}ms
           </span>
         </div>
       )}
     </div>
-  );
+  )
 }
-

@@ -1,26 +1,27 @@
-import Link from "next/link";
-import { Container } from "@/components/common/container";
-import { Section } from "@/components/common/section";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { HeroArrowRightIcon } from "@/lib/icons";
+import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
+
 import {
   CheckmarkCircleIcon,
+  HeroArrowRightIcon,
   Home01Icon,
   SearchIcon,
   SettingsIcon,
   ShieldIcon,
   StarIcon,
-} from "@/lib/icons";
-import { ROUTES } from "@/constants/routes";
+} from "@/lib/icons"
+import { Container } from "@/components/common/container"
+import { IconWrapper } from "@/components/common/icon-wrapper"
+import { Section } from "@/components/common/section"
 
 interface Feature {
-  icon: typeof Home01Icon;
-  title: string;
-  description: string;
+  icon: typeof Home01Icon
+  title: string
+  description: string
   link?: {
-    href: string;
-    text: string;
-  };
+    href: string
+    text: string
+  }
 }
 
 const features: Feature[] = [
@@ -64,32 +65,36 @@ const features: Feature[] = [
       text: "Explore",
     },
   },
-];
+]
 
 export function FeaturesGrid() {
   return (
     <Section className="py-20">
       <Container>
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="mb-16 text-center">
+          <h2 className="mb-4 text-4xl font-bold md:text-5xl">
             Everything You Need
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground mx-auto max-w-2xl text-xl">
             Built with modern tools and best practices for production-ready
             applications
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="p-8 border rounded-xl hover:shadow-lg transition-all duration-300 bg-card group"
+              className="bg-card group rounded-xl border p-8 transition-all duration-300 hover:shadow-lg"
             >
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                <IconWrapper icon={feature.icon} size={24} className="text-primary" />
+              <div className="bg-primary/10 group-hover:bg-primary/20 mb-6 flex h-12 w-12 items-center justify-center rounded-lg transition-colors">
+                <IconWrapper
+                  icon={feature.icon}
+                  size={24}
+                  className="text-primary"
+                />
               </div>
-              <h3 className="text-2xl font-semibold mb-3">{feature.title}</h3>
+              <h3 className="mb-3 text-2xl font-semibold">{feature.title}</h3>
               <p className="text-muted-foreground leading-relaxed">
                 {feature.description}
                 {feature.link && (
@@ -97,7 +102,7 @@ export function FeaturesGrid() {
                     {" "}
                     <Link
                       href={feature.link.href}
-                      className="text-primary hover:underline font-medium inline-flex items-center gap-1"
+                      className="text-primary inline-flex items-center gap-1 font-medium hover:underline"
                     >
                       {feature.link.text}{" "}
                       <HeroArrowRightIcon className="h-4 w-4" />
@@ -110,6 +115,5 @@ export function FeaturesGrid() {
         </div>
       </Container>
     </Section>
-  );
+  )
 }
-

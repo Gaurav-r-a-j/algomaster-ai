@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const avlTree: Topic = {
   id: "avl-tree",
   title: "AVL Tree",
-  description: "Self-balancing binary search tree that maintains O(log n) height through rotations.",
+  description:
+    "Self-balancing binary search tree that maintains O(log n) height through rotations.",
   category: AlgorithmType.DATA_STRUCTURE,
   complexity: { time: "O(log n)", space: "O(n)" },
   visualizerType: VisualizerType.AVL_TREE,
@@ -145,7 +146,8 @@ O(n) - Storage for n nodes.
       question: "What is the maximum allowed balance factor in an AVL tree?",
       options: ["0", "1", "2", "3"],
       correctAnswer: 1,
-      explanation: "AVL trees allow balance factors of -1, 0, or 1. If it becomes ±2, rotations are needed.",
+      explanation:
+        "AVL trees allow balance factors of -1, 0, or 1. If it becomes ±2, rotations are needed.",
     },
   ],
   practiceLinks: [
@@ -160,4 +162,4 @@ O(n) - Storage for n nodes.
       difficulty: "Medium",
     },
   ],
-};
+}

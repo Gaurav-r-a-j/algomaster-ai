@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const quickSort: Topic = {
   id: "quick-sort",
   title: "Quick Sort",
-  description: "Efficient divide-and-conquer algorithm, often faster than Merge Sort in practice.",
+  description:
+    "Efficient divide-and-conquer algorithm, often faster than Merge Sort in practice.",
   category: AlgorithmType.SORTING,
   complexity: { time: "O(n log n)", space: "O(log n)" },
   visualizerType: VisualizerType.BAR_CHART,
@@ -142,7 +143,8 @@ Handles duplicate elements efficiently (Dutch National Flag).
       question: "What is the worst-case time complexity of Quick Sort?",
       options: ["O(n)", "O(n log n)", "O(n²)", "O(2^n)"],
       correctAnswer: 2,
-      explanation: "Quick Sort can degrade to O(n²) with bad pivot selection, such as already sorted arrays.",
+      explanation:
+        "Quick Sort can degrade to O(n²) with bad pivot selection, such as already sorted arrays.",
     },
   ],
   practiceLinks: [
@@ -167,4 +169,4 @@ Handles duplicate elements efficiently (Dutch National Flag).
       difficulty: "Medium",
     },
   ],
-};
+}

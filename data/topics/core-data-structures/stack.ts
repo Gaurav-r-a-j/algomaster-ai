@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const stack: Topic = {
   id: "stack",
@@ -108,4 +108,4 @@ def is_balanced(s):
     },
   ],
   quiz: [],
-};
+}

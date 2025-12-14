@@ -1,28 +1,30 @@
-"use client";
+"use client"
 
-import { forwardRef } from "react";
-import { FormField, FormFieldProps } from "./form-field";
+import { forwardRef } from "react"
+import { cn } from "@/utils/common/class-names"
+
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/utils/common/class-names";
+} from "@/components/ui/select"
+
+import { FormField, FormFieldProps } from "./form-field"
 
 export interface SelectOption {
-  value: string;
-  label: string;
-  disabled?: boolean;
+  value: string
+  label: string
+  disabled?: boolean
 }
 
 export interface SelectFieldProps extends Omit<FormFieldProps, "children"> {
-  options: SelectOption[];
-  placeholder?: string;
-  disabled?: boolean;
-  className?: string;
-  selectClassName?: string;
+  options: SelectOption[]
+  placeholder?: string
+  disabled?: boolean
+  className?: string
+  selectClassName?: string
 }
 
 // SelectField - Form select dropdown with label and error handling
@@ -52,7 +54,11 @@ export const SelectField = forwardRef<HTMLDivElement, SelectFieldProps>(
         className={className}
       >
         {({ value, onChange, error }) => (
-          <Select value={value as string} onValueChange={onChange} disabled={disabled}>
+          <Select
+            value={value as string}
+            onValueChange={onChange}
+            disabled={disabled}
+          >
             <SelectTrigger
               id={name}
               className={cn(error && "border-destructive", selectClassName)}
@@ -75,8 +81,8 @@ export const SelectField = forwardRef<HTMLDivElement, SelectFieldProps>(
           </Select>
         )}
       </FormField>
-    );
+    )
   }
-);
+)
 
-SelectField.displayName = "SelectField";
+SelectField.displayName = "SelectField"

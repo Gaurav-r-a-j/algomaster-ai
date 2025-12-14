@@ -3,5 +3,5 @@ export default function FeaturesPage() {
     <div>
       <h1>Features Page</h1>
     </div>
-  );
+  )
 }

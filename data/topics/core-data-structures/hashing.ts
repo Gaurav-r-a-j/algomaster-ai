@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const hashing: Topic = {
   id: "hashing",
@@ -132,4 +132,4 @@ del my_dict['age']       # Delete
     },
   ],
   quiz: [],
-};
+}

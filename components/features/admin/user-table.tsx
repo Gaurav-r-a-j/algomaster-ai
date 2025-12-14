@@ -3,5 +3,5 @@ export function UserTable() {
     <div>
       <h2>User Table</h2>
     </div>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/common/empty-state"
 
 export function EmptyStateExample() {
   return (
@@ -12,6 +12,5 @@ export function EmptyStateExample() {
         onClick: () => alert("Create clicked"),
       }}
     />
-  );
+  )
 }
-

@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const unionFind: Topic = {
   id: "union-find",
@@ -12,4 +12,4 @@ export const unionFind: Topic = {
   difficulty: "Medium",
   content: "# union find\n\nComing soon...",
   quiz: [],
-};
+}

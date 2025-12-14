@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "@/components/ui/accordion"
 
 const faqs = [
   {
@@ -32,17 +32,17 @@ const faqs = [
     q: "Can I practice coding problems directly on the platform?",
     a: "Yes! We have an integrated code editor where you can write, test, and submit solutions. Get instant feedback, see test cases, and compare your solution with optimal approaches.",
   },
-];
+]
 
 export function FAQSection() {
   return (
-    <section className="py-24 bg-muted/30">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+    <section className="bg-muted/30 py-24">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+        <div className="mb-12 text-center">
+          <h2 className="text-foreground mb-4 text-3xl font-bold md:text-4xl">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-muted-foreground text-lg">
             Everything you need to know about our DSA learning platform.
           </p>
         </div>
@@ -50,7 +50,7 @@ export function FAQSection() {
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((item, i) => (
             <AccordionItem key={i} value={`item-${i}`}>
-              <AccordionTrigger className="text-left font-bold text-foreground">
+              <AccordionTrigger className="text-foreground text-left font-bold">
                 {item.q}
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground leading-relaxed">
@@ -61,6 +61,5 @@ export function FAQSection() {
         </Accordion>
       </div>
     </section>
-  );
+  )
 }
-

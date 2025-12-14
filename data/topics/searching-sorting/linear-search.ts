@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const linearSearch: Topic = {
   id: "linear-search",
@@ -91,7 +91,8 @@ def linear_search_2d(matrix, target):
       question: "What is the time complexity of linear search?",
       options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
       correctAnswer: 2,
-      explanation: "Linear search has O(n) time complexity as it may need to check all n elements.",
+      explanation:
+        "Linear search has O(n) time complexity as it may need to check all n elements.",
     },
   ],
   practiceLinks: [
@@ -111,4 +112,4 @@ def linear_search_2d(matrix, target):
       difficulty: "Easy",
     },
   ],
-};
+}

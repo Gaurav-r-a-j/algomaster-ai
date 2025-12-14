@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const insertionSort: Topic = {
   id: "insertion-sort",
   title: "Insertion Sort",
-  description: "Efficient algorithm for small datasets, works like sorting playing cards in your hands.",
+  description:
+    "Efficient algorithm for small datasets, works like sorting playing cards in your hands.",
   category: AlgorithmType.SORTING,
   complexity: { time: "O(n²)", space: "O(1)" },
   visualizerType: VisualizerType.BAR_CHART,
@@ -98,7 +99,8 @@ O(1) - In-place sorting algorithm.
       question: "What is the best-case time complexity of Insertion Sort?",
       options: ["O(n)", "O(n log n)", "O(n²)", "O(1)"],
       correctAnswer: 0,
-      explanation: "Insertion Sort is O(n) when the array is already sorted, making it adaptive.",
+      explanation:
+        "Insertion Sort is O(n) when the array is already sorted, making it adaptive.",
     },
   ],
   practiceLinks: [
@@ -118,4 +120,4 @@ O(1) - In-place sorting algorithm.
       difficulty: "Easy",
     },
   ],
-};
+}

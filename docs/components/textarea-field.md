@@ -5,9 +5,9 @@ Textarea field component with label and error handling. Integrates with react-ho
 ## Usage
 
 ```tsx
-import { TextareaField } from "@/components/forms";
+import { TextareaField } from "@/components/forms"
 
-<TextareaField
+;<TextareaField
   name="message"
   label="Message"
   rows={6}
@@ -17,16 +17,16 @@ import { TextareaField } from "@/components/forms";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `name` | `string` | - | Field name (required) |
-| `label` | `string` | - | Field label |
-| `required` | `boolean` | - | Show required indicator |
-| `description` | `string` | - | Helper text below label |
-| `placeholder` | `string` | - | Placeholder text |
-| `rows` | `number` | `4` | Number of rows |
-| `disabled` | `boolean` | - | Disable textarea |
-| `className` | `string` | - | Container className |
+| Prop          | Type      | Default | Description             |
+| ------------- | --------- | ------- | ----------------------- |
+| `name`        | `string`  | -       | Field name (required)   |
+| `label`       | `string`  | -       | Field label             |
+| `required`    | `boolean` | -       | Show required indicator |
+| `description` | `string`  | -       | Helper text below label |
+| `placeholder` | `string`  | -       | Placeholder text        |
+| `rows`        | `number`  | `4`     | Number of rows          |
+| `disabled`    | `boolean` | -       | Disable textarea        |
+| `className`   | `string`  | -       | Container className     |
 
 ## Example
 
@@ -40,4 +40,3 @@ import { TextareaField } from "@/components/forms";
   description="Provide as much detail as possible"
 />
 ```
-

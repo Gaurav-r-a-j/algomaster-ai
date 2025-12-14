@@ -1,46 +1,47 @@
-import type { Metadata } from "next";
-import { APP_CONFIG } from "@/config/app";
+import type { Metadata } from "next"
+
+import { APP_CONFIG } from "@/config/app"
 
 export interface MetadataConfig {
-  title: string;
-  description: string;
-  keywords?: string[];
-  author?: string;
+  title: string
+  description: string
+  keywords?: string[]
+  author?: string
   openGraph?: {
-    title?: string;
-    description?: string;
+    title?: string
+    description?: string
     images?: Array<{
-      url: string;
-      width?: number;
-      height?: number;
-      alt?: string;
-    }>;
-    type?: "website" | "article" | "profile";
-    siteName?: string;
-  };
+      url: string
+      width?: number
+      height?: number
+      alt?: string
+    }>
+    type?: "website" | "article" | "profile"
+    siteName?: string
+  }
   twitter?: {
-    card?: "summary" | "summary_large_image" | "app" | "player";
-    title?: string;
-    description?: string;
-    images?: string[];
-    creator?: string;
-    site?: string;
-  };
+    card?: "summary" | "summary_large_image" | "app" | "player"
+    title?: string
+    description?: string
+    images?: string[]
+    creator?: string
+    site?: string
+  }
   robots?: {
-    index?: boolean;
-    follow?: boolean;
+    index?: boolean
+    follow?: boolean
     googleBot?: {
-      index?: boolean;
-      follow?: boolean;
-      "max-video-preview"?: number;
-      "max-image-preview"?: "none" | "standard" | "large";
-      "max-snippet"?: number;
-    };
-  };
+      index?: boolean
+      follow?: boolean
+      "max-video-preview"?: number
+      "max-image-preview"?: "none" | "standard" | "large"
+      "max-snippet"?: number
+    }
+  }
   alternates?: {
-    canonical?: string;
-    languages?: Record<string, string>;
-  };
+    canonical?: string
+    languages?: Record<string, string>
+  }
 }
 
 // Generate metadata for pages
@@ -54,14 +55,14 @@ export function generateMetadata(config: MetadataConfig): Metadata {
     twitter,
     robots,
     alternates,
-  } = config;
+  } = config
 
   const fullTitle = title.includes(APP_CONFIG.name)
     ? title
-    : `${title} | ${APP_CONFIG.name}`;
+    : `${title} | ${APP_CONFIG.name}`
 
-  const ogTitle = openGraph?.title || fullTitle;
-  const ogDescription = openGraph?.description || description;
+  const ogTitle = openGraph?.title || fullTitle
+  const ogDescription = openGraph?.description || description
 
   const metadata: Metadata = {
     title: fullTitle,
@@ -106,14 +107,15 @@ export function generateMetadata(config: MetadataConfig): Metadata {
         index: robots?.googleBot?.index ?? true,
         follow: robots?.googleBot?.follow ?? true,
         "max-video-preview": robots?.googleBot?.["max-video-preview"],
-        "max-image-preview": robots?.googleBot?.["max-image-preview"] || "large",
+        "max-image-preview":
+          robots?.googleBot?.["max-image-preview"] || "large",
         "max-snippet": robots?.googleBot?.["max-snippet"],
       },
     },
     verification: APP_CONFIG.verification,
-  };
+  }
 
-  return metadata;
+  return metadata
 }
 
 // Default metadata for the application
@@ -124,5 +126,4 @@ export const defaultMetadata = generateMetadata({
   openGraph: {
     type: "website",
   },
-});
-
+})

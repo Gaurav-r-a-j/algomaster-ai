@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const bubbleSort: Topic = {
   id: "bubble-sort",
   title: "Bubble Sort",
-  description: "Simple sorting algorithm that repeatedly steps through the list.",
+  description:
+    "Simple sorting algorithm that repeatedly steps through the list.",
   category: AlgorithmType.SORTING,
   complexity: { time: "O(n²)", space: "O(1)" },
   visualizerType: VisualizerType.BAR_CHART,
@@ -104,7 +105,8 @@ The optimized version stops early if no swaps occur in a pass, making best case 
       question: "What is the worst-case time complexity of Bubble Sort?",
       options: ["O(n)", "O(n log n)", "O(n²)", "O(2^n)"],
       correctAnswer: 2,
-      explanation: "Bubble Sort has O(n²) worst-case time complexity due to nested loops.",
+      explanation:
+        "Bubble Sort has O(n²) worst-case time complexity due to nested loops.",
     },
   ],
   practiceLinks: [
@@ -124,4 +126,4 @@ The optimized version stops early if no swaps occur in a pass, making best case 
       difficulty: "Easy",
     },
   ],
-};
+}

@@ -249,36 +249,37 @@ next-web-app/
 
 ```typescript
 // services/user-service.ts
-import { BaseService } from "./common/base-service";
+import { BaseService } from "./common/base-service"
 
 class UserService extends BaseService {
   async getUser(id: string) {
-    return this.get(`/users/${id}`);
+    return this.get(`/users/${id}`)
   }
 
   async updateUser(id: string, data: UpdateUserInput) {
-    return this.patch(`/users/${id}`, data);
+    return this.patch(`/users/${id}`, data)
   }
 }
 
-export const userService = new UserService();
+export const userService = new UserService()
 ```
 
 ### Creating a Component with Common Utilities
 
 ```typescript
 // components/features/auth/login-form.tsx
-"use client";
+"use client"
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { LoadingSpinner } from "@/components/common/loading-spinner";
-import { ErrorMessage } from "@/components/common/error-message";
-import { useAuth } from "@/hooks/use-auth";
-import { authService } from "@/services/auth-service";
-import { cn } from "@/utils/common/class-names";
-import type { LoginInput } from "@/lib/validations/auth";
+import { useState } from "react"
+import { authService } from "@/services/auth-service"
+import { cn } from "@/utils/common/class-names"
+
+import type { LoginInput } from "@/lib/validations/auth"
+import { useAuth } from "@/hooks/use-auth"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ErrorMessage } from "@/components/common/error-message"
+import { LoadingSpinner } from "@/components/common/loading-spinner"
 
 export function LoginForm() {
   // Component implementation
@@ -289,16 +290,16 @@ export function LoginForm() {
 
 ```typescript
 // hooks/common/use-window-size.ts
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react"
 
 export function useWindowSize() {
-  const [size, setSize] = useState({ width: 0, height: 0 });
+  const [size, setSize] = useState({ width: 0, height: 0 })
 
   useEffect(() => {
     // Implementation
-  }, []);
+  }, [])
 
-  return size;
+  return size
 }
 ```
 
@@ -306,9 +307,10 @@ export function useWindowSize() {
 
 ```typescript
 // app/api/users/[id]/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { ApiError } from "@/lib/errors/api-error";
-import { HTTP_STATUS } from "@/lib/common/constants";
+import { NextRequest, NextResponse } from "next/server"
+
+import { HTTP_STATUS } from "@/lib/common/constants"
+import { ApiError } from "@/lib/errors/api-error"
 
 export async function GET(
   request: NextRequest,
@@ -316,18 +318,18 @@ export async function GET(
 ) {
   try {
     // Implementation
-    return NextResponse.json(data, { status: HTTP_STATUS.OK });
+    return NextResponse.json(data, { status: HTTP_STATUS.OK })
   } catch (error) {
     if (error instanceof ApiError) {
       return NextResponse.json(
         { error: error.message },
         { status: error.statusCode }
-      );
+      )
     }
     return NextResponse.json(
       { error: "Internal server error" },
       { status: HTTP_STATUS.INTERNAL_SERVER_ERROR }
-    );
+    )
   }
 }
 ```
@@ -367,8 +369,8 @@ describe("functionName or ComponentName", () => {
     // Arrange
     // Act
     // Assert
-  });
-});
+  })
+})
 ```
 
 ## ⚠️ Important Rules

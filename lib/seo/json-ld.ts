@@ -1,59 +1,57 @@
 // JSON-LD Structured Data utilities for SEO
 
 export interface Organization {
-  name: string;
-  url: string;
-  logo?: string;
-  description?: string;
-  sameAs?: string[];
+  name: string
+  url: string
+  logo?: string
+  description?: string
+  sameAs?: string[]
   contactPoint?: {
-    contactType: string;
-    telephone?: string;
-    email?: string;
-  };
+    contactType: string
+    telephone?: string
+    email?: string
+  }
 }
 
 export interface WebSite {
-  name: string;
-  url: string;
-  description?: string;
+  name: string
+  url: string
+  description?: string
   potentialAction?: {
-    "@type": "SearchAction";
+    "@type": "SearchAction"
     target: {
-      "@type": "EntryPoint";
-      urlTemplate: string;
-    };
-    "query-input": string;
-  };
+      "@type": "EntryPoint"
+      urlTemplate: string
+    }
+    "query-input": string
+  }
 }
 
 export interface BreadcrumbItem {
-  name: string;
-  url: string;
+  name: string
+  url: string
 }
 
 export interface Article {
-  headline: string;
-  description?: string;
-  image?: string;
-  datePublished?: string;
-  dateModified?: string;
+  headline: string
+  description?: string
+  image?: string
+  datePublished?: string
+  dateModified?: string
   author?: {
-    name: string;
-    url?: string;
-  };
+    name: string
+    url?: string
+  }
   publisher?: {
-    name: string;
+    name: string
     logo?: {
-      url: string;
-    };
-  };
+      url: string
+    }
+  }
 }
 
 // Generate Organization JSON-LD
-export function generateOrganizationJsonLd(
-  organization: Organization
-): object {
+export function generateOrganizationJsonLd(organization: Organization): object {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -80,7 +78,7 @@ export function generateOrganizationJsonLd(
         }),
       },
     }),
-  };
+  }
 }
 
 // Generate WebSite JSON-LD
@@ -96,13 +94,11 @@ export function generateWebSiteJsonLd(website: WebSite): object {
     ...(website.potentialAction && {
       potentialAction: website.potentialAction,
     }),
-  };
+  }
 }
 
 // Generate BreadcrumbList JSON-LD
-export function generateBreadcrumbJsonLd(
-  items: BreadcrumbItem[]
-): object {
+export function generateBreadcrumbJsonLd(items: BreadcrumbItem[]): object {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -112,7 +108,7 @@ export function generateBreadcrumbJsonLd(
       name: item.name,
       item: item.url,
     })),
-  };
+  }
 }
 
 // Generate Article JSON-LD
@@ -154,6 +150,5 @@ export function generateArticleJsonLd(article: Article): object {
         }),
       },
     }),
-  };
+  }
 }
-

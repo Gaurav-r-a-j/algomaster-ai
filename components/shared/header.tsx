@@ -1,16 +1,17 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ROUTES } from "@/constants/routes";
+import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
+
+import { Button } from "@/components/ui/button"
 
 export function Header() {
   return (
-    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 border-b backdrop-blur">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href={ROUTES.HOME} className="text-xl font-bold">
           DSA Platform
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden items-center gap-6 md:flex">
           <Link href={ROUTES.FEATURES} className="text-sm hover:underline">
             Features
           </Link>
@@ -37,5 +38,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  );
+  )
 }

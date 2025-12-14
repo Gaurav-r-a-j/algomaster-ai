@@ -3,5 +3,5 @@ export function LoginForm() {
     <div>
       <h2>Login Form</h2>
     </div>
-  );
+  )
 }

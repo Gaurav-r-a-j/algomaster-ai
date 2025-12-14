@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const heaps: Topic = {
   id: "heaps",
   title: "Heaps",
-  description: "Complete binary tree that maintains heap property - used for priority queues and efficient sorting.",
+  description:
+    "Complete binary tree that maintains heap property - used for priority queues and efficient sorting.",
   category: AlgorithmType.DATA_STRUCTURE,
   complexity: { time: "O(log n)", space: "O(n)" },
   visualizerType: VisualizerType.HEAP,
@@ -165,7 +166,8 @@ print(-heapq.heappop(max_heap))  # 3 (maximum)
       question: "What is the time complexity of building a heap from an array?",
       options: ["O(n)", "O(n log n)", "O(log n)", "O(n²)"],
       correctAnswer: 0,
-      explanation: "Building a heap from an array takes O(n) time, not O(n log n) as one might expect.",
+      explanation:
+        "Building a heap from an array takes O(n) time, not O(n log n) as one might expect.",
     },
   ],
   practiceLinks: [
@@ -195,4 +197,4 @@ print(-heapq.heappop(max_heap))  # 3 (maximum)
       difficulty: "Hard",
     },
   ],
-};
+}

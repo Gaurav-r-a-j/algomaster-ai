@@ -7,43 +7,43 @@ export const fadeIn = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   exit: { opacity: 0 },
-};
+}
 
 export const slideUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -20 },
-};
+}
 
 export const slideDown = {
   initial: { opacity: 0, y: -20 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 20 },
-};
+}
 
 export const slideLeft = {
   initial: { opacity: 0, x: 20 },
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: -20 },
-};
+}
 
 export const slideRight = {
   initial: { opacity: 0, x: -20 },
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: 20 },
-};
+}
 
 export const scaleIn = {
   initial: { opacity: 0, scale: 0.9 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.9 },
-};
+}
 
 export const scaleUp = {
   initial: { opacity: 0, scale: 0.8 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.8 },
-};
+}
 
 // Transition presets
 export const transitions = {
@@ -74,7 +74,7 @@ export const transitions = {
     duration: 0.5,
     ease: "easeInOut" as const,
   },
-};
+}
 
 // Stagger animations for lists
 export const staggerContainer = {
@@ -84,7 +84,7 @@ export const staggerContainer = {
       staggerChildren: 0.1,
     },
   },
-};
+}
 
 export const staggerItem = {
   initial: { opacity: 0, y: 20 },
@@ -93,29 +93,29 @@ export const staggerItem = {
     y: 0,
     transition: transitions.spring,
   },
-};
+}
 
 // Hover animations
 export const hoverLift = {
   y: -4,
   transition: transitions.quick,
-};
+}
 
 export const hoverScale = {
   scale: 1.05,
   transition: transitions.quick,
-};
+}
 
 export const hoverScaleSmall = {
   scale: 1.02,
   transition: transitions.quick,
-};
+}
 
 // Tap animations
 export const tapScale = {
   scale: 0.98,
   transition: transitions.quick,
-};
+}
 
 // Bar chart animations for sorting visualizers
 export const barAnimation = {
@@ -126,7 +126,7 @@ export const barAnimation = {
     transition: transitions.spring,
   }),
   exit: { height: 0, opacity: 0 },
-};
+}
 
 // Grid cell animations for pathfinding
 export const cellAnimation = {
@@ -134,7 +134,7 @@ export const cellAnimation = {
   animate: { scale: 1, opacity: 1 },
   exit: { scale: 0, opacity: 0 },
   transition: transitions.spring,
-};
+}
 
 // Pulse animation for active elements
 export const pulse = {
@@ -147,7 +147,7 @@ export const pulse = {
     repeat: Infinity,
     ease: "easeInOut" as const,
   },
-};
+}
 
 // Shake animation for errors
 export const shake = {
@@ -157,7 +157,7 @@ export const shake = {
   transition: {
     duration: 0.5,
   },
-};
+}
 
 // Rotate animation
 export const rotate = {
@@ -169,7 +169,7 @@ export const rotate = {
     repeat: Infinity,
     ease: "linear" as const,
   },
-};
+}
 
 // Fade in with delay
 export const fadeInWithDelay = (delay: number = 0) => ({
@@ -181,7 +181,7 @@ export const fadeInWithDelay = (delay: number = 0) => ({
       ...transitions.smooth,
     },
   },
-});
+})
 
 // Slide up with delay
 export const slideUpWithDelay = (delay: number = 0) => ({
@@ -194,7 +194,7 @@ export const slideUpWithDelay = (delay: number = 0) => ({
       ...transitions.spring,
     },
   },
-});
+})
 
 // Page transition
 export const pageTransition = {
@@ -202,14 +202,14 @@ export const pageTransition = {
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -20 },
   transition: transitions.smooth,
-};
+}
 
 // Card entrance
 export const cardEntrance = {
   initial: { opacity: 0, y: 20, scale: 0.95 },
   animate: { opacity: 1, y: 0, scale: 1 },
   transition: transitions.spring,
-};
+}
 
 // List item entrance
 export const listItemEntrance = (index: number) => ({
@@ -222,5 +222,4 @@ export const listItemEntrance = (index: number) => ({
       ...transitions.spring,
     },
   },
-});
-
+})

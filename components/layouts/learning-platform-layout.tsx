@@ -1,6 +1,34 @@
-"use client";
+"use client"
 
-import { useMemo, useState } from "react";
+import { useMemo, useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { ROUTES } from "@/constants/routes"
+import { useProgress } from "@/context/progress-context"
+import { getModules, TOPICS } from "@/data/curriculum"
+import {
+  extractModuleNumber,
+  isActivePath,
+  removeModulePrefix,
+} from "@/utils/common/path-utils"
+import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug"
+
+import {
+  BookOpenIcon,
+  CheckmarkCircleIcon,
+  ChevronRightIcon,
+  Home01Icon,
+  SearchIcon,
+} from "@/lib/icons"
+import { Badge } from "@/components/ui/badge"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { Input } from "@/components/ui/input"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
 import {
   Sidebar,
   SidebarContent,
@@ -14,68 +42,51 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-} from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { useProgress } from "@/context/progress-context";
-import { TOPICS, getModules } from "@/data/curriculum";
-import { ROUTES } from "@/constants/routes";
-import {
-  BookOpenIcon,
-  CheckmarkCircleIcon,
-  ChevronRightIcon,
-  Home01Icon,
-  SearchIcon,
-} from "@/lib/icons";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug";
-import { extractModuleNumber, isActivePath, removeModulePrefix } from "@/utils/common/path-utils";
+} from "@/components/ui/sidebar"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 interface LearningPlatformLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export function LearningPlatformLayout({
   children,
 }: LearningPlatformLayoutProps) {
-  const pathname = usePathname();
-  const { completedTopics } = useProgress();
-  const modules = getModules();
-  const [searchQuery, setSearchQuery] = useState("");
+  const pathname = usePathname()
+  const { completedTopics } = useProgress()
+  const modules = getModules()
+  const [searchQuery, setSearchQuery] = useState("")
 
-  const isActive = (path: string) => isActivePath(pathname, path);
+  const isActive = (path: string) => isActivePath(pathname, path)
 
   // Filter modules and topics based on search
   const filteredModules = useMemo(() => {
-    if (!searchQuery.trim()) {return modules;}
-    const query = searchQuery.toLowerCase();
-    return modules.filter((module) =>
-      module.toLowerCase().includes(query)
-    );
-  }, [modules, searchQuery]);
+    if (!searchQuery.trim()) {
+      return modules
+    }
+    const query = searchQuery.toLowerCase()
+    return modules.filter((module) => module.toLowerCase().includes(query))
+  }, [modules, searchQuery])
 
   const filteredTopics = useMemo(() => {
-    if (!searchQuery.trim()) {return TOPICS;}
-    const query = searchQuery.toLowerCase();
+    if (!searchQuery.trim()) {
+      return TOPICS
+    }
+    const query = searchQuery.toLowerCase()
     return TOPICS.filter(
       (topic) =>
         topic.title.toLowerCase().includes(query) ||
         topic.description.toLowerCase().includes(query) ||
         topic.module.toLowerCase().includes(query)
-    );
-  }, [searchQuery]);
+    )
+  }, [searchQuery])
 
   return (
     <SidebarProvider>
-      <Sidebar className="border-r border-border">
-        <SidebarHeader className="border-b border-border px-4 py-4">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
+      <Sidebar className="border-border border-r">
+        <SidebarHeader className="border-border border-b px-4 py-4">
+          <div className="mb-4 flex items-center gap-2">
+            <div className="bg-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
               <IconWrapper
                 icon={BookOpenIcon}
                 size={20}
@@ -84,7 +95,7 @@ export function LearningPlatformLayout({
             </div>
             <Link
               href={ROUTES.HOME}
-              className="font-bold text-lg tracking-tight text-foreground hover:text-primary transition-colors"
+              className="text-foreground hover:text-primary text-lg font-bold tracking-tight transition-colors"
             >
               DSA Platform
             </Link>
@@ -93,14 +104,14 @@ export function LearningPlatformLayout({
             <IconWrapper
               icon={SearchIcon}
               size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+              className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 -translate-y-1/2"
             />
             <Input
               type="search"
               placeholder="Search topics..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-9 text-sm bg-muted/50 border-border focus:bg-background"
+              className="bg-muted/50 border-border focus:bg-background h-9 pl-9 text-sm"
             />
           </div>
         </SidebarHeader>
@@ -109,7 +120,7 @@ export function LearningPlatformLayout({
           <ScrollArea className="flex-1">
             {searchQuery.trim() ? (
               // Search Results
-              <div className="p-2 space-y-4">
+              <div className="space-y-4 p-2">
                 {filteredModules.length > 0 && (
                   <SidebarGroup>
                     <SidebarGroupLabel>Modules</SidebarGroupLabel>
@@ -118,15 +129,15 @@ export function LearningPlatformLayout({
                         {filteredModules.map((module) => {
                           const moduleTopics = TOPICS.filter(
                             (t) => t.module === module
-                          );
+                          )
                           const completedCount = moduleTopics.filter((t) =>
                             completedTopics.includes(t.id)
-                          ).length;
-                          const moduleSlug = generateModuleSlug(module);
-                          const modulePath = ROUTES.MODULE(moduleSlug);
-                          const isModuleActive = isActive(modulePath);
-                          const moduleNumber = extractModuleNumber(module);
-                          const moduleTitle = removeModulePrefix(module);
+                          ).length
+                          const moduleSlug = generateModuleSlug(module)
+                          const modulePath = ROUTES.MODULE(moduleSlug)
+                          const isModuleActive = isActive(modulePath)
+                          const moduleNumber = extractModuleNumber(module)
+                          const moduleTitle = removeModulePrefix(module)
 
                           return (
                             <SidebarMenuItem key={module}>
@@ -136,7 +147,7 @@ export function LearningPlatformLayout({
                                 tooltip={moduleTitle}
                               >
                                 <Link href={modulePath}>
-                                  <span className="text-xs font-mono text-muted-foreground">
+                                  <span className="text-muted-foreground font-mono text-xs">
                                     {moduleNumber}
                                   </span>
                                   <span className="truncate">
@@ -154,7 +165,7 @@ export function LearningPlatformLayout({
                                 </Link>
                               </SidebarMenuButton>
                             </SidebarMenuItem>
-                          );
+                          )
                         })}
                       </SidebarMenu>
                     </SidebarGroupContent>
@@ -167,10 +178,10 @@ export function LearningPlatformLayout({
                     <SidebarGroupContent>
                       <SidebarMenu>
                         {filteredTopics.slice(0, 10).map((topic) => {
-                          const topicSlug = generateTopicSlug(topic.title);
-                          const topicPath = ROUTES.TOPIC(topicSlug);
-                          const isTopicActive = isActive(topicPath);
-                          const isDone = completedTopics.includes(topic.id);
+                          const topicSlug = generateTopicSlug(topic.title)
+                          const topicPath = ROUTES.TOPIC(topicSlug)
+                          const isTopicActive = isActive(topicPath)
+                          const isDone = completedTopics.includes(topic.id)
 
                           return (
                             <SidebarMenuItem key={topic.id}>
@@ -184,14 +195,16 @@ export function LearningPlatformLayout({
                                     <IconWrapper
                                       icon={CheckmarkCircleIcon}
                                       size={12}
-                                      className="text-emerald-500 shrink-0"
+                                      className="shrink-0 text-emerald-500"
                                     />
                                   )}
-                                  <span className="truncate">{topic.title}</span>
+                                  <span className="truncate">
+                                    {topic.title}
+                                  </span>
                                 </Link>
                               </SidebarMenuButton>
                             </SidebarMenuItem>
-                          );
+                          )
                         })}
                       </SidebarMenu>
                     </SidebarGroupContent>
@@ -200,7 +213,7 @@ export function LearningPlatformLayout({
 
                 {filteredModules.length === 0 &&
                   filteredTopics.length === 0 && (
-                    <div className="p-4 text-center text-sm text-muted-foreground">
+                    <div className="text-muted-foreground p-4 text-center text-sm">
                       No results found
                     </div>
                   )}
@@ -249,25 +262,25 @@ export function LearningPlatformLayout({
                       {modules.map((module) => {
                         const moduleTopics = TOPICS.filter(
                           (t) => t.module === module
-                        ).sort((a, b) => a.order - b.order);
+                        ).sort((a, b) => a.order - b.order)
                         const completedCount = moduleTopics.filter((t) =>
                           completedTopics.includes(t.id)
-                        ).length;
-                        const moduleSlug = generateModuleSlug(module);
-                        const modulePath = ROUTES.MODULE(moduleSlug);
-                        const isModuleActive = isActive(modulePath);
-                        const moduleNumber = extractModuleNumber(module);
-                        const moduleTitle = removeModulePrefix(module);
-                        
+                        ).length
+                        const moduleSlug = generateModuleSlug(module)
+                        const modulePath = ROUTES.MODULE(moduleSlug)
+                        const isModuleActive = isActive(modulePath)
+                        const moduleNumber = extractModuleNumber(module)
+                        const moduleTitle = removeModulePrefix(module)
+
                         // Check if any topic in this module is active
                         const hasActiveTopic = moduleTopics.some((topic) => {
-                          const topicSlug = generateTopicSlug(topic.title);
-                          const topicPath = ROUTES.TOPIC(topicSlug);
-                          return isActive(topicPath);
-                        });
-                        
+                          const topicSlug = generateTopicSlug(topic.title)
+                          const topicPath = ROUTES.TOPIC(topicSlug)
+                          return isActive(topicPath)
+                        })
+
                         // Default open if module is active or has active topic
-                        const defaultOpen = isModuleActive || hasActiveTopic;
+                        const defaultOpen = isModuleActive || hasActiveTopic
 
                         return (
                           <Collapsible
@@ -287,16 +300,16 @@ export function LearningPlatformLayout({
                                     size={14}
                                     className="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
                                   />
-                                  <span className="text-xs font-mono text-muted-foreground">
+                                  <span className="text-muted-foreground font-mono text-xs">
                                     {moduleNumber}
                                   </span>
-                                  <span className="truncate flex-1 text-left">
+                                  <span className="flex-1 truncate text-left">
                                     {moduleTitle}
                                   </span>
                                   {completedCount > 0 && (
                                     <Badge
                                       variant="secondary"
-                                      className="ml-auto h-5 px-1.5 text-xs shrink-0"
+                                      className="ml-auto h-5 shrink-0 px-1.5 text-xs"
                                     >
                                       {completedCount}/{moduleTopics.length}
                                     </Badge>
@@ -304,12 +317,16 @@ export function LearningPlatformLayout({
                                 </SidebarMenuButton>
                               </CollapsibleTrigger>
                               <CollapsibleContent>
-                                <SidebarMenu className="ml-2 mt-1 space-y-0.5">
+                                <SidebarMenu className="mt-1 ml-2 space-y-0.5">
                                   {moduleTopics.map((topic) => {
-                                    const topicSlug = generateTopicSlug(topic.title);
-                                    const topicPath = ROUTES.TOPIC(topicSlug);
-                                    const isTopicActive = isActive(topicPath);
-                                    const isDone = completedTopics.includes(topic.id);
+                                    const topicSlug = generateTopicSlug(
+                                      topic.title
+                                    )
+                                    const topicPath = ROUTES.TOPIC(topicSlug)
+                                    const isTopicActive = isActive(topicPath)
+                                    const isDone = completedTopics.includes(
+                                      topic.id
+                                    )
 
                                     return (
                                       <SidebarMenuItem key={topic.id}>
@@ -325,7 +342,7 @@ export function LearningPlatformLayout({
                                               <IconWrapper
                                                 icon={CheckmarkCircleIcon}
                                                 size={12}
-                                                className="text-emerald-500 shrink-0"
+                                                className="shrink-0 text-emerald-500"
                                               />
                                             )}
                                             <span className="truncate text-sm">
@@ -334,13 +351,13 @@ export function LearningPlatformLayout({
                                           </Link>
                                         </SidebarMenuButton>
                                       </SidebarMenuItem>
-                                    );
+                                    )
                                   })}
                                 </SidebarMenu>
                               </CollapsibleContent>
                             </SidebarMenuItem>
                           </Collapsible>
-                        );
+                        )
                       })}
                     </SidebarMenu>
                   </SidebarGroupContent>
@@ -360,12 +377,12 @@ export function LearningPlatformLayout({
                             .slice(-5)
                             .reverse()
                             .map((topicId) => {
-                              const topic = TOPICS.find((t) => t.id === topicId);
+                              const topic = TOPICS.find((t) => t.id === topicId)
                               if (!topic) {
-                                return null;
+                                return null
                               }
-                              const topicSlug = generateTopicSlug(topic.title);
-                              const topicPath = ROUTES.TOPIC(topicSlug);
+                              const topicSlug = generateTopicSlug(topic.title)
+                              const topicPath = ROUTES.TOPIC(topicSlug)
                               return (
                                 <SidebarMenuItem key={topicId}>
                                   <SidebarMenuButton
@@ -377,7 +394,7 @@ export function LearningPlatformLayout({
                                       <IconWrapper
                                         icon={CheckmarkCircleIcon}
                                         size={12}
-                                        className="text-emerald-500 shrink-0"
+                                        className="shrink-0 text-emerald-500"
                                       />
                                       <span className="truncate">
                                         {topic.title}
@@ -385,7 +402,7 @@ export function LearningPlatformLayout({
                                     </Link>
                                   </SidebarMenuButton>
                                 </SidebarMenuItem>
-                              );
+                              )
                             })}
                         </SidebarMenu>
                       </SidebarGroupContent>
@@ -397,7 +414,7 @@ export function LearningPlatformLayout({
           </ScrollArea>
         </SidebarContent>
 
-        <SidebarFooter className="border-t border-border">
+        <SidebarFooter className="border-border border-t">
           <div className="px-2 py-4">
             <SidebarMenuButton asChild>
               <Link href={ROUTES.HOME}>
@@ -410,10 +427,8 @@ export function LearningPlatformLayout({
       </Sidebar>
 
       <SidebarInset>
-        <main className="flex-1 overflow-y-auto">
-          {children}
-        </main>
+        <main className="flex-1 overflow-y-auto">{children}</main>
       </SidebarInset>
     </SidebarProvider>
-  );
+  )
 }

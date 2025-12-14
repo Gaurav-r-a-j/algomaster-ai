@@ -1,16 +1,18 @@
-"use client";
+"use client"
 
-import { forwardRef } from "react";
-import { FormField, FormFieldProps } from "./form-field";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/utils/common/class-names";
+import { forwardRef } from "react"
+import { cn } from "@/utils/common/class-names"
+
+import { Input } from "@/components/ui/input"
+
+import { FormField, FormFieldProps } from "./form-field"
 
 export interface InputFieldProps extends Omit<FormFieldProps, "children"> {
-  type?: "text" | "email" | "password" | "number" | "tel" | "url";
-  placeholder?: string;
-  disabled?: boolean;
-  className?: string;
-  inputClassName?: string;
+  type?: "text" | "email" | "password" | "number" | "tel" | "url"
+  placeholder?: string
+  disabled?: boolean
+  className?: string
+  inputClassName?: string
 }
 
 // InputField - Form input field with label and error handling
@@ -54,8 +56,8 @@ export const InputField = forwardRef<HTMLDivElement, InputFieldProps>(
           />
         )}
       </FormField>
-    );
+    )
   }
-);
+)
 
-InputField.displayName = "InputField";
+InputField.displayName = "InputField"

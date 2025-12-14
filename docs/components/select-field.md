@@ -5,9 +5,9 @@ Select dropdown component with label and error handling. Integrates with react-h
 ## Usage
 
 ```tsx
-import { SelectField } from "@/components/forms";
+import { SelectField } from "@/components/forms"
 
-<SelectField
+;<SelectField
   name="country"
   label="Country"
   required
@@ -21,15 +21,15 @@ import { SelectField } from "@/components/forms";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `name` | `string` | - | Field name (required) |
-| `label` | `string` | - | Field label |
-| `options` | `Array<{ value: string; label: string }>` | - | Select options (required) |
-| `required` | `boolean` | - | Show required indicator |
-| `placeholder` | `string` | - | Placeholder text |
-| `disabled` | `boolean` | - | Disable select |
-| `className` | `string` | - | Container className |
+| Prop          | Type                                      | Default | Description               |
+| ------------- | ----------------------------------------- | ------- | ------------------------- |
+| `name`        | `string`                                  | -       | Field name (required)     |
+| `label`       | `string`                                  | -       | Field label               |
+| `options`     | `Array<{ value: string; label: string }>` | -       | Select options (required) |
+| `required`    | `boolean`                                 | -       | Show required indicator   |
+| `placeholder` | `string`                                  | -       | Placeholder text          |
+| `disabled`    | `boolean`                                 | -       | Disable select            |
+| `className`   | `string`                                  | -       | Container className       |
 
 ## Example
 
@@ -46,4 +46,3 @@ import { SelectField } from "@/components/forms";
   ]}
 />
 ```
-

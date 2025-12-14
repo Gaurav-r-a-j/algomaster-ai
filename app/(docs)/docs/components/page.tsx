@@ -1,8 +1,15 @@
-import { Container } from "@/components/common/container";
-import { Section } from "@/components/common/section";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
+import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Container } from "@/components/common/container"
+import { Section } from "@/components/common/section"
 
 const componentCategories = [
   {
@@ -46,22 +53,23 @@ const componentCategories = [
       { name: "Badge", slug: "badge" },
     ],
   },
-];
+]
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic"
 
 export default function ComponentsDocsPage() {
   return (
     <Section className="py-12">
       <Container>
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-4">Components Documentation</h1>
+          <h1 className="mb-4 text-4xl font-bold">Components Documentation</h1>
           <p className="text-muted-foreground text-lg">
-            Comprehensive documentation for all reusable components in the design system.
+            Comprehensive documentation for all reusable components in the
+            design system.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {componentCategories.map((category) => (
             <Card key={category.title} className="h-full">
               <CardHeader>
@@ -78,7 +86,7 @@ export default function ComponentsDocsPage() {
                     <li key={component.slug}>
                       <Link
                         href={`${ROUTES.DOCS}/components/${component.slug}`}
-                        className="text-sm text-muted-foreground hover:text-foreground hover:underline"
+                        className="text-muted-foreground hover:text-foreground text-sm hover:underline"
                       >
                         • {component.name}
                       </Link>
@@ -91,6 +99,5 @@ export default function ComponentsDocsPage() {
         </div>
       </Container>
     </Section>
-  );
+  )
 }
-

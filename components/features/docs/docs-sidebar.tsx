@@ -1,10 +1,18 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { BookOpenIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import * as React from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { getModules, getTopicsByModule } from "@/data/curriculum"
+import { generateTopicSlug } from "@/utils/common/slug"
+import { BookOpenIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
 
+import { APP_CONFIG } from "@/config/app"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   Sidebar,
   SidebarContent,
@@ -20,21 +28,13 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
   SidebarSeparator,
-} from "@/components/ui/sidebar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/ui/sidebar"
 
-import { getModules, getTopicsByModule } from "@/data/curriculum";
-import { generateTopicSlug } from "@/utils/common/slug";
-import { APP_CONFIG } from "@/config/app";
-
-export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const pathname = usePathname();
-  const modules = getModules();
+export function DocsSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname()
+  const modules = getModules()
 
   return (
     <Sidebar {...props}>
@@ -43,12 +43,12 @@ export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <BookOpenIcon className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">{APP_CONFIG.name}</span>
-                  <span className="text-xs text-muted-foreground">v1.0.0</span>
+                  <span className="text-muted-foreground text-xs">v1.0.0</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -62,12 +62,12 @@ export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
           <SidebarGroupContent>
             <SidebarMenu>
               {modules.map((moduleName) => {
-                const topics = getTopicsByModule(moduleName);
-                // "Module 1: Foundations" -> "Foundations" for cleaner display potentially, 
+                const topics = getTopicsByModule(moduleName)
+                // "Module 1: Foundations" -> "Foundations" for cleaner display potentially,
                 // but let's keep full name for now or parse it.
                 // Splitting "Module X: Name"
-                const shortName = moduleName.split(": ")[1] || moduleName;
-                const moduleNumber = moduleName.split(":")[0];
+                const shortName = moduleName.split(": ")[1] || moduleName
+                const moduleNumber = moduleName.split(":")[0]
 
                 return (
                   <Collapsible
@@ -86,9 +86,9 @@ export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
                       <CollapsibleContent>
                         <SidebarMenuSub>
                           {topics.map((topic) => {
-                            const slug = generateTopicSlug(topic.title);
-                            const href = `/docs/${slug}`;
-                            const isActive = pathname === href;
+                            const slug = generateTopicSlug(topic.title)
+                            const href = `/docs/${slug}`
+                            const isActive = pathname === href
 
                             return (
                               <SidebarMenuSubItem key={topic.id}>
@@ -99,18 +99,20 @@ export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
                                   <Link href={href}>
                                     <span>{topic.title}</span>
                                     {topic.difficulty === "Hard" && (
-                                      <span className="ml-auto text-[10px] font-bold text-destructive">H</span>
+                                      <span className="text-destructive ml-auto text-[10px] font-bold">
+                                        H
+                                      </span>
                                     )}
                                   </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
-                            );
+                            )
                           })}
                         </SidebarMenuSub>
                       </CollapsibleContent>
                     </SidebarMenuItem>
                   </Collapsible>
-                );
+                )
               })}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -118,5 +120,5 @@ export function DocsSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) 
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  );
+  )
 }

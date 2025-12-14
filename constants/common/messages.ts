@@ -19,4 +19,4 @@ export const MESSAGES = {
     MIN_LENGTH: "Minimum length not met",
     MAX_LENGTH: "Maximum length exceeded",
   },
-} as const;
+} as const

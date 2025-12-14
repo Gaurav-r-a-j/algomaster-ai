@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const dijkstra: Topic = {
   id: "dijkstra",
@@ -12,4 +12,4 @@ export const dijkstra: Topic = {
   difficulty: "Hard",
   content: "# dijkstra\n\nComing soon...",
   quiz: [],
-};
+}

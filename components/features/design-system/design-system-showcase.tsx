@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 // Design System Showcase Component
 // This component can be used within the design system page
@@ -9,6 +9,5 @@ export function DesignSystemShowcase() {
     <div>
       <p>Design system showcase component</p>
     </div>
-  );
+  )
 }
-

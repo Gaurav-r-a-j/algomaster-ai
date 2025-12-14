@@ -1,24 +1,25 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { Menu01Icon } from "@/lib/icons";
-import { ROUTES } from "@/constants/routes";
-import { useProgressStats } from "@/hooks/use-progress-stats";
-import { Progress } from "@/components/ui/progress";
+import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
+
+import { Menu01Icon } from "@/lib/icons"
+import { useProgressStats } from "@/hooks/use-progress-stats"
+import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 interface LearningPlatformHeaderProps {
-  onMenuClick: () => void;
+  onMenuClick: () => void
 }
 
 export function LearningPlatformHeader({
   onMenuClick,
 }: LearningPlatformHeaderProps) {
-  const stats = useProgressStats();
+  const stats = useProgressStats()
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="border-border bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 w-full border-b backdrop-blur">
       <div className="flex h-16 items-center gap-4 px-4 sm:px-6">
         {/* Mobile Menu Button */}
         <Button
@@ -33,15 +34,15 @@ export function LearningPlatformHeader({
         {/* Logo/Title */}
         <Link
           href={ROUTES.HOME}
-          className="flex items-center gap-2 font-bold text-xl tracking-tight text-foreground hover:text-primary transition-colors"
+          className="text-foreground hover:text-primary flex items-center gap-2 text-xl font-bold tracking-tight transition-colors"
         >
           DSA Platform
         </Link>
 
         {/* Progress Bar */}
-        <div className="hidden md:flex flex-1 items-center gap-4 ml-8">
-          <div className="flex-1 max-w-md">
-            <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+        <div className="ml-8 hidden flex-1 items-center gap-4 md:flex">
+          <div className="max-w-md flex-1">
+            <div className="text-muted-foreground mb-1 flex items-center justify-between text-xs">
               <span>Progress</span>
               <span className="font-semibold">
                 {stats.completed} / {stats.total}
@@ -59,6 +60,5 @@ export function LearningPlatformHeader({
         </div>
       </div>
     </header>
-  );
+  )
 }
-

@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { Suspense, useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import posthog from "posthog-js";
-import { PostHogProvider } from "posthog-js/react";
+import { Suspense, useEffect } from "react"
+import { usePathname, useSearchParams } from "next/navigation"
+import posthog from "posthog-js"
+import { PostHogProvider } from "posthog-js/react"
 
 // Initialize PostHog client (runs once)
-let posthogClient: typeof posthog | null = null;
+let posthogClient: typeof posthog | null = null
 
 if (typeof window !== "undefined") {
-  const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+  const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
   const posthogHost =
-    process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
+    process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com"
 
   if (posthogKey) {
     posthog.init(posthogKey, {
@@ -19,41 +19,41 @@ if (typeof window !== "undefined") {
       person_profiles: "identified_only",
       loaded: (ph) => {
         if (process.env.NODE_ENV === "development") {
-          ph.debug();
+          ph.debug()
         }
       },
-    });
-    posthogClient = posthog;
+    })
+    posthogClient = posthog
   }
 }
 
 // PostHog Provider wrapper
 export function PHProvider({ children }: { children: React.ReactNode }) {
   if (!posthogClient) {
-    return <>{children}</>;
+    return <>{children}</>
   }
 
-  return <PostHogProvider client={posthogClient}>{children}</PostHogProvider>;
+  return <PostHogProvider client={posthogClient}>{children}</PostHogProvider>
 }
 
 // Component to track pageviews (internal, wrapped in Suspense)
 function PostHogPageViewInternal() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     if (pathname && posthogClient && typeof window !== "undefined") {
-      let url = window.origin + pathname;
+      let url = window.origin + pathname
       if (searchParams && searchParams.toString()) {
-        url = url + `?${searchParams.toString()}`;
+        url = url + `?${searchParams.toString()}`
       }
       posthogClient.capture("$pageview", {
         $current_url: url,
-      });
+      })
     }
-  }, [pathname, searchParams]);
+  }, [pathname, searchParams])
 
-  return null;
+  return null
 }
 
 // Wrapped in Suspense to handle useSearchParams
@@ -62,5 +62,5 @@ export function PostHogPageView() {
     <Suspense fallback={null}>
       <PostHogPageViewInternal />
     </Suspense>
-  );
+  )
 }

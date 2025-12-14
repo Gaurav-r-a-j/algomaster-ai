@@ -1,14 +1,14 @@
-import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
+import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
 
 export function Footer() {
   return (
-    <footer className="border-t bg-muted/50">
+    <footer className="bg-muted/50 border-t">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div>
-            <h3 className="font-semibold mb-4">Platform</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h3 className="mb-4 font-semibold">Platform</h3>
+            <ul className="text-muted-foreground space-y-2 text-sm">
               <li>
                 <Link href={ROUTES.FEATURES} className="hover:underline">
                   Features
@@ -28,8 +28,8 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Resources</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h3 className="mb-4 font-semibold">Resources</h3>
+            <ul className="text-muted-foreground space-y-2 text-sm">
               <li>
                 <Link href={ROUTES.BLOG} className="hover:underline">
                   Blog
@@ -44,8 +44,8 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h3 className="mb-4 font-semibold">Legal</h3>
+            <ul className="text-muted-foreground space-y-2 text-sm">
               <li>
                 <Link href={ROUTES.CONTACT} className="hover:underline">
                   Contact
@@ -55,13 +55,13 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Connect</h3>
-            <p className="text-sm text-muted-foreground">
+            <h3 className="mb-4 font-semibold">Connect</h3>
+            <p className="text-muted-foreground text-sm">
               © 2024 DSA Learning Platform. All rights reserved.
             </p>
           </div>
         </div>
       </div>
     </footer>
-  );
+  )
 }

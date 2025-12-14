@@ -3,5 +3,5 @@ export default function SubscriptionPage() {
     <div>
       <h1>Subscription Page</h1>
     </div>
-  );
+  )
 }

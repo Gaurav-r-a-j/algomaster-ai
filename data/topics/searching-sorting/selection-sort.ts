@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const selectionSort: Topic = {
   id: "selection-sort",
   title: "Selection Sort",
-  description: "Simple sorting algorithm that finds the minimum element and places it at the beginning.",
+  description:
+    "Simple sorting algorithm that finds the minimum element and places it at the beginning.",
   category: AlgorithmType.SORTING,
   complexity: { time: "O(n²)", space: "O(1)" },
   visualizerType: VisualizerType.BAR_CHART,
@@ -101,4 +102,4 @@ O(1) - In-place sorting algorithm.
       difficulty: "Easy",
     },
   ],
-};
+}

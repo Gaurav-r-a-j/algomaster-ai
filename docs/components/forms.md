@@ -7,6 +7,7 @@ Reusable form components with react-hook-form integration.
 Text input field with label and error handling.
 
 **Props:**
+
 - `name`: string (required)
 - `label`: string
 - `type`: "text" | "email" | "password" | "number" | "tel" | "url"
@@ -15,10 +16,11 @@ Text input field with label and error handling.
 - `disabled`: boolean
 
 **Usage:**
-```tsx
-import { InputField } from "@/components/forms";
 
-<InputField
+```tsx
+import { InputField } from "@/components/forms"
+
+;<InputField
   name="email"
   label="Email"
   type="email"
@@ -32,6 +34,7 @@ import { InputField } from "@/components/forms";
 Textarea field with label and error handling.
 
 **Props:**
+
 - `name`: string (required)
 - `label`: string
 - `rows`: number (default: 4)
@@ -39,10 +42,11 @@ Textarea field with label and error handling.
 - `placeholder`: string
 
 **Usage:**
-```tsx
-import { TextareaField } from "@/components/forms";
 
-<TextareaField
+```tsx
+import { TextareaField } from "@/components/forms"
+
+;<TextareaField
   name="message"
   label="Message"
   rows={6}
@@ -55,6 +59,7 @@ import { TextareaField } from "@/components/forms";
 Select dropdown with label and error handling.
 
 **Props:**
+
 - `name`: string (required)
 - `label`: string
 - `options`: Array<{ value: string; label: string }> (required)
@@ -62,10 +67,11 @@ Select dropdown with label and error handling.
 - `placeholder`: string
 
 **Usage:**
-```tsx
-import { SelectField } from "@/components/forms";
 
-<SelectField
+```tsx
+import { SelectField } from "@/components/forms"
+
+;<SelectField
   name="country"
   label="Country"
   options={[
@@ -81,17 +87,18 @@ import { SelectField } from "@/components/forms";
 Wrapper component that provides form context.
 
 **Usage:**
+
 ```tsx
-import { Form, InputField } from "@/components/forms";
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"
+
+import { Form, InputField } from "@/components/forms"
 
 const form = useForm({
   defaultValues: { email: "" },
-});
+})
 
-<Form form={form} onSubmit={handleSubmit}>
+;<Form form={form} onSubmit={handleSubmit}>
   <InputField name="email" label="Email" />
   <Button type="submit">Submit</Button>
 </Form>
 ```
-

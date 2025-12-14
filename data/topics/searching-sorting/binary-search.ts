@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const binarySearch: Topic = {
   id: "binary-search",
@@ -136,7 +136,8 @@ def search_insert(nums, target):
         "Array must be small",
       ],
       correctAnswer: 1,
-      explanation: "Binary search requires the array to be sorted to work correctly.",
+      explanation:
+        "Binary search requires the array to be sorted to work correctly.",
     },
   ],
   practiceLinks: [
@@ -166,4 +167,4 @@ def search_insert(nums, target):
       difficulty: "Medium",
     },
   ],
-};
+}

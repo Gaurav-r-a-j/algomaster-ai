@@ -7,5 +7,5 @@ export function Sidebar() {
         </ul>
       </nav>
     </aside>
-  );
+  )
 }

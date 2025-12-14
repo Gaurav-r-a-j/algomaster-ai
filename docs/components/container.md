@@ -5,20 +5,18 @@ Responsive container component with preset sizes for consistent page layouts.
 ## Usage
 
 ```tsx
-import { Container } from "@/components/common/container";
+import { Container } from "@/components/common/container"
 
-<Container size="lg">
-  {/* Your content */}
-</Container>
+;<Container size="lg">{/* Your content */}</Container>
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `"sm" \| "md" \| "lg" \| "xl" \| "full"` | `"xl"` | Container max width |
-| `className` | `string` | - | Additional CSS classes |
-| `children` | `ReactNode` | - | Content to wrap |
+| Prop        | Type                                     | Default | Description            |
+| ----------- | ---------------------------------------- | ------- | ---------------------- |
+| `size`      | `"sm" \| "md" \| "lg" \| "xl" \| "full"` | `"xl"`  | Container max width    |
+| `className` | `string`                                 | -       | Additional CSS classes |
+| `children`  | `ReactNode`                              | -       | Content to wrap        |
 
 ## Sizes
 
@@ -31,9 +29,9 @@ import { Container } from "@/components/common/container";
 ## Example
 
 ```tsx
-import { Container } from "@/components/common/container";
+import { Container } from "@/components/common/container"
 
-<Container size="lg" className="py-8">
+;<Container size="lg" className="py-8">
   <h1>Page Title</h1>
   <p>Content goes here</p>
 </Container>
@@ -42,7 +40,7 @@ import { Container } from "@/components/common/container";
 ## Live Preview
 
 <CodePreview
-  code={`import { Container } from "@/components/common/container";
+code={`import { Container } from "@/components/common/container";
 
 <Container size="lg" className="py-8">
   <h1>Page Title</h1>
@@ -56,4 +54,3 @@ import { Container } from "@/components/common/container";
     </Container>
   }
 />
-

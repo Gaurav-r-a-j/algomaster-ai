@@ -1,16 +1,18 @@
-"use client";
+"use client"
 
-import { forwardRef } from "react";
-import { FormField, FormFieldProps } from "./form-field";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/utils/common/class-names";
+import { forwardRef } from "react"
+import { cn } from "@/utils/common/class-names"
+
+import { Textarea } from "@/components/ui/textarea"
+
+import { FormField, FormFieldProps } from "./form-field"
 
 export interface TextareaFieldProps extends Omit<FormFieldProps, "children"> {
-  placeholder?: string;
-  disabled?: boolean;
-  rows?: number;
-  className?: string;
-  textareaClassName?: string;
+  placeholder?: string
+  disabled?: boolean
+  rows?: number
+  className?: string
+  textareaClassName?: string
 }
 
 // TextareaField - Form textarea field with label and error handling
@@ -54,8 +56,8 @@ export const TextareaField = forwardRef<HTMLDivElement, TextareaFieldProps>(
           />
         )}
       </FormField>
-    );
+    )
   }
-);
+)
 
-TextareaField.displayName = "TextareaField";
+TextareaField.displayName = "TextareaField"

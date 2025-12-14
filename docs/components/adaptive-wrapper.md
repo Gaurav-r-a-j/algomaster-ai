@@ -5,9 +5,9 @@ Component for rendering different content based on screen size.
 ## Usage
 
 ```tsx
-import { AdaptiveWrapper } from "@/components/common/adaptive-wrapper";
+import { AdaptiveWrapper } from "@/components/common/adaptive-wrapper"
 
-<AdaptiveWrapper
+;<AdaptiveWrapper
   mobile={<MobileView />}
   tablet={<TabletView />}
   desktop={<DesktopView />}
@@ -16,12 +16,12 @@ import { AdaptiveWrapper } from "@/components/common/adaptive-wrapper";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `mobile` | `ReactNode` | - | Content for mobile screens (required) |
-| `tablet` | `ReactNode` | - | Content for tablet screens |
-| `desktop` | `ReactNode` | - | Content for desktop screens |
-| `className` | `string` | - | Additional CSS classes |
+| Prop        | Type        | Default | Description                           |
+| ----------- | ----------- | ------- | ------------------------------------- |
+| `mobile`    | `ReactNode` | -       | Content for mobile screens (required) |
+| `tablet`    | `ReactNode` | -       | Content for tablet screens            |
+| `desktop`   | `ReactNode` | -       | Content for desktop screens           |
+| `className` | `string`    | -       | Additional CSS classes                |
 
 ## Breakpoints
 
@@ -38,4 +38,3 @@ import { AdaptiveWrapper } from "@/components/common/adaptive-wrapper";
   desktop={<DetailedGridView />}
 />
 ```
-

@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { PageHeader } from "@/components/common/page-header";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
+import { PageHeader } from "@/components/common/page-header"
 
 export function PageHeaderExample() {
   return (
@@ -10,6 +10,5 @@ export function PageHeaderExample() {
       description="This is an example page header"
       actions={<Button size="sm">Action</Button>}
     />
-  );
+  )
 }
-

@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const variablesDatatypes: Topic = {
   id: "variables-datatypes",
   title: "Variables & Data Types",
-  description: "The atoms of programming. Understanding how computers store data.",
+  description:
+    "The atoms of programming. Understanding how computers store data.",
   category: AlgorithmType.BASICS,
   complexity: { time: "O(1)", space: "O(1)" },
   visualizerType: VisualizerType.NONE,
@@ -150,7 +151,8 @@ Try creating variables for:
       question: "Which data type is used for whole numbers?",
       options: ["Float", "String", "Integer", "Boolean"],
       correctAnswer: 2,
-      explanation: "Integers are used for whole numbers without decimal points.",
+      explanation:
+        "Integers are used for whole numbers without decimal points.",
     },
   ],
   practiceLinks: [
@@ -170,5 +172,4 @@ Try creating variables for:
       difficulty: "Easy",
     },
   ],
-};
-
+}

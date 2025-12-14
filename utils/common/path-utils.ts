@@ -11,9 +11,9 @@ export function isActivePath(
   path: string
 ): boolean {
   if (!pathname) {
-    return false;
+    return false
   }
-  return pathname === path || pathname.startsWith(path + "/");
+  return pathname === path || pathname.startsWith(path + "/")
 }
 
 /**
@@ -21,7 +21,7 @@ export function isActivePath(
  * Returns the leading number if present, empty string otherwise
  */
 export function extractModuleNumber(moduleName: string): string {
-  return moduleName.match(/^\d+/)?.[0] || "";
+  return moduleName.match(/^\d+/)?.[0] || ""
 }
 
 /**
@@ -29,6 +29,5 @@ export function extractModuleNumber(moduleName: string): string {
  * Example: "1. Foundations" -> "Foundations"
  */
 export function removeModulePrefix(moduleName: string): string {
-  return moduleName.replace(/^\d+\.\s*/, "");
+  return moduleName.replace(/^\d+\.\s*/, "")
 }
-

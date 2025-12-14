@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const dpIntro: Topic = {
   id: "dp-intro",
   title: "Dynamic Programming",
-  description: "Solving complex problems by breaking them into simpler subproblems.",
+  description:
+    "Solving complex problems by breaking them into simpler subproblems.",
   category: AlgorithmType.DP,
   complexity: { time: "O(n²)", space: "O(n)" },
   visualizerType: VisualizerType.DP,
@@ -12,5 +13,4 @@ export const dpIntro: Topic = {
   difficulty: "Medium",
   content: "# Dynamic Programming\n\nComing soon...",
   quiz: [],
-};
-
+}

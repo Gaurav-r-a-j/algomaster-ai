@@ -3,5 +3,5 @@ export function formatDate(date: Date | string): string {
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(new Date(date));
+  }).format(new Date(date))
 }

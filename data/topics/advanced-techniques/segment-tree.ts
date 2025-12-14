@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const segmentTree: Topic = {
   id: "segment-tree",
@@ -12,5 +12,4 @@ export const segmentTree: Topic = {
   difficulty: "Hard",
   content: "# Segment Tree\n\nComing soon...",
   quiz: [],
-};
-
+}

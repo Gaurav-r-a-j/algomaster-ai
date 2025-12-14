@@ -1,8 +1,8 @@
-import { generateMetadata as genMetadata } from "@/lib/seo/metadata";
-import type { Metadata } from "next";
-import { APP_CONFIG } from "@/config/app";
-import { JsonLd } from "@/components/seo/json-ld";
-import { generateBreadcrumbJsonLd } from "@/lib/seo/json-ld";
+import type { Metadata } from "next"
+
+import { APP_CONFIG } from "@/config/app"
+import { generateBreadcrumbJsonLd } from "@/lib/seo/json-ld"
+import { generateMetadata as genMetadata } from "@/lib/seo/metadata"
 import {
   BentoGrid,
   CTASection,
@@ -13,7 +13,8 @@ import {
   LandingNav,
   Testimonials,
   TopicsGrid,
-} from "@/components/features/marketing";
+} from "@/components/features/marketing"
+import { JsonLd } from "@/components/seo/json-ld"
 
 // Generate metadata for this page
 export const metadata: Metadata = genMetadata({
@@ -31,18 +32,18 @@ export const metadata: Metadata = genMetadata({
       },
     ],
   },
-});
+})
 
 export default function HomePage() {
   // Generate breadcrumb structured data
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: "Home", url: APP_CONFIG.url },
-  ]);
+  ])
 
   return (
     <>
       <JsonLd data={breadcrumbJsonLd} />
-      <div className="min-h-screen flex flex-col">
+      <div className="flex min-h-screen flex-col">
         <LandingNav />
         <LandingHero />
         <BentoGrid />
@@ -54,5 +55,5 @@ export default function HomePage() {
         <LandingFooter />
       </div>
     </>
-  );
+  )
 }

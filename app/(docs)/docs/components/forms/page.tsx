@@ -1,25 +1,37 @@
-"use client";
+"use client"
 
-import { Container } from "@/components/common/container";
-import { Section } from "@/components/common/section";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PageHeader } from "@/components/common";
-import { Form, InputField, SelectField, TextareaField } from "@/components/forms";
-import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
+import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { PageHeader } from "@/components/common"
+import { Container } from "@/components/common/container"
+import { Section } from "@/components/common/section"
+import {
+  Form,
+  InputField,
+  SelectField,
+  TextareaField,
+} from "@/components/forms"
 
 const exampleSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   country: z.string().min(1, "Please select a country"),
   message: z.string().optional(),
-});
+})
 
-type ExampleFormData = z.infer<typeof exampleSchema>;
+type ExampleFormData = z.infer<typeof exampleSchema>
 
 export default function FormsDocsPage() {
   const exampleForm = useForm<ExampleFormData>({
@@ -30,11 +42,11 @@ export default function FormsDocsPage() {
       country: "",
       message: "",
     },
-  });
+  })
 
   const handleSubmit = (data: ExampleFormData) => {
-    alert(`Form submitted: ${JSON.stringify(data, null, 2)}`);
-  };
+    alert(`Form submitted: ${JSON.stringify(data, null, 2)}`)
+  }
 
   return (
     <Section className="py-12">
@@ -44,10 +56,12 @@ export default function FormsDocsPage() {
           description="Reusable form components with react-hook-form integration"
         />
 
-        <div className="space-y-12 mt-8">
+        <div className="mt-8 space-y-12">
           <div>
-            <h2 className="text-2xl font-bold mb-4">Individual Component Documentation</h2>
-            <div className="grid md:grid-cols-2 gap-4">
+            <h2 className="mb-4 text-2xl font-bold">
+              Individual Component Documentation
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2">
               {[
                 { name: "Form", slug: "form" },
                 { name: "InputField", slug: "input-field" },
@@ -58,17 +72,19 @@ export default function FormsDocsPage() {
                 <Link
                   key={component.slug}
                   href={`${ROUTES.DOCS}/components/${component.slug}`}
-                  className="block p-4 border rounded-lg hover:bg-muted transition-colors"
+                  className="hover:bg-muted block rounded-lg border p-4 transition-colors"
                 >
                   <h3 className="font-semibold">{component.name}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">View documentation →</p>
+                  <p className="text-muted-foreground mt-1 text-sm">
+                    View documentation →
+                  </p>
                 </Link>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="space-y-12 mt-8">
+        <div className="mt-8 space-y-12">
           {/* InputField */}
           <Card>
             <CardHeader>
@@ -80,17 +96,29 @@ export default function FormsDocsPage() {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Props</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li><code>name</code>: string (required)</li>
-                    <li><code>label</code>: string</li>
-                    <li><code>type</code>: &quot;text&quot; | &quot;email&quot; | &quot;password&quot; | &quot;number&quot; | &quot;tel&quot; | &quot;url&quot;</li>
-                    <li><code>required</code>: boolean</li>
-                    <li><code>placeholder</code>: string</li>
+                  <h4 className="mb-2 font-semibold">Props</h4>
+                  <ul className="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+                    <li>
+                      <code>name</code>: string (required)
+                    </li>
+                    <li>
+                      <code>label</code>: string
+                    </li>
+                    <li>
+                      <code>type</code>: &quot;text&quot; | &quot;email&quot; |
+                      &quot;password&quot; | &quot;number&quot; |
+                      &quot;tel&quot; | &quot;url&quot;
+                    </li>
+                    <li>
+                      <code>required</code>: boolean
+                    </li>
+                    <li>
+                      <code>placeholder</code>: string
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Live Example</h4>
+                  <h4 className="mb-2 font-semibold">Live Example</h4>
                   <Form form={exampleForm} onSubmit={handleSubmit}>
                     <div className="space-y-4">
                       <InputField
@@ -124,16 +152,24 @@ export default function FormsDocsPage() {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Props</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li><code>name</code>: string (required)</li>
-                    <li><code>label</code>: string</li>
-                    <li><code>rows</code>: number (default: 4)</li>
-                    <li><code>required</code>: boolean</li>
+                  <h4 className="mb-2 font-semibold">Props</h4>
+                  <ul className="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+                    <li>
+                      <code>name</code>: string (required)
+                    </li>
+                    <li>
+                      <code>label</code>: string
+                    </li>
+                    <li>
+                      <code>rows</code>: number (default: 4)
+                    </li>
+                    <li>
+                      <code>required</code>: boolean
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Live Example</h4>
+                  <h4 className="mb-2 font-semibold">Live Example</h4>
                   <Form form={exampleForm} onSubmit={handleSubmit}>
                     <TextareaField
                       name="message"
@@ -158,16 +194,25 @@ export default function FormsDocsPage() {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Props</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                    <li><code>name</code>: string (required)</li>
-                    <li><code>label</code>: string</li>
-                    <li><code>options</code>: Array&lt;{`{ value: string; label: string }`}&gt; (required)</li>
-                    <li><code>required</code>: boolean</li>
+                  <h4 className="mb-2 font-semibold">Props</h4>
+                  <ul className="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+                    <li>
+                      <code>name</code>: string (required)
+                    </li>
+                    <li>
+                      <code>label</code>: string
+                    </li>
+                    <li>
+                      <code>options</code>: Array&lt;
+                      {`{ value: string; label: string }`}&gt; (required)
+                    </li>
+                    <li>
+                      <code>required</code>: boolean
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Live Example</h4>
+                  <h4 className="mb-2 font-semibold">Live Example</h4>
                   <Form form={exampleForm} onSubmit={handleSubmit}>
                     <SelectField
                       name="country"
@@ -234,6 +279,5 @@ export default function FormsDocsPage() {
         </div>
       </Container>
     </Section>
-  );
+  )
 }
-

@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const bitManipulation: Topic = {
   id: "bit-manipulation",
@@ -12,5 +12,4 @@ export const bitManipulation: Topic = {
   difficulty: "Medium",
   content: "# Bit Manipulation\n\nComing soon...",
   quiz: [],
-};
-
+}

@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const arraysStrings: Topic = {
   id: "arrays-strings",
@@ -112,4 +112,4 @@ index = s.find("World")  # 7
     },
   ],
   quiz: [],
-};
+}

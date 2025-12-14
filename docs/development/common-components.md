@@ -20,11 +20,11 @@ Responsive container component with preset sizes.
 **Usage:**
 
 ```tsx
-import { Container } from "@/components/common";
+import { Container } from "@/components/common"
 
-<Container size="lg">
+;<Container size="lg">
   <YourContent />
-</Container>;
+</Container>
 ```
 
 **Sizes:**
@@ -48,12 +48,12 @@ Page section with consistent spacing and container.
 **Usage:**
 
 ```tsx
-import { Section } from "@/components/common";
+import { Section } from "@/components/common"
 
-<Section spacing="lg" containerSize="lg">
+;<Section spacing="lg" containerSize="lg">
   <h2>Section Title</h2>
   <p>Section content</p>
-</Section>;
+</Section>
 ```
 
 ### AdaptiveWrapper
@@ -71,13 +71,13 @@ Component that renders different content based on screen size.
 **Usage:**
 
 ```tsx
-import { AdaptiveWrapper } from "@/components/common";
+import { AdaptiveWrapper } from "@/components/common"
 
-<AdaptiveWrapper
+;<AdaptiveWrapper
   mobile={<MobileView />}
   tablet={<TabletView />}
   desktop={<DesktopView />}
-/>;
+/>
 ```
 
 ### PageHeader
@@ -94,14 +94,14 @@ Consistent page header with title, description, and actions.
 **Usage:**
 
 ```tsx
-import { PageHeader } from "@/components/common";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
+import { PageHeader } from "@/components/common"
 
-<PageHeader
+;<PageHeader
   title="Dashboard"
   description="Welcome back!"
   actions={<Button>New Item</Button>}
-/>;
+/>
 ```
 
 ### CardWrapper
@@ -119,15 +119,15 @@ Wrapper for Card component with consistent structure.
 **Usage:**
 
 ```tsx
-import { CardWrapper } from "@/components/common";
+import { CardWrapper } from "@/components/common"
 
-<CardWrapper
+;<CardWrapper
   title="Card Title"
   description="Card description"
   footer={<Button>Action</Button>}
 >
   <p>Card content</p>
-</CardWrapper>;
+</CardWrapper>
 ```
 
 ### EmptyState
@@ -145,9 +145,9 @@ Component for displaying empty states.
 **Usage:**
 
 ```tsx
-import { EmptyState } from "@/components/common";
+import { EmptyState } from "@/components/common"
 
-<EmptyState
+;<EmptyState
   title="No items found"
   description="Get started by creating your first item"
   icon={<EmptyIcon />}
@@ -155,7 +155,7 @@ import { EmptyState } from "@/components/common";
     label: "Create Item",
     onClick: handleCreate,
   }}
-/>;
+/>
 ```
 
 ### LoadingSpinner
@@ -169,9 +169,9 @@ Loading spinner component.
 **Usage:**
 
 ```tsx
-import { LoadingSpinner } from "@/components/common";
+import { LoadingSpinner } from "@/components/common"
 
-<LoadingSpinner size="lg" />;
+;<LoadingSpinner size="lg" />
 ```
 
 ### ErrorMessage
@@ -186,9 +186,9 @@ Error message component.
 **Usage:**
 
 ```tsx
-import { ErrorMessage } from "@/components/common";
+import { ErrorMessage } from "@/components/common"
 
-<ErrorMessage message="Something went wrong" />;
+;<ErrorMessage message="Something went wrong" />
 ```
 
 ### SuccessMessage
@@ -203,9 +203,9 @@ Success message component.
 **Usage:**
 
 ```tsx
-import { SuccessMessage } from "@/components/common";
+import { SuccessMessage } from "@/components/common"
 
-<SuccessMessage message="Operation successful" />;
+;<SuccessMessage message="Operation successful" />
 ```
 
 ## Component Combinations
@@ -215,9 +215,9 @@ import { SuccessMessage } from "@/components/common";
 **Page Layout:**
 
 ```tsx
-import { Container, Section, PageHeader } from "@/components/common";
+import { Container, PageHeader, Section } from "@/components/common"
 
-<Container size="lg">
+;<Container size="lg">
   <PageHeader
     title="Page Title"
     description="Page description"
@@ -227,28 +227,28 @@ import { Container, Section, PageHeader } from "@/components/common";
   <Section spacing="md">
     <YourContent />
   </Section>
-</Container>;
+</Container>
 ```
 
 **Card Grid:**
 
 ```tsx
-import { CardWrapper, Container } from "@/components/common";
+import { CardWrapper, Container } from "@/components/common"
 
-<Container>
-  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+;<Container>
+  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
     <CardWrapper title="Card 1">Content 1</CardWrapper>
     <CardWrapper title="Card 2">Content 2</CardWrapper>
   </div>
-</Container>;
+</Container>
 ```
 
 **Empty State:**
 
 ```tsx
-import { EmptyState, Container } from "@/components/common";
+import { Container, EmptyState } from "@/components/common"
 
-<Container>
+;<Container>
   {items.length === 0 ? (
     <EmptyState
       title="No items"
@@ -261,7 +261,7 @@ import { EmptyState, Container } from "@/components/common";
   ) : (
     <ItemList items={items} />
   )}
-</Container>;
+</Container>
 ```
 
 ## Best Practices
@@ -277,16 +277,16 @@ import { EmptyState, Container } from "@/components/common";
 
 ```tsx
 import {
-  Container,
-  Section,
   AdaptiveWrapper,
-  PageHeader,
   CardWrapper,
+  Container,
   EmptyState,
-  LoadingSpinner,
   ErrorMessage,
+  LoadingSpinner,
+  PageHeader,
+  Section,
   SuccessMessage,
-} from "@/components/common";
+} from "@/components/common"
 ```
 
 ---

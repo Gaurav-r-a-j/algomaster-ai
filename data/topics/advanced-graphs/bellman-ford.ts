@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const bellmanFord: Topic = {
   id: "bellman-ford",
@@ -12,4 +12,4 @@ export const bellmanFord: Topic = {
   difficulty: "Hard",
   content: "# bellman ford\n\nComing soon...",
   quiz: [],
-};
+}

@@ -3,5 +3,5 @@ export default function AdminUsersPage() {
     <div>
       <h1>Admin Users Page</h1>
     </div>
-  );
+  )
 }

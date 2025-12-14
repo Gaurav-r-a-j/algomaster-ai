@@ -1,44 +1,45 @@
-"use client";
+"use client"
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { SearchIcon } from "@/lib/icons";
-import { VisualizerLayout } from "./visualizer-layout";
-import { VisualizerControls } from "./visualizer-controls";
-import type { Topic } from "@/types/curriculum";
-import type { VisualizationStep } from "@/types/curriculum";
+import { useCallback, useEffect, useRef, useState } from "react"
 import {
   generateBinarySearchSteps,
   generateLinearSearchSteps,
-} from "@/utils/algorithm-logic";
-import { staggerContainer, staggerItem, transitions } from "@/lib/animations";
+} from "@/utils/algorithm-logic"
+import { motion } from "motion/react"
 
-const DEFAULT_SPEED_MS = 800;
+import type { Topic, VisualizationStep } from "@/types/curriculum"
+import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
+import { SearchIcon } from "@/lib/icons"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { IconWrapper } from "@/components/common/icon-wrapper"
+
+import { VisualizerControls } from "./visualizer-controls"
+import { VisualizerLayout } from "./visualizer-layout"
+
+const DEFAULT_SPEED_MS = 800
 
 interface SearchVisualizerProps {
-  topic: Topic;
+  topic: Topic
 }
 
 export function SearchVisualizer({ topic }: SearchVisualizerProps) {
   const [array] = useState<number[]>(
     Array.from({ length: 15 }, (_, i) => (i + 1) * 5).sort((a, b) => a - b)
-  );
-  const [target, setTarget] = useState<number>(40);
-  const [steps, setSteps] = useState<VisualizationStep[]>([]);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS);
-  const timerRef = useRef<number | null>(null);
+  )
+  const [target, setTarget] = useState<number>(40)
+  const [steps, setSteps] = useState<VisualizationStep[]>([])
+  const [currentStep, setCurrentStep] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
+  const timerRef = useRef<number | null>(null)
 
   const generateSteps = useCallback(() => {
-    let newSteps: VisualizationStep[] = [];
+    let newSteps: VisualizationStep[] = []
     if (topic.id === "binary-search") {
-      newSteps = generateBinarySearchSteps(array, target);
+      newSteps = generateBinarySearchSteps(array, target)
     } else if (topic.id === "linear-search") {
-      newSteps = generateLinearSearchSteps(array, target);
+      newSteps = generateLinearSearchSteps(array, target)
     } else {
       newSteps = [
         {
@@ -47,63 +48,64 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
           sortedIndices: [],
           description: "Visualization not implemented.",
         },
-      ];
+      ]
     }
-    setSteps(newSteps);
-    setCurrentStep(0);
-    setIsPlaying(false);
-  }, [topic.id, array, target]);
+    setSteps(newSteps)
+    setCurrentStep(0)
+    setIsPlaying(false)
+  }, [topic.id, array, target])
 
   useEffect(() => {
-    generateSteps();
-  }, [generateSteps, topic.id, target]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    generateSteps()
+  }, [generateSteps, topic.id, target])
 
   useEffect(() => {
     if (isPlaying && steps.length > 0) {
       timerRef.current = window.setInterval(() => {
         setCurrentStep((prev) => {
           if (prev >= steps.length - 1) {
-            setIsPlaying(false);
-            return prev;
+            setIsPlaying(false)
+            return prev
           }
-          return prev + 1;
-        });
-      }, playbackSpeed);
+          return prev + 1
+        })
+      }, playbackSpeed)
     } else if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
+      clearInterval(timerRef.current)
+      timerRef.current = null
     }
     return () => {
       if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
+        clearInterval(timerRef.current)
+        timerRef.current = null
       }
-    };
-  }, [isPlaying, steps.length, playbackSpeed]);
+    }
+  }, [isPlaying, steps.length, playbackSpeed])
 
   const handlePreviousStep = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+      setCurrentStep(currentStep - 1)
     }
-  };
+  }
 
   const handleNextStep = () => {
     if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
+      setCurrentStep(currentStep + 1)
     }
-  };
+  }
 
   const handlePlay = () => {
-    setIsPlaying(true);
-  };
+    setIsPlaying(true)
+  }
 
   const handlePause = () => {
-    setIsPlaying(false);
-  };
+    setIsPlaying(false)
+  }
 
   const handleReset = () => {
-    generateSteps();
-  };
+    generateSteps()
+  }
 
   const currentData =
     steps[currentStep] ||
@@ -112,7 +114,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       activeIndices: [],
       sortedIndices: [],
       description: "Ready to search",
-    } as VisualizationStep);
+    } as VisualizationStep)
 
   const controls = (
     <div className="flex items-center gap-2">
@@ -140,18 +142,20 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
         showSpeedControl={true}
       />
     </div>
-  );
+  )
 
   const description = (
-    <p className="text-sm text-foreground font-medium">
+    <p className="text-foreground text-sm font-medium">
       {currentData.description}
     </p>
-  );
+  )
 
   return (
     <VisualizerLayout
       title="Search Visualization"
-      icon={<IconWrapper icon={SearchIcon} size={20} className="text-primary" />}
+      icon={
+        <IconWrapper icon={SearchIcon} size={20} className="text-primary" />
+      }
       controls={controls}
       description={description}
     >
@@ -163,11 +167,11 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       >
         <Card>
           <CardContent className="p-8">
-            <div className="flex flex-wrap items-center justify-center gap-4 min-h-[200px]">
+            <div className="flex min-h-[200px] flex-wrap items-center justify-center gap-4">
               {currentData.array.map((value, idx) => {
-                const isActive = currentData.activeIndices.includes(idx);
-                const isFound = currentData.sortedIndices.includes(idx);
-                
+                const isActive = currentData.activeIndices.includes(idx)
+                const isFound = currentData.sortedIndices.includes(idx)
+
                 return (
                   <motion.div
                     key={`${idx}-${value}`}
@@ -197,25 +201,26 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
                           : isActive
                             ? "rgb(180 83 9)"
                             : "hsl(var(--foreground))",
-                        boxShadow: isFound || isActive
-                          ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
-                          : "none",
+                        boxShadow:
+                          isFound || isActive
+                            ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+                            : "none",
                       }}
                       transition={transitions.smooth}
-                      className="w-20 h-20 rounded-xl border-2 flex items-center justify-center font-bold text-xl"
+                      className="flex h-20 w-20 items-center justify-center rounded-xl border-2 text-xl font-bold"
                     >
                       {value}
                     </motion.div>
-                    <span className="text-xs font-mono text-muted-foreground font-semibold">
+                    <span className="text-muted-foreground font-mono text-xs font-semibold">
                       [{idx}]
                     </span>
                   </motion.div>
-                );
+                )
               })}
             </div>
           </CardContent>
         </Card>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -224,13 +229,15 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
           <Card>
             <CardContent className="p-4">
               <div className="text-center">
-                <span className="text-sm text-muted-foreground">Searching for: </span>
+                <span className="text-muted-foreground text-sm">
+                  Searching for:{" "}
+                </span>
                 <motion.span
                   key={target}
                   initial={{ scale: 1.2 }}
                   animate={{ scale: 1 }}
                   transition={transitions.spring}
-                  className="font-bold text-foreground text-lg"
+                  className="text-foreground text-lg font-bold"
                 >
                   {target}
                 </motion.span>
@@ -240,6 +247,5 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
         </motion.div>
       </motion.div>
     </VisualizerLayout>
-  );
+  )
 }
-

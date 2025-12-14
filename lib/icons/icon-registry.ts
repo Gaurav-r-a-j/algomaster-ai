@@ -2,6 +2,44 @@
 // Provides unified way to import and use icons from different libraries (Huge Icons & Hero Icons)
 
 // Huge Icons - Import first, then export with aliases
+
+// Hero Icons - Import and re-export with Hero prefix
+import {
+  ArrowPathIcon,
+  BanknotesIcon,
+  BellIcon,
+  BookOpenIcon,
+  BriefcaseIcon,
+  ChartBarIcon,
+  ChatBubbleLeftRightIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronUpIcon,
+  CodeBracketIcon,
+  Cog6ToothIcon,
+  ComputerDesktopIcon,
+  DocumentTextIcon,
+  EyeSlashIcon,
+  ArrowLeftIcon as HeroArrowLeftIconBase,
+  ArrowRightIcon as HeroArrowRightIconBase,
+  EyeIcon as HeroEyeIconBase,
+  MoonIcon as HeroMoonIconBase,
+  SunIcon as HeroSunIconBase,
+  UserIcon as HeroUserIconBase,
+  HomeIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+  MagnifyingGlassIcon,
+  PencilIcon,
+  PlusIcon,
+  SparklesIcon,
+  Squares2X2Icon,
+  TrashIcon,
+  UserGroupIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline"
 import {
   AddIcon,
   AiPhone01Icon,
@@ -57,7 +95,7 @@ import {
   UserIcon,
   UserSettingsIcon,
   VideoIcon,
-} from "@hugeicons/core-free-icons";
+} from "@hugeicons/core-free-icons"
 
 // Export all Huge Icons with original names
 export {
@@ -115,7 +153,7 @@ export {
   UserIcon,
   UserSettingsIcon,
   VideoIcon,
-};
+}
 
 // Export with simpler aliases for convenience
 export {
@@ -126,45 +164,7 @@ export {
   AiPhone01Icon as PhoneIcon,
   UserSettingsIcon as UserSettingIcon,
   CheckmarkCircleIcon as CheckCircleIcon,
-};
-
-// Hero Icons - Import and re-export with Hero prefix
-import {
-  ArrowPathIcon,
-  BanknotesIcon,
-  BellIcon,
-  BookOpenIcon,
-  BriefcaseIcon,
-  ChartBarIcon,
-  ChatBubbleLeftRightIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronUpIcon,
-  CodeBracketIcon,
-  Cog6ToothIcon,
-  ComputerDesktopIcon,
-  DocumentTextIcon,
-  EyeSlashIcon,
-  ArrowLeftIcon as HeroArrowLeftIconBase,
-  ArrowRightIcon as HeroArrowRightIconBase,
-  EyeIcon as HeroEyeIconBase,
-  MoonIcon as HeroMoonIconBase,
-  SunIcon as HeroSunIconBase,
-  UserIcon as HeroUserIconBase,
-  HomeIcon,
-  LockClosedIcon,
-  LockOpenIcon,
-  MagnifyingGlassIcon,
-  PencilIcon,
-  PlusIcon,
-  SparklesIcon,
-  Squares2X2Icon,
-  TrashIcon,
-  UserGroupIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+}
 
 // Re-export Hero Icons with Hero prefix for consistency
 export {
@@ -202,8 +202,7 @@ export {
   ArrowPathIcon as HeroRefreshCwIcon,
   ChartBarIcon as HeroChartBarIcon,
   Squares2X2Icon as HeroLayersIcon,
-
-};
+}
 
 // Export without Hero prefix for convenience (use in components)
 export {
@@ -222,7 +221,7 @@ export {
   ChevronDownIcon,
   ChartBarIcon as ChartBarIcon,
   Squares2X2Icon as LayersIcon,
-};
+}
 
 // Type exports for icon usage
-export type { SVGProps } from "react";
+export type { SVGProps } from "react"

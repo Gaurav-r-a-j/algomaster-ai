@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const greedyIntro: Topic = {
   id: "greedy-intro",
@@ -12,5 +12,4 @@ export const greedyIntro: Topic = {
   difficulty: "Medium",
   content: "# Greedy Algorithms\n\nComing soon...",
   quiz: [],
-};
-
+}

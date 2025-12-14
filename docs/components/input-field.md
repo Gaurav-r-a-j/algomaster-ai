@@ -5,9 +5,9 @@ Text input field component with label and error handling. Integrates with react-
 ## Usage
 
 ```tsx
-import { InputField } from "@/components/forms";
+import { InputField } from "@/components/forms"
 
-<InputField
+;<InputField
   name="email"
   label="Email"
   type="email"
@@ -18,17 +18,17 @@ import { InputField } from "@/components/forms";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `name` | `string` | - | Field name (required) |
-| `label` | `string` | - | Field label |
-| `type` | `"text" \| "email" \| "password" \| "number" \| "tel" \| "url"` | `"text"` | Input type |
-| `required` | `boolean` | - | Show required indicator |
-| `description` | `string` | - | Helper text below label |
-| `placeholder` | `string` | - | Placeholder text |
-| `disabled` | `boolean` | - | Disable input |
-| `className` | `string` | - | Container className |
-| `inputClassName` | `string` | - | Input className |
+| Prop             | Type                                                            | Default  | Description             |
+| ---------------- | --------------------------------------------------------------- | -------- | ----------------------- |
+| `name`           | `string`                                                        | -        | Field name (required)   |
+| `label`          | `string`                                                        | -        | Field label             |
+| `type`           | `"text" \| "email" \| "password" \| "number" \| "tel" \| "url"` | `"text"` | Input type              |
+| `required`       | `boolean`                                                       | -        | Show required indicator |
+| `description`    | `string`                                                        | -        | Helper text below label |
+| `placeholder`    | `string`                                                        | -        | Placeholder text        |
+| `disabled`       | `boolean`                                                       | -        | Disable input           |
+| `className`      | `string`                                                        | -        | Container className     |
+| `inputClassName` | `string`                                                        | -        | Input className         |
 
 ## Example
 
@@ -42,4 +42,3 @@ import { InputField } from "@/components/forms";
   description="We'll never share your email"
 />
 ```
-

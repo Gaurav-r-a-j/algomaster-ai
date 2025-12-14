@@ -5,17 +5,17 @@ Loading spinner component with different sizes for various use cases.
 ## Usage
 
 ```tsx
-import { LoadingSpinner } from "@/components/common/loading-spinner";
+import { LoadingSpinner } from "@/components/common/loading-spinner"
 
-<LoadingSpinner size="lg" />
+;<LoadingSpinner size="lg" />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Spinner size |
-| `className` | `string` | - | Additional CSS classes |
+| Prop        | Type                   | Default | Description            |
+| ----------- | ---------------------- | ------- | ---------------------- |
+| `size`      | `"sm" \| "md" \| "lg"` | `"md"`  | Spinner size           |
+| `className` | `string`               | -       | Additional CSS classes |
 
 ## Sizes
 
@@ -26,18 +26,15 @@ import { LoadingSpinner } from "@/components/common/loading-spinner";
 ## Example
 
 ```tsx
-{isLoading ? (
-  <LoadingSpinner size="lg" />
-) : (
-  <DataDisplay />
-)}
+{
+  isLoading ? <LoadingSpinner size="lg" /> : <DataDisplay />
+}
 ```
 
 ## Full Page Loading
 
 ```tsx
-<div className="flex items-center justify-center min-h-screen">
+<div className="flex min-h-screen items-center justify-center">
   <LoadingSpinner size="lg" />
 </div>
 ```
-

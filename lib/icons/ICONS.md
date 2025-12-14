@@ -9,7 +9,7 @@ This project uses **Huge Icons** (primary) and **Hero Icons** (secondary) for ic
 Import icons directly from the icon registry:
 
 ```tsx
-import { Home01Icon, SearchIcon, UserIcon } from "@/lib/icons";
+import { Home01Icon, SearchIcon, UserIcon } from "@/lib/icons"
 
 function MyComponent() {
   return (
@@ -18,7 +18,7 @@ function MyComponent() {
       <SearchIcon size={20} />
       <UserIcon size={32} />
     </div>
-  );
+  )
 }
 ```
 
@@ -27,8 +27,8 @@ function MyComponent() {
 Use the IconWrapper for consistent sizing with preset sizes:
 
 ```tsx
-import { IconWrapper } from "@/lib/icons";
-import { Home01Icon } from "@/lib/icons/icon-registry";
+import { IconWrapper } from "@/lib/icons"
+import { Home01Icon } from "@/lib/icons/icon-registry"
 
 function MyComponent() {
   return (
@@ -37,14 +37,14 @@ function MyComponent() {
       <IconWrapper icon={Home01Icon} size="md" />
       <IconWrapper icon={Home01Icon} size="lg" />
     </div>
-  );
+  )
 }
 ```
 
 ### Method 3: Using Icon Component (Huge Icons only)
 
 ```tsx
-import { Icon } from "@/lib/icons";
+import { Icon } from "@/lib/icons"
 
 function MyComponent() {
   return (
@@ -54,7 +54,7 @@ function MyComponent() {
       size={24}
       className="text-blue-500"
     />
-  );
+  )
 }
 ```
 
@@ -86,15 +86,15 @@ Hero Icons are available as an alternative. They use the "Hero" prefix in export
 **Example:**
 
 ```tsx
-import { HeroHomeIcon, HeroSearchIcon } from "@/lib/icons";
+import { HeroHomeIcon, HeroSearchIcon } from "@/lib/icons"
 
 function MyComponent() {
   return (
     <div>
-      <HeroHomeIcon className="w-6 h-6" />
-      <HeroSearchIcon className="w-5 h-5 text-gray-500" />
+      <HeroHomeIcon className="h-6 w-6" />
+      <HeroSearchIcon className="h-5 w-5 text-gray-500" />
     </div>
-  );
+  )
 }
 ```
 
@@ -124,7 +124,7 @@ Icons accept standard className props:
 ```tsx
 <Home01Icon
   size={24}
-  className="text-blue-500 hover:text-blue-700 transition-colors"
+  className="text-blue-500 transition-colors hover:text-blue-700"
 />
 ```
 
@@ -150,10 +150,12 @@ Icons accept standard className props:
 Example:
 
 ```ts
+import { NewIcon as HeroNewIcon } from "@heroicons/react/24/outline"
+
 // lib/icons/icon-registry.ts
-export { NewIcon } from "@hugeicons/core-free-icons";
-import { NewIcon as HeroNewIcon } from "@heroicons/react/24/outline";
-export { HeroNewIcon };
+export { NewIcon } from "@hugeicons/core-free-icons"
+
+export { HeroNewIcon }
 ```
 
 ## Best Practices

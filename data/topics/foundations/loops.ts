@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const loops: Topic = {
   id: "loops",
@@ -151,5 +151,4 @@ while left < right:
       difficulty: "Easy",
     },
   ],
-};
-
+}

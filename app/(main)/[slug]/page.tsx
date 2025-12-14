@@ -1,11 +1,27 @@
-"use client";
+"use client"
 
-import { use } from "react";
-import { notFound } from "next/navigation";
-import { TOPICS, getModuleBySlug, getTopicBySlug, getTopicsByModule, isModuleSlug } from "@/data/curriculum";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { use } from "react"
+import Link from "next/link"
+import { notFound } from "next/navigation"
+import { ROUTES } from "@/constants/routes"
+import { useProgress } from "@/context/progress-context"
+import {
+  getModuleBySlug,
+  getModules,
+  getTopicBySlug,
+  getTopicsByModule,
+  isModuleSlug,
+  TOPICS,
+} from "@/data/curriculum"
+import { removeModulePrefix } from "@/utils/common/path-utils"
+import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug"
+import { motion } from "motion/react"
+
+import { VisualizerType } from "@/types/curriculum"
+import { fadeIn, slideDown, transitions } from "@/lib/animations"
+import { BookOpenIcon, CodeIcon, PlayIcon } from "@/lib/icons"
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,66 +29,55 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { LearnView } from "@/components/features/learning/learn-view";
-import { VisualizeView } from "@/components/features/learning/visualize-view";
-import { PracticeView } from "@/components/features/learning/practice-view";
-import { TopicNavigation } from "@/components/features/learning/topic-navigation";
-import { TopicCard } from "@/components/features/learning/topic-card";
-import { ROUTES } from "@/constants/routes";
-import Link from "next/link";
-import { VisualizerType } from "@/types/curriculum";
-import { BookOpenIcon, CodeIcon, PlayIcon } from "@/lib/icons";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { useProgress } from "@/context/progress-context";
-import { Container } from "@/components/common/container";
-import { Section } from "@/components/common/section";
-import { PageHeader } from "@/components/common/page-header";
-import { Progress } from "@/components/ui/progress";
-import { cn } from "@/lib/utils";
-import { getModules } from "@/data/curriculum";
-import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug";
-import { removeModulePrefix } from "@/utils/common/path-utils";
-import { motion } from "motion/react";
-import { fadeIn, slideDown, transitions } from "@/lib/animations";
+} from "@/components/ui/breadcrumb"
+import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Container } from "@/components/common/container"
+import { IconWrapper } from "@/components/common/icon-wrapper"
+import { PageHeader } from "@/components/common/page-header"
+import { Section } from "@/components/common/section"
+import { LearnView } from "@/components/features/learning/learn-view"
+import { PracticeView } from "@/components/features/learning/practice-view"
+import { TopicCard } from "@/components/features/learning/topic-card"
+import { VisualizeView } from "@/components/features/learning/visualize-view"
 
 interface SlugPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>
 }
 
 export default function SlugPage({ params }: SlugPageProps) {
-  const { slug } = use(params);
-  const { completedTopics } = useProgress();
+  const { slug } = use(params)
+  const { completedTopics } = useProgress()
 
   // Check if it's a module or topic
   if (isModuleSlug(slug)) {
     // Render module page
-    const moduleName = getModuleBySlug(slug);
+    const moduleName = getModuleBySlug(slug)
     if (!moduleName) {
-      notFound();
+      notFound()
     }
 
     const moduleTopics = getTopicsByModule(moduleName).sort(
       (a, b) => a.order - b.order
-    );
+    )
     const completedCount = moduleTopics.filter((t) =>
       completedTopics.includes(t.id)
-    ).length;
-    const totalInModule = moduleTopics.length;
+    ).length
+    const totalInModule = moduleTopics.length
     const progressPercentage = Math.round(
       (completedCount / totalInModule) * 100
-    );
-    const modules = getModules();
-    const moduleIndex = modules.indexOf(moduleName);
+    )
+    const modules = getModules()
+    const moduleIndex = modules.indexOf(moduleName)
 
     return (
-      <div className="min-h-screen bg-background">
-        <Section className="py-8 border-b border-border">
+      <div className="bg-background min-h-screen">
+        <Section className="border-border border-b py-8">
           <Container>
-            <div className="flex items-center gap-6 mb-4">
+            <div className="mb-4 flex items-center gap-6">
               <div
                 className={cn(
-                  "w-16 h-16 rounded-full border-4 flex items-center justify-center font-bold text-xl shadow-lg transition-colors bg-background",
+                  "bg-background flex h-16 w-16 items-center justify-center rounded-full border-4 text-xl font-bold shadow-lg transition-colors",
                   completedCount === totalInModule && totalInModule > 0
                     ? "border-emerald-500 text-emerald-600 dark:border-emerald-500 dark:text-emerald-400"
                     : "border-primary text-primary"
@@ -88,7 +93,7 @@ export default function SlugPage({ params }: SlugPageProps) {
               </div>
             </div>
             <Progress value={progressPercentage} className="h-2" />
-            <p className="text-sm text-muted-foreground mt-2">
+            <p className="text-muted-foreground mt-2 text-sm">
               {completedCount} of {totalInModule} topics completed
             </p>
           </Container>
@@ -104,35 +109,39 @@ export default function SlugPage({ params }: SlugPageProps) {
           </Container>
         </Section>
       </div>
-    );
+    )
   }
 
   // Render topic page
-  const topic = getTopicBySlug(slug);
-  const topicIndex = topic ? TOPICS.findIndex((t) => t.id === topic.id) : -1;
+  const topic = getTopicBySlug(slug)
+  const topicIndex = topic ? TOPICS.findIndex((t) => t.id === topic.id) : -1
 
   if (!topic) {
-    notFound();
+    notFound()
   }
 
-  const prevTopic = topicIndex > 0 ? TOPICS[topicIndex - 1] : null;
-  const nextTopic = topicIndex < TOPICS.length - 1 ? TOPICS[topicIndex + 1] : null;
+  const prevTopic = topicIndex > 0 ? TOPICS[topicIndex - 1] : null
+  const nextTopic =
+    topicIndex < TOPICS.length - 1 ? TOPICS[topicIndex + 1] : null
 
   // Generate slugs
-  const topicSlug = generateTopicSlug(topic.title);
-  const moduleSlug = generateModuleSlug(topic.module);
+  const topicSlug = generateTopicSlug(topic.title)
+  const moduleSlug = generateModuleSlug(topic.module)
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-background">
-      <Tabs defaultValue="learn" className="flex-1 flex flex-col overflow-hidden">
+    <div className="bg-background flex h-screen flex-col overflow-hidden">
+      <Tabs
+        defaultValue="learn"
+        className="flex flex-1 flex-col overflow-hidden"
+      >
         <motion.header
           initial="initial"
           animate="animate"
           variants={slideDown}
           transition={transitions.smooth}
-          className="fixed top-0 left-0 md:left-[16rem] right-0 z-50 shrink-0 bg-background/95 backdrop-blur-md supports-backdrop-filter:bg-background/80 border-b border-border shadow-sm"
+          className="bg-background/95 supports-backdrop-filter:bg-background/80 border-border fixed top-0 right-0 left-0 z-50 shrink-0 border-b shadow-sm backdrop-blur-md md:left-[16rem]"
         >
-          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
             {/* SEO Breadcrumbs - Hidden visually but present for SEO */}
             <Breadcrumb className="sr-only">
               <BreadcrumbList>
@@ -157,19 +166,19 @@ export default function SlugPage({ params }: SlugPageProps) {
             </Breadcrumb>
 
             {/* Compact Header */}
-            <div className="flex items-center justify-between gap-4 py-3 min-h-[60px]">
+            <div className="flex min-h-[60px] items-center justify-between gap-4 py-3">
               {/* Left: Title */}
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <div className="flex items-center gap-2 min-w-0">
-                  <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
-                    <span className="text-primary font-bold text-sm font-mono">
+              <div className="flex min-w-0 flex-1 items-center gap-3">
+                <div className="flex min-w-0 items-center gap-2">
+                  <div className="bg-primary/10 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
+                    <span className="text-primary font-mono text-sm font-bold">
                       #{topic.order + 1}
                     </span>
                   </div>
-                  <h1 className="text-lg md:text-xl font-bold text-foreground tracking-tight truncate">
+                  <h1 className="text-foreground truncate text-lg font-bold tracking-tight md:text-xl">
                     {topic.title}
                   </h1>
-                  <div className="hidden sm:flex items-center gap-1.5 ml-2">
+                  <div className="ml-2 hidden items-center gap-1.5 sm:flex">
                     <Badge
                       variant={
                         topic.difficulty === "Easy"
@@ -178,11 +187,14 @@ export default function SlugPage({ params }: SlugPageProps) {
                             ? "destructive"
                             : "secondary"
                       }
-                      className="uppercase text-[10px] font-semibold px-1.5 py-0 h-5"
+                      className="h-5 px-1.5 py-0 text-[10px] font-semibold uppercase"
                     >
                       {topic.difficulty}
                     </Badge>
-                    <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0 h-5">
+                    <Badge
+                      variant="outline"
+                      className="h-5 px-1.5 py-0 font-mono text-[10px]"
+                    >
                       {topic.complexity.time}
                     </Badge>
                   </div>
@@ -190,15 +202,18 @@ export default function SlugPage({ params }: SlugPageProps) {
               </div>
 
               {/* Right: Tabs */}
-              <TabsList className="grid grid-cols-3 shrink-0 h-9">
-                <TabsTrigger value="learn" className="flex items-center gap-1.5 text-xs px-3">
+              <TabsList className="grid h-9 shrink-0 grid-cols-3">
+                <TabsTrigger
+                  value="learn"
+                  className="flex items-center gap-1.5 px-3 text-xs"
+                >
                   <IconWrapper icon={BookOpenIcon} size={14} />
                   <span className="hidden sm:inline">Learn</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="visualize"
                   disabled={topic.visualizerType === VisualizerType.NONE}
-                  className="flex items-center gap-1.5 text-xs px-3"
+                  className="flex items-center gap-1.5 px-3 text-xs"
                   title={
                     topic.visualizerType === VisualizerType.NONE
                       ? "No visualizer available"
@@ -208,7 +223,10 @@ export default function SlugPage({ params }: SlugPageProps) {
                   <IconWrapper icon={PlayIcon} size={14} />
                   <span className="hidden sm:inline">Visualize</span>
                 </TabsTrigger>
-                <TabsTrigger value="code" className="flex items-center gap-1.5 text-xs px-3">
+                <TabsTrigger
+                  value="code"
+                  className="flex items-center gap-1.5 px-3 text-xs"
+                >
                   <IconWrapper icon={CodeIcon} size={14} />
                   <span className="hidden sm:inline">Practice</span>
                 </TabsTrigger>
@@ -216,59 +234,59 @@ export default function SlugPage({ params }: SlugPageProps) {
             </div>
           </div>
         </motion.header>
-        
+
         {/* Spacer for fixed header - matches header height, only on mobile since desktop header starts after sidebar */}
         <div className="h-[60px] shrink-0 md:hidden" />
 
-          <motion.div
-            initial="initial"
-            animate="animate"
-            variants={fadeIn}
-            transition={transitions.smooth}
-            className="flex-1 overflow-y-auto relative md:pt-[60px]"
-          >
-            <div className="w-full h-full">
-              <TabsContent value="learn" className="mt-0">
-                <motion.div
-                  key="learn"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={transitions.smooth}
-                  className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 pb-24"
-                >
-                  <LearnView topic={topic} />
-                </motion.div>
-              </TabsContent>
+        <motion.div
+          initial="initial"
+          animate="animate"
+          variants={fadeIn}
+          transition={transitions.smooth}
+          className="relative flex-1 overflow-y-auto md:pt-[60px]"
+        >
+          <div className="h-full w-full">
+            <TabsContent value="learn" className="mt-0">
+              <motion.div
+                key="learn"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={transitions.smooth}
+                className="mx-auto max-w-7xl px-4 py-6 pb-24 sm:px-6 md:py-8 lg:px-8"
+              >
+                <LearnView topic={topic} />
+              </motion.div>
+            </TabsContent>
 
-              <TabsContent value="visualize" className="mt-0">
-                <motion.div
-                  key="visualize"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={transitions.smooth}
-                  className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 pb-24"
-                >
-                  <VisualizeView topic={topic} />
-                </motion.div>
-              </TabsContent>
+            <TabsContent value="visualize" className="mt-0">
+              <motion.div
+                key="visualize"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={transitions.smooth}
+                className="mx-auto max-w-7xl px-4 py-6 pb-24 sm:px-6 md:py-8 lg:px-8"
+              >
+                <VisualizeView topic={topic} />
+              </motion.div>
+            </TabsContent>
 
-              <TabsContent value="code" className="mt-0">
-                <motion.div
-                  key="code"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={transitions.smooth}
-                  className="p-4 sm:p-6 lg:p-8 xl:p-10 pb-24 h-full max-w-7xl mx-auto w-full"
-                >
-                  <PracticeView topic={topic} />
-                </motion.div>
-              </TabsContent>
-            </div>
-          </motion.div>
+            <TabsContent value="code" className="mt-0">
+              <motion.div
+                key="code"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={transitions.smooth}
+                className="mx-auto h-full w-full max-w-7xl p-4 pb-24 sm:p-6 lg:p-8 xl:p-10"
+              >
+                <PracticeView topic={topic} />
+              </motion.div>
+            </TabsContent>
+          </div>
+        </motion.div>
       </Tabs>
     </div>
-  );
+  )
 }

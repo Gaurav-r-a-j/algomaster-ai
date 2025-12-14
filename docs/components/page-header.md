@@ -5,9 +5,9 @@ Consistent page header component with title, description, and optional actions.
 ## Usage
 
 ```tsx
-import { PageHeader } from "@/components/common/page-header";
+import { PageHeader } from "@/components/common/page-header"
 
-<PageHeader
+;<PageHeader
   title="Page Title"
   description="Page description"
   actions={<Button>Action</Button>}
@@ -16,12 +16,12 @@ import { PageHeader } from "@/components/common/page-header";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | - | Page title (required) |
-| `description` | `string` | - | Page description |
-| `actions` | `ReactNode` | - | Action buttons/elements |
-| `className` | `string` | - | Additional CSS classes |
+| Prop          | Type        | Default | Description             |
+| ------------- | ----------- | ------- | ----------------------- |
+| `title`       | `string`    | -       | Page title (required)   |
+| `description` | `string`    | -       | Page description        |
+| `actions`     | `ReactNode` | -       | Action buttons/elements |
+| `className`   | `string`    | -       | Additional CSS classes  |
 
 ## Example
 
@@ -37,4 +37,3 @@ import { PageHeader } from "@/components/common/page-header";
   }
 />
 ```
-

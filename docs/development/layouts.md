@@ -136,7 +136,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
       <aside>Sidebar Navigation</aside>
       <main>{children}</main>
     </div>
-  );
+  )
 }
 ```
 
@@ -157,7 +157,7 @@ Layouts use shared components from `components/shared/`:
    ```tsx
    // components/layouts/custom-layout.tsx
    export function CustomLayout({ children }: { children: ReactNode }) {
-     return <div>{children}</div>;
+     return <div>{children}</div>
    }
    ```
 
@@ -165,10 +165,10 @@ Layouts use shared components from `components/shared/`:
 
    ```tsx
    // app/(custom-group)/layout.tsx
-   import { CustomLayout } from "@/components/layouts/custom-layout";
+   import { CustomLayout } from "@/components/layouts/custom-layout"
 
    export default function CustomGroupLayout({ children }) {
-     return <CustomLayout>{children}</CustomLayout>;
+     return <CustomLayout>{children}</CustomLayout>
    }
    ```
 
@@ -191,15 +191,18 @@ Example:
 
 ```tsx
 // app/(dashboard)/layout.tsx
-import { DashboardLayout } from "@/components/layouts/dashboard-layout";
+// app/(account)/layout.tsx
+import {
+  DashboardLayout,
+  DashboardLayout,
+} from "@/components/layouts/dashboard-layout"
+
 export default function Layout({ children }) {
-  return <DashboardLayout>{children}</DashboardLayout>;
+  return <DashboardLayout>{children}</DashboardLayout>
 }
 
-// app/(account)/layout.tsx
-import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 export default function Layout({ children }) {
-  return <DashboardLayout>{children}</DashboardLayout>;
+  return <DashboardLayout>{children}</DashboardLayout>
 }
 ```
 

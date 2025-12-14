@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const linkedList: Topic = {
   id: "linked-list",
@@ -138,4 +138,4 @@ def delete_node(head, val):
     },
   ],
   quiz: [],
-};
+}

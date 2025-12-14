@@ -1,41 +1,43 @@
-"use client";
+"use client"
 
-import { motion } from "motion/react";
-import { Card } from "@/components/ui/card";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { HelpCircleIcon } from "@/lib/icons";
-import type { Topic } from "@/types/curriculum";
-import { VisualizerType } from "@/types/curriculum";
-import { SortingVisualizer } from "./visualizers/sorting-visualizer";
-import { SearchVisualizer } from "./visualizers/search-visualizer";
-import { DataStructureVisualizer } from "./visualizers/data-structure-visualizer";
-import { PathfindingVisualizer } from "./visualizers/pathfinding-visualizer";
-import { HeapVisualizer } from "./visualizers/heap-visualizer";
-import { DPVisualizer } from "./visualizers/dp-visualizer";
-import { fadeIn, slideUp, transitions } from "@/lib/animations";
+import { motion } from "motion/react"
+
+import type { Topic } from "@/types/curriculum"
+import { VisualizerType } from "@/types/curriculum"
+import { fadeIn, slideUp, transitions } from "@/lib/animations"
+import { HelpCircleIcon } from "@/lib/icons"
+import { Card } from "@/components/ui/card"
+import { IconWrapper } from "@/components/common/icon-wrapper"
+
+import { DataStructureVisualizer } from "./visualizers/data-structure-visualizer"
+import { DPVisualizer } from "./visualizers/dp-visualizer"
+import { HeapVisualizer } from "./visualizers/heap-visualizer"
+import { PathfindingVisualizer } from "./visualizers/pathfinding-visualizer"
+import { SearchVisualizer } from "./visualizers/search-visualizer"
+import { SortingVisualizer } from "./visualizers/sorting-visualizer"
 
 interface VisualizeViewProps {
-  topic: Topic;
+  topic: Topic
 }
 
 function renderVisualizer(topic: Topic) {
   switch (topic.visualizerType) {
     case VisualizerType.BAR_CHART:
-      return <SortingVisualizer topic={topic} />;
+      return <SortingVisualizer topic={topic} />
     case VisualizerType.GRID:
-      return <SearchVisualizer topic={topic} />;
+      return <SearchVisualizer topic={topic} />
     case VisualizerType.STACK:
     case VisualizerType.QUEUE:
     case VisualizerType.LINKED_LIST:
     case VisualizerType.BINARY_TREE:
     case VisualizerType.AVL_TREE:
-      return <DataStructureVisualizer topic={topic} />;
+      return <DataStructureVisualizer topic={topic} />
     case VisualizerType.PATHFINDING:
-      return <PathfindingVisualizer topic={topic} />;
+      return <PathfindingVisualizer topic={topic} />
     case VisualizerType.HEAP:
-      return <HeapVisualizer topic={topic} />;
+      return <HeapVisualizer topic={topic} />
     case VisualizerType.DP:
-      return <DPVisualizer topic={topic} />;
+      return <DPVisualizer topic={topic} />
     default:
       return (
         <motion.div
@@ -43,7 +45,7 @@ function renderVisualizer(topic: Topic) {
           animate="animate"
           variants={fadeIn}
           transition={transitions.smooth}
-          className="h-full flex items-center justify-center p-10 text-center text-muted-foreground"
+          className="text-muted-foreground flex h-full items-center justify-center p-10 text-center"
         >
           <motion.div
             variants={slideUp}
@@ -62,7 +64,7 @@ function renderVisualizer(topic: Topic) {
             <span>No interactive visualizer available for this topic.</span>
           </motion.div>
         </motion.div>
-      );
+      )
   }
 }
 
@@ -74,7 +76,7 @@ export function VisualizeView({ topic }: VisualizeViewProps) {
         animate="animate"
         variants={fadeIn}
         transition={transitions.smooth}
-        className="h-full flex items-center justify-center p-10 text-center text-muted-foreground"
+        className="text-muted-foreground flex h-full items-center justify-center p-10 text-center"
       >
         <motion.div
           variants={slideUp}
@@ -93,7 +95,7 @@ export function VisualizeView({ topic }: VisualizeViewProps) {
           <span>No interactive visualizer available for this topic.</span>
         </motion.div>
       </motion.div>
-    );
+    )
   }
 
   return (
@@ -102,16 +104,16 @@ export function VisualizeView({ topic }: VisualizeViewProps) {
       animate="animate"
       variants={fadeIn}
       transition={transitions.smooth}
-      className="h-full flex flex-col"
+      className="flex h-full flex-col"
     >
       <motion.div
         variants={slideUp}
         transition={{ ...transitions.spring, delay: 0.1 }}
       >
-        <Card className="flex-1 relative min-h-[500px] overflow-hidden">
+        <Card className="relative min-h-[500px] flex-1 overflow-hidden">
           {renderVisualizer(topic)}
         </Card>
       </motion.div>
     </motion.div>
-  );
+  )
 }

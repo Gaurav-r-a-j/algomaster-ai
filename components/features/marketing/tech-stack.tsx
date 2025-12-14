@@ -1,6 +1,5 @@
-"use client";
+"use client"
 
-import { IconWrapper } from "@/components/common/icon-wrapper";
 import {
   CheckmarkCircleIcon,
   ComputerIcon,
@@ -8,12 +7,13 @@ import {
   SettingsIcon,
   ShieldIcon,
   StarIcon,
-} from "@/lib/icons";
+} from "@/lib/icons"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 interface TechItem {
-  name: string;
-  icon: typeof ComputerIcon;
-  description?: string;
+  name: string
+  icon: typeof ComputerIcon
+  description?: string
 }
 
 const techStack: TechItem[] = [
@@ -41,21 +41,24 @@ const techStack: TechItem[] = [
     name: "Zod",
     icon: CheckmarkCircleIcon,
   },
-];
+]
 
 export function TechStack() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+    <div className="grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-6">
       {techStack.map((tech) => (
         <div
           key={tech.name}
-          className="flex flex-col items-center p-4 rounded-lg border bg-card hover:shadow-md transition-shadow"
+          className="bg-card flex flex-col items-center rounded-lg border p-4 transition-shadow hover:shadow-md"
         >
-          <IconWrapper icon={tech.icon} size={32} className="mb-2 text-primary" />
-          <span className="text-sm font-medium text-center">{tech.name}</span>
+          <IconWrapper
+            icon={tech.icon}
+            size={32}
+            className="text-primary mb-2"
+          />
+          <span className="text-center text-sm font-medium">{tech.name}</span>
         </div>
       ))}
     </div>
-  );
+  )
 }
-

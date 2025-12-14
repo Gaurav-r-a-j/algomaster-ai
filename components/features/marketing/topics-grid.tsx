@@ -1,6 +1,5 @@
-"use client";
+"use client"
 
-import { IconWrapper } from "@/components/common/icon-wrapper";
 import {
   BriefcaseIcon,
   CodeIcon,
@@ -12,7 +11,8 @@ import {
   ShieldIcon,
   SparklesIcon,
   UsersIcon,
-} from "@/lib/icons";
+} from "@/lib/icons"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 const topics = [
   { icon: CodeIcon, label: "Arrays" },
@@ -25,37 +25,36 @@ const topics = [
   { icon: FileTextIcon, label: "Dynamic Programming" },
   { icon: SparklesIcon, label: "Greedy Algorithms" },
   { icon: ComputerIcon, label: "Backtracking" },
-];
+]
 
 export function TopicsGrid() {
   return (
-    <section className="py-24 bg-muted/30 border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center mb-12">
-        <h2 className="text-3xl font-bold text-foreground mb-4">
+    <section className="bg-muted/30 border-border border-b py-24">
+      <div className="mx-auto mb-12 max-w-7xl px-4 text-center sm:px-6">
+        <h2 className="text-foreground mb-4 text-3xl font-bold">
           Comprehensive DSA Topics
         </h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-muted-foreground mx-auto max-w-2xl">
           Master all essential data structures and algorithms with interactive
           lessons and practice problems.
         </p>
       </div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-4 px-4 sm:px-6">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-4 sm:px-6 md:grid-cols-5">
         {topics.map((item, i) => (
           <div
             key={i}
-            className="flex flex-col items-center gap-3 p-5 rounded-xl border border-border bg-card hover:border-primary hover:shadow-lg transition-all cursor-default group"
+            className="border-border bg-card hover:border-primary group flex cursor-default flex-col items-center gap-3 rounded-xl border p-5 transition-all hover:shadow-lg"
           >
             <div className="text-muted-foreground group-hover:text-primary transition-colors">
               <IconWrapper icon={item.icon} size={24} />
             </div>
-            <span className="text-sm font-bold text-foreground group-hover:text-foreground">
+            <span className="text-foreground group-hover:text-foreground text-sm font-bold">
               {item.label}
             </span>
           </div>
         ))}
       </div>
     </section>
-  );
+  )
 }
-

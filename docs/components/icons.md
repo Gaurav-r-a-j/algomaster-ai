@@ -9,18 +9,18 @@ Icons can be used in two ways:
 ### Direct Usage with IconWrapper
 
 ```tsx
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { Home01Icon } from "@/lib/icons";
+import { Home01Icon } from "@/lib/icons"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
-<IconWrapper icon={Home01Icon} size="lg" className="text-primary" />
+;<IconWrapper icon={Home01Icon} size="lg" className="text-primary" />
 ```
 
 ### Hero Icons (Direct)
 
 ```tsx
-import { HeroHomeIcon } from "@/lib/icons";
+import { HeroHomeIcon } from "@/lib/icons"
 
-<HeroHomeIcon className="w-6 h-6 text-blue-500" />
+;<HeroHomeIcon className="h-6 w-6 text-blue-500" />
 ```
 
 ## Available Sizes
@@ -46,4 +46,3 @@ Hero Icons are React components and can be used directly or with `IconWrapper`.
 ## Examples
 
 See the design system overview page for live examples of all icon usage patterns.
-

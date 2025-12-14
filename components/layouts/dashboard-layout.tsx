@@ -1,5 +1,20 @@
-"use client";
+"use client"
 
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { ROUTES } from "@/constants/routes"
+import { isActivePath } from "@/utils/common/path-utils"
+
+import {
+  BookOpenIcon,
+  CheckmarkCircleIcon,
+  Home01Icon,
+  SettingsIcon,
+  UserIcon,
+} from "@/lib/icons"
+import { useProgressStats } from "@/hooks/use-progress-stats"
+import { Progress } from "@/components/ui/progress"
+import { Separator } from "@/components/ui/separator"
 import {
   Sidebar,
   SidebarContent,
@@ -13,26 +28,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import {
-  BookOpenIcon,
-  CheckmarkCircleIcon,
-  Home01Icon,
-  SettingsIcon,
-  UserIcon,
-} from "@/lib/icons";
-import { ROUTES } from "@/constants/routes";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useProgressStats } from "@/hooks/use-progress-stats";
-import { Progress } from "@/components/ui/progress";
-import { isActivePath } from "@/utils/common/path-utils";
+} from "@/components/ui/sidebar"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 interface DashboardLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const menuItems = [
@@ -56,22 +56,28 @@ const menuItems = [
     url: ROUTES.SETTINGS,
     icon: SettingsIcon,
   },
-];
+]
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const pathname = usePathname();
-  const stats = useProgressStats();
+  const pathname = usePathname()
+  const stats = useProgressStats()
 
   return (
     <SidebarProvider>
       <Sidebar>
-        <SidebarHeader className="border-b border-border">
+        <SidebarHeader className="border-border border-b">
           <div className="flex items-center gap-2 px-2 py-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <IconWrapper icon={BookOpenIcon} size={20} className="text-primary-foreground" />
+              <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
+                <IconWrapper
+                  icon={BookOpenIcon}
+                  size={20}
+                  className="text-primary-foreground"
+                />
               </div>
-              <span className="font-bold text-lg tracking-tight">DSA Platform</span>
+              <span className="text-lg font-bold tracking-tight">
+                DSA Platform
+              </span>
             </div>
           </div>
         </SidebarHeader>
@@ -104,9 +110,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <SidebarGroup>
             <SidebarGroupLabel>Progress</SidebarGroupLabel>
             <SidebarGroupContent>
-              <div className="px-2 py-3 space-y-3">
+              <div className="space-y-3 px-2 py-3">
                 <div>
-                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
+                  <div className="text-muted-foreground mb-2 flex items-center justify-between text-xs">
                     <span>Overall Progress</span>
                     <span className="font-semibold">
                       {stats.completed} / {stats.total}
@@ -114,8 +120,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   </div>
                   <Progress value={stats.percentage} className="h-2" />
                 </div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <IconWrapper icon={CheckmarkCircleIcon} size={12} className="text-emerald-500" />
+                <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                  <IconWrapper
+                    icon={CheckmarkCircleIcon}
+                    size={12}
+                    className="text-emerald-500"
+                  />
                   <span>{stats.completed} lessons completed</span>
                 </div>
               </div>
@@ -123,7 +133,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="border-t border-border">
+        <SidebarFooter className="border-border border-t">
           <div className="px-2 py-4">
             <SidebarMenuButton asChild>
               <Link href={ROUTES.HOME}>
@@ -137,11 +147,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       <SidebarInset>
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto p-6">
-            {children}
-          </div>
+          <div className="mx-auto max-w-7xl p-6">{children}</div>
         </main>
       </SidebarInset>
     </SidebarProvider>
-  );
+  )
 }

@@ -11,7 +11,7 @@ export function generateSlug(text: string): string {
   return text
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/^-+|-+$/g, "")
 }
 
 /**
@@ -22,7 +22,7 @@ export function generateModuleSlug(moduleName: string): string {
   return moduleName
     .toLowerCase()
     .replace(/^\d+\.\s*/, "")
-    .replace(/\s+/g, "-");
+    .replace(/\s+/g, "-")
 }
 
 /**
@@ -30,6 +30,5 @@ export function generateModuleSlug(moduleName: string): string {
  * Uses the standard slug generation
  */
 export function generateTopicSlug(topicTitle: string): string {
-  return generateSlug(topicTitle);
+  return generateSlug(topicTitle)
 }
-

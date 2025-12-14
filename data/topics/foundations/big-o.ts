@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const bigO: Topic = {
   id: "big-o",
@@ -178,5 +178,4 @@ For n = 1,000,000:
       difficulty: "Easy",
     },
   ],
-};
-
+}

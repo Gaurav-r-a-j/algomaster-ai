@@ -4,7 +4,7 @@ export const HTTP_METHODS = {
   PUT: "PUT",
   PATCH: "PATCH",
   DELETE: "DELETE",
-} as const;
+} as const
 
 export const HTTP_STATUS = {
   OK: 200,
@@ -15,4 +15,4 @@ export const HTTP_STATUS = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
-} as const;
+} as const

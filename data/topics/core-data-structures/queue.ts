@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const queue: Topic = {
   id: "queue",
@@ -122,4 +122,4 @@ def bfs(graph, start):
     },
   ],
   quiz: [],
-};
+}

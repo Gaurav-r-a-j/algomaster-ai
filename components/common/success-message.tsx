@@ -1,10 +1,10 @@
 interface SuccessMessageProps {
-  message: string;
-  className?: string;
+  message: string
+  className?: string
 }
 
 export function SuccessMessage({ message, className }: SuccessMessageProps) {
   return (
-    <div className={`text-green-600 text-sm ${className || ""}`}>{message}</div>
-  );
+    <div className={`text-sm text-green-600 ${className || ""}`}>{message}</div>
+  )
 }

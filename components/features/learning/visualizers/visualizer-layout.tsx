@@ -1,17 +1,18 @@
-"use client";
+"use client"
 
-import { motion } from "motion/react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import type { ReactNode } from "react";
-import { fadeIn, slideUp, transitions } from "@/lib/animations";
+import type { ReactNode } from "react"
+import { motion } from "motion/react"
+
+import { fadeIn, slideUp, transitions } from "@/lib/animations"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 
 interface VisualizerLayoutProps {
-  title: ReactNode;
-  icon?: ReactNode;
-  controls: ReactNode;
-  description: ReactNode;
-  children: ReactNode;
+  title: ReactNode
+  icon?: ReactNode
+  controls: ReactNode
+  description: ReactNode
+  children: ReactNode
 }
 
 export function VisualizerLayout({
@@ -27,13 +28,13 @@ export function VisualizerLayout({
       animate="animate"
       variants={fadeIn}
       transition={transitions.smooth}
-      className="h-full flex flex-col gap-6"
+      className="flex h-full flex-col gap-6"
     >
       {/* Header */}
       <motion.div variants={slideUp} transition={transitions.spring}>
         <Card className="shrink-0">
           <CardHeader className="pb-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
                 {icon && <div className="text-primary">{icon}</div>}
                 {typeof title === "string" ? (
@@ -52,7 +53,7 @@ export function VisualizerLayout({
       <motion.div
         variants={slideUp}
         transition={{ ...transitions.spring, delay: 0.1 }}
-        className="flex-1 flex flex-col gap-6 min-h-0"
+        className="flex min-h-0 flex-1 flex-col gap-6"
       >
         {children}
       </motion.div>
@@ -70,6 +71,5 @@ export function VisualizerLayout({
         </Card>
       </motion.div>
     </motion.div>
-  );
+  )
 }
-

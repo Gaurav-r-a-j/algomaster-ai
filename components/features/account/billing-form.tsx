@@ -3,5 +3,5 @@ export function BillingForm() {
     <div>
       <h2>Billing Form</h2>
     </div>
-  );
+  )
 }

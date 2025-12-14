@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const recursion: Topic = {
   id: "recursion",
@@ -126,8 +126,7 @@ def fibonacci_memo(n):
         "The return statement",
       ],
       correctAnswer: 1,
-      explanation:
-        "The base case is the condition that stops the recursion.",
+      explanation: "The base case is the condition that stops the recursion.",
     },
   ],
   practiceLinks: [
@@ -152,5 +151,4 @@ def fibonacci_memo(n):
       difficulty: "Easy",
     },
   ],
-};
-
+}

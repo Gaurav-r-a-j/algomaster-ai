@@ -1,14 +1,15 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { CodeIcon, PlayIcon, RefreshCwIcon } from "@/lib/icons";
-import type { SupportedLanguage } from "@/types/curriculum";
+import { useEffect, useState } from "react"
+
+import type { SupportedLanguage } from "@/types/curriculum"
+import { CodeIcon, PlayIcon, RefreshCwIcon } from "@/lib/icons"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 interface CodePlaygroundProps {
-  initialCode?: Record<SupportedLanguage, string>;
+  initialCode?: Record<SupportedLanguage, string>
 }
 
 const DEFAULT_CODE: Record<SupportedLanguage, string> = {
@@ -26,73 +27,82 @@ int main() {
 }`,
   python: `print("Hello, AlgoMaster!")`,
   javascript: `console.log("Hello, AlgoMaster!");`,
-};
+}
 
-export function CodePlayground({
-  initialCode,
-}: CodePlaygroundProps) {
-  const [language, setLanguage] = useState<SupportedLanguage>("python");
+export function CodePlayground({ initialCode }: CodePlaygroundProps) {
+  const [language, setLanguage] = useState<SupportedLanguage>("python")
   const [code, setCode] = useState<string>(
     initialCode?.python || DEFAULT_CODE.python
-  );
-  const [output, setOutput] = useState<string | null>(null);
-  const [isRunning, setIsRunning] = useState(false);
+  )
+  const [output, setOutput] = useState<string | null>(null)
+  const [isRunning, setIsRunning] = useState(false)
 
   // Initialize code when language or initialCode changes
   useEffect(() => {
-    const newCode = initialCode?.[language] || DEFAULT_CODE[language];
+    const newCode = initialCode?.[language] || DEFAULT_CODE[language]
     // Use startTransition or setTimeout to defer state updates
     const timer = setTimeout(() => {
-      setCode(newCode);
-      setOutput(null);
-    }, 0);
-    return () => clearTimeout(timer);
-  }, [initialCode, language]);  
+      setCode(newCode)
+      setOutput(null)
+    }, 0)
+    return () => clearTimeout(timer)
+  }, [initialCode, language])
 
   const handleRun = async () => {
-    setIsRunning(true);
-    setOutput("Compiling and executing...");
-    
+    setIsRunning(true)
+    setOutput("Compiling and executing...")
+
     try {
       // Import and use custom code executor (not AI-based)
-      const { executeCode } = await import("@/services/code-execution/code-executor");
-      const result = await executeCode(code, language);
-      
+      const { executeCode } =
+        await import("@/services/code-execution/code-executor")
+      const result = await executeCode(code, language)
+
       if (result.error) {
-        setOutput(`Error: ${result.error}\n\nExecution time: ${result.executionTime.toFixed(2)}ms`);
+        setOutput(
+          `Error: ${result.error}\n\nExecution time: ${result.executionTime.toFixed(2)}ms`
+        )
       } else {
-        setOutput(`${result.output}\n\nExecution time: ${result.executionTime.toFixed(2)}ms`);
+        setOutput(
+          `${result.output}\n\nExecution time: ${result.executionTime.toFixed(2)}ms`
+        )
       }
     } catch (error) {
-      setOutput(`Error: ${error instanceof Error ? error.message : String(error)}`);
+      setOutput(
+        `Error: ${error instanceof Error ? error.message : String(error)}`
+      )
     } finally {
-      setIsRunning(false);
+      setIsRunning(false)
     }
-  };
+  }
 
   const handleReset = () => {
     if (window.confirm("Are you sure? This will discard your changes.")) {
-      setCode(initialCode?.[language] || DEFAULT_CODE[language]);
-      setOutput(null);
+      setCode(initialCode?.[language] || DEFAULT_CODE[language])
+      setOutput(null)
     }
-  };
+  }
 
   return (
-    <Card className="flex flex-col h-full bg-background rounded-xl border shadow-lg">
+    <Card className="bg-background flex h-full flex-col rounded-xl border shadow-lg">
       {/* Toolbar */}
-      <CardHeader className="flex items-center justify-between px-3 py-2 border-b shrink-0">
+      <CardHeader className="flex shrink-0 items-center justify-between border-b px-3 py-2">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <IconWrapper icon={CodeIcon} size={16} className="text-muted-foreground" />
-            <span className="font-medium text-muted-foreground text-sm">
+            <IconWrapper
+              icon={CodeIcon}
+              size={16}
+              className="text-muted-foreground"
+            />
+            <span className="text-muted-foreground text-sm font-medium">
               EDITOR
             </span>
           </div>
-          <div className="h-4 w-px bg-border" />
+          <div className="bg-border h-4 w-px" />
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value as SupportedLanguage)}
-            className="bg-transparent text-sm font-medium text-foreground focus:outline-none cursor-pointer hover:text-primary transition-colors"
+            className="text-foreground hover:text-primary cursor-pointer bg-transparent text-sm font-medium transition-colors focus:outline-none"
           >
             <option value="python">Python 3</option>
             <option value="cpp">C++ 20</option>
@@ -105,7 +115,7 @@ export function CodePlayground({
           <button
             onClick={handleReset}
             title="Reset Code"
-            className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+            className="text-muted-foreground hover:text-foreground p-1.5 transition-colors"
           >
             <IconWrapper icon={RefreshCwIcon} size={14} />
           </button>
@@ -113,7 +123,7 @@ export function CodePlayground({
             size="sm"
             onClick={handleRun}
             disabled={isRunning}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold border-none"
+            className="border-none bg-emerald-600 font-bold text-white hover:bg-emerald-700"
           >
             <IconWrapper icon={PlayIcon} size={14} className="mr-2" />
             Run Code
@@ -122,10 +132,10 @@ export function CodePlayground({
       </CardHeader>
 
       {/* Editor Area */}
-      <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
-        <div className="flex-1 relative flex overflow-hidden">
+      <CardContent className="flex flex-1 flex-col overflow-hidden p-0">
+        <div className="relative flex flex-1 overflow-hidden">
           {/* Line Numbers */}
-          <div className="absolute left-0 top-0 bottom-0 w-12 bg-muted/30 pt-4 flex flex-col items-end pr-3 text-muted-foreground select-none pointer-events-none font-mono text-sm leading-relaxed">
+          <div className="bg-muted/30 text-muted-foreground pointer-events-none absolute top-0 bottom-0 left-0 flex w-12 flex-col items-end pt-4 pr-3 font-mono text-sm leading-relaxed select-none">
             {code.split("\n").map((_, i) => (
               <div key={i}>{i + 1}</div>
             ))}
@@ -133,34 +143,34 @@ export function CodePlayground({
           <textarea
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            className="flex-1 w-full pl-16 pr-4 py-4 bg-background text-foreground resize-none focus:outline-none font-mono text-sm leading-relaxed selection:bg-primary/20"
+            className="bg-background text-foreground selection:bg-primary/20 w-full flex-1 resize-none py-4 pr-4 pl-16 font-mono text-sm leading-relaxed focus:outline-none"
             placeholder="Write your code here..."
             spellCheck={false}
           />
         </div>
         {output && (
-          <div className="border-t border-border flex flex-col h-[35%]">
-            <div className="px-4 py-2 bg-muted/50 border-b border-border flex justify-between items-center shrink-0">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+          <div className="border-border flex h-[35%] flex-col border-t">
+            <div className="bg-muted/50 border-border flex shrink-0 items-center justify-between border-b px-4 py-2">
+              <span className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-wider uppercase">
                 <IconWrapper icon={CodeIcon} size={12} />
                 CONSOLE OUTPUT
               </span>
               <button
                 onClick={() => setOutput(null)}
-                className="text-[10px] text-muted-foreground hover:text-destructive uppercase font-bold transition-colors"
+                className="text-muted-foreground hover:text-destructive text-[10px] font-bold uppercase transition-colors"
               >
                 Clear
               </button>
             </div>
-            <div className="flex-1 p-4 font-mono text-xs overflow-auto">
+            <div className="flex-1 overflow-auto p-4 font-mono text-xs">
               {isRunning ? (
-                <div className="flex items-center gap-2 text-muted-foreground animate-pulse">
-                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <div className="text-muted-foreground flex animate-pulse items-center gap-2">
+                  <div className="bg-primary h-2 w-2 rounded-full"></div>
                   Running...
                 </div>
               ) : (
                 <pre
-                  className={`whitespace-pre-wrap leading-relaxed ${
+                  className={`leading-relaxed whitespace-pre-wrap ${
                     output.startsWith("Error") || output.startsWith("error")
                       ? "text-destructive"
                       : "text-foreground"
@@ -174,6 +184,5 @@ export function CodePlayground({
         )}
       </CardContent>
     </Card>
-  );
+  )
 }
-

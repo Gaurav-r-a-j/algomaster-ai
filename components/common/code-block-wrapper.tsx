@@ -1,16 +1,17 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+} from "@/components/ui/collapsible"
 
 interface CodeBlockWrapperProps extends React.HTMLAttributes<HTMLDivElement> {
-  expandButtonTitle?: string;
+  expandButtonTitle?: string
 }
 
 // CodeBlockWrapper - Wrapper for code blocks with expand/collapse functionality
@@ -21,11 +22,14 @@ export function CodeBlockWrapper({
   children,
   ...props
 }: CodeBlockWrapperProps) {
-  const [isOpened, setIsOpened] = React.useState(false);
+  const [isOpened, setIsOpened] = React.useState(false)
 
   return (
     <Collapsible open={isOpened} onOpenChange={setIsOpened}>
-      <div className={cn("relative overflow-hidden rounded-lg", className)} {...props}>
+      <div
+        className={cn("relative overflow-hidden rounded-lg", className)}
+        {...props}
+      >
         <CollapsibleContent
           forceMount
           className={cn("overflow-hidden", !isOpened && "max-h-72")}
@@ -53,6 +57,5 @@ export function CodeBlockWrapper({
         </div>
       </div>
     </Collapsible>
-  );
+  )
 }
-

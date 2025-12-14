@@ -1,34 +1,35 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Container } from "@/components/common/container";
-import { HeroArrowRightIcon, HeroHomeIcon } from "@/lib/icons";
-import { ROUTES } from "@/constants/routes";
+import { useEffect } from "react"
+import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
+
+import { HeroArrowRightIcon, HeroHomeIcon } from "@/lib/icons"
+import { Button } from "@/components/ui/button"
+import { Container } from "@/components/common/container"
 
 export default function GlobalError({
   error: _error,
   reset,
 }: {
-  error: Error & { digest?: string };
-  reset: () => void;
+  error: Error & { digest?: string }
+  reset: () => void
 }) {
   useEffect(() => {
     // Log error to monitoring service
-    console.error("Global error occurred:", _error);
-  }, [_error]);
+    console.error("Global error occurred:", _error)
+  }, [_error])
 
   return (
     <html lang="en">
       <body>
-        <Container className="min-h-screen flex items-center justify-center py-12">
-          <div className="text-center max-w-2xl mx-auto">
+        <Container className="flex min-h-screen items-center justify-center py-12">
+          <div className="mx-auto max-w-2xl text-center">
             {/* Critical Error SVG */}
             <div className="mb-8 flex justify-center">
               <svg
                 viewBox="0 0 400 300"
-                className="w-full max-w-md h-auto"
+                className="h-auto w-full max-w-md"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -91,21 +92,26 @@ export default function GlobalError({
               </svg>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="mb-4 text-4xl font-bold md:text-5xl">
               Application Error
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-lg mx-auto">
+            <p className="text-muted-foreground mx-auto mb-8 max-w-lg text-xl">
               A critical error occurred. Please refresh the page or return home.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Button size="lg" onClick={reset} className="w-full sm:w-auto">
-                <HeroArrowRightIcon className="h-5 w-5 mr-2" />
+                <HeroArrowRightIcon className="mr-2 h-5 w-5" />
                 Reload Application
               </Button>
-              <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                size="lg"
+                asChild
+                className="w-full sm:w-auto"
+              >
                 <Link href={ROUTES.HOME}>
-                  <HeroHomeIcon className="h-5 w-5 mr-2" />
+                  <HeroHomeIcon className="mr-2 h-5 w-5" />
                   Go Home
                 </Link>
               </Button>
@@ -114,5 +120,5 @@ export default function GlobalError({
         </Container>
       </body>
     </html>
-  );
+  )
 }

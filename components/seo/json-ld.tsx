@@ -1,8 +1,8 @@
 // JSON-LD Script component for structured data
-import Script from "next/script";
+import Script from "next/script"
 
 export interface JsonLdProps {
-  data: object;
+  data: object
 }
 
 // Component to inject JSON-LD structured data
@@ -13,6 +13,5 @@ export function JsonLd({ data }: JsonLdProps) {
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
-  );
+  )
 }
-

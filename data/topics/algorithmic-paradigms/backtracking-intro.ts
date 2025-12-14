@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const backtrackingIntro: Topic = {
   id: "backtracking-intro",
   title: "Backtracking",
-  description: "Systematic method for solving constraint satisfaction problems.",
+  description:
+    "Systematic method for solving constraint satisfaction problems.",
   category: AlgorithmType.BACKTRACKING,
   complexity: { time: "O(2^n)", space: "O(n)" },
   visualizerType: VisualizerType.NONE,
@@ -12,5 +13,4 @@ export const backtrackingIntro: Topic = {
   difficulty: "Medium",
   content: "# Backtracking\n\nComing soon...",
   quiz: [],
-};
-
+}

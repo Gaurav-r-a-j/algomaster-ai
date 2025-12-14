@@ -1,10 +1,11 @@
-import { Container } from "@/components/common/container";
-import { Section } from "@/components/common/section";
-import { PageHeader } from "@/components/common/page-header";
-import { MarkdownRenderer } from "@/components/common/markdown-renderer";
-import { notFound } from "next/navigation";
-import { readFile } from "fs/promises";
-import { join } from "path";
+import { readFile } from "fs/promises"
+import { join } from "path"
+import { notFound } from "next/navigation"
+
+import { Container } from "@/components/common/container"
+import { MarkdownRenderer } from "@/components/common/markdown-renderer"
+import { PageHeader } from "@/components/common/page-header"
+import { Section } from "@/components/common/section"
 
 const componentDocs = [
   "adaptive-wrapper",
@@ -24,39 +25,46 @@ const componentDocs = [
   "textarea-field",
   "common-components",
   "forms",
-] as const;
+] as const
 
 interface ComponentDocsPageProps {
-  params: Promise<{ component: string }>;
+  params: Promise<{ component: string }>
 }
 
 async function getComponentDoc(component: string): Promise<string | null> {
   try {
-    const filePath = join(process.cwd(), "docs", "components", `${component}.md`);
-    const content = await readFile(filePath, "utf-8");
-    return content;
+    const filePath = join(
+      process.cwd(),
+      "docs",
+      "components",
+      `${component}.md`
+    )
+    const content = await readFile(filePath, "utf-8")
+    return content
   } catch {
-    return null;
+    return null
   }
 }
 
-export default async function ComponentDocsPage({ params }: ComponentDocsPageProps) {
-  const { component } = await params;
-  
+export default async function ComponentDocsPage({
+  params,
+}: ComponentDocsPageProps) {
+  const { component } = await params
+
   if (!componentDocs.includes(component as any)) {
-    notFound();
+    notFound()
   }
 
-  const content = await getComponentDoc(component);
+  const content = await getComponentDoc(component)
 
   if (!content) {
-    notFound();
+    notFound()
   }
 
   const title = component
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+    .join(" ")
 
   return (
     <Section className="py-12">
@@ -67,6 +75,5 @@ export default async function ComponentDocsPage({ params }: ComponentDocsPagePro
         </div>
       </Container>
     </Section>
-  );
+  )
 }
-

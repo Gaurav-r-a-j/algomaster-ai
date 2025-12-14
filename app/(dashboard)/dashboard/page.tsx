@@ -1,37 +1,45 @@
-"use client";
+"use client"
 
-import { motion } from "motion/react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
-import { useProgress } from "@/context/progress-context";
-import { useProgressStats } from "@/hooks/use-progress-stats";
-import { TOPICS } from "@/data/curriculum";
-import { ROUTES } from "@/constants/routes";
-import Link from "next/link";
-import { IconWrapper } from "@/components/common/icon-wrapper";
+import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
+import { useProgress } from "@/context/progress-context"
+import { TOPICS } from "@/data/curriculum"
+import { generateTopicSlug } from "@/utils/common/slug"
+import { motion } from "motion/react"
+
+import {
+  fadeIn,
+  hoverScaleSmall,
+  slideUp,
+  staggerContainer,
+  staggerItem,
+  transitions,
+} from "@/lib/animations"
 import {
   ArrowUp01Icon,
   BookOpenIcon,
   CheckmarkCircleIcon,
   PlayIcon,
-} from "@/lib/icons";
-import { generateTopicSlug } from "@/utils/common/slug";
-import { fadeIn, slideUp, staggerContainer, staggerItem, transitions, hoverScaleSmall } from "@/lib/animations";
+} from "@/lib/icons"
+import { useProgressStats } from "@/hooks/use-progress-stats"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 export default function DashboardPage() {
-  const { completedTopics } = useProgress();
-  const stats = useProgressStats();
+  const { completedTopics } = useProgress()
+  const stats = useProgressStats()
 
   // Get recent topics (last 5)
-  const recentTopics = TOPICS.slice(0, 5);
+  const recentTopics = TOPICS.slice(0, 5)
 
   // Get recommended next topics (not completed, ordered)
   const recommendedTopics = TOPICS.filter(
     (t) => !completedTopics.includes(t.id)
   )
     .sort((a, b) => a.order - b.order)
-    .slice(0, 6);
+    .slice(0, 6)
 
   return (
     <motion.div
@@ -47,109 +55,109 @@ export default function DashboardPage() {
         className="flex items-center justify-between gap-4"
       >
         <div>
-          <h1 className="text-xl md:text-2xl font-bold text-foreground tracking-tight">
+          <h1 className="text-foreground text-xl font-bold tracking-tight md:text-2xl">
             Welcome Back!
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-muted-foreground mt-1 text-sm">
             Continue your DSA learning journey
           </p>
         </div>
       </motion.div>
 
       <div className="space-y-6">
-          <motion.div
-            initial="initial"
-            animate="animate"
-            variants={staggerContainer}
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8"
-          >
-            {/* Progress Card */}
-            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
+        <motion.div
+          initial="initial"
+          animate="animate"
+          variants={staggerContainer}
+          className="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+        >
+          {/* Progress Card */}
+          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-muted-foreground text-sm font-medium">
                   Overall Progress
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-foreground mb-2">
+                <div className="text-foreground mb-2 text-2xl font-bold">
                   {stats.percentage}%
                 </div>
                 <Progress value={stats.percentage} className="h-2" />
-                <p className="text-xs text-muted-foreground mt-2">
+                <p className="text-muted-foreground mt-2 text-xs">
                   {stats.completed} of {stats.total} lessons completed
                 </p>
               </CardContent>
             </Card>
-            </motion.div>
+          </motion.div>
 
-            {/* Completed Topics */}
-            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
+          {/* Completed Topics */}
+          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-muted-foreground text-sm font-medium">
                   Completed
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-foreground mb-2">
+                <div className="text-foreground mb-2 text-2xl font-bold">
                   {stats.completed}
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   Lessons finished
                 </p>
               </CardContent>
             </Card>
-            </motion.div>
+          </motion.div>
 
-            {/* In Progress */}
-            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
+          {/* In Progress */}
+          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-muted-foreground text-sm font-medium">
                   In Progress
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-foreground mb-2">
+                <div className="text-foreground mb-2 text-2xl font-bold">
                   {stats.inProgress}
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   Currently learning
                 </p>
               </CardContent>
             </Card>
-            </motion.div>
+          </motion.div>
 
-            {/* Remaining */}
-            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
+          {/* Remaining */}
+          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-muted-foreground text-sm font-medium">
                   Remaining
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-foreground mb-2">
+                <div className="text-foreground mb-2 text-2xl font-bold">
                   {stats.notStarted}
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   Lessons to start
                 </p>
               </CardContent>
             </Card>
-            </motion.div>
           </motion.div>
+        </motion.div>
 
-          {/* Quick Actions */}
-          <motion.div
-            initial="initial"
-            animate="animate"
-            variants={staggerContainer}
-            className="grid gap-6 md:grid-cols-2 mb-8"
-          >
-            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
+        {/* Quick Actions */}
+        <motion.div
+          initial="initial"
+          animate="animate"
+          variants={staggerContainer}
+          className="mb-8 grid gap-6 md:grid-cols-2"
+        >
+          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <IconWrapper icon={BookOpenIcon} size={20} />
@@ -157,7 +165,7 @@ export default function DashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground mb-4">
+                <p className="text-muted-foreground mb-4 text-sm">
                   Pick up where you left off or start a new topic.
                 </p>
                 <div className="flex gap-2">
@@ -170,10 +178,10 @@ export default function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
-            </motion.div>
+          </motion.div>
 
-            <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-              <Card className="shadow-sm border-border/50 transition-shadow hover:shadow-md">
+          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
+            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <IconWrapper icon={ArrowUp01Icon} size={20} />
@@ -206,141 +214,147 @@ export default function DashboardPage() {
                 </div>
               </CardContent>
             </Card>
-            </motion.div>
           </motion.div>
+        </motion.div>
 
-          {/* Recommended Next Topics */}
-          {recommendedTopics.length > 0 && (
-            <motion.div
-              initial="initial"
-              animate="animate"
-              variants={fadeIn}
-              transition={transitions.smooth}
-            >
-              <Card className="mb-8 shadow-sm border-border/50">
-                <CardHeader className="border-b border-border/50">
-                  <CardTitle className="flex items-center gap-2">
-                    <IconWrapper icon={PlayIcon} size={20} />
-                    Recommended Next
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <motion.div
-                    variants={staggerContainer}
-                    initial="initial"
-                    animate="animate"
-                    className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
-                  >
-                    {recommendedTopics.map((topic, idx) => {
-                      const topicSlug = generateTopicSlug(topic.title);
-                      return (
-                        <motion.div
-                          key={topic.id}
-                          variants={staggerItem}
-                          whileHover={{ y: -2, scale: 1.02 }}
-                          transition={transitions.springGentle}
-                        >
-                          <Link
-                            href={ROUTES.TOPIC(topicSlug)}
-                            className="block p-4 rounded-lg border border-border/50 hover:border-primary transition-colors shadow-sm hover:shadow-md"
-                          >
-                      <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-semibold text-foreground">
-                          {topic.title}
-                        </h3>
-                        <span className="text-xs text-muted-foreground">
-                          #{topic.order + 1}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground line-clamp-2">
-                        {topic.description}
-                      </p>
-                      <div className="mt-2 flex items-center gap-2">
-                        <span
-                          className={`text-xs px-2 py-0.5 rounded ${
-                            topic.difficulty === "Easy"
-                              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-                              : topic.difficulty === "Medium"
-                                ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
-                                : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                          }`}
-                        >
-                          {topic.difficulty}
-                        </span>
-                        </div>
-                      </Link>
-                        </motion.div>
-                      );
-                    })}
-                  </motion.div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
-
-          {/* Recent Activity */}
+        {/* Recommended Next Topics */}
+        {recommendedTopics.length > 0 && (
           <motion.div
             initial="initial"
             animate="animate"
             variants={fadeIn}
-            transition={{ ...transitions.smooth, delay: 0.2 }}
+            transition={transitions.smooth}
           >
-            <Card className="shadow-sm border-border/50">
-              <CardHeader className="border-b border-border/50">
+            <Card className="border-border/50 mb-8 shadow-sm">
+              <CardHeader className="border-border/50 border-b">
                 <CardTitle className="flex items-center gap-2">
-                  <IconWrapper icon={CheckmarkCircleIcon} size={20} />
-                  Recent Completions
+                  <IconWrapper icon={PlayIcon} size={20} />
+                  Recommended Next
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {completedTopics.length > 0 ? (
-                  <motion.div
-                    variants={staggerContainer}
-                    initial="initial"
-                    animate="animate"
-                    className="space-y-2"
-                  >
-                    {completedTopics
-                      .slice(-5)
-                      .reverse()
-                      .map((topicId, idx) => {
-                        const topic = TOPICS.find((t) => t.id === topicId);
-                        if (!topic) {return null;}
-                        return (
-                          <motion.div
-                            key={topicId}
-                            variants={staggerItem}
-                            whileHover={{ x: 4 }}
-                            transition={transitions.quick}
-                            className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border/50 hover:border-primary/50 transition-colors"
-                          >
+                <motion.div
+                  variants={staggerContainer}
+                  initial="initial"
+                  animate="animate"
+                  className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+                >
+                  {recommendedTopics.map((topic, idx) => {
+                    const topicSlug = generateTopicSlug(topic.title)
+                    return (
+                      <motion.div
+                        key={topic.id}
+                        variants={staggerItem}
+                        whileHover={{ y: -2, scale: 1.02 }}
+                        transition={transitions.springGentle}
+                      >
+                        <Link
+                          href={ROUTES.TOPIC(topicSlug)}
+                          className="border-border/50 hover:border-primary block rounded-lg border p-4 shadow-sm transition-colors hover:shadow-md"
+                        >
+                          <div className="mb-2 flex items-start justify-between">
+                            <h3 className="text-foreground font-semibold">
+                              {topic.title}
+                            </h3>
+                            <span className="text-muted-foreground text-xs">
+                              #{topic.order + 1}
+                            </span>
+                          </div>
+                          <p className="text-muted-foreground line-clamp-2 text-sm">
+                            {topic.description}
+                          </p>
+                          <div className="mt-2 flex items-center gap-2">
+                            <span
+                              className={`rounded px-2 py-0.5 text-xs ${
+                                topic.difficulty === "Easy"
+                                  ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                                  : topic.difficulty === "Medium"
+                                    ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                                    : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                              }`}
+                            >
+                              {topic.difficulty}
+                            </span>
+                          </div>
+                        </Link>
+                      </motion.div>
+                    )
+                  })}
+                </motion.div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Recent Activity */}
+        <motion.div
+          initial="initial"
+          animate="animate"
+          variants={fadeIn}
+          transition={{ ...transitions.smooth, delay: 0.2 }}
+        >
+          <Card className="border-border/50 shadow-sm">
+            <CardHeader className="border-border/50 border-b">
+              <CardTitle className="flex items-center gap-2">
+                <IconWrapper icon={CheckmarkCircleIcon} size={20} />
+                Recent Completions
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {completedTopics.length > 0 ? (
+                <motion.div
+                  variants={staggerContainer}
+                  initial="initial"
+                  animate="animate"
+                  className="space-y-2"
+                >
+                  {completedTopics
+                    .slice(-5)
+                    .reverse()
+                    .map((topicId, idx) => {
+                      const topic = TOPICS.find((t) => t.id === topicId)
+                      if (!topic) {
+                        return null
+                      }
+                      return (
+                        <motion.div
+                          key={topicId}
+                          variants={staggerItem}
+                          whileHover={{ x: 4 }}
+                          transition={transitions.quick}
+                          className="bg-muted/50 border-border/50 hover:border-primary/50 flex items-center justify-between rounded-lg border p-3 transition-colors"
+                        >
                           <div>
-                            <p className="font-medium text-foreground">
+                            <p className="text-foreground font-medium">
                               {topic.title}
                             </p>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-muted-foreground text-xs">
                               {topic.module}
                             </p>
                           </div>
                           <Button variant="ghost" size="sm" asChild>
-                            <Link href={ROUTES.TOPIC(generateTopicSlug(topic.title))}>
+                            <Link
+                              href={ROUTES.TOPIC(
+                                generateTopicSlug(topic.title)
+                              )}
+                            >
                               Review
                             </Link>
                           </Button>
-                          </motion.div>
-                        );
-                      })}
-                  </motion.div>
-                ) : (
-                  <p className="text-sm text-muted-foreground text-center py-4">
-                    No completed topics yet. Start learning to see your progress
-                    here!
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
+                        </motion.div>
+                      )
+                    })}
+                </motion.div>
+              ) : (
+                <p className="text-muted-foreground py-4 text-center text-sm">
+                  No completed topics yet. Start learning to see your progress
+                  here!
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
     </motion.div>
-  );
+  )
 }

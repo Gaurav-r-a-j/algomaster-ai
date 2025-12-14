@@ -1,4 +1,4 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const lcs: Topic = {
   id: "lcs",
@@ -12,5 +12,4 @@ export const lcs: Topic = {
   difficulty: "Hard",
   content: "# Longest Common Subsequence\n\nComing soon...",
   quiz: [],
-};
-
+}

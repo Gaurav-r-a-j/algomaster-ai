@@ -3,5 +3,5 @@ export default function BillingPage() {
     <div>
       <h1>Billing Page</h1>
     </div>
-  );
+  )
 }

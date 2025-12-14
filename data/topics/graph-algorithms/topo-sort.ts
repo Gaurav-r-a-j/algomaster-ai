@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const topoSort: Topic = {
   id: "topo-sort",
   title: "Topological Sort",
-  description: "Linear ordering of vertices in a DAG such that for every edge (u, v), u comes before v.",
+  description:
+    "Linear ordering of vertices in a DAG such that for every edge (u, v), u comes before v.",
   category: AlgorithmType.GRAPH,
   complexity: { time: "O(V + E)", space: "O(V)" },
   visualizerType: VisualizerType.NONE,
@@ -180,9 +181,15 @@ def has_cycle(graph):
     {
       id: 1,
       question: "What type of graph does topological sort work on?",
-      options: ["Any graph", "Undirected graph", "DAG (Directed Acyclic Graph)", "Complete graph"],
+      options: [
+        "Any graph",
+        "Undirected graph",
+        "DAG (Directed Acyclic Graph)",
+        "Complete graph",
+      ],
       correctAnswer: 2,
-      explanation: "Topological sort only works on Directed Acyclic Graphs (DAGs) - graphs with no cycles.",
+      explanation:
+        "Topological sort only works on Directed Acyclic Graphs (DAGs) - graphs with no cycles.",
     },
   ],
   practiceLinks: [
@@ -207,4 +214,4 @@ def has_cycle(graph):
       difficulty: "Hard",
     },
   ],
-};
+}

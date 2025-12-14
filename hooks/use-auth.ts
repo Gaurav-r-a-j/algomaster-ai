@@ -3,5 +3,5 @@ export function useAuth() {
     user: null,
     isLoading: false,
     isAuthenticated: false,
-  };
+  }
 }

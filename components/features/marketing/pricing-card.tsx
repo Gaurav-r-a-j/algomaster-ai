@@ -3,5 +3,5 @@ export function PricingCard() {
     <div>
       <h2>Pricing Card</h2>
     </div>
-  );
+  )
 }

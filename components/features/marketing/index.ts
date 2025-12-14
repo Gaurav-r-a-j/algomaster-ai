@@ -1,13 +1,12 @@
-export { HeroSection } from "./hero-section";
-export { TechStack } from "./tech-stack";
-export { FeaturesGrid } from "./features-grid";
-export { CTASection } from "./cta-section";
-export { LandingNav } from "./landing-nav";
-export { LandingHero } from "./landing-hero";
-export { BentoGrid } from "./bento-grid";
-export { HowItWorks } from "./how-it-works";
-export { TopicsGrid } from "./topics-grid";
-export { Testimonials } from "./testimonials";
-export { FAQSection } from "./faq-section";
-export { LandingFooter } from "./landing-footer";
-
+export { HeroSection } from "./hero-section"
+export { TechStack } from "./tech-stack"
+export { FeaturesGrid } from "./features-grid"
+export { CTASection } from "./cta-section"
+export { LandingNav } from "./landing-nav"
+export { LandingHero } from "./landing-hero"
+export { BentoGrid } from "./bento-grid"
+export { HowItWorks } from "./how-it-works"
+export { TopicsGrid } from "./topics-grid"
+export { Testimonials } from "./testimonials"
+export { FAQSection } from "./faq-section"
+export { LandingFooter } from "./landing-footer"

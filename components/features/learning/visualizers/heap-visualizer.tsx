@@ -1,58 +1,62 @@
-"use client";
+"use client"
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { PlayIcon, PauseIcon, RefreshCwIcon, LayersIcon } from "@/lib/icons";
-import type { Topic } from "@/types/curriculum";
-import type { VisualizationStep } from "@/types/curriculum";
-import { generateHeapSteps } from "@/utils/algorithm-logic";
-import { VisualizerLayout } from "./visualizer-layout";
-import { staggerContainer, staggerItem, transitions } from "@/lib/animations";
+import { useCallback, useEffect, useRef, useState } from "react"
+import { generateHeapSteps } from "@/utils/algorithm-logic"
+import { motion } from "motion/react"
+
+import type { Topic, VisualizationStep } from "@/types/curriculum"
+import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
+import { LayersIcon, PauseIcon, PlayIcon, RefreshCwIcon } from "@/lib/icons"
+import { Button } from "@/components/ui/button"
+import { IconWrapper } from "@/components/common/icon-wrapper"
+
+import { VisualizerLayout } from "./visualizer-layout"
 
 interface HeapVisualizerProps {
-  topic: Topic;
+  topic: Topic
 }
 
-const DEFAULT_SPEED_MS = 800;
+const DEFAULT_SPEED_MS = 800
 
 export function HeapVisualizer({ topic }: HeapVisualizerProps) {
-  const [steps, setSteps] = useState<VisualizationStep[]>([]);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS);
-  const timerRef = useRef<number | null>(null);
+  const [steps, setSteps] = useState<VisualizationStep[]>([])
+  const [currentStep, setCurrentStep] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
+  const timerRef = useRef<number | null>(null)
 
   const generateData = useCallback(() => {
-    const newSteps = generateHeapSteps();
-    setSteps(newSteps);
-    setCurrentStep(0);
-    setIsPlaying(false);
-  }, []);
+    const newSteps = generateHeapSteps()
+    setSteps(newSteps)
+    setCurrentStep(0)
+    setIsPlaying(false)
+  }, [])
 
   useEffect(() => {
-    generateData();
-  }, [generateData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    generateData()
+  }, [generateData])
 
   useEffect(() => {
     if (isPlaying) {
       timerRef.current = window.setInterval(() => {
         setCurrentStep((prev) => {
           if (prev >= steps.length - 1) {
-            setIsPlaying(false);
-            return prev;
+            setIsPlaying(false)
+            return prev
           }
-          return prev + 1;
-        });
-      }, playbackSpeed);
+          return prev + 1
+        })
+      }, playbackSpeed)
     } else if (timerRef.current) {
-      clearInterval(timerRef.current);
+      clearInterval(timerRef.current)
     }
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [isPlaying, steps.length, playbackSpeed]);
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+    }
+  }, [isPlaying, steps.length, playbackSpeed])
 
   const currentData =
     steps[currentStep] ||
@@ -62,10 +66,10 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
       sortedIndices: [],
       description: "Ready",
       auxiliary: { heap: [] },
-    } as VisualizationStep);
+    } as VisualizationStep)
 
-  const auxiliary = currentData.auxiliary as { heap?: number[] };
-  const heap = auxiliary?.heap || [];
+  const auxiliary = currentData.auxiliary as { heap?: number[] }
+  const heap = auxiliary?.heap || []
 
   const controls = (
     <div className="flex items-center gap-2">
@@ -91,23 +95,25 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
         {isPlaying ? "Pause" : "Play"}
       </Button>
     </div>
-  );
+  )
 
   const description = (
     <div className="space-y-2">
-      <p className="text-sm font-mono text-primary">
+      <p className="text-primary font-mono text-sm">
         Step {currentStep + 1} / {steps.length}
       </p>
-      <p className="text-sm text-foreground font-medium">
+      <p className="text-foreground text-sm font-medium">
         {currentData.description}
       </p>
     </div>
-  );
+  )
 
   return (
     <VisualizerLayout
       title="Max Heap Visualizer"
-      icon={<IconWrapper icon={LayersIcon} size={20} className="text-primary" />}
+      icon={
+        <IconWrapper icon={LayersIcon} size={20} className="text-primary" />
+      }
       controls={controls}
       description={description}
     >
@@ -117,16 +123,16 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
         variants={staggerContainer}
         className="flex flex-col gap-8"
       >
-        <div className="h-64 flex items-start justify-center p-4 bg-muted rounded-lg border border-border relative overflow-hidden">
+        <div className="bg-muted border-border relative flex h-64 items-start justify-center overflow-hidden rounded-lg border p-4">
           {heap.map((val: number, idx: number) => {
-            const level = Math.floor(Math.log2(idx + 1));
-            const offset = Math.pow(2, level) - 1;
-            const posInLevel = idx - offset;
-            const maxInLevel = Math.pow(2, level);
-            const width = 100 / maxInLevel;
-            const left = posInLevel * width + width / 2;
-            const top = level * 60 + 20;
-            const isActive = currentData.activeIndices.includes(idx);
+            const level = Math.floor(Math.log2(idx + 1))
+            const offset = Math.pow(2, level) - 1
+            const posInLevel = idx - offset
+            const maxInLevel = Math.pow(2, level)
+            const width = 100 / maxInLevel
+            const left = posInLevel * width + width / 2
+            const top = level * 60 + 20
+            const isActive = currentData.activeIndices.includes(idx)
             return (
               <motion.div
                 key={idx}
@@ -140,12 +146,10 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                   borderColor: isActive
                     ? "rgb(245 158 11)"
                     : "hsl(var(--border))",
-                  color: isActive
-                    ? "white"
-                    : "hsl(var(--foreground))",
+                  color: isActive ? "white" : "hsl(var(--foreground))",
                 }}
                 transition={transitions.spring}
-                className="absolute w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 z-10"
+                className="absolute z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 font-bold"
                 style={{
                   left: `${left}%`,
                   top: `${top}px`,
@@ -154,15 +158,15 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
               >
                 {val}
               </motion.div>
-            );
+            )
           })}
         </div>
         <motion.div
           variants={staggerContainer}
-          className="flex items-center justify-center gap-1 overflow-x-auto p-4 bg-muted/50 rounded-lg"
+          className="bg-muted/50 flex items-center justify-center gap-1 overflow-x-auto rounded-lg p-4"
         >
           {heap.map((val: number, idx: number) => {
-            const isActive = currentData.activeIndices.includes(idx);
+            const isActive = currentData.activeIndices.includes(idx)
             return (
               <motion.div
                 key={idx}
@@ -178,24 +182,21 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                     borderColor: isActive
                       ? "rgb(245 158 11)"
                       : "hsl(var(--border))",
-                    color: isActive
-                      ? "white"
-                      : "hsl(var(--foreground))",
+                    color: isActive ? "white" : "hsl(var(--foreground))",
                   }}
                   transition={transitions.smooth}
-                  className="w-10 h-10 flex items-center justify-center border rounded font-bold"
+                  className="flex h-10 w-10 items-center justify-center rounded border font-bold"
                 >
                   {val}
                 </motion.div>
-                <span className="text-[10px] text-muted-foreground mt-1">
+                <span className="text-muted-foreground mt-1 text-[10px]">
                   {idx}
                 </span>
               </motion.div>
-            );
+            )
           })}
         </motion.div>
       </motion.div>
     </VisualizerLayout>
-  );
+  )
 }
-

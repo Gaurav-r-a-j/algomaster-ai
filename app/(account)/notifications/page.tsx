@@ -3,5 +3,5 @@ export default function NotificationsPage() {
     <div>
       <h1>Notifications Page</h1>
     </div>
-  );
+  )
 }

@@ -1,24 +1,25 @@
-"use client";
+"use client"
 
-import { forwardRef } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { Label } from "@/components/ui/label";
-import { ErrorMessage } from "@/components/common/error-message";
-import { cn } from "@/utils/common/class-names";
+import { forwardRef } from "react"
+import { cn } from "@/utils/common/class-names"
+import { Controller, useFormContext } from "react-hook-form"
+
+import { Label } from "@/components/ui/label"
+import { ErrorMessage } from "@/components/common/error-message"
 
 export interface FormFieldProps {
-  name: string;
-  label?: string;
-  required?: boolean;
-  description?: string;
-  className?: string;
+  name: string
+  label?: string
+  required?: boolean
+  description?: string
+  className?: string
   children: (field: {
-    value: unknown;
-    onChange: (value: unknown) => void;
-    onBlur: () => void;
-    name: string;
-    error?: string;
-  }) => React.ReactElement;
+    value: unknown
+    onChange: (value: unknown) => void
+    onBlur: () => void
+    name: string
+    error?: string
+  }) => React.ReactElement
 }
 
 // FormField - Base form field component with label and error handling
@@ -28,9 +29,9 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
     const {
       control,
       formState: { errors },
-    } = useFormContext();
+    } = useFormContext()
 
-    const error = errors[name]?.message as string | undefined;
+    const error = errors[name]?.message as string | undefined
 
     return (
       <div ref={ref} className={cn("space-y-2", className)}>
@@ -41,7 +42,7 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
           </Label>
         )}
         {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <p className="text-muted-foreground text-sm">{description}</p>
         )}
         <Controller
           name={name}
@@ -56,8 +57,8 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
         />
         {error && <ErrorMessage message={error} />}
       </div>
-    );
+    )
   }
-);
+)
 
-FormField.displayName = "FormField";
+FormField.displayName = "FormField"

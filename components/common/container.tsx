@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
-import { cn } from "@/utils/common/class-names";
+import { ReactNode } from "react"
+import { cn } from "@/utils/common/class-names"
 
 export interface ContainerProps {
-  children: ReactNode;
-  className?: string;
-  size?: "sm" | "md" | "lg" | "xl" | "full";
+  children: ReactNode
+  className?: string
+  size?: "sm" | "md" | "lg" | "xl" | "full"
 }
 
 const sizeClasses = {
@@ -13,7 +13,7 @@ const sizeClasses = {
   lg: "max-w-6xl",
   xl: "max-w-7xl",
   full: "max-w-full",
-};
+}
 
 // Container - Responsive container component
 // Example: <Container size="lg"><YourContent /></Container>
@@ -32,5 +32,5 @@ export function Container({
     >
       {children}
     </div>
-  );
+  )
 }

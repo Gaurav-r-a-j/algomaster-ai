@@ -5,9 +5,9 @@ Component for displaying empty states with optional action button.
 ## Usage
 
 ```tsx
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/common/empty-state"
 
-<EmptyState
+;<EmptyState
   title="No items found"
   description="Get started by creating your first item"
   action={{
@@ -19,12 +19,12 @@ import { EmptyState } from "@/components/common/empty-state";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | - | Empty state title (required) |
-| `description` | `string` | - | Empty state description |
-| `action` | `{ label: string; onClick: () => void }` | - | Optional action button |
-| `className` | `string` | - | Additional CSS classes |
+| Prop          | Type                                     | Default | Description                  |
+| ------------- | ---------------------------------------- | ------- | ---------------------------- |
+| `title`       | `string`                                 | -       | Empty state title (required) |
+| `description` | `string`                                 | -       | Empty state description      |
+| `action`      | `{ label: string; onClick: () => void }` | -       | Optional action button       |
+| `className`   | `string`                                 | -       | Additional CSS classes       |
 
 ## Example
 
@@ -38,4 +38,3 @@ import { EmptyState } from "@/components/common/empty-state";
   }}
 />
 ```
-

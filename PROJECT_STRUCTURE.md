@@ -317,8 +317,8 @@ describe("ComponentName or FunctionName", () => {
     // Arrange
     // Act
     // Assert
-  });
-});
+  })
+})
 ```
 
 ## 🔧 Import Conventions
@@ -333,14 +333,13 @@ describe("ComponentName or FunctionName", () => {
 ### Example
 
 ```typescript
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { authService } from "@/services/auth-service"
 
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
-import { authService } from "@/services/auth-service";
-
-import type { User } from "@/types/user";
+import type { User } from "@/types/user"
+import { useAuth } from "@/hooks/use-auth"
+import { Button } from "@/components/ui/button"
 ```
 
 ## 📦 Common Subfolders Pattern

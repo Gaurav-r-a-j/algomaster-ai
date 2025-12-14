@@ -5,19 +5,19 @@ Wrapper component for consistent icon sizing and styling. Works with both Huge I
 ## Usage
 
 ```tsx
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { Home01Icon } from "@/lib/icons";
+import { Home01Icon } from "@/lib/icons"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
-<IconWrapper icon={Home01Icon} size="lg" className="text-primary" />
+;<IconWrapper icon={Home01Icon} size="lg" className="text-primary" />
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `icon` | `ComponentType \| IconSvgObject` | - | Icon component or Huge Icon object (required) |
-| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| number` | `"md"` | Icon size |
-| `className` | `string` | - | Additional CSS classes |
+| Prop        | Type                                             | Default | Description                                   |
+| ----------- | ------------------------------------------------ | ------- | --------------------------------------------- |
+| `icon`      | `ComponentType \| IconSvgObject`                 | -       | Icon component or Huge Icon object (required) |
+| `size`      | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| number` | `"md"`  | Icon size                                     |
+| `className` | `string`                                         | -       | Additional CSS classes                        |
 
 ## Sizes
 
@@ -42,9 +42,8 @@ import { Home01Icon, SearchIcon } from "@/lib/icons";
 ## Hero Icons Example
 
 ```tsx
-import { IconWrapper } from "@/components/common/icon-wrapper";
-import { HeroHomeIcon } from "@/lib/icons";
+import { HeroHomeIcon } from "@/lib/icons"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
-<IconWrapper icon={HeroHomeIcon} size="lg" className="text-primary" />
+;<IconWrapper icon={HeroHomeIcon} size="lg" className="text-primary" />
 ```
-

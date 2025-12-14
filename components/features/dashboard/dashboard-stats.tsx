@@ -3,5 +3,5 @@ export function DashboardStats() {
     <div>
       <h2>Dashboard Stats</h2>
     </div>
-  );
+  )
 }

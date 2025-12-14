@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
 export async function apiClient<T>(
   endpoint: string,
@@ -10,11 +10,11 @@ export async function apiClient<T>(
       "Content-Type": "application/json",
       ...options?.headers,
     },
-  });
+  })
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    throw new Error(`API Error: ${response.statusText}`)
   }
 
-  return response.json();
+  return response.json()
 }

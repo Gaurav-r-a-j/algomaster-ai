@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const trie: Topic = {
   id: "trie",
   title: "Trie (Prefix Tree)",
-  description: "Tree-like data structure for efficient string storage and prefix matching.",
+  description:
+    "Tree-like data structure for efficient string storage and prefix matching.",
   category: AlgorithmType.DATA_STRUCTURE,
   complexity: { time: "O(m)", space: "O(ALPHABET_SIZE * N * M)" },
   visualizerType: VisualizerType.NONE,
@@ -149,7 +150,8 @@ def autocomplete(trie, prefix):
       question: "What is the time complexity of searching a word in a Trie?",
       options: ["O(1)", "O(log n)", "O(m)", "O(n)"],
       correctAnswer: 2,
-      explanation: "Searching in a Trie takes O(m) time where m is the length of the word being searched.",
+      explanation:
+        "Searching in a Trie takes O(m) time where m is the length of the word being searched.",
     },
   ],
   practiceLinks: [
@@ -174,4 +176,4 @@ def autocomplete(trie, prefix):
       difficulty: "Medium",
     },
   ],
-};
+}

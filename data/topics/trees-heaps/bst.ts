@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const bst: Topic = {
   id: "bst",
   title: "Binary Search Tree",
-  description: "Tree data structure where each node has at most two children, maintaining sorted order.",
+  description:
+    "Tree data structure where each node has at most two children, maintaining sorted order.",
   category: AlgorithmType.DATA_STRUCTURE,
   complexity: { time: "O(log n)", space: "O(n)" },
   visualizerType: VisualizerType.BINARY_TREE,
@@ -169,7 +170,8 @@ O(n) - Storage for n nodes.
         "Tree is always balanced",
       ],
       correctAnswer: 1,
-      explanation: "BST maintains the property that left subtree values are less and right subtree values are greater than the node.",
+      explanation:
+        "BST maintains the property that left subtree values are less and right subtree values are greater than the node.",
     },
   ],
   practiceLinks: [
@@ -199,4 +201,4 @@ O(n) - Storage for n nodes.
       difficulty: "Easy",
     },
   ],
-};
+}

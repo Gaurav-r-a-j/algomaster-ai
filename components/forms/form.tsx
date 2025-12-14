@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
-import { cn } from "@/utils/common/class-names";
+import { cn } from "@/utils/common/class-names"
+import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form"
 
 export interface FormProps<T extends FieldValues> {
-  form: UseFormReturn<T>;
-  onSubmit: (data: T) => void | Promise<void>;
-  children: React.ReactNode;
-  className?: string;
+  form: UseFormReturn<T>
+  onSubmit: (data: T) => void | Promise<void>
+  children: React.ReactNode
+  className?: string
 }
 
 // Form - Wrapper component that provides form context
@@ -27,5 +27,5 @@ export function Form<T extends FieldValues>({
         {children}
       </form>
     </FormProvider>
-  );
+  )
 }

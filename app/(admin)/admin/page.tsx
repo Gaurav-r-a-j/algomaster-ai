@@ -3,5 +3,5 @@ export default function AdminPage() {
     <div>
       <h1>Admin Dashboard</h1>
     </div>
-  );
+  )
 }

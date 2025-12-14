@@ -24,24 +24,25 @@ Form components require:
 ### 1. Setup Form with Schema
 
 ```tsx
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
 import {
   Form,
   InputField,
   SelectField,
   TextareaField,
-} from "@/components/forms";
+} from "@/components/forms"
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   name: z.string().min(2, "Name must be at least 2 characters"),
   country: z.string().min(1, "Please select a country"),
   message: z.string().optional(),
-});
+})
 
-type FormData = z.infer<typeof formSchema>;
+type FormData = z.infer<typeof formSchema>
 
 function MyForm() {
   const form = useForm<FormData>({
@@ -52,12 +53,12 @@ function MyForm() {
       country: "",
       message: "",
     },
-  });
+  })
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
+    console.log(data)
     // Handle form submission
-  };
+  }
 
   return (
     <Form form={form} onSubmit={onSubmit}>
@@ -96,7 +97,7 @@ function MyForm() {
 
       <Button type="submit">Submit</Button>
     </Form>
-  );
+  )
 }
 ```
 
@@ -204,18 +205,18 @@ Base form field component for custom implementations.
 Use Zod schemas with `zodResolver`:
 
 ```tsx
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   age: z.number().min(18, "Must be 18 or older"),
-});
+})
 
 const form = useForm({
   resolver: zodResolver(schema),
-});
+})
 ```
 
 ## Advanced Usage
@@ -228,18 +229,18 @@ const schema = z.object({
     .string()
     .min(1, "Email is required")
     .email("Please enter a valid email address"),
-});
+})
 ```
 
 ### Conditional Fields
 
 ```tsx
-const watchType = form.watch("type");
+const watchType = form.watch("type")
 
 {
   watchType === "custom" && (
     <InputField name="customValue" label="Custom Value" required />
-  );
+  )
 }
 ```
 
@@ -249,7 +250,7 @@ const watchType = form.watch("type");
 const form = useForm({
   resolver: zodResolver(schema),
   mode: "onBlur", // Validate on blur
-});
+})
 ```
 
 ## Best Practices

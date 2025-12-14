@@ -5,9 +5,9 @@ Wrapper component for Card with consistent structure (header, content, footer).
 ## Usage
 
 ```tsx
-import { CardWrapper } from "@/components/common/card-wrapper";
+import { CardWrapper } from "@/components/common/card-wrapper"
 
-<CardWrapper
+;<CardWrapper
   title="Card Title"
   description="Card description"
   footer={<Button>Action</Button>}
@@ -18,13 +18,13 @@ import { CardWrapper } from "@/components/common/card-wrapper";
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | - | Card title |
-| `description` | `string` | - | Card description |
-| `footer` | `ReactNode` | - | Footer content |
-| `className` | `string` | - | Additional CSS classes |
-| `children` | `ReactNode` | - | Card content |
+| Prop          | Type        | Default | Description            |
+| ------------- | ----------- | ------- | ---------------------- |
+| `title`       | `string`    | -       | Card title             |
+| `description` | `string`    | -       | Card description       |
+| `footer`      | `ReactNode` | -       | Footer content         |
+| `className`   | `string`    | -       | Additional CSS classes |
+| `children`    | `ReactNode` | -       | Card content           |
 
 ## Example
 
@@ -38,4 +38,3 @@ import { CardWrapper } from "@/components/common/card-wrapper";
   <InputField name="email" label="Email" />
 </CardWrapper>
 ```
-

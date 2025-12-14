@@ -1,9 +1,10 @@
-import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum";
+import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
 
 export const dfs: Topic = {
   id: "dfs",
   title: "Depth-First Search (DFS)",
-  description: "Graph traversal algorithm that explores as far as possible along each branch before backtracking.",
+  description:
+    "Graph traversal algorithm that explores as far as possible along each branch before backtracking.",
   category: AlgorithmType.GRAPH,
   complexity: { time: "O(V + E)", space: "O(V)" },
   visualizerType: VisualizerType.PATHFINDING,
@@ -120,7 +121,8 @@ def dfs_iterative(graph, start):
       question: "What data structure does DFS use?",
       options: ["Queue", "Stack", "Heap", "Array"],
       correctAnswer: 1,
-      explanation: "DFS uses a stack (either through recursion or an explicit stack) to explore nodes.",
+      explanation:
+        "DFS uses a stack (either through recursion or an explicit stack) to explore nodes.",
     },
   ],
   practiceLinks: [
@@ -150,4 +152,4 @@ def dfs_iterative(graph, start):
       difficulty: "Medium",
     },
   ],
-};
+}
