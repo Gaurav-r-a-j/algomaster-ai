@@ -10,6 +10,7 @@ next-web-app/
 ├── components/             # React components
 ├── hooks/                  # Custom React hooks
 ├── lib/                    # Library code and utilities
+│   ├── icons/              # Icon registry and utilities
 ├── services/               # API service layer
 ├── types/                  # TypeScript type definitions
 ├── utils/                  # Utility functions

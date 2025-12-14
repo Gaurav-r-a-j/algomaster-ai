@@ -93,6 +93,8 @@ next-web-app/
 │   │   ├── footer.tsx
 │   │   └── sidebar.tsx
 │   └── common/                   # Common utility components
+│       ├── icon.tsx              # Icon component (Huge Icons)
+│       ├── icon-wrapper.tsx      # Icon wrapper with consistent sizing
 │       ├── loading-spinner.tsx
 │       ├── error-message.tsx
 │       └── success-message.tsx
@@ -110,6 +112,11 @@ next-web-app/
 │   ├── common/                   # Common library utilities
 │   │   ├── api-helpers.ts
 │   │   └── constants.ts
+│   ├── icons/                    # Icon system (Huge Icons & Hero Icons)
+│   │   ├── icon-registry.ts      # Icon exports and registry
+│   │   ├── icon-utils.ts         # Icon utility functions
+│   │   ├── index.ts              # Icon system entry point
+│   │   └── ICONS.md              # Icon usage documentation
 │   ├── errors/
 │   │   └── api-error.ts          # Custom error classes
 │   ├── validations/
@@ -382,6 +389,8 @@ Key dependencies:
 - `zustand`: State management
 - `zod`: Validation
 - `shadcn/ui`: UI components
+- `@hugeicons/react`: Primary icon library
+- `@heroicons/react`: Secondary icon library
 
 ## 🚀 Development Commands
 
