@@ -62,6 +62,15 @@ export interface Topic {
   starterCode?: Record<SupportedLanguage, string> // Starter code for the runner
   difficulty?: "Easy" | "Medium" | "Hard"
   quiz?: QuizQuestion[]
+  practiceProblems?: PracticeProblem[]
+}
+
+export interface PracticeProblem {
+  id: string
+  title: string
+  description: string
+  difficulty: "Easy" | "Medium" | "Hard"
+  starterCode?: Record<SupportedLanguage, string>
 }
 
 export interface ChatMessage {

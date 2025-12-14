@@ -203,7 +203,10 @@ export async function getTopicContent(topic: Topic): Promise<TopicContent> {
   return {
     markdown: markdown || topic.content, // Fallback to topic.content
     codeExamples,
-    practiceProblems,
+    practiceProblems:
+      practiceProblems.length > 0
+        ? practiceProblems
+        : topic.practiceProblems || [],
     visualizationData: visualizationData || undefined,
   }
 }

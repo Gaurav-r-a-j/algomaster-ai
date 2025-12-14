@@ -37,7 +37,7 @@ const footerLinks = {
 
 export function LandingFooter() {
   return (
-    <footer className="border-t border-neutral-800 bg-black pt-20 pb-10 text-neutral-400 sm:px-6 px-4">
+    <footer className="border-t border-neutral-900 bg-black pt-20 pb-10 text-neutral-400 sm:px-6 px-4">
       <div className="mx-auto mb-16 grid max-w-7xl grid-cols-1 gap-12 md:grid-cols-12">
         {/* Brand Column */}
         <div className="space-y-6 md:col-span-4">
@@ -75,15 +75,15 @@ export function LandingFooter() {
 
         {/* Links Columns */}
         <div className="space-y-4 md:col-span-2">
-          <h4 className="text-sm font-bold uppercase tracking-widest text-white">
+          <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-200">
             Product
           </h4>
-          <ul className="space-y-3 text-sm text-neutral-400">
+          <ul className="space-y-3 text-sm text-neutral-500">
             {footerLinks.product.map((link, i) => (
               <li key={i}>
                 <Link
                   href={link.href}
-                  className="transition-colors hover:text-white"
+                  className="transition-colors hover:text-white duration-200"
                 >
                   {link.label}
                 </Link>
@@ -93,15 +93,15 @@ export function LandingFooter() {
         </div>
 
         <div className="space-y-4 md:col-span-2">
-          <h4 className="text-sm font-bold uppercase tracking-widest text-white">
+          <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-200">
             Company
           </h4>
-          <ul className="space-y-3 text-sm text-neutral-400">
+          <ul className="space-y-3 text-sm text-neutral-500">
             {footerLinks.company.map((link, i) => (
               <li key={i}>
                 <Link
                   href={link.href}
-                  className="transition-colors hover:text-white"
+                  className="transition-colors hover:text-white duration-200"
                 >
                   {link.label}
                 </Link>
@@ -111,15 +111,15 @@ export function LandingFooter() {
         </div>
 
         <div className="space-y-4 md:col-span-2">
-          <h4 className="text-sm font-bold uppercase tracking-widest text-white">
+          <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-200">
             Legal
           </h4>
-          <ul className="space-y-3 text-sm text-neutral-400">
+          <ul className="space-y-3 text-sm text-neutral-500">
             {footerLinks.legal.map((link, i) => (
               <li key={i}>
                 <Link
                   href={link.href}
-                  className="transition-colors hover:text-white"
+                  className="transition-colors hover:text-white duration-200"
                 >
                   {link.label}
                 </Link>
@@ -129,15 +129,15 @@ export function LandingFooter() {
         </div>
 
         <div className="space-y-4 md:col-span-2">
-          <h4 className="text-sm font-bold uppercase tracking-widest text-white">
+          <h4 className="text-sm font-bold uppercase tracking-widest text-neutral-200">
             Resources
           </h4>
-          <ul className="space-y-3 text-sm text-neutral-400">
+          <ul className="space-y-3 text-sm text-neutral-500">
             {footerLinks.resources.map((link, i) => (
               <li key={i}>
                 <Link
                   href={link.href}
-                  className="transition-colors hover:text-white"
+                  className="transition-colors hover:text-white duration-200"
                 >
                   {link.label}
                 </Link>

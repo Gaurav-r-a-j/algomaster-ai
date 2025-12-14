@@ -47,17 +47,17 @@ export function FAQSection() {
           </p>
         </div>
 
-        <Accordion type="single" collapsible className="w-full space-y-4">
+        <Accordion type="single" collapsible className="w-full space-y-6">
           {faqs.map((item, i) => (
             <AccordionItem
               key={i}
               value={`item-${i}`}
-              className="border-border bg-card/50 rounded-lg border px-4"
+              className="border-b border-border/60 bg-transparent px-0 pb-4"
             >
-              <AccordionTrigger className="text-foreground hover:text-primary py-4 text-left font-medium transition-colors">
+              <AccordionTrigger className="text-foreground hover:text-primary py-4 text-left text-lg font-medium transition-colors">
                 {item.q}
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
+              <AccordionContent className="text-muted-foreground pb-4 text-base leading-relaxed">
                 {item.a}
               </AccordionContent>
             </AccordionItem>

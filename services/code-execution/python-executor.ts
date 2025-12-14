@@ -104,3 +104,5 @@ sys.stdout = io.StringIO()
     }
   }
 }
+
+export const pythonExecutor = new PythonExecutor()
