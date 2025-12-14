@@ -1,0 +1,4 @@
+# Practice problems JSON files
+# Place practice problems here: {topic-id}.json
+# Format: [{ id, title, description, difficulty, starterCode, testCases, hints, solution }]
+

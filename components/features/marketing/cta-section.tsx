@@ -20,16 +20,16 @@ export function CTASection() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild className="w-full sm:w-auto group">
-              <Link href={ROUTES.REGISTER}>
-                Get Started
+              <Link href={ROUTES.DASHBOARD}>
+                Start Learning
                 <HeroArrowRightIcon
                   className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
                 />
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="w-full sm:w-auto">
-              <Link href={ROUTES.DESIGN_SYSTEM}>
-                View Design System
+              <Link href={ROUTES.DASHBOARD}>
+                Browse All Topics
               </Link>
             </Button>
           </div>

@@ -22,7 +22,6 @@ import {
   DeleteIcon,
   DownloadIcon,
   EditIcon,
-  EyeIcon,
   File01Icon,
   FileIcon,
   FilterIcon,
@@ -116,7 +115,6 @@ export {
   UserIcon,
   UserSettingsIcon,
   VideoIcon,
-  EyeIcon,
 };
 
 // Export with simpler aliases for convenience
@@ -132,8 +130,10 @@ export {
 
 // Hero Icons - Import and re-export with Hero prefix
 import {
+  ArrowPathIcon,
   BanknotesIcon,
   BellIcon,
+  BookOpenIcon,
   BriefcaseIcon,
   ChatBubbleLeftRightIcon,
   CheckIcon,
@@ -160,6 +160,7 @@ import {
   PlusIcon,
   SparklesIcon,
   TrashIcon,
+
   UserGroupIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -196,6 +197,9 @@ export {
   BanknotesIcon as HeroBanknoteIcon,
   DocumentTextIcon as HeroFileTextIcon,
   SparklesIcon as HeroSparklesIcon,
+  BookOpenIcon as HeroBookOpenIcon,
+  ArrowPathIcon as HeroRefreshCwIcon,
+
 };
 
 // Export without Hero prefix for convenience (use in components)
@@ -208,6 +212,10 @@ export {
   BanknotesIcon as BanknoteIcon,
   DocumentTextIcon as FileTextIcon,
   ChatBubbleLeftRightIcon as QuoteIcon,
+  BookOpenIcon,
+  ArrowPathIcon as RefreshCwIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
 };
 
 // Type exports for icon usage

@@ -27,7 +27,7 @@ export function LandingNav() {
             Login
           </Link>
           <Button asChild size="sm" className="rounded-full">
-            <Link href={ROUTES.REGISTER}>Get Started</Link>
+            <Link href={ROUTES.DASHBOARD}>Get Started</Link>
           </Button>
         </div>
       </div>

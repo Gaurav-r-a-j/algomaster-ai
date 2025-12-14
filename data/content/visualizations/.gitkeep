@@ -1,0 +1,4 @@
+# Visualization data JSON files
+# Place visualization configs here: {topic-id}.json
+# Format: { type, config, steps }
+

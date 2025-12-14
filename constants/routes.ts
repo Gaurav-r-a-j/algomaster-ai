@@ -7,7 +7,11 @@ export const ROUTES = {
   REGISTER: "/register",
   FORGOT_PASSWORD: "/forgot-password",
 
-  // Dashboard routes
+  // Main Learning Platform routes (primary interface) - all dynamic at root
+  TOPIC: (slug: string) => `/${slug}`,
+  MODULE: (slug: string) => `/${slug}`,
+
+  // Dashboard routes (separate for stats/progress)
   DASHBOARD: "/dashboard",
   PROFILE: "/profile",
   SETTINGS: "/settings",
