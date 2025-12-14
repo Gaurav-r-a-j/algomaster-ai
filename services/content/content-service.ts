@@ -1,8 +1,4 @@
-import { readFile } from "fs/promises";
-import { join } from "path";
 import type { Topic } from "@/types/curriculum";
-
-const CONTENT_BASE_PATH = join(process.cwd(), "data", "content");
 
 // For client-side, we'll use API routes or fetch from public folder
 // For now, we'll return empty/default values and let components handle fallbacks
@@ -57,18 +53,20 @@ export async function getTopicMarkdown(topicId: string): Promise<string> {
       if (response.ok) {
         return await response.text();
       }
-    } catch (error) {
+    } catch {
       // Fallback handled below
     }
     return "";
   }
 
-  // Server-side: Read from file system
+  // Server-side: Read from file system (dynamic import to avoid client bundle)
   try {
-    const filePath = join(CONTENT_BASE_PATH, "markdown", `${topicId}.md`);
-    const content = await readFile(filePath, "utf-8");
+    const fs = await import("fs/promises");
+    const path = await import("path");
+    const filePath = path.join(process.cwd(), "data", "content", "markdown", `${topicId}.md`);
+    const content = await fs.readFile(filePath, "utf-8");
     return content;
-  } catch (error) {
+  } catch {
     return "";
   }
 }
@@ -86,7 +84,7 @@ export async function getTopicCodeExamples(
       if (response.ok) {
         return await response.json();
       }
-    } catch (error) {
+    } catch {
       // Fallback handled below
     }
     return [];
@@ -94,10 +92,12 @@ export async function getTopicCodeExamples(
 
   // Server-side: Read from file system
   try {
-    const filePath = join(CONTENT_BASE_PATH, "code", `${topicId}.json`);
-    const content = await readFile(filePath, "utf-8");
+    const fs = await import("fs/promises");
+    const path = await import("path");
+    const filePath = path.join(process.cwd(), "data", "content", "code", `${topicId}.json`);
+    const content = await fs.readFile(filePath, "utf-8");
     return JSON.parse(content);
-  } catch (error) {
+  } catch {
     return [];
   }
 }
@@ -115,7 +115,7 @@ export async function getTopicPracticeProblems(
       if (response.ok) {
         return await response.json();
       }
-    } catch (error) {
+    } catch {
       // Fallback handled below
     }
     return [];
@@ -123,10 +123,12 @@ export async function getTopicPracticeProblems(
 
   // Server-side: Read from file system
   try {
-    const filePath = join(CONTENT_BASE_PATH, "practice", `${topicId}.json`);
-    const content = await readFile(filePath, "utf-8");
+    const fs = await import("fs/promises");
+    const path = await import("path");
+    const filePath = path.join(process.cwd(), "data", "content", "practice", `${topicId}.json`);
+    const content = await fs.readFile(filePath, "utf-8");
     return JSON.parse(content);
-  } catch (error) {
+  } catch {
     return [];
   }
 }
@@ -144,7 +146,7 @@ export async function getTopicVisualizationData(
       if (response.ok) {
         return await response.json();
       }
-    } catch (error) {
+    } catch {
       // Fallback handled below
     }
     return null;
@@ -152,10 +154,12 @@ export async function getTopicVisualizationData(
 
   // Server-side: Read from file system
   try {
-    const filePath = join(CONTENT_BASE_PATH, "visualizations", `${topicId}.json`);
-    const content = await readFile(filePath, "utf-8");
+    const fs = await import("fs/promises");
+    const path = await import("path");
+    const filePath = path.join(process.cwd(), "data", "content", "visualizations", `${topicId}.json`);
+    const content = await fs.readFile(filePath, "utf-8");
     return JSON.parse(content);
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -181,4 +185,3 @@ export async function getTopicContent(
     visualizationData: visualizationData || undefined,
   };
 }
-

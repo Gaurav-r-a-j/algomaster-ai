@@ -1,4 +1,5 @@
 import { Topic } from "@/types/curriculum";
+import { generateSlug } from "@/utils/common/slug";
 
 // Module 1: Foundations
 import { variablesDatatypes } from "./topics/foundations/variables-datatypes";
@@ -112,15 +113,14 @@ export function getModules(): string[] {
   return Array.from(new Set(TOPICS.map((topic) => topic.module))).sort();
 }
 
+import { generateModuleSlug } from "@/utils/common/slug";
+
 /**
  * Get module by slug
  */
 export function getModuleBySlug(slug: string): string | undefined {
   const modules = getModules();
-  return modules.find(
-    (m) =>
-      m.toLowerCase().replace(/^\d+\.\s*/, "").replace(/\s+/g, "-") === slug
-  );
+  return modules.find((m) => generateModuleSlug(m) === slug);
 }
 
 /**
@@ -135,11 +135,7 @@ export function isModuleSlug(slug: string): boolean {
  */
 export function getTopicBySlug(slug: string): Topic | undefined {
   return TOPICS.find((topic) => {
-    // Generate slug from topic title or use id
-    const topicSlug = topic.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+    const topicSlug = generateSlug(topic.title);
     return topicSlug === slug || topic.id === slug;
   });
 }

@@ -29,6 +29,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useProgressStats } from "@/hooks/use-progress-stats";
 import { Progress } from "@/components/ui/progress";
+import { isActivePath } from "@/utils/common/path-utils";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -84,7 +85,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
-                      isActive={pathname === item.url}
+                      isActive={isActivePath(pathname, item.url)}
                       tooltip={item.title}
                     >
                       <Link href={item.url}>

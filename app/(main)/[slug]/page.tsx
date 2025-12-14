@@ -31,6 +31,8 @@ import { PageHeader } from "@/components/common/page-header";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { getModules } from "@/data/curriculum";
+import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug";
+import { removeModulePrefix } from "@/utils/common/path-utils";
 
 interface SlugPageProps {
   params: Promise<{ slug: string }>;
@@ -78,7 +80,7 @@ export default function SlugPage({ params }: SlugPageProps) {
               </div>
               <div>
                 <PageHeader
-                  title={moduleName.replace(/^\d+\.\s*/, "")}
+                  title={removeModulePrefix(moduleName)}
                   description={`${totalInModule} lessons in this module`}
                 />
               </div>
@@ -115,14 +117,8 @@ export default function SlugPage({ params }: SlugPageProps) {
   const nextTopic = topicIndex < TOPICS.length - 1 ? TOPICS[topicIndex + 1] : null;
 
   // Generate slugs
-  const topicSlug = topic.title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  const moduleSlug = topic.module
-    .toLowerCase()
-    .replace(/^\d+\.\s*/, "")
-    .replace(/\s+/g, "-");
+  const topicSlug = generateTopicSlug(topic.title);
+  const moduleSlug = generateModuleSlug(topic.module);
 
   return (
     <div className="flex flex-col h-full overflow-hidden bg-background">

@@ -33,15 +33,12 @@ const getDifficultyIcon = (difficulty?: "Easy" | "Medium" | "Hard") => {
   }
 };
 
+import { generateTopicSlug } from "@/utils/common/slug";
+
 export function TopicCard({ topic }: TopicCardProps) {
   const { isCompleted } = useProgress();
   const isDone = isCompleted(topic.id);
-
-  // Generate slug from topic title
-  const topicSlug = topic.title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  const topicSlug = generateTopicSlug(topic.title);
 
   return (
     <Link href={ROUTES.TOPIC(topicSlug)}>

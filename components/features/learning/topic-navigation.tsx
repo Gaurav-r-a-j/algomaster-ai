@@ -28,7 +28,7 @@ export function TopicNavigation({
     <div className="shrink-0 border-t border-border bg-background/80 backdrop-blur-md px-6 py-4 flex justify-between items-center gap-4">
       {prevTopic ? (
         <Button variant="outline" asChild>
-          <Link href={ROUTES.TOPIC(getTopicSlug(prevTopic))}>
+          <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
             <IconWrapper icon={ChevronLeftIcon} size={16} className="mr-2" />
             Previous: {prevTopic.title}
           </Link>
@@ -39,7 +39,7 @@ export function TopicNavigation({
 
       {nextTopic ? (
         <Button variant="outline" asChild>
-          <Link href={ROUTES.TOPIC(getTopicSlug(nextTopic))}>
+          <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
             Next: {nextTopic.title}
             <IconWrapper icon={ChevronRightIcon} size={16} className="ml-2" />
           </Link>

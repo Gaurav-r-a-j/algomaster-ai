@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,6 +19,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 import { IconWrapper } from "@/components/common/icon-wrapper";
 import { useProgress } from "@/context/progress-context";
 import { TOPICS, getModules } from "@/data/curriculum";
@@ -26,9 +28,12 @@ import {
   BookOpenIcon,
   CheckmarkCircleIcon,
   Home01Icon,
+  SearchIcon,
 } from "@/lib/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug";
+import { extractModuleNumber, isActivePath, removeModulePrefix } from "@/utils/common/path-utils";
 
 interface LearningPlatformLayoutProps {
   children: React.ReactNode;
@@ -38,156 +43,299 @@ export function LearningPlatformLayout({
   children,
 }: LearningPlatformLayoutProps) {
   const pathname = usePathname();
-  const { completedTopics, isCompleted } = useProgress();
+  const { completedTopics } = useProgress();
   const modules = getModules();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const isActive = (path: string) => {
-    return pathname === path || pathname?.startsWith(path + "/");
-  };
+  const isActive = (path: string) => isActivePath(pathname, path);
+
+  // Filter modules and topics based on search
+  const filteredModules = useMemo(() => {
+    if (!searchQuery.trim()) {return modules;}
+    const query = searchQuery.toLowerCase();
+    return modules.filter((module) =>
+      module.toLowerCase().includes(query)
+    );
+  }, [modules, searchQuery]);
+
+  const filteredTopics = useMemo(() => {
+    if (!searchQuery.trim()) {return TOPICS;}
+    const query = searchQuery.toLowerCase();
+    return TOPICS.filter(
+      (topic) =>
+        topic.title.toLowerCase().includes(query) ||
+        topic.description.toLowerCase().includes(query) ||
+        topic.module.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
 
   return (
     <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader className="border-b border-border">
-          <div className="flex items-center gap-2 px-2 py-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <IconWrapper icon={BookOpenIcon} size={20} className="text-primary-foreground" />
-              </div>
-              <span className="font-bold text-lg tracking-tight">DSA Platform</span>
+      <Sidebar className="border-r border-border">
+        <SidebarHeader className="border-b border-border px-4 py-4">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
+              <IconWrapper
+                icon={BookOpenIcon}
+                size={20}
+                className="text-primary-foreground"
+              />
             </div>
+            <Link
+              href={ROUTES.HOME}
+              className="font-bold text-lg tracking-tight text-foreground hover:text-primary transition-colors"
+            >
+              DSA Platform
+            </Link>
+          </div>
+          <div className="relative">
+            <IconWrapper
+              icon={SearchIcon}
+              size={16}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+            />
+            <Input
+              type="search"
+              placeholder="Search topics..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 h-9 text-sm bg-muted/50 border-border focus:bg-background"
+            />
           </div>
         </SidebarHeader>
 
         <SidebarContent>
           <ScrollArea className="flex-1">
-            <SidebarGroup>
-              <SidebarGroupLabel>Quick Links</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive(ROUTES.HOME)}
-                      tooltip="Home"
-                    >
-                      <Link href={ROUTES.HOME}>
-                        <IconWrapper icon={Home01Icon} size={16} />
-                        <span>Home</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive(ROUTES.HOME)}
-                      tooltip="Home"
-                    >
-                      <Link href={ROUTES.HOME}>
-                        <IconWrapper icon={BookOpenIcon} size={16} />
-                        <span>Home</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
+            {searchQuery.trim() ? (
+              // Search Results
+              <div className="p-2 space-y-4">
+                {filteredModules.length > 0 && (
+                  <SidebarGroup>
+                    <SidebarGroupLabel>Modules</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {filteredModules.map((module) => {
+                          const moduleTopics = TOPICS.filter(
+                            (t) => t.module === module
+                          );
+                          const completedCount = moduleTopics.filter((t) =>
+                            completedTopics.includes(t.id)
+                          ).length;
+                          const moduleSlug = generateModuleSlug(module);
+                          const modulePath = ROUTES.MODULE(moduleSlug);
+                          const isModuleActive = isActive(modulePath);
+                          const moduleNumber = extractModuleNumber(module);
+                          const moduleTitle = removeModulePrefix(module);
 
-            <Separator />
-
-            <SidebarGroup>
-              <SidebarGroupLabel>Modules</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {modules.map((module) => {
-                    const moduleTopics = TOPICS.filter((t) => t.module === module);
-                    const completedCount = moduleTopics.filter((t) =>
-                      completedTopics.includes(t.id)
-                    ).length;
-                    const moduleSlug = module
-                      .toLowerCase()
-                      .replace(/^\d+\.\s*/, "")
-                      .replace(/\s+/g, "-");
-                    const modulePath = ROUTES.MODULE(moduleSlug);
-                    const isModuleActive = isActive(modulePath);
-
-                    return (
-                      <SidebarMenuItem key={module}>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={isModuleActive}
-                          tooltip={module.replace(/^\d+\.\s*/, "")}
-                        >
-                          <Link href={modulePath}>
-                            <span className="text-xs font-mono text-muted-foreground">
-                              {module.match(/^\d+/)?.[0] || ""}
-                            </span>
-                            <span className="truncate">
-                              {module.replace(/^\d+\.\s*/, "").slice(0, 20)}
-                              {module.replace(/^\d+\.\s*/, "").length > 20 && "..."}
-                            </span>
-                            {completedCount > 0 && (
-                              <Badge
-                                variant="secondary"
-                                className="ml-auto h-5 px-1.5 text-xs"
-                              >
-                                {completedCount}/{moduleTopics.length}
-                              </Badge>
-                            )}
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    );
-                  })}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-
-            {completedTopics.length > 0 && (
-              <>
-                <Separator />
-                <SidebarGroup>
-                  <SidebarGroupLabel className="flex items-center gap-2">
-                    <IconWrapper icon={CheckmarkCircleIcon} size={12} />
-                    Completed
-                  </SidebarGroupLabel>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      {completedTopics
-                        .slice(-5)
-                        .reverse()
-                        .map((topicId) => {
-                          const topic = TOPICS.find((t) => t.id === topicId);
-                          if (!topic) {return null;}
-                          const topic = TOPICS.find((t) => t.id === topicId);
-                          if (!topic) {return null;}
-                          const topicSlug = topic.title
-                            .toLowerCase()
-                            .replace(/[^a-z0-9]+/g, "-")
-                            .replace(/^-+|-+$/g, "");
-                          const topicPath = ROUTES.TOPIC(topicSlug);
                           return (
-                            <SidebarMenuItem key={topicId}>
+                            <SidebarMenuItem key={module}>
                               <SidebarMenuButton
                                 asChild
-                                isActive={isActive(topicPath)}
+                                isActive={isModuleActive}
+                                tooltip={moduleTitle}
+                              >
+                                <Link href={modulePath}>
+                                  <span className="text-xs font-mono text-muted-foreground">
+                                    {moduleNumber}
+                                  </span>
+                                  <span className="truncate">
+                                    {moduleTitle.slice(0, 20)}
+                                    {moduleTitle.length > 20 && "..."}
+                                  </span>
+                                  {completedCount > 0 && (
+                                    <Badge
+                                      variant="secondary"
+                                      className="ml-auto h-5 px-1.5 text-xs"
+                                    >
+                                      {completedCount}/{moduleTopics.length}
+                                    </Badge>
+                                  )}
+                                </Link>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          );
+                        })}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </SidebarGroup>
+                )}
+
+                {filteredTopics.length > 0 && (
+                  <SidebarGroup>
+                    <SidebarGroupLabel>Topics</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {filteredTopics.slice(0, 10).map((topic) => {
+                          const topicSlug = generateTopicSlug(topic.title);
+                          const topicPath = ROUTES.TOPIC(topicSlug);
+                          const isTopicActive = isActive(topicPath);
+                          const isDone = completedTopics.includes(topic.id);
+
+                          return (
+                            <SidebarMenuItem key={topic.id}>
+                              <SidebarMenuButton
+                                asChild
+                                isActive={isTopicActive}
                                 tooltip={topic.title}
                               >
                                 <Link href={topicPath}>
-                                  <IconWrapper
-                                    icon={CheckmarkCircleIcon}
-                                    size={12}
-                                    className="text-emerald-500"
-                                  />
+                                  {isDone && (
+                                    <IconWrapper
+                                      icon={CheckmarkCircleIcon}
+                                      size={12}
+                                      className="text-emerald-500 shrink-0"
+                                    />
+                                  )}
                                   <span className="truncate">{topic.title}</span>
                                 </Link>
                               </SidebarMenuButton>
                             </SidebarMenuItem>
                           );
                         })}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </SidebarGroup>
+                )}
+
+                {filteredModules.length === 0 &&
+                  filteredTopics.length === 0 && (
+                    <div className="p-4 text-center text-sm text-muted-foreground">
+                      No results found
+                    </div>
+                  )}
+              </div>
+            ) : (
+              // Normal Navigation
+              <>
+                <SidebarGroup>
+                  <SidebarGroupLabel>Quick Links</SidebarGroupLabel>
+                  <SidebarGroupContent>
+                    <SidebarMenu>
+                      <SidebarMenuItem>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={isActive(ROUTES.HOME)}
+                          tooltip="Home"
+                        >
+                          <Link href={ROUTES.HOME}>
+                            <IconWrapper icon={Home01Icon} size={16} />
+                            <span>Home</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                      <SidebarMenuItem>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={isActive(ROUTES.DASHBOARD)}
+                          tooltip="Dashboard"
+                        >
+                          <Link href={ROUTES.DASHBOARD}>
+                            <IconWrapper icon={BookOpenIcon} size={16} />
+                            <span>Dashboard</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
                     </SidebarMenu>
                   </SidebarGroupContent>
                 </SidebarGroup>
+
+                <Separator />
+
+                <SidebarGroup>
+                  <SidebarGroupLabel>Modules</SidebarGroupLabel>
+                  <SidebarGroupContent>
+                    <SidebarMenu>
+                      {modules.map((module) => {
+                        const moduleTopics = TOPICS.filter(
+                          (t) => t.module === module
+                        );
+                        const completedCount = moduleTopics.filter((t) =>
+                          completedTopics.includes(t.id)
+                        ).length;
+                          const moduleSlug = generateModuleSlug(module);
+                          const modulePath = ROUTES.MODULE(moduleSlug);
+                          const isModuleActive = isActive(modulePath);
+                          const moduleNumber = extractModuleNumber(module);
+                          const moduleTitle = removeModulePrefix(module);
+
+                          return (
+                            <SidebarMenuItem key={module}>
+                              <SidebarMenuButton
+                                asChild
+                                isActive={isModuleActive}
+                                tooltip={moduleTitle}
+                              >
+                                <Link href={modulePath}>
+                                  <span className="text-xs font-mono text-muted-foreground">
+                                    {moduleNumber}
+                                  </span>
+                                  <span className="truncate">
+                                    {moduleTitle.slice(0, 20)}
+                                    {moduleTitle.length > 20 && "..."}
+                                  </span>
+                                {completedCount > 0 && (
+                                  <Badge
+                                    variant="secondary"
+                                    className="ml-auto h-5 px-1.5 text-xs"
+                                  >
+                                    {completedCount}/{moduleTopics.length}
+                                  </Badge>
+                                )}
+                              </Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        );
+                      })}
+                    </SidebarMenu>
+                  </SidebarGroupContent>
+                </SidebarGroup>
+
+                {completedTopics.length > 0 && (
+                  <>
+                    <Separator />
+                    <SidebarGroup>
+                      <SidebarGroupLabel className="flex items-center gap-2">
+                        <IconWrapper icon={CheckmarkCircleIcon} size={12} />
+                        Completed
+                      </SidebarGroupLabel>
+                      <SidebarGroupContent>
+                        <SidebarMenu>
+                          {completedTopics
+                            .slice(-5)
+                            .reverse()
+                            .map((topicId) => {
+                              const topic = TOPICS.find((t) => t.id === topicId);
+                              if (!topic) {
+                                return null;
+                              }
+                              const topicSlug = generateTopicSlug(topic.title);
+                              const topicPath = ROUTES.TOPIC(topicSlug);
+                              return (
+                                <SidebarMenuItem key={topicId}>
+                                  <SidebarMenuButton
+                                    asChild
+                                    isActive={isActive(topicPath)}
+                                    tooltip={topic.title}
+                                  >
+                                    <Link href={topicPath}>
+                                      <IconWrapper
+                                        icon={CheckmarkCircleIcon}
+                                        size={12}
+                                        className="text-emerald-500 shrink-0"
+                                      />
+                                      <span className="truncate">
+                                        {topic.title}
+                                      </span>
+                                    </Link>
+                                  </SidebarMenuButton>
+                                </SidebarMenuItem>
+                              );
+                            })}
+                        </SidebarMenu>
+                      </SidebarGroupContent>
+                    </SidebarGroup>
+                  </>
+                )}
               </>
             )}
           </ScrollArea>
@@ -206,7 +354,7 @@ export function LearningPlatformLayout({
       </Sidebar>
 
       <SidebarInset>
-        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background px-4">
+        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
           <SidebarTrigger />
           <Separator orientation="vertical" className="h-6" />
           <div className="flex-1" />

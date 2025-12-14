@@ -16,6 +16,7 @@ import {
   CheckmarkCircleIcon,
   PlayIcon,
 } from "@/lib/icons";
+import { generateTopicSlug } from "@/utils/common/slug";
 
 export default function DashboardPage() {
   const { completedTopics } = useProgress();
@@ -185,10 +186,7 @@ export default function DashboardPage() {
               <CardContent>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {recommendedTopics.map((topic) => {
-                    const topicSlug = topic.title
-                      .toLowerCase()
-                      .replace(/[^a-z0-9]+/g, "-")
-                      .replace(/^-+|-+$/g, "");
+                    const topicSlug = generateTopicSlug(topic.title);
                     return (
                     <Link
                       key={topic.id}
@@ -258,12 +256,7 @@ export default function DashboardPage() {
                             </p>
                           </div>
                           <Button variant="ghost" size="sm" asChild>
-                            <Link href={ROUTES.TOPIC(
-                              topic.title
-                                .toLowerCase()
-                                .replace(/[^a-z0-9]+/g, "-")
-                                .replace(/^-+|-+$/g, "")
-                            )}>
+                            <Link href={ROUTES.TOPIC(generateTopicSlug(topic.title))}>
                               Review
                             </Link>
                           </Button>
