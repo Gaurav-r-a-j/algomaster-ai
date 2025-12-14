@@ -99,5 +99,27 @@ def bfs(graph, start):
 - Sliding window maximum
 - Design circular queue
 - First non-repeating character in stream`,
+  practiceLinks: [
+    {
+      title: "LeetCode: Design Circular Queue",
+      url: "https://leetcode.com/problems/design-circular-queue/",
+      difficulty: "Medium",
+    },
+    {
+      title: "GeeksforGeeks: Queue Data Structure",
+      url: "https://www.geeksforgeeks.org/queue-data-structure/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Moving Average from Data Stream",
+      url: "https://leetcode.com/problems/moving-average-from-data-stream/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Design Hit Counter",
+      url: "https://leetcode.com/problems/design-hit-counter/",
+      difficulty: "Medium",
+    },
+  ],
   quiz: [],
 };

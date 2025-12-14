@@ -502,3 +502,289 @@ export function generateLinkedListSteps(): VisualizationStep[] {
   return steps;
 }
 
+// --- Graph / Pathfinding Algorithms ---
+
+export function generateBFSSteps(): VisualizationStep[] {
+  // 5x5 Grid. 0 = Empty, 1 = Wall, 2 = Start, 3 = End
+  const grid = Array(25).fill(0);
+  [6, 7, 8, 11, 13, 16, 17].forEach((i) => (grid[i] = 1));
+  const start = 0;
+  const end = 24;
+  grid[start] = 2;
+  grid[end] = 3;
+
+  const steps: VisualizationStep[] = [];
+  const queue = [start];
+  const visited = new Set([start]);
+  const parent = new Map<number, number>();
+
+  steps.push({
+    array: [...grid],
+    activeIndices: [start],
+    sortedIndices: [],
+    description: "Starting BFS from Top-Left (Green). Queue: FIFO.",
+    auxiliary: { visited: Array.from(visited), path: [] },
+  });
+
+  let found = false;
+  while (queue.length > 0 && !found) {
+    const curr = queue.shift()!;
+
+    if (curr === end) {
+      found = true;
+      break;
+    }
+
+    const neighbors: number[] = [];
+    const row = Math.floor(curr / 5);
+    const col = curr % 5;
+
+    if (row > 0) neighbors.push(curr - 5);
+    if (row < 4) neighbors.push(curr + 5);
+    if (col > 0) neighbors.push(curr - 1);
+    if (col < 4) neighbors.push(curr + 1);
+
+    for (const next of neighbors) {
+      if (!visited.has(next) && grid[next] !== 1) {
+        visited.add(next);
+        parent.set(next, curr);
+        queue.push(next);
+
+        steps.push({
+          array: [...grid],
+          activeIndices: [curr],
+          sortedIndices: [next],
+          description: `Visiting neighbor at index ${next}`,
+          auxiliary: { visited: Array.from(visited), path: [] },
+        });
+
+        if (next === end) {
+          found = true;
+          break;
+        }
+      }
+    }
+  }
+
+  if (found) {
+    let curr: number | undefined = end;
+    const path: number[] = [];
+    while (curr !== undefined) {
+      path.push(curr);
+      curr = parent.get(curr);
+    }
+    steps.push({
+      array: [...grid],
+      activeIndices: [],
+      sortedIndices: [],
+      description: "Path Found!",
+      auxiliary: { visited: Array.from(visited), path: path },
+    });
+  }
+
+  return steps;
+}
+
+export function generateDFSSteps(): VisualizationStep[] {
+  const grid = Array(25).fill(0);
+  [6, 7, 8, 11, 13, 16, 17].forEach((i) => (grid[i] = 1));
+  const start = 0;
+  const end = 24;
+  grid[start] = 2;
+  grid[end] = 3;
+
+  const steps: VisualizationStep[] = [];
+  const stack = [start];
+  const visited = new Set<number>();
+  const parent = new Map<number, number>();
+
+  steps.push({
+    array: [...grid],
+    activeIndices: [start],
+    sortedIndices: [],
+    description: "Starting DFS from Top-Left (Green). Stack: LIFO.",
+    auxiliary: { visited: Array.from(visited), path: [] },
+  });
+
+  let found = false;
+  while (stack.length > 0 && !found) {
+    const curr = stack.pop()!;
+
+    if (!visited.has(curr)) {
+      visited.add(curr);
+
+      steps.push({
+        array: [...grid],
+        activeIndices: [curr],
+        sortedIndices: [],
+        description: `Visiting Node ${curr}`,
+        auxiliary: { visited: Array.from(visited), path: [] },
+      });
+
+      if (curr === end) {
+        found = true;
+        break;
+      }
+
+      const neighbors: number[] = [];
+      const row = Math.floor(curr / 5);
+      const col = curr % 5;
+      if (row > 0) neighbors.push(curr - 5);
+      if (col < 4) neighbors.push(curr + 1);
+      if (row < 4) neighbors.push(curr + 5);
+      if (col > 0) neighbors.push(curr - 1);
+
+      for (const next of neighbors) {
+        if (!visited.has(next) && grid[next] !== 1) {
+          parent.set(next, curr);
+          stack.push(next);
+        }
+      }
+    }
+  }
+
+  if (found) {
+    let curr: number | undefined = end;
+    const path: number[] = [];
+    while (curr !== undefined && parent.has(curr)) {
+      path.push(curr);
+      curr = parent.get(curr);
+    }
+    path.push(start);
+    steps.push({
+      array: [...grid],
+      activeIndices: [],
+      sortedIndices: [],
+      description: "Path Found via Depth-First Search!",
+      auxiliary: { visited: Array.from(visited), path: path },
+    });
+  }
+
+  return steps;
+}
+
+// --- Heap Operations ---
+
+export function generateHeapSteps(): VisualizationStep[] {
+  const steps: VisualizationStep[] = [];
+  const heap: number[] = [];
+  const sequence = [10, 30, 20, 15, 40, 50];
+
+  steps.push({
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: "Empty Max Heap. Ready to insert elements.",
+    auxiliary: { heap: [] },
+  });
+
+  for (const num of sequence) {
+    heap.push(num);
+    let currentIdx = heap.length - 1;
+
+    steps.push({
+      array: [...heap],
+      activeIndices: [currentIdx],
+      sortedIndices: [],
+      description: `Inserted ${num} at index ${currentIdx} (end of heap).`,
+      auxiliary: { heap: [...heap] },
+    });
+
+    while (currentIdx > 0) {
+      const parentIdx = Math.floor((currentIdx - 1) / 2);
+      steps.push({
+        array: [...heap],
+        activeIndices: [currentIdx, parentIdx],
+        sortedIndices: [],
+        description: `Comparing child ${heap[currentIdx]} with parent ${heap[parentIdx]}.`,
+        auxiliary: { heap: [...heap] },
+      });
+
+      if (heap[currentIdx] > heap[parentIdx]) {
+        [heap[currentIdx], heap[parentIdx]] = [heap[parentIdx], heap[currentIdx]];
+        steps.push({
+          array: [...heap],
+          activeIndices: [currentIdx, parentIdx],
+          sortedIndices: [],
+          description: `Child > Parent. Swap!`,
+          auxiliary: { heap: [...heap] },
+        });
+        currentIdx = parentIdx;
+      } else {
+        steps.push({
+          array: [...heap],
+          activeIndices: [currentIdx, parentIdx],
+          sortedIndices: [],
+          description: `Heap property satisfied. Stop bubbling.`,
+          auxiliary: { heap: [...heap] },
+        });
+        break;
+      }
+    }
+  }
+  steps.push({
+    array: [...heap],
+    activeIndices: [],
+    sortedIndices: Array.from({ length: heap.length }, (_, i) => i),
+    description: `Max Heap construction complete.`,
+    auxiliary: { heap: [...heap] },
+  });
+  return steps;
+}
+
+// --- Dynamic Programming ---
+
+export function generateDPSteps(): VisualizationStep[] {
+  const n = 6;
+  const dp = Array(n + 1).fill(null);
+  const steps: VisualizationStep[] = [];
+
+  steps.push({
+    array: Array(n + 1).fill(0),
+    activeIndices: [],
+    sortedIndices: [],
+    description: `Calculating Fibonacci(${n}) using Dynamic Programming (Tabulation).`,
+    auxiliary: { dp: [...dp] },
+  });
+
+  dp[0] = 0;
+  steps.push({
+    array: Array(n + 1).fill(0),
+    activeIndices: [0],
+    sortedIndices: [0],
+    description: `Base Case: Fib(0) = 0`,
+    auxiliary: { dp: [...dp] },
+  });
+
+  dp[1] = 1;
+  steps.push({
+    array: Array(n + 1).fill(0),
+    activeIndices: [1],
+    sortedIndices: [0, 1],
+    description: `Base Case: Fib(1) = 1`,
+    auxiliary: { dp: [...dp] },
+  });
+
+  for (let i = 2; i <= n; i++) {
+    steps.push({
+      array: Array(n + 1).fill(0),
+      activeIndices: [i, i - 1, i - 2],
+      sortedIndices: Array.from({ length: i }, (_, k) => k),
+      description: `Calculating Fib(${i}) = Fib(${i - 1}) + Fib(${i - 2}).`,
+      auxiliary: { dp: [...dp] },
+    });
+
+    dp[i] = dp[i - 1] + dp[i - 2];
+
+    steps.push({
+      array: Array(n + 1).fill(0),
+      activeIndices: [i],
+      sortedIndices: Array.from({ length: i + 1 }, (_, k) => k),
+      description: `Fib(${i}) = ${dp[i - 1]} + ${dp[i - 2]} = ${dp[i]}`,
+      auxiliary: { dp: [...dp] },
+    });
+  }
+
+  return steps;
+}
+

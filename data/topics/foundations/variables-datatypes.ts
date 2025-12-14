@@ -153,5 +153,22 @@ Try creating variables for:
       explanation: "Integers are used for whole numbers without decimal points.",
     },
   ],
+  practiceLinks: [
+    {
+      title: "LeetCode: Two Sum",
+      url: "https://leetcode.com/problems/two-sum/",
+      difficulty: "Easy",
+    },
+    {
+      title: "GeeksforGeeks: Variables in Python",
+      url: "https://www.geeksforgeeks.org/python-variables/",
+      difficulty: "Easy",
+    },
+    {
+      title: "HackerRank: Basic Data Types",
+      url: "https://www.hackerrank.com/challenges/python-data-types/problem",
+      difficulty: "Easy",
+    },
+  ],
 };
 

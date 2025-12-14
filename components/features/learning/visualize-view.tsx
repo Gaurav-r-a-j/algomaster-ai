@@ -8,6 +8,9 @@ import { VisualizerType } from "@/types/curriculum";
 import { SortingVisualizer } from "./visualizers/sorting-visualizer";
 import { SearchVisualizer } from "./visualizers/search-visualizer";
 import { DataStructureVisualizer } from "./visualizers/data-structure-visualizer";
+import { PathfindingVisualizer } from "./visualizers/pathfinding-visualizer";
+import { HeapVisualizer } from "./visualizers/heap-visualizer";
+import { DPVisualizer } from "./visualizers/dp-visualizer";
 
 interface VisualizeViewProps {
   topic: Topic;
@@ -26,21 +29,11 @@ function renderVisualizer(topic: Topic) {
     case VisualizerType.AVL_TREE:
       return <DataStructureVisualizer topic={topic} />;
     case VisualizerType.PATHFINDING:
+      return <PathfindingVisualizer topic={topic} />;
     case VisualizerType.HEAP:
+      return <HeapVisualizer topic={topic} />;
     case VisualizerType.DP:
-      // TODO: Implement these visualizers
-      return (
-        <div className="h-full flex items-center justify-center p-10 text-center text-muted-foreground">
-          <div className="flex flex-col items-center gap-4">
-            <IconWrapper
-              icon={HelpCircleIcon}
-              size={40}
-              className="text-muted-foreground"
-            />
-            <span>Visualizer for {topic.visualizerType} coming soon.</span>
-          </div>
-        </div>
-      );
+      return <DPVisualizer topic={topic} />;
     default:
       return (
         <div className="h-full flex items-center justify-center p-10 text-center text-muted-foreground">

@@ -84,5 +84,32 @@ index = s.find("World")  # 7
 - Find the longest substring without repeating characters
 - Merge two sorted arrays
 - Rotate an array`,
+  practiceLinks: [
+    {
+      title: "LeetCode: Two Sum",
+      url: "https://leetcode.com/problems/two-sum/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Best Time to Buy and Sell Stock",
+      url: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Longest Substring Without Repeating Characters",
+      url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+      difficulty: "Medium",
+    },
+    {
+      title: "GeeksforGeeks: Arrays",
+      url: "https://www.geeksforgeeks.org/array-data-structure/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Reverse String",
+      url: "https://leetcode.com/problems/reverse-string/",
+      difficulty: "Easy",
+    },
+  ],
   quiz: [],
 };

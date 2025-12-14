@@ -152,8 +152,8 @@ export default function SlugPage({ params }: SlugPageProps) {
             <div className="flex items-center justify-between gap-4 py-3 min-h-[60px]">
               {/* Left: Title */}
               <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="flex items-center gap-2 min-w-0">
-                  <div className="shrink-0 w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center">
+                  <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
                     <span className="text-primary font-bold text-sm font-mono">
                       #{topic.order + 1}
                     </span>
@@ -227,7 +227,7 @@ export default function SlugPage({ params }: SlugPageProps) {
             </TabsContent>
 
             <TabsContent value="code" className="mt-0">
-              <div className="p-4 sm:p-6 lg:p-8 pb-24 h-full">
+              <div className="p-4 sm:p-6 lg:p-8 xl:p-10 pb-24 h-full max-w-7xl mx-auto w-full">
                 <div className="animate-in fade-in duration-300 h-full">
                   <PracticeView topic={topic} />
                 </div>
@@ -235,7 +235,6 @@ export default function SlugPage({ params }: SlugPageProps) {
             </TabsContent>
           </div>
         </div>
-        <TopicNavigation prevTopic={prevTopic} nextTopic={nextTopic} />
       </Tabs>
     </div>
   );

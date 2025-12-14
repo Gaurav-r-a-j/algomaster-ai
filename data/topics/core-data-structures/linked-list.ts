@@ -110,5 +110,32 @@ def delete_node(head, val):
 - Detect cycle in linked list
 - Merge two sorted linked lists
 - Remove nth node from end`,
+  practiceLinks: [
+    {
+      title: "LeetCode: Reverse Linked List",
+      url: "https://leetcode.com/problems/reverse-linked-list/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Merge Two Sorted Lists",
+      url: "https://leetcode.com/problems/merge-two-sorted-lists/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Linked List Cycle",
+      url: "https://leetcode.com/problems/linked-list-cycle/",
+      difficulty: "Easy",
+    },
+    {
+      title: "GeeksforGeeks: Linked List",
+      url: "https://www.geeksforgeeks.org/data-structures/linked-list/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Remove Nth Node From End",
+      url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
+      difficulty: "Medium",
+    },
+  ],
   quiz: [],
 };

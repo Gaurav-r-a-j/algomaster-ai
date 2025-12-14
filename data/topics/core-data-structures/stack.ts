@@ -80,5 +80,32 @@ def is_balanced(s):
 - Next greater element
 - Largest rectangle in histogram
 - Evaluate reverse Polish notation`,
+  practiceLinks: [
+    {
+      title: "LeetCode: Valid Parentheses",
+      url: "https://leetcode.com/problems/valid-parentheses/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Min Stack",
+      url: "https://leetcode.com/problems/min-stack/",
+      difficulty: "Medium",
+    },
+    {
+      title: "LeetCode: Evaluate Reverse Polish Notation",
+      url: "https://leetcode.com/problems/evaluate-reverse-polish-notation/",
+      difficulty: "Medium",
+    },
+    {
+      title: "GeeksforGeeks: Stack Data Structure",
+      url: "https://www.geeksforgeeks.org/stack-data-structure/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Daily Temperatures",
+      url: "https://leetcode.com/problems/daily-temperatures/",
+      difficulty: "Medium",
+    },
+  ],
   quiz: [],
 };
