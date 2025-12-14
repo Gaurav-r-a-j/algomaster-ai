@@ -265,7 +265,7 @@ export default function SlugPage({ params }: SlugPageProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={transitions.smooth}
-                className="h-full w-full px-4 py-6 pb-24 sm:px-6 md:py-8 lg:px-8"
+                className="h-full w-full px-3 py-3 pb-16 sm:px-4 md:py-4 lg:px-6"
               >
                 <VisualizeView topic={topic} />
               </motion.div>

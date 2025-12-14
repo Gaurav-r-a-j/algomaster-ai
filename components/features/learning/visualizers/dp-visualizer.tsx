@@ -126,7 +126,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
         initial="initial"
         animate="animate"
         variants={staggerContainer}
-        className="bg-muted border-border flex items-center justify-center overflow-x-auto rounded-lg border p-8"
+        className="bg-muted border-border flex items-center justify-center overflow-x-auto rounded-lg border p-4"
       >
         <div className="flex gap-2">
           {dp.map((val: number | null, idx: number) => {
@@ -139,7 +139,6 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
               <motion.div
                 key={idx}
                 variants={staggerItem}
-                whileHover={{ scale: 1.1, y: -4 }}
                 className="flex flex-col items-center"
               >
                 <motion.div

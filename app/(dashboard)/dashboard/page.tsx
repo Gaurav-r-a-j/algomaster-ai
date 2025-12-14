@@ -9,7 +9,6 @@ import { motion } from "motion/react"
 
 import {
   fadeIn,
-  hoverScaleSmall,
   slideUp,
   staggerContainer,
   staggerItem,
@@ -72,8 +71,8 @@ export default function DashboardPage() {
           className="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4"
         >
           {/* Progress Card */}
-          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
+          <motion.div variants={staggerItem}>
+            <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-muted-foreground text-sm font-medium">
                   Overall Progress
@@ -92,8 +91,8 @@ export default function DashboardPage() {
           </motion.div>
 
           {/* Completed Topics */}
-          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
+          <motion.div variants={staggerItem}>
+            <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-muted-foreground text-sm font-medium">
                   Completed
@@ -111,8 +110,8 @@ export default function DashboardPage() {
           </motion.div>
 
           {/* In Progress */}
-          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
+          <motion.div variants={staggerItem}>
+            <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-muted-foreground text-sm font-medium">
                   In Progress
@@ -130,8 +129,8 @@ export default function DashboardPage() {
           </motion.div>
 
           {/* Remaining */}
-          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
+          <motion.div variants={staggerItem}>
+            <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-muted-foreground text-sm font-medium">
                   Remaining
@@ -156,8 +155,8 @@ export default function DashboardPage() {
           variants={staggerContainer}
           className="mb-8 grid gap-6 md:grid-cols-2"
         >
-          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
+          <motion.div variants={staggerItem}>
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <IconWrapper icon={BookOpenIcon} size={20} />
@@ -180,8 +179,8 @@ export default function DashboardPage() {
             </Card>
           </motion.div>
 
-          <motion.div variants={staggerItem} whileHover={hoverScaleSmall}>
-            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
+          <motion.div variants={staggerItem}>
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <IconWrapper icon={ArrowUp01Icon} size={20} />
@@ -225,8 +224,8 @@ export default function DashboardPage() {
             variants={fadeIn}
             transition={transitions.smooth}
           >
-            <Card className="border-border/50 mb-8 shadow-sm">
-              <CardHeader className="border-border/50 border-b">
+            <Card className="mb-8">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-2">
                   <IconWrapper icon={PlayIcon} size={20} />
                   Recommended Next
@@ -245,12 +244,10 @@ export default function DashboardPage() {
                       <motion.div
                         key={topic.id}
                         variants={staggerItem}
-                        whileHover={{ y: -2, scale: 1.02 }}
-                        transition={transitions.springGentle}
                       >
                         <Link
                           href={ROUTES.TOPIC(topicSlug)}
-                          className="border-border/50 hover:border-primary block rounded-lg border p-4 shadow-sm transition-colors hover:shadow-md"
+                          className="bg-muted/50 hover:bg-muted block rounded-lg p-4 transition-colors"
                         >
                           <div className="mb-2 flex items-start justify-between">
                             <h3 className="text-foreground font-semibold">
@@ -293,8 +290,8 @@ export default function DashboardPage() {
           variants={fadeIn}
           transition={{ ...transitions.smooth, delay: 0.2 }}
         >
-          <Card className="border-border/50 shadow-sm">
-            <CardHeader className="border-border/50 border-b">
+          <Card>
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-2">
                 <IconWrapper icon={CheckmarkCircleIcon} size={20} />
                 Recent Completions
@@ -320,9 +317,7 @@ export default function DashboardPage() {
                         <motion.div
                           key={topicId}
                           variants={staggerItem}
-                          whileHover={{ x: 4 }}
-                          transition={transitions.quick}
-                          className="bg-muted/50 border-border/50 hover:border-primary/50 flex items-center justify-between rounded-lg border p-3 transition-colors"
+                          className="bg-muted/50 hover:bg-muted flex items-center justify-between rounded-lg p-3 transition-colors"
                         >
                           <div>
                             <p className="text-foreground font-medium">

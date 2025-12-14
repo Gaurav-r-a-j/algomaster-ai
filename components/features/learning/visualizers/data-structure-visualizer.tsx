@@ -203,7 +203,7 @@ export function DataStructureVisualizer({
       case VisualizerType.STACK:
         return (
           <div className="w-full">
-            <div className="border-border bg-muted/30 relative flex min-h-[200px] flex-col items-center gap-3 rounded-lg border-2 p-6">
+            <div className="border-border bg-muted/30 relative flex min-h-[180px] flex-col items-center gap-2 rounded-lg border-2 p-4">
               <div className="text-muted-foreground absolute top-1/2 -left-20 -translate-y-1/2 font-mono text-xs font-bold uppercase">
                 TOP
               </div>
@@ -219,7 +219,7 @@ export function DataStructureVisualizer({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ ...transitions.spring, delay: idx * 0.1 }}
                     layout
-                    className="border-primary bg-primary/10 flex h-16 w-20 items-center justify-center rounded-lg border-2 text-lg font-bold shadow-md"
+                    className="border-primary bg-primary/10 flex h-12 w-16 items-center justify-center rounded-lg border-2 text-base font-bold shadow-sm"
                   >
                     {val}
                   </motion.div>
@@ -231,7 +231,7 @@ export function DataStructureVisualizer({
       case VisualizerType.QUEUE:
         return (
           <div className="w-full">
-            <div className="border-border bg-muted/30 relative flex min-h-[120px] items-center gap-3 rounded-lg border-2 p-6">
+            <div className="border-border bg-muted/30 relative flex min-h-[100px] items-center gap-2 rounded-lg border-2 p-4">
               <div className="text-muted-foreground absolute top-1/2 -left-20 -translate-y-1/2 font-mono text-xs font-bold uppercase">
                 FRONT
               </div>
@@ -247,7 +247,7 @@ export function DataStructureVisualizer({
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ ...transitions.spring, delay: idx * 0.1 }}
                     layout
-                    className="flex h-16 w-20 items-center justify-center rounded-lg border-2 border-emerald-500 bg-emerald-500/10 text-lg font-bold shadow-md"
+                    className="flex h-12 w-16 items-center justify-center rounded-lg border-2 border-emerald-500 bg-emerald-500/10 text-base font-bold shadow-sm"
                   >
                     {val}
                   </motion.div>
@@ -261,8 +261,8 @@ export function DataStructureVisualizer({
         )
       case VisualizerType.LINKED_LIST:
         return (
-          <div className="w-full overflow-x-auto py-8">
-            <motion.div className="mx-auto flex min-w-fit items-center justify-center gap-0 px-4">
+          <div className="w-full overflow-x-auto">
+            <motion.div className="flex min-w-fit items-center justify-start gap-0 px-2">
               {currentData.array.map((val, idx) => {
                 const isActive = currentData.activeIndices.includes(idx)
                 return (
@@ -287,7 +287,7 @@ export function DataStructureVisualizer({
                             : "none",
                         }}
                         transition={transitions.spring}
-                        className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 text-xl font-bold"
+                        className="flex h-14 w-14 items-center justify-center rounded-xl border-2 text-lg font-bold"
                       >
                         {val}
                       </motion.div>
@@ -295,26 +295,25 @@ export function DataStructureVisualizer({
                         Node {idx}
                       </div>
                     </div>
-                    {/* Arrow */}
                     {idx < currentData.array.length - 1 && (
-                      <div className="mx-3 flex items-center">
+                      <div className="mx-2 flex items-center">
                         <svg
-                          width="48"
+                          width="32"
                           height="2"
-                          viewBox="0 0 48 2"
+                          viewBox="0 0 32 2"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
-                          className="text-border"
+                          className="text-foreground"
                         >
                           <line
                             x1="0"
                             y1="1"
-                            x2="40"
+                            x2="28"
                             y2="1"
                             stroke="currentColor"
                             strokeWidth="2"
                           />
-                          <path d="M40 1L36 0L36 2L40 1Z" fill="currentColor" />
+                          <path d="M28 1L24 0L24 2L28 1Z" fill="currentColor" />
                         </svg>
                       </div>
                     )}
@@ -322,7 +321,7 @@ export function DataStructureVisualizer({
                 )
               })}
               {/* NULL pointer */}
-              <div className="ml-3 flex items-center">
+              <div className="ml-2 flex items-center">
                 <svg
                   width="32"
                   height="2"
@@ -380,8 +379,8 @@ export function DataStructureVisualizer({
       controls={controls}
       description={description}
     >
-      <Card className="min-h-[400px] flex-1">
-        <CardContent className="flex h-full items-center justify-center p-8">
+      <Card className="flex-1">
+        <CardContent className="flex items-center justify-center p-4">
           {renderVisualization()}
         </CardContent>
       </Card>

@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react"
 
-import { hoverScaleSmall, tapScale, transitions } from "@/lib/animations"
+import { transitions } from "@/lib/animations"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -56,7 +56,7 @@ export function VisualizerControls({
     <div className="flex flex-col gap-3">
       {/* Main Controls */}
       <div className="flex flex-wrap items-center gap-2">
-        <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
+        <div>
           <Button
             variant="outline"
             size="sm"
@@ -72,9 +72,9 @@ export function VisualizerControls({
             </motion.div>
             Reset
           </Button>
-        </motion.div>
+        </div>
 
-        <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
+        <div>
           <Button
             variant="outline"
             size="sm"
@@ -84,9 +84,9 @@ export function VisualizerControls({
           >
             <IconWrapper icon={ChevronLeftIcon} size={16} />
           </Button>
-        </motion.div>
+        </div>
 
-        <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
+        <div>
           <Button
             size="sm"
             onClick={isPlaying ? onPause : onPlay}
@@ -106,9 +106,9 @@ export function VisualizerControls({
             </motion.div>
             {isPlaying ? "Pause" : "Play"}
           </Button>
-        </motion.div>
+        </div>
 
-        <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
+        <div>
           <Button
             variant="outline"
             size="sm"
@@ -118,7 +118,7 @@ export function VisualizerControls({
           >
             <IconWrapper icon={ChevronRightIcon} size={16} />
           </Button>
-        </motion.div>
+        </div>
 
         {/* Step Counter */}
         <motion.div

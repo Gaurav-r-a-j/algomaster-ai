@@ -122,9 +122,9 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
         initial="initial"
         animate="animate"
         variants={staggerContainer}
-        className="flex flex-col gap-8"
+        className="flex flex-col gap-4"
       >
-        <div className="bg-muted border-border relative flex h-64 items-start justify-center overflow-hidden rounded-lg border p-4">
+        <div className="bg-muted border-border relative flex h-56 items-start justify-center overflow-hidden rounded-lg border p-4">
           {heap.map((val: number, idx: number) => {
             const level = Math.floor(Math.log2(idx + 1))
             const offset = Math.pow(2, level) - 1
@@ -172,7 +172,6 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
               <motion.div
                 key={idx}
                 variants={staggerItem}
-                whileHover={{ scale: 1.1, y: -4 }}
                 className="flex flex-col items-center"
               >
                 <motion.div

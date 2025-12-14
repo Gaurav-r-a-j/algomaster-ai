@@ -28,12 +28,12 @@ export function VisualizerLayout({
       animate="animate"
       variants={fadeIn}
       transition={transitions.smooth}
-      className="flex h-full flex-col gap-6"
+      className="flex h-full flex-col gap-3"
     >
       {/* Header */}
       <motion.div variants={slideUp} transition={transitions.spring}>
         <Card className="shrink-0">
-          <CardHeader className="pb-4">
+          <CardHeader className="pb-2">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
                 {icon && <div className="text-primary">{icon}</div>}
@@ -53,7 +53,7 @@ export function VisualizerLayout({
       <motion.div
         variants={slideUp}
         transition={{ ...transitions.spring, delay: 0.1 }}
-        className="flex min-h-0 flex-1 flex-col gap-6"
+        className="flex min-h-0 flex-1 flex-col gap-3"
       >
         {children}
       </motion.div>
@@ -64,8 +64,7 @@ export function VisualizerLayout({
         transition={{ ...transitions.spring, delay: 0.2 }}
       >
         <Card className="shrink-0">
-          <CardContent className="p-4">
-            <Separator className="mb-4" />
+          <CardContent className="p-3">
             {description}
           </CardContent>
         </Card>

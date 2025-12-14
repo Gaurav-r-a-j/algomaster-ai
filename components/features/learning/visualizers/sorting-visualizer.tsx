@@ -231,11 +231,11 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <motion.div className="flex flex-col gap-6">
+      <motion.div className="flex flex-col gap-3">
         {/* Number-based visualization */}
         <Card>
-          <CardContent className="p-8">
-            <div className="flex min-h-[200px] flex-wrap items-center justify-center gap-4">
+          <CardContent className="p-4">
+            <div className="flex min-h-[150px] flex-wrap items-center justify-center gap-3">
               {currentData.array.map((value, idx) => {
                 const isActive = currentData.activeIndices.includes(idx)
                 const isSorted = currentData.sortedIndices.includes(idx)
@@ -275,7 +275,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
                           : "none",
                       }}
                       transition={transitions.smooth}
-                      className="flex h-20 w-20 items-center justify-center rounded-xl border-2 text-xl font-bold"
+                      className="flex h-14 w-14 items-center justify-center rounded-xl border-2 text-lg font-bold"
                     >
                       {value}
                     </motion.div>
