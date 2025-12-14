@@ -14,8 +14,7 @@ export function CTASection() {
             Ready to Get Started?
           </h2>
           <p className="text-xl text-muted-foreground mb-10">
-            Start building your next project with this production-ready template.
-            Customize it to fit your needs.
+            Start your DSA learning journey today. Master algorithms and data structures with interactive visualizations and practice problems.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild className="w-full sm:w-auto group">
