@@ -141,11 +141,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
     <VisualizerLayout
       title={`${topic.title} Visualizer`}
       icon={
-        <IconWrapper
-          icon={ArrowUp01Icon}
-          size={20}
-          className="text-primary"
-        />
+        <IconWrapper icon={ArrowUp01Icon} size={20} className="text-primary" />
       }
       controls={controls}
       description={description}
@@ -165,18 +161,24 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
                     {rowArr.map((val, colIndex) => {
                       const isActive = rowIndex === row && colIndex === col
                       return (
-                         <motion.div
-                            key={`${rowIndex}-${colIndex}`}
-                            animate={{
-                                scale: isActive ? 1.1 : 1,
-                                backgroundColor: isActive ? "hsl(var(--primary))" : "hsl(var(--card))",
-                                borderColor: isActive ? "hsl(var(--primary))" : "hsl(var(--border))",
-                                color: isActive ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))"
-                            }}
-                            className="flex h-10 w-10 items-center justify-center rounded-md border text-sm font-medium shadow-sm"
-                         >
-                             {val}
-                         </motion.div>
+                        <motion.div
+                          key={`${rowIndex}-${colIndex}`}
+                          animate={{
+                            scale: isActive ? 1.1 : 1,
+                            backgroundColor: isActive
+                              ? "hsl(var(--primary))"
+                              : "hsl(var(--card))",
+                            borderColor: isActive
+                              ? "hsl(var(--primary))"
+                              : "hsl(var(--border))",
+                            color: isActive
+                              ? "hsl(var(--primary-foreground))"
+                              : "hsl(var(--foreground))",
+                          }}
+                          className="flex h-10 w-10 items-center justify-center rounded-md border text-sm font-medium shadow-sm"
+                        >
+                          {val}
+                        </motion.div>
                       )
                     })}
                   </div>

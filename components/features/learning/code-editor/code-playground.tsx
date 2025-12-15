@@ -10,17 +10,17 @@ import { SupportedLanguage, Topic } from "@/types/curriculum"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable"
 
 interface CodePlaygroundProps {
   topic?: Topic
@@ -36,11 +36,11 @@ const LANGUAGES: { value: SupportedLanguage; label: string }[] = [
   { value: "java", label: "Java" },
 ]
 
-export function CodePlayground({ 
-  topic, 
+export function CodePlayground({
+  topic,
   initialCode,
   onToggleSidebar,
-  isSidebarOpen = true 
+  isSidebarOpen = true,
 }: CodePlaygroundProps) {
   const [language, setLanguage] = useState<SupportedLanguage>("javascript")
   const [code, setCode] = useState("")
@@ -119,24 +119,28 @@ export function CodePlayground({
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground h-9 w-9"
               onClick={onToggleSidebar}
               title={isSidebarOpen ? "Collapse Sidebar" : "Expand Sidebar"}
             >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                strokeWidth={1.5} 
-                stroke="currentColor" 
-                className="w-5 h-5"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-5 w-5"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+                />
               </svg>
             </Button>
           )}
 
-          <div className="bg-border/60 h-4 w-px hidden sm:block"></div>
+          <div className="bg-border/60 hidden h-4 w-px sm:block"></div>
 
           <Select
             value={language}
@@ -166,9 +170,9 @@ export function CodePlayground({
               ? "cpp"
               : language === "python"
                 ? "py"
-              : language === "java"
-                ? "java"
-                : "js"}
+                : language === "java"
+                  ? "java"
+                  : "js"}
           </span>
         </div>
 

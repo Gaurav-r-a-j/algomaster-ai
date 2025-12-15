@@ -50,7 +50,7 @@ def insert(root, val):
 def delete(root, val):
     if not root:
         return None
-    
+
     if val < root.val:
         root.left = delete(root.left, val)
     elif val > root.val:
@@ -61,20 +61,21 @@ def delete(root, val):
             return root.right
         if not root.right:
             return root.left
-        
+
         # Node has two children: find inorder successor
         successor = root.right
         while successor.left:
             successor = successor.left
         root.val = successor.val
         root.right = delete(root.right, successor.val)
-    
+
     return root
 ```
 
 ## Traversals
 
 ### Inorder (Left, Root, Right) - Sorted Order
+
 ```python
 def inorder(root):
     if root:
@@ -84,6 +85,7 @@ def inorder(root):
 ```
 
 ### Preorder (Root, Left, Right)
+
 ```python
 def preorder(root):
     if root:
@@ -93,6 +95,7 @@ def preorder(root):
 ```
 
 ### Postorder (Left, Right, Root)
+
 ```python
 def postorder(root):
     if root:
@@ -103,11 +106,11 @@ def postorder(root):
 
 ## Time Complexity
 
-| Operation | Average | Worst Case |
-|-----------|---------|------------|
-| Search    | O(log n)| O(n)       |
-| Insert    | O(log n)| O(n)       |
-| Delete    | O(log n)| O(n)       |
+| Operation | Average  | Worst Case |
+| --------- | -------- | ---------- |
+| Search    | O(log n) | O(n)       |
+| Insert    | O(log n) | O(n)       |
+| Delete    | O(log n) | O(n)       |
 
 **Note:** Worst case occurs with skewed trees (degenerates to linked list).
 

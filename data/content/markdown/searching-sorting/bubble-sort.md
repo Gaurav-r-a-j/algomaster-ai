@@ -15,7 +15,7 @@ Bubble Sort is a simple sorting algorithm that repeatedly steps through the list
 ```python
 def bubble_sort(arr):
     n = len(arr)
-    
+
     for i in range(n):
         swapped = False
         # Last i elements are already in place
@@ -24,11 +24,11 @@ def bubble_sort(arr):
                 # Swap elements
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
                 swapped = True
-        
+
         # If no swaps, array is sorted
         if not swapped:
             break
-    
+
     return arr
 
 # Example

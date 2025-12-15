@@ -4,14 +4,14 @@ import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { ROUTES } from "@/constants/routes"
 import { useProgress } from "@/context/progress-context"
-import { TOPICS, getTopicsByModule } from "@/data/curriculum"
+import { getTopicsByModule, TOPICS } from "@/data/curriculum"
+import { getDefaultQuiz } from "@/data/default-quiz"
 import type { CodeExample } from "@/services/content/content-service"
 import { generateTopicSlug } from "@/utils/common/slug"
 import { motion } from "motion/react"
 
 import type { Topic } from "@/types/curriculum"
 import { VisualizerType } from "@/types/curriculum"
-import { getDefaultQuiz } from "@/data/default-quiz"
 import { fadeIn, slideUpWithDelay, transitions } from "@/lib/animations"
 import {
   BookOpenIcon,
@@ -21,6 +21,7 @@ import {
   PlayIcon,
 } from "@/lib/icons"
 import { cn } from "@/lib/utils"
+import { useTopicContent } from "@/hooks/use-curriculum"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -30,7 +31,6 @@ import { CodePreview } from "@/components/common/code-preview"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { MarkdownRenderer } from "@/components/common/markdown-renderer"
 import { QuizSection } from "@/components/features/learning/quiz-section"
-import { useTopicContent } from "@/hooks/use-curriculum"
 
 interface LearnViewProps {
   topic: Topic
@@ -45,7 +45,6 @@ export function LearnView({ topic }: LearnViewProps) {
   const { completedTopics: _completedTopics, isCompleted } = useProgress()
 
   // useEffect removed as fetch logic is handled by useTopicContent
-
 
   // Get related topics and navigation
   const { prevTopic, nextTopic, moduleTopics, moduleProgress } = useMemo(() => {
@@ -144,7 +143,7 @@ export function LearnView({ topic }: LearnViewProps) {
             variants={slideUpWithDelay(0.2)}
           >
             <div className="border-border/50 border-b px-4 py-6 md:px-6 md:py-8 lg:px-8">
-              <div className="mb-6 border-b border-border/50 pb-4">
+              <div className="border-border/50 mb-6 border-b pb-4">
                 <h3 className="flex items-center gap-2 text-lg font-bold">
                   <div className="bg-primary/10 rounded-md p-1.5">
                     <IconWrapper
@@ -218,17 +217,17 @@ export function LearnView({ topic }: LearnViewProps) {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ ...transitions.smooth, delay: 0.2 }}
-        className="z-10 space-y-4 lg:sticky lg:top-[76px] lg:self-start py-4 pr-4 md:pr-6 lg:pr-8"
+        className="z-10 space-y-4 py-4 pr-4 md:pr-6 lg:sticky lg:top-[76px] lg:self-start lg:pr-8"
       >
-        <Card className="border-border/50 shadow-none overflow-hidden">
+        <Card className="border-border/50 overflow-hidden shadow-none">
           {/* Module Header & Progress */}
           <CardHeader className="border-border/50 bg-muted/10 border-b px-4 py-3">
-            <div className="flex items-center justify-between mb-2">
+            <div className="mb-2 flex items-center justify-between">
               <CardTitle className="text-muted-foreground flex items-center gap-2 text-xs font-bold tracking-wider uppercase">
                 <BookOpenIcon className="h-3.5 w-3.5" />
                 Module Content
               </CardTitle>
-              <span className="text-xs font-mono font-medium text-muted-foreground">
+              <span className="text-muted-foreground font-mono text-xs font-medium">
                 {moduleProgress}%
               </span>
             </div>
@@ -237,7 +236,7 @@ export function LearnView({ topic }: LearnViewProps) {
 
           {/* Scrollable Topic List */}
           <CardContent className="p-0">
-            <div className="max-h-[300px] overflow-y-auto p-2 space-y-0.5">
+            <div className="max-h-[300px] space-y-0.5 overflow-y-auto p-2">
               {moduleTopics.map((t) => {
                 const isCompletedTopic = isCompleted(t.id)
                 const isCurrent = t.id === topic.id
@@ -250,56 +249,69 @@ export function LearnView({ topic }: LearnViewProps) {
                       isCurrent
                         ? "bg-primary/5 text-primary font-medium"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                      isCompletedTopic && !isCurrent && "text-muted-foreground/70"
+                      isCompletedTopic &&
+                        !isCurrent &&
+                        "text-muted-foreground/70"
                     )}
                   >
                     <div className="shrink-0">
                       {isCompletedTopic ? (
-                        <IconWrapper icon={CheckmarkCircleIcon} className="h-4 w-4 text-emerald-500" />
+                        <IconWrapper
+                          icon={CheckmarkCircleIcon}
+                          className="h-4 w-4 text-emerald-500"
+                        />
                       ) : isCurrent ? (
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                        <div className="bg-primary h-1.5 w-1.5 animate-pulse rounded-full" />
                       ) : (
-                        <div className="h-1.5 w-1.5 rounded-full bg-border" />
+                        <div className="bg-border h-1.5 w-1.5 rounded-full" />
                       )}
                     </div>
-                    <span className="truncate flex-1">{t.title}</span>
+                    <span className="flex-1 truncate">{t.title}</span>
                   </Link>
                 )
               })}
             </div>
 
             {/* Actions & Navigation Footer */}
-            <div className="border-border/50 bg-muted/5 border-t p-3 space-y-3">
+            <div className="border-border/50 bg-muted/5 space-y-3 border-t p-3">
               {/* Navigation Buttons */}
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   disabled={!prevTopic}
-                  className="h-8 text-xs w-full"
+                  className="h-8 w-full text-xs"
                   asChild={!!prevTopic}
                 >
                   {prevTopic ? (
-                    <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
+                    <Link
+                      href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}
+                    >
                       <ChevronLeftIcon className="mr-1 h-3 w-3" /> Prev
                     </Link>
                   ) : (
-                    <span><ChevronLeftIcon className="mr-1 h-3 w-3" /> Prev</span>
+                    <span>
+                      <ChevronLeftIcon className="mr-1 h-3 w-3" /> Prev
+                    </span>
                   )}
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   disabled={!nextTopic}
-                  className="h-8 text-xs w-full"
+                  className="h-8 w-full text-xs"
                   asChild={!!nextTopic}
                 >
                   {nextTopic ? (
-                    <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
+                    <Link
+                      href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}
+                    >
                       Next <ChevronRightIcon className="ml-1 h-3 w-3" />
                     </Link>
                   ) : (
-                    <span>Next <ChevronRightIcon className="ml-1 h-3 w-3" /></span>
+                    <span>
+                      Next <ChevronRightIcon className="ml-1 h-3 w-3" />
+                    </span>
                   )}
                 </Button>
               </div>
@@ -307,14 +319,22 @@ export function LearnView({ topic }: LearnViewProps) {
               <Separator className="bg-border/40" />
 
               {/* Metadata / Complexity */}
-              <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono">
+              <div className="text-muted-foreground flex items-center justify-between font-mono text-[10px]">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold uppercase tracking-wider">Time:</span>
-                  <Badge variant="secondary" className="h-4 px-1 text-[9px]">{topic.complexity.time}</Badge>
+                  <span className="font-semibold tracking-wider uppercase">
+                    Time:
+                  </span>
+                  <Badge variant="secondary" className="h-4 px-1 text-[9px]">
+                    {topic.complexity.time}
+                  </Badge>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold uppercase tracking-wider">Space:</span>
-                  <Badge variant="secondary" className="h-4 px-1 text-[9px]">{topic.complexity.space}</Badge>
+                  <span className="font-semibold tracking-wider uppercase">
+                    Space:
+                  </span>
+                  <Badge variant="secondary" className="h-4 px-1 text-[9px]">
+                    {topic.complexity.space}
+                  </Badge>
                 </div>
               </div>
             </div>

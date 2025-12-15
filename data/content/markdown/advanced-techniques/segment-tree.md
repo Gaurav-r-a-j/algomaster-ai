@@ -19,7 +19,7 @@ class SegmentTree:
         self.n = len(arr)
         self.tree = [0] * (4 * self.n)  # 4n is safe upper bound
         self.build(arr, 0, 0, self.n - 1)
-    
+
     def build(self, arr, node, start, end):
         if start == end:
             self.tree[node] = arr[start]
@@ -53,7 +53,7 @@ def query(self, node, start, end, l, r):
         return 0  # Out of range
     if l <= start and end <= r:
         return self.tree[node]  # Completely inside
-    
+
     mid = (start + end) // 2
     left_sum = self.query(2*node + 1, start, mid, l, r)
     right_sum = self.query(2*node + 2, mid + 1, end, l, r)
@@ -69,7 +69,7 @@ class SegmentTree:
         self.tree = [0] * (4 * self.n)
         if self.n > 0:
             self.build(arr, 0, 0, self.n - 1)
-    
+
     def build(self, arr, node, start, end):
         if start == end:
             self.tree[node] = arr[start]
@@ -78,10 +78,10 @@ class SegmentTree:
             self.build(arr, 2*node + 1, start, mid)
             self.build(arr, 2*node + 2, mid + 1, end)
             self.tree[node] = self.tree[2*node + 1] + self.tree[2*node + 2]
-    
+
     def update(self, idx, val):
         self._update(0, 0, self.n - 1, idx, val)
-    
+
     def _update(self, node, start, end, idx, val):
         if start == end:
             self.tree[node] = val
@@ -92,10 +92,10 @@ class SegmentTree:
             else:
                 self._update(2*node + 2, mid + 1, end, idx, val)
             self.tree[node] = self.tree[2*node + 1] + self.tree[2*node + 2]
-    
+
     def range_sum(self, l, r):
         return self._query(0, 0, self.n - 1, l, r)
-    
+
     def _query(self, node, start, end, l, r):
         if r < start or end < l:
             return 0
@@ -108,8 +108,8 @@ class SegmentTree:
 
 ## Time Complexity
 
-| Operation | Time |
-|-----------|------|
-| Build     | O(n) |
+| Operation | Time     |
+| --------- | -------- |
+| Build     | O(n)     |
 | Update    | O(log n) |
 | Query     | O(log n) |

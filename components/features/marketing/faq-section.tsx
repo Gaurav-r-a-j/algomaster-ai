@@ -36,7 +36,7 @@ const faqs = [
 
 export function FAQSection() {
   return (
-    <section className="bg-background border-t border-border/40 py-24">
+    <section className="bg-background border-border/40 border-t py-24">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <div className="mb-16 text-center">
           <h2 className="text-foreground mb-4 text-3xl font-bold tracking-tight md:text-4xl">
@@ -52,7 +52,7 @@ export function FAQSection() {
             <AccordionItem
               key={i}
               value={`item-${i}`}
-              className="border-b border-border/60 bg-transparent px-0 pb-4"
+              className="border-border/60 border-b bg-transparent px-0 pb-4"
             >
               <AccordionTrigger className="text-foreground hover:text-primary py-4 text-left text-lg font-medium transition-colors">
                 {item.q}

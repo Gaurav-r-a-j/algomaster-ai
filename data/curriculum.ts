@@ -23,11 +23,14 @@ import { hashing } from "./topics/core-data-structures/hashing"
 import { linkedList } from "./topics/core-data-structures/linked-list"
 import { queue } from "./topics/core-data-structures/queue"
 import { stack } from "./topics/core-data-structures/stack"
+import { algorithmsPseudocode } from "./topics/foundations/algorithms-pseudocode"
 import { bigO } from "./topics/foundations/big-o"
+import { flowcharts } from "./topics/foundations/flowcharts"
 import { loops } from "./topics/foundations/loops"
 import { recursion } from "./topics/foundations/recursion"
 // Module 1: Foundations
 import { variablesDatatypes } from "./topics/foundations/variables-datatypes"
+import { whatIsProgramming } from "./topics/foundations/what-is-programming"
 import { bfs } from "./topics/graph-algorithms/bfs"
 import { dfs } from "./topics/graph-algorithms/dfs"
 // Module 5: Graph Algorithms
@@ -49,6 +52,9 @@ import { trie } from "./topics/trees-heaps/trie"
 
 export const TOPICS: Topic[] = [
   // Module 1
+  whatIsProgramming,
+  flowcharts,
+  algorithmsPseudocode,
   variablesDatatypes,
   loops,
   recursion,
@@ -134,23 +140,23 @@ export function getTopicBySlug(slug: string): Topic | undefined {
 
 // Overrides to ensure all topics have visualizers (Hot-patch)
 try {
-    const overrides: Record<string, VisualizerType> = {
-        "hashing": VisualizerType.HASH_TABLE,
-        "trie": VisualizerType.TRIE,
-        "graph-reps": VisualizerType.GRAPH,
-        "topo-sort": VisualizerType.GRAPH,
-        "kruskal": VisualizerType.GRAPH,
-        "union-find": VisualizerType.GRAPH,
-        "bellman-ford": VisualizerType.GRAPH,
-        "segment-tree": VisualizerType.BINARY_TREE, // Reuse Tree visualizer
-        "fenwick-tree": VisualizerType.BINARY_TREE, // Reuse Tree visualizer
-    }
+  const overrides: Record<string, VisualizerType> = {
+    hashing: VisualizerType.HASH_TABLE,
+    trie: VisualizerType.TRIE,
+    "graph-reps": VisualizerType.GRAPH,
+    "topo-sort": VisualizerType.GRAPH,
+    kruskal: VisualizerType.GRAPH,
+    "union-find": VisualizerType.GRAPH,
+    "bellman-ford": VisualizerType.GRAPH,
+    "segment-tree": VisualizerType.BINARY_TREE, // Reuse Tree visualizer
+    "fenwick-tree": VisualizerType.BINARY_TREE, // Reuse Tree visualizer
+  }
 
-    TOPICS.forEach(topic => {
-        if (overrides[topic.id]) {
-            topic.visualizerType = overrides[topic.id]
-        }
-    })
+  TOPICS.forEach((topic) => {
+    if (overrides[topic.id]) {
+      topic.visualizerType = overrides[topic.id]
+    }
+  })
 } catch (e) {
-    console.error("Failed to apply visualizer overrides", e)
+  console.error("Failed to apply visualizer overrides", e)
 }

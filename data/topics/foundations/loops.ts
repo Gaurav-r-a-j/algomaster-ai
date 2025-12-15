@@ -8,7 +8,7 @@ export const loops: Topic = {
   complexity: { time: "O(n)", space: "O(1)" },
   visualizerType: VisualizerType.NONE,
   module: "1. Foundations",
-  order: 1,
+  order: 4,
   difficulty: "Easy",
   content: "", // Content loaded from data/content/markdown/foundations/loops.md
   quiz: [

@@ -39,7 +39,7 @@ export function InstructionsPanel({
       transition={transitions.smooth}
       className="h-full"
     >
-      <Card className="border-border/50 flex h-full flex-col border-0 rounded-none shadow-none">
+      <Card className="border-border/50 flex h-full flex-col rounded-none border-0 shadow-none">
         <CardHeader className="border-border/50 border-b px-6 py-4">
           <motion.div
             variants={slideUp}

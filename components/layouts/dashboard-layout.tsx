@@ -30,9 +30,8 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import { IconWrapper } from "@/components/common/icon-wrapper"
-
-import { ThemeToggle } from "@/components/common/theme-toggle"
 import { Logo } from "@/components/common/logo"
+import { ThemeToggle } from "@/components/common/theme-toggle"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -70,7 +69,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <Sidebar>
         <SidebarHeader className="border-border border-b">
           <div className="flex items-center justify-between px-2 py-4">
-            <Link href={ROUTES.HOME} className="hover:opacity-80 transition-opacity">
+            <Link
+              href={ROUTES.HOME}
+              className="transition-opacity hover:opacity-80"
+            >
               <Logo />
             </Link>
             <ThemeToggle size="sm" />

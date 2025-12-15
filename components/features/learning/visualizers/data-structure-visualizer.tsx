@@ -1,19 +1,20 @@
 "use client"
 
 import { Squares2X2Icon } from "@heroicons/react/24/outline"
+
 import { VisualizerType } from "@/types/curriculum"
 import type { Topic } from "@/types/curriculum"
-import { Card, CardContent } from "@/components/ui/card"
 import { useVisualizer } from "@/hooks/use-visualizer"
+import { Card, CardContent } from "@/components/ui/card"
 
+import { GraphRenderer } from "./renderers/graph-renderer"
+import { HashTableRenderer } from "./renderers/hash-table-renderer"
+import { LinkedListRenderer } from "./renderers/linked-list-renderer"
+import { QueueRenderer } from "./renderers/queue-renderer"
+import { StackRenderer } from "./renderers/stack-renderer"
+import { TreeRenderer } from "./renderers/tree-renderer"
 import { VisualizerControls } from "./visualizer-controls"
 import { VisualizerLayout } from "./visualizer-layout"
-import { StackRenderer } from "./renderers/stack-renderer"
-import { QueueRenderer } from "./renderers/queue-renderer"
-import { LinkedListRenderer } from "./renderers/linked-list-renderer"
-import { TreeRenderer } from "./renderers/tree-renderer"
-import { HashTableRenderer } from "./renderers/hash-table-renderer"
-import { GraphRenderer } from "./renderers/graph-renderer"
 
 interface DataStructureVisualizerProps {
   topic: Topic
@@ -90,9 +91,7 @@ export function DataStructureVisualizer({
       description={description}
     >
       <Card className="flex-1 overflow-hidden border-none shadow-none">
-        <CardContent className="p-0">
-          {renderVisualization()}
-        </CardContent>
+        <CardContent className="p-0">{renderVisualization()}</CardContent>
       </Card>
     </VisualizerLayout>
   )

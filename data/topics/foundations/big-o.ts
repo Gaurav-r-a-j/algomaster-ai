@@ -8,7 +8,7 @@ export const bigO: Topic = {
   complexity: { time: "O(1)", space: "O(1)" },
   visualizerType: VisualizerType.NONE,
   module: "1. Foundations",
-  order: 3,
+  order: 6,
   difficulty: "Medium",
   content: "", // Content loaded from data/content/markdown/foundations/big-o.md
   quiz: [

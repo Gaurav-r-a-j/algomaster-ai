@@ -54,6 +54,7 @@ O(1) - Only uses a constant amount of extra space.
 ## Variations
 
 ### Find All Occurrences
+
 ```python
 def linear_search_all(arr, target):
     indices = []
@@ -64,6 +65,7 @@ def linear_search_all(arr, target):
 ```
 
 ### Search in 2D Array
+
 ```python
 def linear_search_2d(matrix, target):
     for i in range(len(matrix)):

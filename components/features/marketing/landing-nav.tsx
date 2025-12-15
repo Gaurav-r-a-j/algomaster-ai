@@ -6,9 +6,8 @@ import { getFirstTopicUrl } from "@/utils/curriculum-helpers"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-
-import { ThemeToggle } from "@/components/common/theme-toggle"
 import { Logo } from "@/components/common/logo"
+import { ThemeToggle } from "@/components/common/theme-toggle"
 
 export function LandingNav() {
   return (
@@ -17,7 +16,7 @@ export function LandingNav() {
         <div className="flex items-center gap-3">
           <Link
             href={ROUTES.HOME}
-            className="hover:opacity-80 transition-opacity"
+            className="transition-opacity hover:opacity-80"
           >
             <Logo />
           </Link>

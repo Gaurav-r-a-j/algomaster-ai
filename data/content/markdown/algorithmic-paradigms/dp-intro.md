@@ -5,14 +5,17 @@ Dynamic Programming (DP) is an optimization technique that solves problems by br
 ## Key Concepts
 
 ### Overlapping Subproblems
+
 The same smaller problems are solved multiple times.
 
 ### Optimal Substructure
+
 The optimal solution can be constructed from optimal solutions of subproblems.
 
 ## Two Approaches
 
 ### Top-Down (Memoization)
+
 Start with the original problem, break into subproblems, cache results.
 
 ```python
@@ -27,6 +30,7 @@ def fib(n, memo={}):
 ```
 
 ### Bottom-Up (Tabulation)
+
 Solve smallest subproblems first, build up to the original problem.
 
 ```python
@@ -67,11 +71,11 @@ Usually: O(number of states × work per state)
 def climb_stairs(n):
     if n <= 2:
         return n
-    
+
     prev2, prev1 = 1, 2
     for _ in range(3, n + 1):
         curr = prev1 + prev2
         prev2, prev1 = prev1, curr
-    
+
     return prev1
 ```

@@ -5,6 +5,7 @@ Linked lists are dynamic data structures where elements are stored in nodes conn
 ## How Linked Lists Work
 
 Each node contains:
+
 - **Data:** The actual value stored
 - **Pointer/Reference:** A link to the next node (and previous node in doubly linked lists)
 
@@ -32,6 +33,7 @@ class ListNode:
 ## Types of Linked Lists
 
 ### 1. Singly Linked List
+
 Each node points only to the next node. Traversal is one-way.
 
 ```python
@@ -39,6 +41,7 @@ Each node points only to the next node. Traversal is one-way.
 ```
 
 ### 2. Doubly Linked List
+
 Each node points to both next and previous nodes. Allows bidirectional traversal.
 
 ```python
@@ -50,6 +53,7 @@ class DoublyListNode:
 ```
 
 ### 3. Circular Linked List
+
 The last node points back to the head, forming a circle.
 
 ## Common Operations

@@ -241,10 +241,7 @@ export default function DashboardPage() {
                   {TOPICS.slice(0, 3).map((topic, _idx) => {
                     const topicSlug = generateTopicSlug(topic.title)
                     return (
-                      <motion.div
-                        key={topic.id}
-                        variants={staggerItem}
-                      >
+                      <motion.div key={topic.id} variants={staggerItem}>
                         <Link
                           href={ROUTES.TOPIC(topicSlug)}
                           className="bg-muted/50 hover:bg-muted block rounded-lg p-4 transition-colors"

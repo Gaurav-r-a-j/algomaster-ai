@@ -22,24 +22,24 @@ def topological_sort_kahn(graph, n):
     for u in graph:
         for v in graph[u]:
             in_degree[v] += 1
-    
+
     # Start with vertices having no dependencies
     queue = deque([i for i in range(n) if in_degree[i] == 0])
     result = []
-    
+
     while queue:
         node = queue.popleft()
         result.append(node)
-        
+
         for neighbor in graph.get(node, []):
             in_degree[neighbor] -= 1
             if in_degree[neighbor] == 0:
                 queue.append(neighbor)
-    
+
     # Check for cycle
     if len(result) != n:
         return []  # Graph has a cycle
-    
+
     return result
 ```
 
@@ -51,18 +51,18 @@ Uses finish times - nodes that finish first go last in order.
 def topological_sort_dfs(graph, n):
     visited = set()
     stack = []
-    
+
     def dfs(node):
         visited.add(node)
         for neighbor in graph.get(node, []):
             if neighbor not in visited:
                 dfs(neighbor)
         stack.append(node)
-    
+
     for i in range(n):
         if i not in visited:
             dfs(i)
-    
+
     return stack[::-1]  # Reverse the stack
 ```
 
@@ -85,7 +85,7 @@ def has_cycle(graph, n):
 
 ```
 Courses: 0, 1, 2, 3
-Prerequisites: 
+Prerequisites:
   0 -> 1 (take 0 before 1)
   0 -> 2
   1 -> 3

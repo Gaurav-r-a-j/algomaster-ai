@@ -21,12 +21,12 @@ class UnionFind:
     def __init__(self, n):
         self.parent = list(range(n))
         self.rank = [0] * n
-    
+
     def find(self, x):
         if self.parent[x] != x:
             self.parent[x] = self.find(self.parent[x])
         return self.parent[x]
-    
+
     def union(self, x, y):
         px, py = self.find(x), self.find(y)
         if px == py:
@@ -41,19 +41,19 @@ class UnionFind:
 def kruskal(n, edges):
     # edges: list of (weight, u, v)
     edges.sort()  # Sort by weight
-    
+
     uf = UnionFind(n)
     mst = []
     total_weight = 0
-    
+
     for weight, u, v in edges:
         if uf.union(u, v):
             mst.append((u, v, weight))
             total_weight += weight
-            
+
             if len(mst) == n - 1:
                 break
-    
+
     return mst, total_weight
 ```
 
@@ -65,11 +65,11 @@ def kruskal(n, edges):
 
 ## Comparison with Prim's
 
-| Feature      | Kruskal's      | Prim's         |
-|--------------|----------------|----------------|
-| Approach     | Edge-based     | Vertex-based   |
-| Best for     | Sparse graphs  | Dense graphs   |
-| Complexity   | O(E log E)     | O(E log V)     |
+| Feature    | Kruskal's     | Prim's       |
+| ---------- | ------------- | ------------ |
+| Approach   | Edge-based    | Vertex-based |
+| Best for   | Sparse graphs | Dense graphs |
+| Complexity | O(E log E)    | O(E log V)   |
 
 ## Applications
 

@@ -10,13 +10,17 @@ import {
 } from "@/utils/algorithm-logic"
 import { ChartBarIcon } from "@heroicons/react/24/outline"
 import { motion } from "motion/react"
-import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
 import { staggerItem, transitions } from "@/lib/animations"
-import { Card, CardContent } from "@/components/ui/card"
+import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
 import { VisualizerControls } from "./visualizer-controls"
@@ -239,14 +243,14 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
 
   const description = (
     <>
-      <div className="mb-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-1 rounded-full border border-border/60 px-2 py-1">
+      <div className="text-muted-foreground mb-2 flex flex-wrap items-center gap-3 text-xs">
+        <span className="border-border/60 inline-flex items-center gap-1 rounded-full border px-2 py-1">
           <span className="bg-primary h-2 w-2 rounded-full" /> Unsorted
         </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-border/60 px-2 py-1">
+        <span className="border-border/60 inline-flex items-center gap-1 rounded-full border px-2 py-1">
           <span className="h-2 w-2 rounded-full bg-amber-500" /> Active
         </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-border/60 px-2 py-1">
+        <span className="border-border/60 inline-flex items-center gap-1 rounded-full border px-2 py-1">
           <span className="h-2 w-2 rounded-full bg-emerald-500" /> Sorted
         </span>
       </div>
@@ -267,16 +271,22 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     >
       <motion.div className="flex flex-col gap-4 p-6">
         <div className="flex flex-wrap items-center gap-2">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs font-semibold uppercase text-muted-foreground">
+          <div className="border-border/60 bg-card text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold uppercase">
             <span className="text-foreground font-bold capitalize">
               {topic.id.replace("-", " ")}
             </span>
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs font-semibold uppercase text-muted-foreground">
-            Array Size <span className="font-mono text-sm text-foreground">{arraySize}</span>
+          <div className="border-border/60 bg-card text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold uppercase">
+            Array Size{" "}
+            <span className="text-foreground font-mono text-sm">
+              {arraySize}
+            </span>
           </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs font-semibold uppercase text-muted-foreground">
-            Steps <span className="font-mono text-sm text-foreground">{steps.length || 1}</span>
+          <div className="border-border/60 bg-card text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold uppercase">
+            Steps{" "}
+            <span className="text-foreground font-mono text-sm">
+              {steps.length || 1}
+            </span>
           </div>
         </div>
         {/* Number-based visualization */}

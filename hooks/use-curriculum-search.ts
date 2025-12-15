@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+
 import { useModules, useTopics } from "@/hooks/use-curriculum"
 
 export function useCurriculumSearch() {

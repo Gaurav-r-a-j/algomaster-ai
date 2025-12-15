@@ -1,4 +1,10 @@
-import { TOPICS, getModuleBySlug, getModules, getTopicBySlug } from "@/data/curriculum"
+import {
+  getModuleBySlug,
+  getModules,
+  getTopicBySlug,
+  TOPICS,
+} from "@/data/curriculum"
+
 import { Topic } from "@/types/curriculum"
 
 // Simulate API delay
@@ -36,9 +42,8 @@ export const CurriculumService = {
   },
 
   getTopicContent: async (topic: Topic) => {
-    const { getTopicContent: fetchContent } = await import(
-      "@/services/content/content-service"
-    )
+    const { getTopicContent: fetchContent } =
+      await import("@/services/content/content-service")
     return fetchContent(topic)
   },
 }

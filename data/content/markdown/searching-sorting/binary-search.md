@@ -15,17 +15,17 @@ Binary Search is an efficient algorithm for finding an item in a **sorted** arra
 ```python
 def binary_search(arr, target):
     left, right = 0, len(arr) - 1
-    
+
     while left <= right:
         mid = (left + right) // 2
-        
+
         if arr[mid] == target:
             return mid
         elif arr[mid] < target:
             left = mid + 1  # Search right half
         else:
             right = mid - 1  # Search left half
-    
+
     return -1  # Not found
 
 # Example
@@ -52,11 +52,12 @@ index = binary_search(arr, 7)  # Returns 3
 ## Common Variations
 
 ### Find First Occurrence
+
 ```python
 def binary_search_first(arr, target):
     left, right = 0, len(arr) - 1
     result = -1
-    
+
     while left <= right:
         mid = (left + right) // 2
         if arr[mid] == target:
@@ -66,15 +67,16 @@ def binary_search_first(arr, target):
             left = mid + 1
         else:
             right = mid - 1
-    
+
     return result
 ```
 
 ### Find Insertion Position
+
 ```python
 def search_insert(nums, target):
     left, right = 0, len(nums) - 1
-    
+
     while left <= right:
         mid = (left + right) // 2
         if nums[mid] == target:
@@ -83,7 +85,7 @@ def search_insert(nums, target):
             left = mid + 1
         else:
             right = mid - 1
-    
+
     return left  # Insertion position
 ```
 

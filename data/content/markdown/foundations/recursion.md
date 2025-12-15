@@ -5,6 +5,7 @@ Recursion is a powerful technique where a function calls itself to solve a probl
 ## The Nesting Doll Analogy
 
 Think of recursion like a set of **Russian Nesting Dolls**.
+
 1. You open a doll (function call) to find a smaller one inside (recursive call).
 2. You keep opening them until you find the tiniest solid doll that cannot be opened (the **Base Case**).
 3. Once you reach the base case, you can close them all back up (unwinding the stack).
@@ -15,16 +16,18 @@ Think of recursion like a set of **Russian Nesting Dolls**.
 - **DNA Replication**: Biological processes often follow recursive patterns to build complex structures from simple rules.
 - **Org Charts**: To find all employees under a CEO, you ask the CEO's reports, then their reports, and so on.
 
-
 ## Key Concepts
 
 ### Base Case
+
 The stopping condition that prevents infinite recursion. Without it, the function would call itself forever.
 
 ### Recursive Case
+
 The part where the function calls itself with a modified input, moving closer to the base case.
 
 ### Call Stack
+
 The system manages recursive calls using a stack. Each recursive call is pushed onto the stack, and when the base case is reached, the stack unwinds.
 
 ## Example: Factorial
@@ -64,13 +67,13 @@ def binary_search(arr, target, left, right):
     # Base case: element not found
     if left > right:
         return -1
-    
+
     mid = (left + right) // 2
-    
+
     # Base case: element found
     if arr[mid] == target:
         return mid
-    
+
     # Recursive cases
     if arr[mid] > target:
         return binary_search(arr, target, left, mid - 1)
@@ -81,12 +84,14 @@ def binary_search(arr, target, left, right):
 ## When to Use Recursion
 
 **Good for:**
+
 - Tree/graph traversals
 - Divide and conquer algorithms
 - Problems with recursive structure
 - Backtracking
 
 **Avoid when:**
+
 - Simple iteration would suffice
 - Stack overflow is a concern
 - Performance is critical (use iteration or memoization)

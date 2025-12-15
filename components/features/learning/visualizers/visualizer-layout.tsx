@@ -2,20 +2,20 @@
 
 import type { ReactNode } from "react"
 import { useRef, useState } from "react"
-import type { ImperativePanelHandle } from "react-resizable-panels"
 import { motion } from "motion/react"
+import type { ImperativePanelHandle } from "react-resizable-panels"
 
 import { fadeIn, slideUp, transitions } from "@/lib/animations"
+import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
-import { Button } from "@/components/ui/button"
-import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons"
 import { IconWrapper } from "@/components/common/icon-wrapper"
-import { cn } from "@/lib/utils"
 
 interface VisualizerLayoutProps {
   title: ReactNode
@@ -62,7 +62,7 @@ export function VisualizerLayout({
   }
 
   return (
-    <div className="h-full w-full overflow-hidden bg-background">
+    <div className="bg-background h-full w-full overflow-hidden">
       <ResizablePanelGroup direction="horizontal">
         {/* LEFT PANEL: Information (Collapsible) */}
         {showInfoPanel && infoPanel && (
@@ -76,9 +76,9 @@ export function VisualizerLayout({
               collapsedSize={0}
               onCollapse={() => setIsInfoPanelOpen(false)}
               onExpand={() => setIsInfoPanelOpen(true)}
-              className="flex flex-col min-h-0 border-r border-border/50 bg-muted/20"
+              className="border-border/50 bg-muted/20 flex min-h-0 flex-col border-r"
             >
-              <div className="flex-1 overflow-y-auto min-h-0">{infoPanel}</div>
+              <div className="min-h-0 flex-1 overflow-y-auto">{infoPanel}</div>
             </ResizablePanel>
 
             <ResizableHandle withHandle />
@@ -86,7 +86,10 @@ export function VisualizerLayout({
         )}
 
         {/* RIGHT PANEL: Visualization Area */}
-        <ResizablePanel defaultSize={showInfoPanel && infoPanel ? 65 : 100} minSize={50}>
+        <ResizablePanel
+          defaultSize={showInfoPanel && infoPanel ? 65 : 100}
+          minSize={50}
+        >
           <motion.div
             initial="initial"
             animate="animate"
@@ -98,17 +101,19 @@ export function VisualizerLayout({
             <motion.div
               variants={slideUp}
               transition={transitions.spring}
-              className="w-full shrink-0 border-b border-border/50 bg-background/95"
+              className="border-border/50 bg-background/95 w-full shrink-0 border-b"
             >
               <div className="px-6 py-4">
                 {/* Controls Row */}
-                <div className="flex items-center gap-4 flex-wrap w-full">
-                  {renderControls ? renderControls(isInfoPanelOpen, toggleInfoPanel) : controls}
+                <div className="flex w-full flex-wrap items-center gap-4">
+                  {renderControls
+                    ? renderControls(isInfoPanelOpen, toggleInfoPanel)
+                    : controls}
                 </div>
 
                 {/* Step Description Row */}
                 {headerDescription && (
-                  <div className="mt-3 pt-3 border-t border-border/20 w-full">
+                  <div className="border-border/20 mt-3 w-full border-t pt-3">
                     <p className="text-foreground text-sm font-medium">
                       {headerDescription}
                     </p>
@@ -121,9 +126,9 @@ export function VisualizerLayout({
             <motion.div
               variants={slideUp}
               transition={{ ...transitions.spring, delay: 0.05 }}
-              className="flex-1 min-h-0 overflow-auto"
+              className="min-h-0 flex-1 overflow-auto"
             >
-              <div className="mx-auto w-full max-w-[1920px] h-full flex flex-col">
+              <div className="mx-auto flex h-full w-full max-w-[1920px] flex-col">
                 {children}
               </div>
             </motion.div>
@@ -133,9 +138,11 @@ export function VisualizerLayout({
               <motion.div
                 variants={slideUp}
                 transition={{ ...transitions.spring, delay: 0.1 }}
-                className="w-full shrink-0 border-t border-border/40 bg-background/95 px-6 py-4"
+                className="border-border/40 bg-background/95 w-full shrink-0 border-t px-6 py-4"
               >
-                <div className="mx-auto w-full max-w-[1920px]">{description}</div>
+                <div className="mx-auto w-full max-w-[1920px]">
+                  {description}
+                </div>
               </motion.div>
             )}
           </motion.div>

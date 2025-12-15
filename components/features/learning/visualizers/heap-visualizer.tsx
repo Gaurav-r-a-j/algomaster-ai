@@ -116,7 +116,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
           <span className="text-muted-foreground">Active / Swapping</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded-full bg-background border border-border"></div>
+          <div className="bg-background border-border h-3 w-3 rounded-full border"></div>
           <span className="text-muted-foreground">Heap Node</span>
         </div>
       </div>
@@ -146,25 +146,28 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
           <CardContent className="p-4">
             <div className="relative flex h-64 items-start justify-center overflow-hidden rounded-lg">
               {/* Draw connecting lines first */}
-              <svg className="absolute inset-0 h-full w-full pointer-events-none">
+              <svg className="pointer-events-none absolute inset-0 h-full w-full">
                 {heap.map((_, idx) => {
                   if (idx === 0) return null
                   const parentIdx = Math.floor((idx - 1) / 2)
-                  
+
                   const level = Math.floor(Math.log2(idx + 1))
                   const offset = Math.pow(2, level) - 1
                   const posInLevel = idx - offset
                   const maxInLevel = Math.pow(2, level)
-                  const childLeft = (posInLevel / maxInLevel) * 100 + (100 / maxInLevel / 2)
+                  const childLeft =
+                    (posInLevel / maxInLevel) * 100 + 100 / maxInLevel / 2
                   const childTop = level * 70 + 20
-                  
+
                   const parentLevel = Math.floor(Math.log2(parentIdx + 1))
                   const parentOffset = Math.pow(2, parentLevel) - 1
                   const parentPosInLevel = parentIdx - parentOffset
                   const parentMaxInLevel = Math.pow(2, parentLevel)
-                  const parentLeft = (parentPosInLevel / parentMaxInLevel) * 100 + (100 / parentMaxInLevel / 2)
+                  const parentLeft =
+                    (parentPosInLevel / parentMaxInLevel) * 100 +
+                    100 / parentMaxInLevel / 2
                   const parentTop = parentLevel * 70 + 20
-                  
+
                   return (
                     <line
                       key={`line-${idx}`}
@@ -178,7 +181,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                   )
                 })}
               </svg>
-              
+
               {/* Nodes */}
               {heap.map((val: number, idx: number) => {
                 const level = Math.floor(Math.log2(idx + 1))
@@ -189,7 +192,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                 const left = posInLevel * width + width / 2
                 const top = level * 70 + 20
                 const isActive = currentData.activeIndices.includes(idx)
-                
+
                 return (
                   <motion.div
                     key={idx}
@@ -209,7 +212,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                         : "0 2px 4px rgb(0 0 0 / 0.05)",
                     }}
                     transition={transitions.spring}
-                    className="absolute z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 font-bold text-sm"
+                    className="absolute z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 text-sm font-bold"
                     style={{
                       left: `${left}%`,
                       top: `${top}px`,
@@ -223,12 +226,12 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
             </div>
           </CardContent>
         </Card>
-        
+
         {/* Array Representation */}
         <Card>
           <CardContent className="p-4">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
                 Array Representation
               </span>
               <motion.div
@@ -254,7 +257,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                           color: isActive ? "white" : "hsl(var(--foreground))",
                         }}
                         transition={transitions.smooth}
-                        className="flex h-10 w-10 items-center justify-center rounded-lg border-2 font-bold text-sm"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg border-2 text-sm font-bold"
                       >
                         {val}
                       </motion.div>

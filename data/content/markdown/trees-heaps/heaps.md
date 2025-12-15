@@ -5,14 +5,17 @@ A Heap is a complete binary tree that satisfies the heap property. It's commonly
 ## Types of Heaps
 
 ### Max Heap
+
 Parent is **greater than or equal to** its children. Root is the maximum element.
 
 ### Min Heap
+
 Parent is **less than or equal to** its children. Root is the minimum element.
 
 ## Representation
 
 Heaps are typically stored as arrays for efficiency:
+
 - **Parent:** `(i - 1) // 2`
 - **Left Child:** `2 * i + 1`
 - **Right Child:** `2 * i + 2`
@@ -26,12 +29,12 @@ def heapify(arr, n, i):
     largest = i
     left = 2 * i + 1
     right = 2 * i + 2
-    
+
     if left < n and arr[left] > arr[largest]:
         largest = left
     if right < n and arr[right] > arr[largest]:
         largest = right
-    
+
     if largest != i:
         arr[i], arr[largest] = arr[largest], arr[i]
         heapify(arr, n, largest)
@@ -43,7 +46,7 @@ def heapify(arr, n, i):
 def insert(heap, val):
     heap.append(val)
     i = len(heap) - 1
-    
+
     # Bubble up
     while i > 0 and heap[(i-1)//2] < heap[i]:
         heap[(i-1)//2], heap[i] = heap[i], heap[(i-1)//2]
@@ -56,12 +59,12 @@ def insert(heap, val):
 def extract_max(heap):
     if not heap:
         return None
-    
+
     max_val = heap[0]
     heap[0] = heap[-1]
     heap.pop()
     heapify(heap, len(heap), 0)
-    
+
     return max_val
 ```
 
@@ -95,8 +98,8 @@ heapq.heapify(arr)
 
 ## Time Complexity
 
-| Operation    | Time     |
-|-------------|----------|
+| Operation   | Time     |
+| ----------- | -------- |
 | Insert      | O(log n) |
 | Extract     | O(log n) |
 | Get Min/Max | O(1)     |

@@ -20,13 +20,13 @@ class FenwickTree:
     def __init__(self, n):
         self.n = n
         self.tree = [0] * (n + 1)  # 1-indexed
-    
+
     def update(self, i, delta):
         """Add delta to index i (1-indexed)"""
         while i <= self.n:
             self.tree[i] += delta
             i += i & (-i)  # Add lowest set bit
-    
+
     def prefix_sum(self, i):
         """Sum from 1 to i (inclusive)"""
         total = 0
@@ -34,7 +34,7 @@ class FenwickTree:
             total += self.tree[i]
             i -= i & (-i)  # Remove lowest set bit
         return total
-    
+
     def range_sum(self, l, r):
         """Sum from l to r (inclusive, 1-indexed)"""
         return self.prefix_sum(r) - self.prefix_sum(l - 1)
@@ -80,9 +80,9 @@ print(ft.range_sum(2, 5)) # Sum of indices 2-5
 
 ## Time & Space Complexity
 
-| Operation | Time |
-|-----------|------|
-| Build     | O(n) |
+| Operation | Time     |
+| --------- | -------- |
+| Build     | O(n)     |
 | Update    | O(log n) |
 | Query     | O(log n) |
 
@@ -90,9 +90,9 @@ print(ft.range_sum(2, 5)) # Sum of indices 2-5
 
 ## Fenwick Tree vs Segment Tree
 
-| Feature | Fenwick Tree | Segment Tree |
-|---------|--------------|--------------|
-| Space | O(n) | O(4n) |
-| Code complexity | Simpler | More complex |
-| Range updates | Hard | Easy with lazy propagation |
-| Flexibility | Limited | More versatile |
+| Feature         | Fenwick Tree | Segment Tree               |
+| --------------- | ------------ | -------------------------- |
+| Space           | O(n)         | O(4n)                      |
+| Code complexity | Simpler      | More complex               |
+| Range updates   | Hard         | Easy with lazy propagation |
+| Flexibility     | Limited      | More versatile             |

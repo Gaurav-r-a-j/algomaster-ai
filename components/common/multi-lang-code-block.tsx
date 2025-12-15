@@ -1,15 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "motion/react"
 import hljs from "highlight.js"
+import { motion } from "motion/react"
 
 import { fadeIn, transitions } from "@/lib/animations"
+import { CheckmarkCircleIcon, FloppyDiskIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { IconWrapper } from "@/components/common/icon-wrapper"
-import { FloppyDiskIcon, CheckmarkCircleIcon } from "@/lib/icons"
 
 interface CodeBlock {
   language: string
@@ -45,7 +45,10 @@ const LANGUAGE_LABELS: Record<string, string> = {
 
 // MultiLangCodeBlock - Component to show code in multiple languages with tabs
 // Example: <MultiLangCodeBlock blocks={[{language: "javascript", code: "..."}, {language: "python", code: "..."}]} />
-export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProps) {
+export function MultiLangCodeBlock({
+  blocks,
+  className,
+}: MultiLangCodeBlockProps) {
   const [copied, setCopied] = React.useState(false)
   const [activeTab, setActiveTab] = React.useState(blocks[0]?.language || "")
 
@@ -55,7 +58,7 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
   React.useEffect(() => {
     // Load preferred language from localStorage
     const saved = localStorage.getItem(storageKey)
-    if (saved && blocks.some(b => b.language === saved)) {
+    if (saved && blocks.some((b) => b.language === saved)) {
       setActiveTab(saved)
     }
   }, [blocks])
@@ -66,7 +69,7 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
   }
 
   const handleCopy = async () => {
-    const activeBlock = blocks.find(b => b.language === activeTab)
+    const activeBlock = blocks.find((b) => b.language === activeTab)
     if (activeBlock) {
       await navigator.clipboard.writeText(activeBlock.code)
       setCopied(true)
@@ -75,7 +78,11 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
   }
 
   const getLabel = (block: CodeBlock) => {
-    return block.label || LANGUAGE_LABELS[block.language.toLowerCase()] || block.language.toUpperCase()
+    return (
+      block.label ||
+      LANGUAGE_LABELS[block.language.toLowerCase()] ||
+      block.language.toUpperCase()
+    )
   }
 
   if (blocks.length === 0) return null
@@ -83,7 +90,7 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
   // Single language - render simple code block
   if (blocks.length === 1) {
     const block = blocks[0]
-    const highlighted = hljs.getLanguage(block.language) 
+    const highlighted = hljs.getLanguage(block.language)
       ? hljs.highlight(block.code, { language: block.language }).value
       : block.code
 
@@ -93,10 +100,13 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
         animate="animate"
         variants={fadeIn}
         transition={transitions.smooth}
-        className={cn("border-border my-4 overflow-hidden rounded-lg border", className)}
+        className={cn(
+          "border-border my-4 overflow-hidden rounded-lg border",
+          className
+        )}
       >
         <div className="bg-muted/50 border-border flex items-center justify-between border-b px-4 py-2">
-          <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">
+          <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             {getLabel(block)}
           </span>
           <Button
@@ -105,15 +115,15 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
             onClick={handleCopy}
             className="h-7 px-2"
           >
-            <IconWrapper 
-              icon={copied ? CheckmarkCircleIcon : FloppyDiskIcon} 
-              size={14} 
-              className={copied ? "text-emerald-500" : ""} 
+            <IconWrapper
+              icon={copied ? CheckmarkCircleIcon : FloppyDiskIcon}
+              size={14}
+              className={copied ? "text-emerald-500" : ""}
             />
           </Button>
         </div>
         <pre className="bg-muted m-0 overflow-x-auto p-4 font-mono text-sm">
-          <code 
+          <code
             dangerouslySetInnerHTML={{ __html: highlighted }}
             className={`language-${block.language}`}
           />
@@ -129,7 +139,10 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
       animate="animate"
       variants={fadeIn}
       transition={transitions.smooth}
-      className={cn("border-border my-4 overflow-hidden rounded-lg border", className)}
+      className={cn(
+        "border-border my-4 overflow-hidden rounded-lg border",
+        className
+      )}
     >
       <Tabs value={activeTab} onValueChange={handleTabChange}>
         <div className="bg-muted/50 border-border flex items-center justify-between border-b px-2">
@@ -138,7 +151,7 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
               <TabsTrigger
                 key={block.language}
                 value={block.language}
-                className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-none border-b-2 border-transparent px-3 py-2 text-xs font-semibold uppercase tracking-wider data-[state=active]:border-primary"
+                className="data-[state=active]:bg-background data-[state=active]:border-primary rounded-none border-b-2 border-transparent px-3 py-2 text-xs font-semibold tracking-wider uppercase data-[state=active]:shadow-sm"
               >
                 {getLabel(block)}
               </TabsTrigger>
@@ -150,10 +163,10 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
             onClick={handleCopy}
             className="h-7 px-2"
           >
-            <IconWrapper 
-              icon={copied ? CheckmarkCircleIcon : FloppyDiskIcon} 
-              size={14} 
-              className={copied ? "text-emerald-500" : ""} 
+            <IconWrapper
+              icon={copied ? CheckmarkCircleIcon : FloppyDiskIcon}
+              size={14}
+              className={copied ? "text-emerald-500" : ""}
             />
           </Button>
         </div>
@@ -164,9 +177,13 @@ export function MultiLangCodeBlock({ blocks, className }: MultiLangCodeBlockProp
             : block.code
 
           return (
-            <TabsContent key={block.language} value={block.language} className="m-0">
+            <TabsContent
+              key={block.language}
+              value={block.language}
+              className="m-0"
+            >
               <pre className="bg-muted m-0 overflow-x-auto p-4 font-mono text-sm">
-                <code 
+                <code
                   dangerouslySetInnerHTML={{ __html: highlighted }}
                   className={`language-${block.language}`}
                 />

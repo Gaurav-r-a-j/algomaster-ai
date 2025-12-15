@@ -8,7 +8,7 @@ export const recursion: Topic = {
   complexity: { time: "O(2^n)", space: "O(n)" },
   visualizerType: VisualizerType.NONE,
   module: "1. Foundations",
-  order: 2,
+  order: 5,
   difficulty: "Medium",
   content: "", // Content loaded from data/content/markdown/foundations/recursion.md
   quiz: [

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { VisualizationStep, VisualizerType } from "@/types/curriculum"
 import {
   generateAVLTreeSteps,
   generateBinaryTreeSteps,
@@ -10,6 +9,8 @@ import {
   generateStackSteps,
   generateTrieSteps,
 } from "@/utils/algorithm-logic"
+
+import { VisualizationStep, VisualizerType } from "@/types/curriculum"
 
 const DEFAULT_SPEED_MS = 1000
 
@@ -126,7 +127,7 @@ export function useVisualizer(topicId: string, visualizerType: VisualizerType) {
     isPlaying,
     playbackSpeed,
     currentData,
-    
+
     // Actions
     setPlaybackSpeed,
     handlePlay,

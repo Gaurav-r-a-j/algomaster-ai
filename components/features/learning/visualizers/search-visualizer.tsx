@@ -9,26 +9,30 @@ import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
 import { staggerItem, transitions } from "@/lib/animations"
-import { SearchIcon } from "@/lib/icons"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Slider } from "@/components/ui/slider"
-import { IconWrapper } from "@/components/common/icon-wrapper"
-
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { VisualizerLayout } from "./visualizer-layout"
-import { VisualizerInfoPanel } from "./visualizer-info-panel"
-import { cn } from "@/lib/utils"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  PlayIcon,
   PauseIcon,
+  PlayIcon,
   RefreshCwIcon,
+  SearchIcon,
 } from "@/lib/icons"
+import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
+import { Slider } from "@/components/ui/slider"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { IconWrapper } from "@/components/common/icon-wrapper"
+
+import { VisualizerInfoPanel } from "./visualizer-info-panel"
+import { VisualizerLayout } from "./visualizer-layout"
 
 const DEFAULT_SPEED_MS = 800
 
@@ -163,16 +167,20 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
           <Separator orientation="vertical" className="h-6" />
 
           {/* Target Input Group */}
-          <div className="flex items-center gap-3 bg-muted/40 p-1.5 rounded-lg border border-border/40">
-            <IconWrapper icon={SearchIcon} size={14} className="ml-2 text-muted-foreground" />
-            <label className="text-muted-foreground text-xs font-bold uppercase tracking-wider">
+          <div className="bg-muted/40 border-border/40 flex items-center gap-3 rounded-lg border p-1.5">
+            <IconWrapper
+              icon={SearchIcon}
+              size={14}
+              className="text-muted-foreground ml-2"
+            />
+            <label className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
               Target
             </label>
             <Input
               type="number"
               value={target}
               onChange={(e) => setTarget(Number(e.target.value))}
-              className="w-[80px] h-8 text-sm bg-background border-border/50"
+              className="bg-background border-border/50 h-8 w-[80px] text-sm"
               min={Math.min(...array)}
               max={Math.max(...array)}
               disabled={isPlaying}
@@ -199,14 +207,16 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
             <TooltipContent>Reset</TooltipContent>
           </Tooltip>
 
-          <div className="flex items-center gap-1 mx-2">
+          <div className="mx-2 flex items-center gap-1">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={handlePreviousStep}
-                  disabled={steps.length === 0 || isPlaying || currentStep === 0}
+                  disabled={
+                    steps.length === 0 || isPlaying || currentStep === 0
+                  }
                   className="h-9 w-9"
                   aria-label="Previous step"
                 >
@@ -222,7 +232,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
                   size="default"
                   onClick={isPlaying ? handlePause : handlePlay}
                   disabled={steps.length === 0}
-                  className="px-6 font-semibold min-w-[100px]"
+                  className="min-w-[100px] px-6 font-semibold"
                   aria-label={isPlaying ? "Pause" : "Play"}
                 >
                   <IconWrapper
@@ -233,7 +243,9 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
                   {isPlaying ? "Pause" : "Play"}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>{isPlaying ? "Pause" : "Play"} animation</TooltipContent>
+              <TooltipContent>
+                {isPlaying ? "Pause" : "Play"} animation
+              </TooltipContent>
             </Tooltip>
 
             <Tooltip>
@@ -257,9 +269,10 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
             </Tooltip>
           </div>
 
-          <div className="bg-muted flex items-center rounded-md px-3 py-1.5 border border-border/40">
+          <div className="bg-muted border-border/40 flex items-center rounded-md border px-3 py-1.5">
             <span className="text-muted-foreground font-mono text-xs font-semibold">
-              Step {currentStep + 1} <span className="text-border mx-1">/</span> {steps.length || 1}
+              Step {currentStep + 1} <span className="text-border mx-1">/</span>{" "}
+              {steps.length || 1}
             </span>
           </div>
         </div>
@@ -267,9 +280,9 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
 
       {/* Timeline and Speed Controls Row */}
       {steps.length > 1 && (
-        <div className="flex flex-wrap items-center gap-6 pt-2 border-t border-border/40">
-          <div className="flex items-center gap-3 flex-1 min-w-[200px]">
-            <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+        <div className="border-border/40 flex flex-wrap items-center gap-6 border-t pt-2">
+          <div className="flex min-w-[200px] flex-1 items-center gap-3">
+            <span className="text-muted-foreground text-xs font-semibold tracking-wider whitespace-nowrap uppercase">
               Timeline
             </span>
             <Slider
@@ -283,8 +296,8 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
             />
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto min-w-[200px]">
-            <span className="text-muted-foreground text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+          <div className="flex w-full min-w-[200px] items-center gap-3 sm:w-auto">
+            <span className="text-muted-foreground text-xs font-semibold tracking-wider whitespace-nowrap uppercase">
               Speed
             </span>
             <Slider
@@ -296,7 +309,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
               className="w-[120px]"
               disabled={steps.length === 0}
             />
-            <span className="font-mono text-xs font-medium text-foreground min-w-[60px] text-right bg-muted/50 px-2 py-0.5 rounded">
+            <span className="text-foreground bg-muted/50 min-w-[60px] rounded px-2 py-0.5 text-right font-mono text-xs font-medium">
               {playbackSpeed}ms
             </span>
           </div>
@@ -347,7 +360,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
   const description = (
     <div className="flex items-start gap-3">
       <div className="flex-1">
-        <p className="text-foreground text-sm font-medium leading-relaxed">
+        <p className="text-foreground text-sm leading-relaxed font-medium">
           {currentData.description}
         </p>
       </div>
@@ -369,8 +382,8 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       hideDescription={true}
       showInfoPanel={true}
     >
-      <div className="flex-1 flex items-center justify-center min-h-0 p-6">
-        <Card className="w-full border border-border/50 bg-card">
+      <div className="flex min-h-0 flex-1 items-center justify-center p-6">
+        <Card className="border-border/50 bg-card w-full border">
           <CardContent className="p-8">
             <div className="flex min-h-[400px] flex-wrap items-center justify-center gap-6">
               {currentData.array.map((value, idx) => {

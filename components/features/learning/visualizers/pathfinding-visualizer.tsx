@@ -127,15 +127,15 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
           <span className="text-muted-foreground">Start</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-destructive shadow-sm"></div>
+          <div className="bg-destructive h-3 w-3 rounded shadow-sm"></div>
           <span className="text-muted-foreground">End</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-foreground"></div>
+          <div className="bg-foreground h-3 w-3 rounded"></div>
           <span className="text-muted-foreground">Wall</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-muted/50 border border-border"></div>
+          <div className="bg-muted/50 border-border h-3 w-3 rounded border"></div>
           <span className="text-muted-foreground">Visited</span>
         </div>
         <div className="flex items-center gap-1.5">

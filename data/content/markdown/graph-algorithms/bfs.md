@@ -20,16 +20,16 @@ def bfs(graph, start):
     visited = set([start])
     queue = deque([start])
     result = []
-    
+
     while queue:
         vertex = queue.popleft()
         result.append(vertex)
-        
+
         for neighbor in graph[vertex]:
             if neighbor not in visited:
                 visited.add(neighbor)
                 queue.append(neighbor)
-    
+
     return result
 ```
 
@@ -39,21 +39,21 @@ def bfs(graph, start):
 def shortest_path(graph, start, end):
     if start == end:
         return [start]
-    
+
     visited = set([start])
     queue = deque([(start, [start])])
-    
+
     while queue:
         vertex, path = queue.popleft()
-        
+
         for neighbor in graph[vertex]:
             if neighbor == end:
                 return path + [neighbor]
-            
+
             if neighbor not in visited:
                 visited.add(neighbor)
                 queue.append((neighbor, path + [neighbor]))
-    
+
     return []  # No path found
 ```
 
@@ -63,25 +63,25 @@ def shortest_path(graph, start, end):
 def level_order(root):
     if not root:
         return []
-    
+
     result = []
     queue = deque([root])
-    
+
     while queue:
         level_size = len(queue)
         current_level = []
-        
+
         for _ in range(level_size):
             node = queue.popleft()
             current_level.append(node.val)
-            
+
             if node.left:
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
-        
+
         result.append(current_level)
-    
+
     return result
 ```
 

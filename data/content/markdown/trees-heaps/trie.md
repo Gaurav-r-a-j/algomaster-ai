@@ -19,7 +19,7 @@ class TrieNode:
 class Trie:
     def __init__(self):
         self.root = TrieNode()
-    
+
     def insert(self, word):
         node = self.root
         for char in word:
@@ -59,7 +59,7 @@ def starts_with(self, prefix):
 class Trie:
     def __init__(self):
         self.root = TrieNode()
-    
+
     def insert(self, word):
         node = self.root
         for char in word:
@@ -67,14 +67,14 @@ class Trie:
                 node.children[char] = TrieNode()
             node = node.children[char]
         node.is_end = True
-    
+
     def search(self, word):
         node = self._find_node(word)
         return node is not None and node.is_end
-    
+
     def starts_with(self, prefix):
         return self._find_node(prefix) is not None
-    
+
     def _find_node(self, prefix):
         node = self.root
         for char in prefix:
@@ -86,11 +86,11 @@ class Trie:
 
 ## Time Complexity
 
-| Operation    | Time |
-|-------------|------|
-| Insert      | O(m) |
-| Search      | O(m) |
-| Prefix      | O(m) |
+| Operation | Time |
+| --------- | ---- |
+| Insert    | O(m) |
+| Search    | O(m) |
+| Prefix    | O(m) |
 
 Where m is the length of the word/prefix.
 

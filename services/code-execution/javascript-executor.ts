@@ -1,7 +1,7 @@
 import {
+  getQuickJS,
   QuickJSContext,
   QuickJSWASMModule,
-  getQuickJS,
 } from "quickjs-emscripten"
 
 import { CodeExecutor, ExecutionResult } from "./types"

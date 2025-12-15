@@ -5,6 +5,7 @@ Loops allow you to execute a block of code repeatedly, making them essential for
 ## The Robot Analogy
 
 Imagine you are a robot tasked with washing dishes.
+
 - **For Loop**: You are told, "Wash these 10 plates." You know exactly how many loops to perform.
 - **While Loop**: You are told, "Wash plates until the sink is empty." You keep going as long as the condition (sink has plates) is true.
 
@@ -14,10 +15,10 @@ Imagine you are a robot tasked with washing dishes.
 - **Data Processing**: A bank's system loops through thousands of transactions to calculate your monthly balance.
 - **Music Players**: A "Repeat One" button is literally a loop playing the same song!
 
-
 ## Types of Loops
 
 ### For Loop
+
 Used when you know the number of iterations or need to iterate over a collection.
 
 ```python
@@ -36,6 +37,7 @@ for i, fruit in enumerate(fruits):
 ```
 
 ### While Loop
+
 Used when the number of iterations is unknown and depends on a condition.
 
 ```python
@@ -54,6 +56,7 @@ while True:
 ## Loop Control Statements
 
 ### Break
+
 Exits the loop immediately.
 
 ```python
@@ -64,6 +67,7 @@ for i in range(10):
 ```
 
 ### Continue
+
 Skips the current iteration and continues to the next.
 
 ```python
@@ -76,6 +80,7 @@ for i in range(10):
 ## Common Patterns
 
 ### 1. Iterating Through Arrays
+
 ```python
 arr = [1, 2, 3, 4, 5]
 for num in arr:
@@ -83,6 +88,7 @@ for num in arr:
 ```
 
 ### 2. Nested Loops
+
 ```python
 # 2D array traversal
 matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -92,6 +98,7 @@ for row in matrix:
 ```
 
 ### 3. Two Pointers
+
 ```python
 # Find pairs in sorted array
 arr = [1, 2, 3, 4, 5]

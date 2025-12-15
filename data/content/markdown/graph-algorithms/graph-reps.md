@@ -21,11 +21,13 @@ def has_edge(u, v):
 ```
 
 ### Pros
+
 - O(1) edge lookup
 - Easy to implement
 - Good for dense graphs
 
 ### Cons
+
 - O(n²) space
 - Adding/removing vertex is expensive
 
@@ -49,23 +51,25 @@ def get_neighbors(u):
 ```
 
 ### Pros
+
 - O(V + E) space - efficient for sparse graphs
 - Adding vertex is easy
 - Easy to iterate over neighbors
 
 ### Cons
+
 - O(degree) edge lookup
 - Not efficient for dense graphs
 
 ## Comparison
 
-| Operation       | Adjacency Matrix | Adjacency List |
-|-----------------|------------------|----------------|
-| Space           | O(V²)           | O(V + E)       |
-| Add Edge        | O(1)            | O(1)           |
-| Remove Edge     | O(1)            | O(E)           |
-| Check Edge      | O(1)            | O(degree)      |
-| Get Neighbors   | O(V)            | O(degree)      |
+| Operation     | Adjacency Matrix | Adjacency List |
+| ------------- | ---------------- | -------------- |
+| Space         | O(V²)            | O(V + E)       |
+| Add Edge      | O(1)             | O(1)           |
+| Remove Edge   | O(1)             | O(E)           |
+| Check Edge    | O(1)             | O(degree)      |
+| Get Neighbors | O(V)             | O(degree)      |
 
 ## When to Use
 
@@ -75,11 +79,13 @@ def get_neighbors(u):
 ## Weighted Graphs
 
 ### Adjacency Matrix
+
 ```python
 graph[u][v] = weight  # Instead of 1
 ```
 
 ### Adjacency List
+
 ```python
 graph[u].append((v, weight))  # Store tuple
 ```

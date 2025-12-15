@@ -69,7 +69,7 @@ export function VisualizerControls({
       <div className="flex flex-wrap items-center gap-2">
         {/* Extra Controls (Left) */}
         {extraControlsLeft && (
-          <div className="mr-2 border-r border-border/40 pr-2">
+          <div className="border-border/40 mr-2 border-r pr-2">
             {extraControlsLeft}
           </div>
         )}
@@ -124,7 +124,11 @@ export function VisualizerControls({
             >
               <motion.div
                 animate={isPlaying ? { scale: [1, 1.1, 1] } : {}}
-                transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
                 <IconWrapper
                   icon={isPlaying ? PauseIcon : PlayIcon}
@@ -135,7 +139,9 @@ export function VisualizerControls({
               {isPlaying ? "Pause" : "Play"}
             </Button>
           </TooltipTrigger>
-          <TooltipContent>{isPlaying ? "Pause animation" : "Play animation"}</TooltipContent>
+          <TooltipContent>
+            {isPlaying ? "Pause animation" : "Play animation"}
+          </TooltipContent>
         </Tooltip>
 
         {/* Next Step Button */}
@@ -159,7 +165,7 @@ export function VisualizerControls({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={transitions.smooth}
-          className="bg-muted flex items-center gap-2 rounded-md px-2.5 py-1.5 border border-border/40"
+          className="bg-muted border-border/40 flex items-center gap-2 rounded-md border px-2.5 py-1.5"
         >
           <span className="text-muted-foreground font-mono text-xs font-semibold">
             Step {currentStep + 1} / {totalSteps}
@@ -171,10 +177,11 @@ export function VisualizerControls({
       <div className="flex flex-col gap-3">
         {/* Step slider */}
         <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="text-muted-foreground flex items-center justify-between text-xs font-semibold tracking-wider uppercase">
             <span>Timeline</span>
             <span className="font-mono">
-              Step {Math.min(currentStep + 1, totalSteps || 1)} / {Math.max(totalSteps, 1)}
+              Step {Math.min(currentStep + 1, totalSteps || 1)} /{" "}
+              {Math.max(totalSteps, 1)}
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -195,30 +202,32 @@ export function VisualizerControls({
         </div>
 
         {/* Array Size Control */}
-        {showArraySizeControl && arraySize !== undefined && onArraySizeChange && (
-          <div className="flex flex-col gap-2">
-            <div className="text-muted-foreground flex items-center justify-between text-xs font-semibold uppercase tracking-wider">
-              Array Size
-              <span className="font-mono">{arraySize}</span>
+        {showArraySizeControl &&
+          arraySize !== undefined &&
+          onArraySizeChange && (
+            <div className="flex flex-col gap-2">
+              <div className="text-muted-foreground flex items-center justify-between text-xs font-semibold tracking-wider uppercase">
+                Array Size
+                <span className="font-mono">{arraySize}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Slider
+                  value={[arraySize]}
+                  onValueChange={([value]) => onArraySizeChange(value)}
+                  min={5}
+                  max={30}
+                  step={1}
+                  className="flex-1"
+                  disabled={disabled || isPlaying}
+                />
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Slider
-                value={[arraySize]}
-                onValueChange={([value]) => onArraySizeChange(value)}
-                min={5}
-                max={30}
-                step={1}
-                className="flex-1"
-                disabled={disabled || isPlaying}
-              />
-            </div>
-          </div>
-        )}
+          )}
 
         {/* Speed Control */}
         {showSpeedControl && (
           <div className="flex flex-col gap-2">
-            <div className="text-muted-foreground flex items-center justify-between text-xs font-semibold uppercase tracking-wider">
+            <div className="text-muted-foreground flex items-center justify-between text-xs font-semibold tracking-wider uppercase">
               Speed
               <span className="font-mono">{playbackSpeed}ms</span>
             </div>

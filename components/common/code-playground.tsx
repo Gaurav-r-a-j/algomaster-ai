@@ -170,10 +170,11 @@ export function CodePlayground({ initialCode }: CodePlaygroundProps) {
                 </div>
               ) : (
                 <pre
-                  className={`leading-relaxed whitespace-pre-wrap ${output.startsWith("Error") || output.startsWith("error")
+                  className={`leading-relaxed whitespace-pre-wrap ${
+                    output.startsWith("Error") || output.startsWith("error")
                       ? "text-destructive"
                       : "text-foreground"
-                    }`}
+                  }`}
                 >
                   {output}
                 </pre>

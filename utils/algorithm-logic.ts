@@ -854,7 +854,7 @@ function cloneTree(node: TreeNode | null): TreeNode | null {
     val: node.val,
     id: node.id,
     x: node.x,
-    y: node.y
+    y: node.y,
   }
 }
 
@@ -879,9 +879,16 @@ export function generateBinaryTreeSteps(): VisualizationStep[] {
     dx: number
   ): TreeNode => {
     if (!node) {
-      return { val, id: Math.random().toString(36).substr(2, 9), left: null, right: null, x, y }
+      return {
+        val,
+        id: Math.random().toString(36).substr(2, 9),
+        left: null,
+        right: null,
+        x,
+        y,
+      }
     }
-    
+
     // Animate comparison
     steps.push({
       array: [],
@@ -939,12 +946,15 @@ export function generateBinaryTreeSteps(): VisualizationStep[] {
 }
 
 export function generateAVLTreeSteps(): VisualizationStep[] {
-    const steps = generateBinaryTreeSteps();
-    // Reusing BST logic for AVL as a placeholder but changing description
-    return steps.map(s => ({
-        ...s,
-        description: s.description.replace("Binary Search Tree", "AVL Tree (Simulated)")
-    }));
+  const steps = generateBinaryTreeSteps()
+  // Reusing BST logic for AVL as a placeholder but changing description
+  return steps.map((s) => ({
+    ...s,
+    description: s.description.replace(
+      "Binary Search Tree",
+      "AVL Tree (Simulated)"
+    ),
+  }))
 }
 
 // --- Advanced DP ---
@@ -954,25 +964,35 @@ export function generateKnapsackSteps(): VisualizationStep[] {
   const values = [3, 4, 5, 6]
   const capacity = 5
   const n = weights.length
-  const dp = Array(n + 1).fill(0).map(() => Array(capacity + 1).fill(0))
+  const dp = Array(n + 1)
+    .fill(0)
+    .map(() => Array(capacity + 1).fill(0))
   const steps: VisualizationStep[] = []
-  
+
   steps.push({
     array: [],
     activeIndices: [],
     sortedIndices: [],
     description: "Knapsack Problem: Maximize value for Capacity 5.",
-    auxiliary: { dpTable: JSON.parse(JSON.stringify(dp)), row: 0, col: 0, headers: Array.from({length: capacity+1}, (_, i) => i) }
+    auxiliary: {
+      dpTable: JSON.parse(JSON.stringify(dp)),
+      row: 0,
+      col: 0,
+      headers: Array.from({ length: capacity + 1 }, (_, i) => i),
+    },
   })
 
   for (let i = 1; i <= n; i++) {
     for (let w = 0; w <= capacity; w++) {
       let desc = ""
-      if (weights[i-1] <= w) {
-        dp[i][w] = Math.max(values[i-1] + dp[i-1][w-weights[i-1]], dp[i-1][w])
-        desc = `Checking Item ${i} (w=${weights[i-1]}, v=${values[i-1]}). Max Value: ${dp[i][w]}`
+      if (weights[i - 1] <= w) {
+        dp[i][w] = Math.max(
+          values[i - 1] + dp[i - 1][w - weights[i - 1]],
+          dp[i - 1][w]
+        )
+        desc = `Checking Item ${i} (w=${weights[i - 1]}, v=${values[i - 1]}). Max Value: ${dp[i][w]}`
       } else {
-        dp[i][w] = dp[i-1][w]
+        dp[i][w] = dp[i - 1][w]
         desc = `Item ${i} too heavy for capacity ${w}. Keeping previous best: ${dp[i][w]}`
       }
       steps.push({
@@ -980,17 +1000,27 @@ export function generateKnapsackSteps(): VisualizationStep[] {
         activeIndices: [],
         sortedIndices: [],
         description: desc,
-        auxiliary: { dpTable: JSON.parse(JSON.stringify(dp)), row: i, col: w, headers: Array.from({length: capacity+1}, (_, i) => i) }
+        auxiliary: {
+          dpTable: JSON.parse(JSON.stringify(dp)),
+          row: i,
+          col: w,
+          headers: Array.from({ length: capacity + 1 }, (_, i) => i),
+        },
       })
     }
   }
-  
+
   steps.push({
-      array: [],
-      activeIndices: [],
-      sortedIndices: [],
-      description: "Knapsack DP Complete!",
-      auxiliary: { dpTable: JSON.parse(JSON.stringify(dp)), row: -1, col: -1, headers: Array.from({length: capacity+1}, (_, i) => i) }
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: "Knapsack DP Complete!",
+    auxiliary: {
+      dpTable: JSON.parse(JSON.stringify(dp)),
+      row: -1,
+      col: -1,
+      headers: Array.from({ length: capacity + 1 }, (_, i) => i),
+    },
   })
 
   return steps
@@ -1001,160 +1031,236 @@ export function generateLCSSteps(): VisualizationStep[] {
   const s2 = "ACE"
   const m = s1.length
   const n = s2.length
-  const dp = Array(m + 1).fill(0).map(() => Array(n + 1).fill(0))
+  const dp = Array(m + 1)
+    .fill(0)
+    .map(() => Array(n + 1).fill(0))
   const steps: VisualizationStep[] = []
-  
+
   steps.push({
     array: [],
     activeIndices: [],
     sortedIndices: [],
     description: `LCS of "${s1}" and "${s2}"`,
-    auxiliary: { dpTable: JSON.parse(JSON.stringify(dp)), row: 0, col: 0, s1, s2, type: 'LCS' }
+    auxiliary: {
+      dpTable: JSON.parse(JSON.stringify(dp)),
+      row: 0,
+      col: 0,
+      s1,
+      s2,
+      type: "LCS",
+    },
   })
 
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
-      if (s1[i-1] === s2[j-1]) {
-        dp[i][j] = 1 + dp[i-1][j-1]
+      if (s1[i - 1] === s2[j - 1]) {
+        dp[i][j] = 1 + dp[i - 1][j - 1]
       } else {
-        dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1])
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
       }
       steps.push({
         array: [],
         activeIndices: [],
         sortedIndices: [],
-        description: `Comparing ${s1[i-1]} and ${s2[j-1]}. LCS so far: ${dp[i][j]}`,
-        auxiliary: { dpTable: JSON.parse(JSON.stringify(dp)), row: i, col: j, s1, s2, type: 'LCS' }
+        description: `Comparing ${s1[i - 1]} and ${s2[j - 1]}. LCS so far: ${dp[i][j]}`,
+        auxiliary: {
+          dpTable: JSON.parse(JSON.stringify(dp)),
+          row: i,
+          col: j,
+          s1,
+          s2,
+          type: "LCS",
+        },
       })
     }
   }
-  
+
   steps.push({
-      array: [],
-      activeIndices: [],
-      sortedIndices: [],
-      description: "LCS Calculation Complete!",
-      auxiliary: { dpTable: JSON.parse(JSON.stringify(dp)), row: -1, col: -1, s1, s2, type: 'LCS' }
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: "LCS Calculation Complete!",
+    auxiliary: {
+      dpTable: JSON.parse(JSON.stringify(dp)),
+      row: -1,
+      col: -1,
+      s1,
+      s2,
+      type: "LCS",
+    },
   })
-  
+
   return steps
 }
 
 export function generateDijkstraSteps(): VisualizationStep[] {
-    // Dijkstra on unweighted grid is effectively BFS regarding visitation order (level by level) 
-    // but we label it correctly for the user.
-    const steps = generateBFSSteps()
-    return steps.map(s => ({
-        ...s,
-        description: s.description.replace("BFS", "Dijkstra (Uniform Cost)")
-    }))
+  // Dijkstra on unweighted grid is effectively BFS regarding visitation order (level by level)
+  // but we label it correctly for the user.
+  const steps = generateBFSSteps()
+  return steps.map((s) => ({
+    ...s,
+    description: s.description.replace("BFS", "Dijkstra (Uniform Cost)"),
+  }))
 }
 
 export function generateHashTableSteps(): VisualizationStep[] {
-    const steps: VisualizationStep[] = []
-    const input = [15, 11, 27, 8, 12]
-    const size = 7
-    const table: number[][] = Array.from({length: size}, () => [])
-    
-    steps.push({
-        array: [],
-        activeIndices: [],
-        sortedIndices: [],
-        description: `Initialize Hash Table with size ${size}. Collision Resolution: Chaining.`,
-        auxiliary: { buckets: JSON.parse(JSON.stringify(table)), input }
-    })
+  const steps: VisualizationStep[] = []
+  const input = [15, 11, 27, 8, 12]
+  const size = 7
+  const table: number[][] = Array.from({ length: size }, () => [])
 
-    for (let i = 0; i < input.length; i++) {
-        const val = input[i]
-        const hash = val % size
-        table[hash].push(val)
-        steps.push({
-            array: [],
-            activeIndices: [],
-            sortedIndices: [],
-            description: `Insert ${val}: ${val} % ${size} = ${hash}. Insert into bucket ${hash}.`,
-            auxiliary: { buckets: JSON.parse(JSON.stringify(table)), input, currentVal: val, currentBucket: hash }
-        })
-    }
-    return steps
+  steps.push({
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: `Initialize Hash Table with size ${size}. Collision Resolution: Chaining.`,
+    auxiliary: { buckets: JSON.parse(JSON.stringify(table)), input },
+  })
+
+  for (let i = 0; i < input.length; i++) {
+    const val = input[i]
+    const hash = val % size
+    table[hash].push(val)
+    steps.push({
+      array: [],
+      activeIndices: [],
+      sortedIndices: [],
+      description: `Insert ${val}: ${val} % ${size} = ${hash}. Insert into bucket ${hash}.`,
+      auxiliary: {
+        buckets: JSON.parse(JSON.stringify(table)),
+        input,
+        currentVal: val,
+        currentBucket: hash,
+      },
+    })
+  }
+  return steps
 }
 
 export function generateTrieSteps(): VisualizationStep[] {
-    // Basic Trie Node structure for visualization: { id, label, children: [], x, y }
-    // Simulated steps for inserting ["CAT", "CAR"]
-    
-    // We will just provide a static sequence of growing trees for simplicity in "Coming Soon" fix style
-    // A real Trie visualizer needs proper tree layout logic. 
-    // We will construct the final state step-by-step.
-    
-    const steps: VisualizationStep[] = []
-    
-    // Step 0
-    let root = { id: 'root', val: 'root', children: [] as any[] }
-    steps.push({ 
-        array: [], activeIndices: [], sortedIndices: [], description: "Initialize Trie Root", 
-        auxiliary: { root: JSON.parse(JSON.stringify(root)) } 
-    })
+  // Basic Trie Node structure for visualization: { id, label, children: [], x, y }
+  // Simulated steps for inserting ["CAT", "CAR"]
 
-    // Insert CAT
-    // C
-    root.children.push({ id: 'c', val: 'C', children: [] })
-    steps.push({ array: [], activeIndices: [], sortedIndices: [], description: "Insert 'CAT': Add 'C'", auxiliary: { root: JSON.parse(JSON.stringify(root)), highlight: 'c' } })
-    
-    // A
-    root.children[0].children.push({ id: 'ca', val: 'A', children: [] })
-    steps.push({ array: [], activeIndices: [], sortedIndices: [], description: "Insert 'CAT': Add 'A'", auxiliary: { root: JSON.parse(JSON.stringify(root)), highlight: 'ca' } })
-    
-    // T
-    root.children[0].children[0].children.push({ id: 'cat', val: 'T', children: [], isWord: true })
-    steps.push({ array: [], activeIndices: [], sortedIndices: [], description: "Insert 'CAT': Add 'T' (End of Word)", auxiliary: { root: JSON.parse(JSON.stringify(root)), highlight: 'cat' } })
+  // We will just provide a static sequence of growing trees for simplicity in "Coming Soon" fix style
+  // A real Trie visualizer needs proper tree layout logic.
+  // We will construct the final state step-by-step.
 
-    // Insert CAR
-    // R
-    root.children[0].children[0].children.push({ id: 'car', val: 'R', children: [], isWord: true })
-    steps.push({ array: [], activeIndices: [], sortedIndices: [], description: "Insert 'CAR': 'C', 'A' exist. Add 'R' (End of Word)", auxiliary: { root: JSON.parse(JSON.stringify(root)), highlight: 'car' } })
+  const steps: VisualizationStep[] = []
 
-    return steps
+  // Step 0
+  let root = { id: "root", val: "root", children: [] as any[] }
+  steps.push({
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: "Initialize Trie Root",
+    auxiliary: { root: JSON.parse(JSON.stringify(root)) },
+  })
+
+  // Insert CAT
+  // C
+  root.children.push({ id: "c", val: "C", children: [] })
+  steps.push({
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: "Insert 'CAT': Add 'C'",
+    auxiliary: { root: JSON.parse(JSON.stringify(root)), highlight: "c" },
+  })
+
+  // A
+  root.children[0].children.push({ id: "ca", val: "A", children: [] })
+  steps.push({
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: "Insert 'CAT': Add 'A'",
+    auxiliary: { root: JSON.parse(JSON.stringify(root)), highlight: "ca" },
+  })
+
+  // T
+  root.children[0].children[0].children.push({
+    id: "cat",
+    val: "T",
+    children: [],
+    isWord: true,
+  })
+  steps.push({
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: "Insert 'CAT': Add 'T' (End of Word)",
+    auxiliary: { root: JSON.parse(JSON.stringify(root)), highlight: "cat" },
+  })
+
+  // Insert CAR
+  // R
+  root.children[0].children[0].children.push({
+    id: "car",
+    val: "R",
+    children: [],
+    isWord: true,
+  })
+  steps.push({
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: "Insert 'CAR': 'C', 'A' exist. Add 'R' (End of Word)",
+    auxiliary: { root: JSON.parse(JSON.stringify(root)), highlight: "car" },
+  })
+
+  return steps
 }
 
-export function generateGraphSteps(algo: string = 'bfs'): VisualizationStep[] {
-    // Generic Graph Visualization (Nodes + Edges)
-    // We will simulate a fixed graph
-    // Nodes: 0, 1, 2, 3, 4
-    // Edges: 0-1, 0-2, 1-3, 2-4, 3-4
-    
-    const nodes = [
-        { id: 0, x: 50, y: 10 },
-        { id: 1, x: 30, y: 30 },
-        { id: 2, x: 70, y: 30 },
-        { id: 3, x: 40, y: 60 },
-        { id: 4, x: 60, y: 60 },
-    ]
-    const edges = [
-        { from: 0, to: 1 }, { from: 0, to: 2 },
-        { from: 1, to: 3 }, { from: 2, to: 4 },
-        { from: 3, to: 4 } // DAG style for topo
-    ]
-    
-    const steps: VisualizationStep[] = []
-    
-    steps.push({
-        array: [], activeIndices: [], sortedIndices: [],
-        description: `Graph Algorithm: ${algo}. Initial State.`,
-        auxiliary: { nodes, edges, activeNode: null, visited: [] }
-    })
-    
-    // Simulate Topo Sort: 0 -> 1 -> 2 -> 3 -> 4
-    // Just a fake trace for visual confirmation of "Graph Visualizer"
-    const path = [0, 1, 3, 2, 4];
-    
-    path.forEach((nodeId, idx) => {
-         steps.push({
-            array: [], activeIndices: [], sortedIndices: [],
-            description: `Visiting Node ${nodeId}`,
-            auxiliary: { nodes, edges, activeNode: nodeId, visited: path.slice(0, idx+1) }
-        })
-    })
+export function generateGraphSteps(algo: string = "bfs"): VisualizationStep[] {
+  // Generic Graph Visualization (Nodes + Edges)
+  // We will simulate a fixed graph
+  // Nodes: 0, 1, 2, 3, 4
+  // Edges: 0-1, 0-2, 1-3, 2-4, 3-4
 
-    return steps
+  const nodes = [
+    { id: 0, x: 50, y: 10 },
+    { id: 1, x: 30, y: 30 },
+    { id: 2, x: 70, y: 30 },
+    { id: 3, x: 40, y: 60 },
+    { id: 4, x: 60, y: 60 },
+  ]
+  const edges = [
+    { from: 0, to: 1 },
+    { from: 0, to: 2 },
+    { from: 1, to: 3 },
+    { from: 2, to: 4 },
+    { from: 3, to: 4 }, // DAG style for topo
+  ]
+
+  const steps: VisualizationStep[] = []
+
+  steps.push({
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: `Graph Algorithm: ${algo}. Initial State.`,
+    auxiliary: { nodes, edges, activeNode: null, visited: [] },
+  })
+
+  // Simulate Topo Sort: 0 -> 1 -> 2 -> 3 -> 4
+  // Just a fake trace for visual confirmation of "Graph Visualizer"
+  const path = [0, 1, 3, 2, 4]
+
+  path.forEach((nodeId, idx) => {
+    steps.push({
+      array: [],
+      activeIndices: [],
+      sortedIndices: [],
+      description: `Visiting Node ${nodeId}`,
+      auxiliary: {
+        nodes,
+        edges,
+        activeNode: nodeId,
+        visited: path.slice(0, idx + 1),
+      },
+    })
+  })
+
+  return steps
 }

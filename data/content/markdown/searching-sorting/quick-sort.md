@@ -15,7 +15,7 @@ def quick_sort(arr, low, high):
     if low < high:
         # Partition and get pivot index
         pi = partition(arr, low, high)
-        
+
         # Recursively sort elements before and after partition
         quick_sort(arr, low, pi - 1)
         quick_sort(arr, pi + 1, high)
@@ -23,16 +23,16 @@ def quick_sort(arr, low, high):
 def partition(arr, low, high):
     # Choose rightmost element as pivot
     pivot = arr[high]
-    
+
     # Index of smaller element (indicates right position of pivot)
     i = low - 1
-    
+
     for j in range(low, high):
         # If current element is smaller than pivot
         if arr[j] < pivot:
             i += 1
             arr[i], arr[j] = arr[j], arr[i]
-    
+
     # Place pivot in correct position
     arr[i + 1], arr[high] = arr[high], arr[i + 1]
     return i + 1
@@ -56,21 +56,25 @@ O(log n) - Recursion stack space (average case).
 ## Pivot Selection Strategies
 
 ### 1. Last Element (Simple)
+
 ```python
 pivot = arr[high]
 ```
 
 ### 2. First Element
+
 ```python
 pivot = arr[low]
 ```
 
 ### 3. Middle Element (Better)
+
 ```python
 pivot = arr[(low + high) // 2]
 ```
 
 ### 4. Random (Best for worst-case avoidance)
+
 ```python
 import random
 pivot_idx = random.randint(low, high)
@@ -108,15 +112,19 @@ pivot = arr[high]
 ## Optimization Techniques
 
 ### 1. Random Pivot
+
 Avoids worst case on sorted arrays.
 
 ### 2. Median-of-Three
+
 Choose median of first, middle, last elements.
 
 ### 3. Insertion Sort for Small Arrays
+
 Use Insertion Sort for arrays < 10 elements.
 
 ### 4. Three-Way Partitioning
+
 Handles duplicate elements efficiently (Dutch National Flag).
 
 ## Comparison with Merge Sort

@@ -1,19 +1,40 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useTopicContent } from "@/hooks/use-curriculum"
+import { useEffect, useRef, useState } from "react"
 import type { PracticeProblem } from "@/services/content/content-service"
-import type { Topic } from "@/types/curriculum"
 import type { ImperativePanelHandle } from "react-resizable-panels"
 
-// ... imports
+import type { Topic } from "@/types/curriculum"
+import { useTopicContent } from "@/hooks/use-curriculum"
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import { CodePlayground } from "@/components/features/learning/code-editor/code-playground"
+import { InstructionsPanel } from "@/components/features/learning/instructions-panel"
+
+interface PracticeViewProps {
+  topic: Topic
+}
 
 export function PracticeView({ topic }: PracticeViewProps) {
-  const { data: topicContent, isLoading: loadingResult } = useTopicContent(topic)
+  const { data: topicContent, isLoading: loadingResult } =
+    useTopicContent(topic)
   const practiceProblems = topicContent?.practiceProblems || []
   const loading = loadingResult // Alias to match existing usage or just use loadingResult
 
-  const [selectedProblem, setSelectedProblem] = useState<PracticeProblem | null>(null)
+  const [selectedProblem, setSelectedProblem] =
+    useState<PracticeProblem | null>(null)
   const [isProblemListOpen, setIsProblemListOpen] = useState(true)
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
@@ -35,13 +56,16 @@ export function PracticeView({ topic }: PracticeViewProps) {
   useEffect(() => {
     if (loading) return
 
-    // Only set if not already set (or if topic changed which resets this component instance normally, 
-    // but React Query might keep data fresh. Actually if topic changes, this component rerenders. 
+    // Only set if not already set (or if topic changed which resets this component instance normally,
+    // but React Query might keep data fresh. Actually if topic changes, this component rerenders.
     // We should probably reset selectedProblem if topic.id changes, but the component key usually handles that in parent tabs?
     // Let's just set it if it's null or if we want to sync with current topic.)
 
     if (practiceProblems.length > 0) {
-      if (!selectedProblem || !practiceProblems.find(p => p.id === selectedProblem.id)) {
+      if (
+        !selectedProblem ||
+        !practiceProblems.find((p) => p.id === selectedProblem.id)
+      ) {
         setSelectedProblem(practiceProblems[0])
       }
     } else {
@@ -58,7 +82,9 @@ export function PracticeView({ topic }: PracticeViewProps) {
   if (loading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <p className="text-muted-foreground animate-pulse">Loading workspace...</p>
+        <p className="text-muted-foreground animate-pulse">
+          Loading workspace...
+        </p>
       </div>
     )
   }
@@ -72,7 +98,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
   }
 
   return (
-    <div className="h-full w-full overflow-hidden bg-background">
+    <div className="bg-background h-full w-full overflow-hidden">
       <ResizablePanelGroup direction="horizontal">
         {/* LEFT PANE: Problem Description & Collapsible List */}
         <ResizablePanel
@@ -84,25 +110,29 @@ export function PracticeView({ topic }: PracticeViewProps) {
           collapsedSize={0}
           onCollapse={() => setIsSidebarOpen(false)}
           onExpand={() => setIsSidebarOpen(true)}
-          className="flex flex-col min-h-0"
+          className="flex min-h-0 flex-col"
         >
-          <div className="flex-1 overflow-y-auto min-h-0">
+          <div className="min-h-0 flex-1 overflow-y-auto">
             <InstructionsPanel topic={topic} practiceProblem={currentProblem} />
           </div>
 
           {/* Collapsible Problem List */}
-          <div className="border-t bg-muted/10">
+          <div className="bg-muted/10 border-t">
             <Collapsible
               open={isProblemListOpen}
               onOpenChange={setIsProblemListOpen}
               className="w-full"
             >
-              <div className="flex items-center justify-between px-4 py-2 border-b bg-muted/20">
-                <span className="text-xs font-bold uppercase text-muted-foreground tracking-wider">
+              <div className="bg-muted/20 flex items-center justify-between border-b px-4 py-2">
+                <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
                   Practice Problems
                 </span>
                 <CollapsibleTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-muted/50">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="hover:bg-muted/50 h-6 w-6 p-0"
+                  >
                     {isProblemListOpen ? (
                       <ChevronDownIcon className="h-4 w-4" />
                     ) : (
@@ -128,13 +158,19 @@ export function PracticeView({ topic }: PracticeViewProps) {
                           )}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="truncate mr-2">{problem.title}</span>
-                            <span className={cn(
-                              "text-[10px] px-1.5 py-0.5 rounded capitalize shrink-0",
-                              problem.difficulty === "Easy" ? "bg-emerald-500/10 text-emerald-600" :
-                                problem.difficulty === "Medium" ? "bg-amber-500/10 text-amber-600" :
-                                  "bg-red-500/10 text-red-600"
-                            )}>
+                            <span className="mr-2 truncate">
+                              {problem.title}
+                            </span>
+                            <span
+                              className={cn(
+                                "shrink-0 rounded px-1.5 py-0.5 text-[10px] capitalize",
+                                problem.difficulty === "Easy"
+                                  ? "bg-emerald-500/10 text-emerald-600"
+                                  : problem.difficulty === "Medium"
+                                    ? "bg-amber-500/10 text-amber-600"
+                                    : "bg-red-500/10 text-red-600"
+                              )}
+                            >
                               {problem.difficulty}
                             </span>
                           </div>
@@ -142,7 +178,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
                       ))}
                     </div>
                   ) : (
-                    <div className="p-4 text-center text-xs text-muted-foreground">
+                    <div className="text-muted-foreground p-4 text-center text-xs">
                       No additional practice problems.
                     </div>
                   )}
@@ -156,7 +192,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
 
         {/* RIGHT PANE: Code Editor */}
         <ResizablePanel defaultSize={60} minSize={30}>
-          <div className="h-full flex flex-col">
+          <div className="flex h-full flex-col">
             <CodePlayground
               initialCode={currentProblem.starterCode || topic.starterCode}
               onToggleSidebar={toggleSidebar}

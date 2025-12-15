@@ -6,15 +6,9 @@ import { notFound } from "next/navigation"
 import { ROUTES } from "@/constants/routes"
 import { useProgress } from "@/context/progress-context"
 import {
-  TOPICS, // Still needed for some static types/comparisons if not fully replaced, but we aim to replace logic
   isModuleSlug,
+  TOPICS, // Still needed for some static types/comparisons if not fully replaced, but we aim to replace logic
 } from "@/data/curriculum"
-import {
-  useModuleBySlug,
-  useModuleTopics,
-  useTopicBySlug,
-  useTopics,
-} from "@/hooks/use-curriculum"
 import { removeModulePrefix } from "@/utils/common/path-utils"
 import { generateModuleSlug } from "@/utils/common/slug"
 import { motion } from "motion/react"
@@ -23,6 +17,12 @@ import { VisualizerType } from "@/types/curriculum"
 import { fadeIn, slideDown, transitions } from "@/lib/animations"
 import { BookOpenIcon, CodeIcon, PlayIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
+import {
+  useModuleBySlug,
+  useModuleTopics,
+  useTopicBySlug,
+  useTopics,
+} from "@/hooks/use-curriculum"
 import { Badge } from "@/components/ui/badge"
 import {
   Breadcrumb,
@@ -81,7 +81,7 @@ export default function SlugPage({ params }: SlugPageProps) {
           <div className="space-y-4">
             <Skeleton className="h-12 w-3/4" />
             <Skeleton className="h-6 w-1/2" />
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-8">
+            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {[1, 2, 3].map((i) => (
                 <Skeleton key={i} className="h-48 rounded-xl" />
               ))}
@@ -109,11 +109,13 @@ export default function SlugPage({ params }: SlugPageProps) {
       (completedCount / totalInModule) * 100
     )
 
-    // We need 'modules' list to find index. 
+    // We need 'modules' list to find index.
     // We can derive modules from allTopics or fetch useModules.
     // For simplicity, let's derive unique modules from allTopics if available, or just fetch modules.
     // But wait, we didn't call useModules. Let's assume finding index is optional or use allTopics.
-    const uniqueModules = Array.from(new Set(allTopics.map(t => t.module))).sort()
+    const uniqueModules = Array.from(
+      new Set(allTopics.map((t) => t.module))
+    ).sort()
     const moduleIndex = uniqueModules.indexOf(moduleName)
 
     return (
@@ -176,10 +178,7 @@ export default function SlugPage({ params }: SlugPageProps) {
 
   return (
     <div className="bg-background flex h-full flex-col overflow-y-auto">
-      <Tabs
-        defaultValue="learn"
-        className="flex flex-1 flex-col"
-      >
+      <Tabs defaultValue="learn" className="flex flex-1 flex-col">
         <motion.header
           initial="initial"
           animate="animate"
@@ -281,16 +280,14 @@ export default function SlugPage({ params }: SlugPageProps) {
           </div>
         </motion.header>
 
-
-
         <motion.div
           initial="initial"
           animate="animate"
           variants={fadeIn}
           transition={transitions.smooth}
-          className="relative flex-1 h-full"
+          className="relative h-full flex-1"
         >
-          <div className="h-full w-full flex flex-col">
+          <div className="flex h-full w-full flex-col">
             <TabsContent value="learn" className="mt-0">
               <motion.div
                 key="learn"
@@ -311,13 +308,16 @@ export default function SlugPage({ params }: SlugPageProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={transitions.smooth}
-                className="h-full w-full "
+                className="h-full w-full"
               >
                 <VisualizeView topic={topic} />
               </motion.div>
             </TabsContent>
 
-            <TabsContent value="code" className="mt-0 h-[calc(100vh-120px)] w-full">
+            <TabsContent
+              value="code"
+              className="mt-0 h-[calc(100vh-120px)] w-full"
+            >
               <motion.div
                 key="code"
                 initial={{ opacity: 0 }}

@@ -86,8 +86,6 @@ export default async function DesignSystemPage({
     )
   }
 
-
-
   // Otherwise render markdown content
   return (
     <DesignSystemLayout>

@@ -14,19 +14,19 @@ Merge Sort is a divide-and-conquer algorithm that divides the array into halves,
 def merge_sort(arr):
     if len(arr) <= 1:
         return arr
-    
+
     # Divide
     mid = len(arr) // 2
     left = merge_sort(arr[:mid])
     right = merge_sort(arr[mid:])
-    
+
     # Conquer and Combine
     return merge(left, right)
 
 def merge(left, right):
     result = []
     i = j = 0
-    
+
     # Merge two sorted arrays
     while i < len(left) and j < len(right):
         if left[i] <= right[j]:
@@ -35,11 +35,11 @@ def merge(left, right):
         else:
             result.append(right[j])
             j += 1
-    
+
     # Add remaining elements
     result.extend(left[i:])
     result.extend(right[j:])
-    
+
     return result
 
 # Example
