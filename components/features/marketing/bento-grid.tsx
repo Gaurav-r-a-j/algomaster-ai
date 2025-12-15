@@ -48,7 +48,7 @@ export function BentoGrid() {
           {/* Card 2: Features Stack */}
           <div className="flex flex-col gap-6">
             <div className="bg-card border-border hover:border-primary group flex-1 rounded-3xl border p-8 shadow-sm transition-colors hover:shadow-md">
-              <div className="bg-primary/10 text-primary mb-6 flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110">
+              <div className="bg-primary/10 text-primary mb-6 flex h-12 w-12 items-center justify-center rounded-2xl transition-transform">
                 <IconWrapper icon={SparklesIcon} size={24} />
               </div>
               <h3 className="text-foreground mb-2 text-lg font-bold">
@@ -62,7 +62,7 @@ export function BentoGrid() {
             </div>
 
             <div className="bg-card border-border hover:border-primary group flex-1 rounded-3xl border p-8 shadow-sm transition-colors hover:shadow-md">
-              <div className="bg-primary/10 text-primary mb-6 flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110">
+              <div className="bg-primary/10 text-primary mb-6 flex h-12 w-12 items-center justify-center rounded-2xl transition-transform">
                 <IconWrapper icon={PenIcon} size={24} />
               </div>
               <h3 className="text-foreground mb-2 text-lg font-bold">

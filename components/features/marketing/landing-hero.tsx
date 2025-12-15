@@ -78,7 +78,7 @@ export function LandingHero() {
           <Button
             asChild
             size="lg"
-            className="shadow-primary/20 hover:shadow-primary/30 h-14 w-full rounded-full px-10 text-lg shadow-xl transition-all duration-300 hover:scale-105 sm:w-auto"
+            className="h-14 w-full rounded-full px-10 text-lg transition-all duration-300 sm:w-auto"
           >
             <Link href={getFirstTopicUrl()}>
               Start Learning Now
@@ -89,7 +89,7 @@ export function LandingHero() {
             variant="outline"
             size="lg"
             asChild
-            className="bg-background/50 hover:bg-muted h-14 w-full rounded-full border-2 px-10 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-105 sm:w-auto"
+            className="bg-background/50 hover:bg-muted h-14 w-full rounded-full border-2 px-10 text-lg backdrop-blur-sm transition-all duration-300 sm:w-auto"
           >
             <Link href={getFirstModuleUrl()}>Browse Topics</Link>
           </Button>

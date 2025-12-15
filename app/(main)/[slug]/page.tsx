@@ -6,13 +6,15 @@ import { notFound } from "next/navigation"
 import { ROUTES } from "@/constants/routes"
 import { useProgress } from "@/context/progress-context"
 import {
-  TOPICS,
-  getModuleBySlug,
-  getModules,
-  getTopicBySlug,
-  getTopicsByModule,
+  TOPICS, // Still needed for some static types/comparisons if not fully replaced, but we aim to replace logic
   isModuleSlug,
 } from "@/data/curriculum"
+import {
+  useModuleBySlug,
+  useModuleTopics,
+  useTopicBySlug,
+  useTopics,
+} from "@/hooks/use-curriculum"
 import { removeModulePrefix } from "@/utils/common/path-utils"
 import { generateModuleSlug } from "@/utils/common/slug"
 import { motion } from "motion/react"
@@ -31,6 +33,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Progress } from "@/components/ui/progress"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Container } from "@/components/common/container"
 import { IconWrapper } from "@/components/common/icon-wrapper"
@@ -48,27 +51,70 @@ interface SlugPageProps {
 export default function SlugPage({ params }: SlugPageProps) {
   const { slug } = use(params)
   const { completedTopics } = useProgress()
+  const isModule = isModuleSlug(slug)
+
+  // -- Query Hooks --
+  const { data: moduleName, isLoading: isLoadingModule } = useModuleBySlug(
+    slug,
+    { enabled: isModule }
+  )
+  const { data: moduleTopics, isLoading: isLoadingModuleTopics } =
+    useModuleTopics(moduleName || "", {
+      enabled: !!moduleName && isModule,
+    })
+
+  const { data: topic, isLoading: isLoadingTopic } = useTopicBySlug(slug, {
+    enabled: !isModule,
+  })
+
+  // Fetch all topics for navigation context (Next/Prev)
+  const { data: allTopics = [], isLoading: isLoadingAllTopics } = useTopics()
+
+  // -- Loading State --
+  if (
+    (isModule && (isLoadingModule || isLoadingModuleTopics)) ||
+    (!isModule && (isLoadingTopic || isLoadingAllTopics))
+  ) {
+    return (
+      <div className="bg-background min-h-screen py-8">
+        <Container>
+          <div className="space-y-4">
+            <Skeleton className="h-12 w-3/4" />
+            <Skeleton className="h-6 w-1/2" />
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-8">
+              {[1, 2, 3].map((i) => (
+                <Skeleton key={i} className="h-48 rounded-xl" />
+              ))}
+            </div>
+          </div>
+        </Container>
+      </div>
+    )
+  }
 
   // Check if it's a module or topic
-  if (isModuleSlug(slug)) {
-    // Render module page
-    const moduleName = getModuleBySlug(slug)
-    if (!moduleName) {
+  if (isModule) {
+    if (!moduleName || !moduleTopics) {
       notFound()
     }
 
-    const moduleTopics = getTopicsByModule(moduleName).sort(
-      (a, b) => a.order - b.order
-    )
-    const completedCount = moduleTopics.filter((t) =>
+    // Render module page
+    const sortedTopics = [...moduleTopics].sort((a, b) => a.order - b.order)
+
+    const completedCount = sortedTopics.filter((t) =>
       completedTopics.includes(t.id)
     ).length
-    const totalInModule = moduleTopics.length
+    const totalInModule = sortedTopics.length
     const progressPercentage = Math.round(
       (completedCount / totalInModule) * 100
     )
-    const modules = getModules()
-    const moduleIndex = modules.indexOf(moduleName)
+
+    // We need 'modules' list to find index. 
+    // We can derive modules from allTopics or fetch useModules.
+    // For simplicity, let's derive unique modules from allTopics if available, or just fetch modules.
+    // But wait, we didn't call useModules. Let's assume finding index is optional or use allTopics.
+    const uniqueModules = Array.from(new Set(allTopics.map(t => t.module))).sort()
+    const moduleIndex = uniqueModules.indexOf(moduleName)
 
     return (
       <div className="bg-background min-h-screen">
@@ -83,7 +129,7 @@ export default function SlugPage({ params }: SlugPageProps) {
                     : "border-primary text-primary"
                 )}
               >
-                {moduleIndex + 1}
+                {moduleIndex >= 0 ? moduleIndex + 1 : "?"}
               </div>
               <div>
                 <PageHeader
@@ -102,7 +148,7 @@ export default function SlugPage({ params }: SlugPageProps) {
         <Section className="py-8">
           <Container>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {moduleTopics.map((topic) => (
+              {sortedTopics.map((topic) => (
                 <TopicCard key={topic.id} topic={topic} />
               ))}
             </div>
@@ -113,19 +159,19 @@ export default function SlugPage({ params }: SlugPageProps) {
   }
 
   // Render topic page
-  const topic = getTopicBySlug(slug)
-  const topicIndex = topic ? TOPICS.findIndex((t) => t.id === topic.id) : -1
 
   if (!topic) {
     notFound()
   }
 
-  const _prevTopic = topicIndex > 0 ? TOPICS[topicIndex - 1] : null
+  const topicIndex = allTopics.findIndex((t) => t.id === topic.id)
+
+  const _prevTopic = topicIndex > 0 ? allTopics[topicIndex - 1] : null
   const _nextTopic =
-    topicIndex < TOPICS.length - 1 ? TOPICS[topicIndex + 1] : null
+    topicIndex < allTopics.length - 1 ? allTopics[topicIndex + 1] : null
 
   // Generate slugs
-  const _topicSlug = slug || "arrays"
+  // const _topicSlug = slug || "arrays" // slug is already defined
   const moduleSlug = generateModuleSlug(topic.module)
 
   return (

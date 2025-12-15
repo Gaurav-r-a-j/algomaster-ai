@@ -5,7 +5,6 @@ import Link from "next/link"
 import { ROUTES } from "@/constants/routes"
 import { useProgress } from "@/context/progress-context"
 import { TOPICS, getTopicsByModule } from "@/data/curriculum"
-import { getTopicContent } from "@/services/content/content-service"
 import type { CodeExample } from "@/services/content/content-service"
 import { generateTopicSlug } from "@/utils/common/slug"
 import { motion } from "motion/react"
@@ -31,35 +30,22 @@ import { CodePreview } from "@/components/common/code-preview"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { MarkdownRenderer } from "@/components/common/markdown-renderer"
 import { QuizSection } from "@/components/features/learning/quiz-section"
+import { useTopicContent } from "@/hooks/use-curriculum"
 
 interface LearnViewProps {
   topic: Topic
 }
 
-
-
 export function LearnView({ topic }: LearnViewProps) {
-  const [content, setContent] = useState<string>(topic.content)
-  const [codeExamples, setCodeExamples] = useState<CodeExample[]>([])
-  const [loading, setLoading] = useState(true)
+  const { data: topicContent, isLoading: loading } = useTopicContent(topic)
+  const content = topicContent?.markdown || topic.content
+  const codeExamples = topicContent?.codeExamples || []
+
   const [useAIQuestions, setUseAIQuestions] = useState(false)
   const { completedTopics: _completedTopics, isCompleted } = useProgress()
 
-  useEffect(() => {
-    async function loadContent() {
-      try {
-        const topicContent = await getTopicContent(topic)
-        setContent(topicContent.markdown)
-        setCodeExamples(topicContent.codeExamples)
-      } catch {
-        // Fallback to topic.content
-        setContent(topic.content)
-      } finally {
-        setLoading(false)
-      }
-    }
-    loadContent()
-  }, [topic])
+  // useEffect removed as fetch logic is handled by useTopicContent
+
 
   // Get related topics and navigation
   const { prevTopic, nextTopic, moduleTopics, moduleProgress } = useMemo(() => {

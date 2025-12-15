@@ -5,6 +5,7 @@ import {
   PostHogPageView,
 } from "@/components/providers/posthog-provider"
 import { ThemeProvider } from "@/components/providers/theme-provider"
+import { QueryProvider } from "@/components/providers/query-provider"
 
 // Root providers wrapper - combines all providers
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -17,7 +18,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     >
       <PHProvider>
         <PostHogPageView />
-        {children}
+        <QueryProvider>{children}</QueryProvider>
       </PHProvider>
     </ThemeProvider>
   )

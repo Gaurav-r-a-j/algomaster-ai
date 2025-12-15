@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react"
-import { TOPICS, getModules } from "@/data/curriculum"
+import { useModules, useTopics } from "@/hooks/use-curriculum"
 
 export function useCurriculumSearch() {
   const [searchQuery, setSearchQuery] = useState("")
-  const modules = getModules()
+  const { data: modules = [], isLoading: isLoadingModules } = useModules()
+  const { data: topics = [], isLoading: isLoadingTopics } = useTopics()
 
   const filteredModules = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -15,23 +16,24 @@ export function useCurriculumSearch() {
 
   const filteredTopics = useMemo(() => {
     if (!searchQuery.trim()) {
-      return TOPICS
+      return topics
     }
     const query = searchQuery.toLowerCase()
-    return TOPICS.filter(
+    return topics.filter(
       (topic) =>
         topic.title.toLowerCase().includes(query) ||
         topic.description.toLowerCase().includes(query) ||
         topic.module.toLowerCase().includes(query)
     )
-  }, [searchQuery])
+  }, [searchQuery, topics])
 
   return {
     searchQuery,
     setSearchQuery,
     filteredModules,
     filteredTopics,
-    modules, // Return all modules as well for default view
-    topics: TOPICS, // Return all topics
+    modules,
+    topics,
+    isLoading: isLoadingModules || isLoadingTopics,
   }
 }

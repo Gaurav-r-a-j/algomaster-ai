@@ -31,6 +31,9 @@ import {
 } from "@/components/ui/sidebar"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
+import { ThemeToggle } from "@/components/common/theme-toggle"
+import { Logo } from "@/components/common/logo"
+
 interface DashboardLayoutProps {
   children: React.ReactNode
 }
@@ -66,19 +69,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader className="border-border border-b">
-          <div className="flex items-center gap-2 px-2 py-4">
-            <div className="flex items-center gap-2">
-              <div className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
-                <IconWrapper
-                  icon={BookOpenIcon}
-                  size={20}
-                  className="text-primary-foreground"
-                />
-              </div>
-              <span className="text-lg font-bold tracking-tight">
-                DSA Platform
-              </span>
-            </div>
+          <div className="flex items-center justify-between px-2 py-4">
+            <Link href={ROUTES.HOME} className="hover:opacity-80 transition-opacity">
+              <Logo />
+            </Link>
+            <ThemeToggle size="sm" />
           </div>
         </SidebarHeader>
 

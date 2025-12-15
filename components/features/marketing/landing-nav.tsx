@@ -7,6 +7,9 @@ import { getFirstTopicUrl } from "@/utils/curriculum-helpers"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
+import { ThemeToggle } from "@/components/common/theme-toggle"
+import { Logo } from "@/components/common/logo"
+
 export function LandingNav() {
   return (
     <nav className="bg-background/90 border-border fixed top-0 z-50 w-full border-b backdrop-blur-md">
@@ -14,12 +17,13 @@ export function LandingNav() {
         <div className="flex items-center gap-3">
           <Link
             href={ROUTES.HOME}
-            className="text-foreground hover:text-primary text-xl font-bold tracking-tight transition-colors"
+            className="hover:opacity-80 transition-opacity"
           >
-            DSA Platform
+            <Logo />
           </Link>
         </div>
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           <Link
             href={ROUTES.LOGIN}
             className={cn(

@@ -14,6 +14,7 @@ import {
   Home01Icon,
   SearchIcon,
 } from "@/lib/icons"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
@@ -34,6 +35,8 @@ import {
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { SidebarSearchResults } from "./sidebar/sidebar-search-results"
 import { SidebarModuleList } from "./sidebar/sidebar-module-list"
+import { ThemeToggle } from "@/components/common/theme-toggle"
+import { Logo } from "@/components/common/logo"
 
 interface LearningPlatformLayoutProps {
   children: React.ReactNode
@@ -51,6 +54,7 @@ export function LearningPlatformLayout({
     filteredTopics,
     modules,
     topics,
+    isLoading,
   } = useCurriculumSearch()
 
   const isActive = (path: string) => isActivePath(pathname, path)
@@ -59,20 +63,14 @@ export function LearningPlatformLayout({
     <SidebarProvider>
       <Sidebar className="border-border border-r">
         <SidebarHeader className="border-border border-b px-4 py-4">
-          <div className="mb-4 flex items-center gap-2">
-            <div className="bg-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
-              <IconWrapper
-                icon={BookOpenIcon}
-                size={20}
-                className="text-primary-foreground"
-              />
-            </div>
+          <div className="mb-4 flex items-center justify-between gap-2">
             <Link
               href={ROUTES.HOME}
-              className="text-foreground hover:text-primary text-lg font-bold tracking-tight transition-colors"
+              className="hover:opacity-80 transition-opacity"
             >
-              DSA Platform
+              <Logo />
             </Link>
+            <ThemeToggle size="sm" />
           </div>
           <div className="relative">
             <IconWrapper
@@ -92,7 +90,25 @@ export function LearningPlatformLayout({
 
         <SidebarContent>
           <ScrollArea className="flex-1">
-            {searchQuery.trim() ? (
+            {isLoading ? (
+              <div className="space-y-4 p-4">
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-20" />
+                  <div className="space-y-1">
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-20" />
+                  <div className="space-y-1">
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                    <Skeleton className="h-8 w-full" />
+                  </div>
+                </div>
+              </div>
+            ) : searchQuery.trim() ? (
               <SidebarSearchResults
                 filteredModules={filteredModules}
                 filteredTopics={filteredTopics}
