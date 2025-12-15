@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils"
 interface VisualizerLayoutProps {
   title: ReactNode
   icon?: ReactNode
-  controls: ReactNode
+  controls?: ReactNode
   description?: ReactNode
   children: ReactNode
   infoPanel?: ReactNode

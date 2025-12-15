@@ -35,7 +35,7 @@ interface VisualizerControlsProps {
   showSpeedControl?: boolean
   arraySize?: number
   onArraySizeChange?: (size: number) => void
-  onArraySizeChange?: (size: number) => void
+
   showArraySizeControl?: boolean
   extraControlsLeft?: React.ReactNode
 }

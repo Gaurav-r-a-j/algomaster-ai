@@ -60,11 +60,11 @@ export function CodePlayground({ initialCode }: CodePlaygroundProps) {
 
       if (result.error) {
         setOutput(
-          `Error: ${result.error}\n\nExecution time: ${result.executionTime.toFixed(2)}ms`
+          `Error: ${result.error}\n\nExecution time: ${(result.executionTime || 0).toFixed(2)}ms`
         )
       } else {
         setOutput(
-          `${result.output}\n\nExecution time: ${result.executionTime.toFixed(2)}ms`
+          `${result.output}\n\nExecution time: ${(result.executionTime || 0).toFixed(2)}ms`
         )
       }
     } catch (error) {
@@ -170,11 +170,10 @@ export function CodePlayground({ initialCode }: CodePlaygroundProps) {
                 </div>
               ) : (
                 <pre
-                  className={`leading-relaxed whitespace-pre-wrap ${
-                    output.startsWith("Error") || output.startsWith("error")
+                  className={`leading-relaxed whitespace-pre-wrap ${output.startsWith("Error") || output.startsWith("error")
                       ? "text-destructive"
                       : "text-foreground"
-                  }`}
+                    }`}
                 >
                   {output}
                 </pre>

@@ -1,31 +1,19 @@
 "use client"
 
-import { useMemo, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ROUTES } from "@/constants/routes"
 import { useProgress } from "@/context/progress-context"
-import { TOPICS, getModules } from "@/data/curriculum"
-import {
-  extractModuleNumber,
-  isActivePath,
-  removeModulePrefix,
-} from "@/utils/common/path-utils"
-import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug"
+import { isActivePath } from "@/utils/common/path-utils"
+import { generateTopicSlug } from "@/utils/common/slug"
+import { useCurriculumSearch } from "@/hooks/use-curriculum-search"
 
 import {
   BookOpenIcon,
   CheckmarkCircleIcon,
-  ChevronRightIcon,
   Home01Icon,
   SearchIcon,
 } from "@/lib/icons"
-import { Badge } from "@/components/ui/badge"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
@@ -44,6 +32,8 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import { IconWrapper } from "@/components/common/icon-wrapper"
+import { SidebarSearchResults } from "./sidebar/sidebar-search-results"
+import { SidebarModuleList } from "./sidebar/sidebar-module-list"
 
 interface LearningPlatformLayoutProps {
   children: React.ReactNode
@@ -54,32 +44,16 @@ export function LearningPlatformLayout({
 }: LearningPlatformLayoutProps) {
   const pathname = usePathname()
   const { completedTopics } = useProgress()
-  const modules = getModules()
-  const [searchQuery, setSearchQuery] = useState("")
+  const {
+    searchQuery,
+    setSearchQuery,
+    filteredModules,
+    filteredTopics,
+    modules,
+    topics,
+  } = useCurriculumSearch()
 
   const isActive = (path: string) => isActivePath(pathname, path)
-
-  // Filter modules and topics based on search
-  const filteredModules = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return modules
-    }
-    const query = searchQuery.toLowerCase()
-    return modules.filter((module) => module.toLowerCase().includes(query))
-  }, [modules, searchQuery])
-
-  const filteredTopics = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return TOPICS
-    }
-    const query = searchQuery.toLowerCase()
-    return TOPICS.filter(
-      (topic) =>
-        topic.title.toLowerCase().includes(query) ||
-        topic.description.toLowerCase().includes(query) ||
-        topic.module.toLowerCase().includes(query)
-    )
-  }, [searchQuery])
 
   return (
     <SidebarProvider>
@@ -119,105 +93,13 @@ export function LearningPlatformLayout({
         <SidebarContent>
           <ScrollArea className="flex-1">
             {searchQuery.trim() ? (
-              // Search Results
-              <div className="space-y-4 p-2">
-                {filteredModules.length > 0 && (
-                  <SidebarGroup>
-                    <SidebarGroupLabel>Modules</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                      <SidebarMenu>
-                        {filteredModules.map((module) => {
-                          const moduleTopics = TOPICS.filter(
-                            (t) => t.module === module
-                          )
-                          const completedCount = moduleTopics.filter((t) =>
-                            completedTopics.includes(t.id)
-                          ).length
-                          const moduleSlug = generateModuleSlug(module)
-                          const modulePath = ROUTES.MODULE(moduleSlug)
-                          const isModuleActive = isActive(modulePath)
-                          const moduleNumber = extractModuleNumber(module)
-                          const moduleTitle = removeModulePrefix(module)
-
-                          return (
-                            <SidebarMenuItem key={module}>
-                              <SidebarMenuButton
-                                asChild
-                                isActive={isModuleActive}
-                                tooltip={moduleTitle}
-                              >
-                                <Link href={modulePath}>
-                                  <span className="text-muted-foreground font-mono text-xs">
-                                    {moduleNumber}
-                                  </span>
-                                  <span className="truncate">
-                                    {moduleTitle.slice(0, 20)}
-                                    {moduleTitle.length > 20 && "..."}
-                                  </span>
-                                  {completedCount > 0 && (
-                                    <Badge
-                                      variant="secondary"
-                                      className="ml-auto h-5 px-1.5 text-xs"
-                                    >
-                                      {completedCount}/{moduleTopics.length}
-                                    </Badge>
-                                  )}
-                                </Link>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                          )
-                        })}
-                      </SidebarMenu>
-                    </SidebarGroupContent>
-                  </SidebarGroup>
-                )}
-
-                {filteredTopics.length > 0 && (
-                  <SidebarGroup>
-                    <SidebarGroupLabel>Topics</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                      <SidebarMenu>
-                        {filteredTopics.slice(0, 10).map((topic) => {
-                          const topicSlug = generateTopicSlug(topic.title)
-                          const topicPath = ROUTES.TOPIC(topicSlug)
-                          const isTopicActive = isActive(topicPath)
-                          const isDone = completedTopics.includes(topic.id)
-
-                          return (
-                            <SidebarMenuItem key={topic.id}>
-                              <SidebarMenuButton
-                                asChild
-                                isActive={isTopicActive}
-                                tooltip={topic.title}
-                              >
-                                <Link href={topicPath}>
-                                  {isDone && (
-                                    <IconWrapper
-                                      icon={CheckmarkCircleIcon}
-                                      size={12}
-                                      className="shrink-0 text-emerald-500"
-                                    />
-                                  )}
-                                  <span className="truncate">
-                                    {topic.title}
-                                  </span>
-                                </Link>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                          )
-                        })}
-                      </SidebarMenu>
-                    </SidebarGroupContent>
-                  </SidebarGroup>
-                )}
-
-                {filteredModules.length === 0 &&
-                  filteredTopics.length === 0 && (
-                    <div className="text-muted-foreground p-4 text-center text-sm">
-                      No results found
-                    </div>
-                  )}
-              </div>
+              <SidebarSearchResults
+                filteredModules={filteredModules}
+                filteredTopics={filteredTopics}
+                allTopics={topics}
+                completedTopics={completedTopics}
+                isActive={isActive}
+              />
             ) : (
               // Normal Navigation
               <>
@@ -255,113 +137,12 @@ export function LearningPlatformLayout({
 
                 <Separator />
 
-                <SidebarGroup>
-                  <SidebarGroupLabel>Modules</SidebarGroupLabel>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      {modules.map((module) => {
-                        const moduleTopics = TOPICS.filter(
-                          (t) => t.module === module
-                        ).sort((a, b) => a.order - b.order)
-                        const completedCount = moduleTopics.filter((t) =>
-                          completedTopics.includes(t.id)
-                        ).length
-                        const moduleSlug = generateModuleSlug(module)
-                        const modulePath = ROUTES.MODULE(moduleSlug)
-                        const isModuleActive = isActive(modulePath)
-                        const moduleNumber = extractModuleNumber(module)
-                        const moduleTitle = removeModulePrefix(module)
-
-                        // Check if any topic in this module is active
-                        const hasActiveTopic = moduleTopics.some((topic) => {
-                          const topicSlug = generateTopicSlug(topic.title)
-                          const topicPath = ROUTES.TOPIC(topicSlug)
-                          return isActive(topicPath)
-                        })
-
-                        // Default open if module is active or has active topic
-                        const defaultOpen = isModuleActive || hasActiveTopic
-
-                        return (
-                          <Collapsible
-                            key={module}
-                            defaultOpen={defaultOpen}
-                            className="group/collapsible"
-                          >
-                            <SidebarMenuItem>
-                              <CollapsibleTrigger asChild>
-                                <SidebarMenuButton
-                                  isActive={isModuleActive || hasActiveTopic}
-                                  tooltip={moduleTitle}
-                                  className="w-full"
-                                >
-                                  <IconWrapper
-                                    icon={ChevronRightIcon}
-                                    size={14}
-                                    className="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
-                                  />
-                                  <span className="text-muted-foreground font-mono text-xs">
-                                    {moduleNumber}
-                                  </span>
-                                  <span className="flex-1 truncate text-left">
-                                    {moduleTitle}
-                                  </span>
-                                  {completedCount > 0 && (
-                                    <Badge
-                                      variant="secondary"
-                                      className="ml-auto h-5 shrink-0 px-1.5 text-xs"
-                                    >
-                                      {completedCount}/{moduleTopics.length}
-                                    </Badge>
-                                  )}
-                                </SidebarMenuButton>
-                              </CollapsibleTrigger>
-                              <CollapsibleContent>
-                                <SidebarMenu className="mt-1 ml-2 space-y-0.5">
-                                  {moduleTopics.map((topic) => {
-                                    const topicSlug = generateTopicSlug(
-                                      topic.title
-                                    )
-                                    const topicPath = ROUTES.TOPIC(topicSlug)
-                                    const isTopicActive = isActive(topicPath)
-                                    const isDone = completedTopics.includes(
-                                      topic.id
-                                    )
-
-                                    return (
-                                      <SidebarMenuItem key={topic.id}>
-                                        <SidebarMenuButton
-                                          asChild
-                                          isActive={isTopicActive}
-                                          tooltip={topic.title}
-                                          size="sm"
-                                          className="pl-8"
-                                        >
-                                          <Link href={topicPath}>
-                                            {isDone && (
-                                              <IconWrapper
-                                                icon={CheckmarkCircleIcon}
-                                                size={12}
-                                                className="shrink-0 text-emerald-500"
-                                              />
-                                            )}
-                                            <span className="truncate text-sm">
-                                              {topic.title}
-                                            </span>
-                                          </Link>
-                                        </SidebarMenuButton>
-                                      </SidebarMenuItem>
-                                    )
-                                  })}
-                                </SidebarMenu>
-                              </CollapsibleContent>
-                            </SidebarMenuItem>
-                          </Collapsible>
-                        )
-                      })}
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </SidebarGroup>
+                <SidebarModuleList
+                  modules={modules}
+                  allTopics={topics}
+                  completedTopics={completedTopics}
+                  isActive={isActive}
+                />
 
                 {completedTopics.length > 0 && (
                   <>
@@ -377,7 +158,7 @@ export function LearningPlatformLayout({
                             .slice(-5)
                             .reverse()
                             .map((topicId) => {
-                              const topic = TOPICS.find((t) => t.id === topicId)
+                              const topic = topics.find((t) => t.id === topicId)
                               if (!topic) {
                                 return null
                               }

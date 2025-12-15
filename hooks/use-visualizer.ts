@@ -1,118 +1,139 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import { VisualizationStep, VisualizerType } from "@/types/curriculum"
+import {
+  generateAVLTreeSteps,
+  generateBinaryTreeSteps,
+  generateGraphSteps,
+  generateHashTableSteps,
+  generateLinkedListSteps,
+  generateQueueSteps,
+  generateStackSteps,
+  generateTrieSteps,
+} from "@/utils/algorithm-logic"
 
-import type { VisualizationStep } from "@/types/curriculum"
+const DEFAULT_SPEED_MS = 1000
 
-const DEFAULT_SPEED_MS = 800
-
-interface UseVisualizerOptions {
-  initialSteps?: VisualizationStep[]
-  defaultSpeed?: number
-  onStepChange?: (step: number) => void
-}
-
-export function useVisualizer(options: UseVisualizerOptions = {}) {
-  const {
-    initialSteps = [],
-    defaultSpeed = DEFAULT_SPEED_MS,
-    onStepChange,
-  } = options
-
-  const [steps, setSteps] = useState<VisualizationStep[]>(initialSteps)
+export function useVisualizer(topicId: string, visualizerType: VisualizerType) {
+  const [steps, setSteps] = useState<VisualizationStep[]>([])
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [playbackSpeed, setPlaybackSpeed] = useState(defaultSpeed)
+  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
   const timerRef = useRef<number | null>(null)
 
-  // Update steps
-  const updateSteps = useCallback((newSteps: VisualizationStep[]) => {
+  const generateData = useCallback(() => {
+    let newSteps: VisualizationStep[] = []
+    switch (visualizerType) {
+      case VisualizerType.STACK:
+        newSteps = generateStackSteps()
+        break
+      case VisualizerType.QUEUE:
+        newSteps = generateQueueSteps()
+        break
+      case VisualizerType.LINKED_LIST:
+        newSteps = generateLinkedListSteps()
+        break
+      case VisualizerType.BINARY_TREE:
+        newSteps = generateBinaryTreeSteps()
+        break
+      case VisualizerType.AVL_TREE:
+        newSteps = generateAVLTreeSteps()
+        break
+      case VisualizerType.HASH_TABLE:
+        newSteps = generateHashTableSteps()
+        break
+      case VisualizerType.TRIE:
+        newSteps = generateTrieSteps()
+        break
+      case VisualizerType.GRAPH:
+        newSteps = generateGraphSteps(topicId)
+        break
+      default:
+        newSteps = []
+    }
     setSteps(newSteps)
     setCurrentStep(0)
     setIsPlaying(false)
-  }, [])
+  }, [topicId, visualizerType])
 
-  // Playback controls
-  const play = useCallback(() => {
-    setIsPlaying(true)
-  }, [])
+  useEffect(() => {
+    generateData()
+  }, [generateData])
 
-  const pause = useCallback(() => {
-    setIsPlaying(false)
-  }, [])
-
-  const reset = useCallback(() => {
-    setCurrentStep(0)
-    setIsPlaying(false)
-  }, [])
-
-  const previousStep = useCallback(() => {
-    setCurrentStep((prev) => {
-      const newStep = Math.max(0, prev - 1)
-      onStepChange?.(newStep)
-      return newStep
-    })
-  }, [onStepChange])
-
-  const nextStep = useCallback(() => {
-    setCurrentStep((prev) => {
-      const newStep = Math.min(steps.length - 1, prev + 1)
-      onStepChange?.(newStep)
-      return newStep
-    })
-  }, [steps.length, onStepChange])
-
-  // Auto-play effect
   useEffect(() => {
     if (isPlaying && steps.length > 0) {
       timerRef.current = window.setInterval(() => {
         setCurrentStep((prev) => {
           if (prev >= steps.length - 1) {
             setIsPlaying(false)
-            onStepChange?.(steps.length - 1)
             return prev
           }
-          const newStep = prev + 1
-          onStepChange?.(newStep)
-          return newStep
+          return prev + 1
         })
       }, playbackSpeed)
     } else if (timerRef.current) {
       clearInterval(timerRef.current)
       timerRef.current = null
     }
-
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current)
         timerRef.current = null
       }
     }
-  }, [isPlaying, steps.length, playbackSpeed, onStepChange])
+  }, [isPlaying, steps.length, playbackSpeed])
 
-  // Get current data
+  const handlePreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const handleStepChange = (step: number) => {
+    setIsPlaying(false)
+    setCurrentStep(step)
+  }
+
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
+  const handlePlay = () => {
+    setIsPlaying(true)
+  }
+
+  const handlePause = () => {
+    setIsPlaying(false)
+  }
+
+  const handleReset = () => {
+    generateData()
+  }
+
   const currentData = steps[currentStep] || {
     array: [],
     activeIndices: [],
     sortedIndices: [],
-    description: "Ready",
+    description: "Ready.",
     auxiliary: {},
   }
 
   return {
+    // State
     steps,
     currentStep,
     isPlaying,
     playbackSpeed,
     currentData,
-    updateSteps,
-    setCurrentStep,
-    setIsPlaying,
+    
+    // Actions
     setPlaybackSpeed,
-    play,
-    pause,
-    reset,
-    previousStep,
-    nextStep,
-    canGoPrevious: currentStep > 0,
-    canGoNext: currentStep < steps.length - 1,
+    handlePlay,
+    handlePause,
+    handleReset,
+    handlePreviousStep,
+    handleNextStep,
+    handleStepChange,
   }
 }
