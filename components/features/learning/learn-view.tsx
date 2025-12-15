@@ -211,19 +211,17 @@ export function LearnView({ topic }: LearnViewProps) {
           animate="animate"
           variants={slideUpWithDelay(0.1)}
         >
-          <div className="border-border/50 border-b pb-8">
-            <div className="px-1">
-              {displayContent && displayContent.trim() ? (
-                <MarkdownRenderer
-                  content={displayContent}
-                  className="prose prose-slate dark:prose-invert prose-headings:font-bold prose-headings:text-foreground prose-p:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:text-primary prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted max-w-none"
-                />
-              ) : (
-                <div className="text-muted-foreground py-12 text-center">
-                  <p>Content is being prepared. Please check back soon.</p>
-                </div>
-              )}
-            </div>
+          <div className="border-border/50 border-b px-4 py-6 md:px-6 md:py-8 lg:px-8">
+            {displayContent && displayContent.trim() ? (
+              <MarkdownRenderer
+                content={displayContent}
+                className="prose prose-slate dark:prose-invert prose-headings:font-bold prose-headings:text-foreground prose-p:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:text-primary prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted max-w-none"
+              />
+            ) : (
+              <div className="text-muted-foreground py-12 text-center">
+                <p>Content is being prepared. Please check back soon.</p>
+              </div>
+            )}
           </div>
         </motion.div>
 
@@ -234,55 +232,55 @@ export function LearnView({ topic }: LearnViewProps) {
             animate="animate"
             variants={slideUpWithDelay(0.2)}
           >
-              <div className="border-border/50 border-b pb-8">
-                <div className="mb-6 border-b border-border/50 pb-4">
-                  <h3 className="flex items-center gap-2 text-lg font-bold">
-                    <div className="bg-primary/10 rounded-md p-1.5">
-                      <IconWrapper
-                        icon={PlayIcon}
-                        size={16}
-                        className="text-primary"
-                      />
-                    </div>
-                    Code Examples
-                  </h3>
-                </div>
-                <div className="space-y-6">
-                  {codeExamples.map((example, idx) => (
-                    <motion.div
-                      key={example.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: idx * 0.1 }}
-                      className={cn(
-                        "space-y-3",
-                        idx > 0 && "border-border/50 border-t pt-6"
-                      )}
-                    >
-                      <h4 className="text-foreground flex items-center gap-2 text-base font-semibold">
-                        <motion.span
-                          whileHover={{ scale: 1.1, rotate: 360 }}
-                          transition={{ duration: 0.3 }}
-                          className="bg-primary/10 text-primary flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
-                        >
-                          {idx + 1}
-                        </motion.span>
-                        {example.title}
-                      </h4>
-                      <CodePreview
-                        code={example.code}
-                        language={example.language}
-                        preview={null}
-                      />
-                      {example.explanation && (
-                        <p className="text-muted-foreground text-sm leading-relaxed">
-                          {example.explanation}
-                        </p>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
+            <div className="border-border/50 border-b px-4 py-6 md:px-6 md:py-8 lg:px-8">
+              <div className="mb-6 border-b border-border/50 pb-4">
+                <h3 className="flex items-center gap-2 text-lg font-bold">
+                  <div className="bg-primary/10 rounded-md p-1.5">
+                    <IconWrapper
+                      icon={PlayIcon}
+                      size={16}
+                      className="text-primary"
+                    />
+                  </div>
+                  Code Examples
+                </h3>
               </div>
+              <div className="space-y-6">
+                {codeExamples.map((example, idx) => (
+                  <motion.div
+                    key={example.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: idx * 0.1 }}
+                    className={cn(
+                      "space-y-3",
+                      idx > 0 && "border-border/50 border-t pt-6"
+                    )}
+                  >
+                    <h4 className="text-foreground flex items-center gap-2 text-base font-semibold">
+                      <motion.span
+                        whileHover={{ scale: 1.1, rotate: 360 }}
+                        transition={{ duration: 0.3 }}
+                        className="bg-primary/10 text-primary flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
+                      >
+                        {idx + 1}
+                      </motion.span>
+                      {example.title}
+                    </h4>
+                    <CodePreview
+                      code={example.code}
+                      language={example.language}
+                      preview={null}
+                    />
+                    {example.explanation && (
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        {example.explanation}
+                      </p>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         )}
 
@@ -292,243 +290,125 @@ export function LearnView({ topic }: LearnViewProps) {
           animate="animate"
           variants={slideUpWithDelay(0.3)}
         >
-          <QuizSection
-            topicId={topic.id}
-            questions={quizQuestions}
-            useAIQuestions={useAIQuestions}
-            onToggleAIQuestions={setUseAIQuestions}
-            hasAIQuestions={false}
-          />
+          <div className="px-4 py-6 md:px-6 md:py-8 lg:px-8">
+            <QuizSection
+              topicId={topic.id}
+              questions={quizQuestions}
+              useAIQuestions={useAIQuestions}
+              onToggleAIQuestions={setUseAIQuestions}
+              hasAIQuestions={false}
+            />
+          </div>
         </motion.div>
       </div>
 
-      {/* Right Sidebar - Enhanced with More Content */}
+      {/* Right Sidebar - Unified & Concise */}
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ ...transitions.smooth, delay: 0.2 }}
-        className="z-10 space-y-4 lg:sticky lg:top-[76px] lg:space-y-5 lg:self-start"
+        className="z-10 space-y-4 lg:sticky lg:top-[76px] lg:self-start py-4 pr-4 md:pr-6 lg:pr-8"
       >
-        {/* Quick Navigation */}
-        {(prevTopic || nextTopic) && (
-          <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
-            <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
-              <CardHeader className="border-border/50 border-b pb-3">
-                <CardTitle className="text-muted-foreground flex items-center gap-2 text-xs font-bold tracking-wider uppercase">
-                  <div className="bg-muted rounded p-1">
-                    <IconWrapper icon={ChevronRightIcon} size={10} />
-                  </div>
-                  Quick Navigation
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 pt-3">
-                {prevTopic && (
-                  <motion.div whileHover={{ x: -4 }} whileTap={{ scale: 0.98 }}>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="group hover:bg-primary/5 hover:border-primary/20 w-full justify-start transition-all"
-                      asChild
-                    >
-                      <Link
-                        href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}
-                      >
-                        <IconWrapper
-                          icon={ChevronLeftIcon}
-                          size={14}
-                          className="group-hover:text-primary mr-2 transition-colors"
-                        />
-                        <span className="group-hover:text-primary truncate text-xs transition-colors">
-                          {prevTopic.title}
-                        </span>
-                      </Link>
-                    </Button>
-                  </motion.div>
-                )}
-                {nextTopic && (
-                  <motion.div whileHover={{ x: 4 }} whileTap={{ scale: 0.98 }}>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="group hover:bg-primary/5 hover:border-primary/20 w-full justify-start transition-all"
-                      asChild
-                    >
-                      <Link
-                        href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}
-                      >
-                        <span className="group-hover:text-primary truncate text-xs transition-colors">
-                          {nextTopic.title}
-                        </span>
-                        <IconWrapper
-                          icon={ChevronRightIcon}
-                          size={14}
-                          className="group-hover:text-primary ml-2 transition-colors"
-                        />
-                      </Link>
-                    </Button>
-                  </motion.div>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-
-        {/* Module Progress */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.3 }}
-          whileHover={{ y: -2 }}
-        >
-          <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
-            <CardHeader className="border-border/50 border-b pb-3">
+        <Card className="border-border/50 shadow-none overflow-hidden">
+          {/* Module Header & Progress */}
+          <CardHeader className="border-border/50 bg-muted/10 border-b px-4 py-3">
+            <div className="flex items-center justify-between mb-2">
               <CardTitle className="text-muted-foreground flex items-center gap-2 text-xs font-bold tracking-wider uppercase">
-                <div className="bg-muted rounded p-1">
-                  <IconWrapper icon={BookOpenIcon} size={10} />
-                </div>
-                Module Progress
+                <BookOpenIcon className="h-3.5 w-3.5" />
+                Module Content
               </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 pt-3">
-              <div>
-                <div className="mb-2.5 flex items-center justify-between text-xs">
-                  <span className="text-muted-foreground font-medium">
-                    {moduleTopics.filter((t) => isCompleted(t.id)).length} /{" "}
-                    {moduleTopics.length} completed
-                  </span>
-                  <span className="text-foreground font-bold">
-                    {moduleProgress}%
-                  </span>
-                </div>
-                <Progress value={moduleProgress} className="bg-muted h-2.5" />
-              </div>
-              <Separator className="my-3" />
-              <div>
-                <p className="text-muted-foreground mb-2 text-xs">
-                  Topics in this module:
-                </p>
-                <div className="max-h-48 space-y-1 overflow-y-auto">
-                  {moduleTopics.map((t, idx) => {
-                    const isCompletedTopic = isCompleted(t.id)
-                    const isCurrent = t.id === topic.id
-                    return (
-                      <motion.div
-                        key={t.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.2, delay: idx * 0.05 }}
-                        whileHover={{ x: 4 }}
-                      >
-                        <Link
-                          href={ROUTES.TOPIC(generateTopicSlug(t.title))}
-                          className={cn(
-                            "group flex items-center gap-2 rounded-md p-2 text-xs transition-all",
-                            isCurrent
-                              ? "bg-primary/10 text-primary border-primary/20 border font-medium"
-                              : "text-muted-foreground hover:text-foreground hover:bg-muted/50 hover:border-border border border-transparent"
-                          )}
-                        >
-                          {isCompletedTopic ? (
-                            <IconWrapper
-                              icon={CheckmarkCircleIcon}
-                              size={14}
-                              className="shrink-0 text-emerald-500"
-                            />
-                          ) : (
-                            <div className="border-muted-foreground/30 h-3.5 w-3.5 shrink-0 rounded-full border-2" />
-                          )}
-                          <span
-                            className={cn(
-                              "flex-1 truncate",
-                              !isCompletedTopic &&
-                                !isCurrent &&
-                                "opacity-70 group-hover:opacity-100"
-                            )}
-                          >
-                            {t.title}
-                          </span>
-                        </Link>
-                      </motion.div>
-                    )
-                  })}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+              <span className="text-xs font-mono font-medium text-muted-foreground">
+                {moduleProgress}%
+              </span>
+            </div>
+            <Progress value={moduleProgress} className="h-1.5" />
+          </CardHeader>
 
-        {/* Complexity Analysis - Compact */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.4 }}
-          whileHover={{ y: -2 }}
-        >
-          <Card className="border-border/50 shadow-sm transition-shadow hover:shadow-md">
-            <CardHeader className="border-border/50 border-b pb-3">
-              <CardTitle className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
-                Complexity
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-3">
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-muted-foreground font-medium">
-                    Time
-                  </span>
-                  <Badge
-                    variant="secondary"
-                    className="bg-muted h-5 px-2 py-0.5 font-mono text-[10px] font-bold"
+          {/* Scrollable Topic List */}
+          <CardContent className="p-0">
+            <div className="max-h-[300px] overflow-y-auto p-2 space-y-0.5">
+              {moduleTopics.map((t) => {
+                const isCompletedTopic = isCompleted(t.id)
+                const isCurrent = t.id === topic.id
+                return (
+                  <Link
+                    key={t.id}
+                    href={ROUTES.TOPIC(generateTopicSlug(t.title))}
+                    className={cn(
+                      "flex items-center gap-3 rounded-md px-3 py-2 text-xs transition-colors",
+                      isCurrent
+                        ? "bg-primary/5 text-primary font-medium"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                      isCompletedTopic && !isCurrent && "text-muted-foreground/70"
+                    )}
                   >
-                    {topic.complexity.time}
-                  </Badge>
-                </div>
-              </div>
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-muted-foreground font-medium">
-                    Space
-                  </span>
-                  <Badge
-                    variant="secondary"
-                    className="bg-muted h-5 px-2 py-0.5 font-mono text-[10px] font-bold"
-                  >
-                    {topic.complexity.space}
-                  </Badge>
-                </div>
-              </div>
-              <Separator className="my-3" />
-              <div>
-                <div className="flex flex-wrap gap-1.5">
-                  <Badge
-                    variant="outline"
-                    className="border-border/50 h-5 px-2 py-0.5 text-[10px] font-medium"
-                  >
-                    {topic.category.replace(/_/g, " ")}
-                  </Badge>
-                  {topic.visualizerType !== VisualizerType.NONE && (
-                    <Badge
-                      variant="secondary"
-                      className="bg-primary/10 text-primary border-primary/20 flex h-5 items-center gap-1 px-2 py-0.5 text-[10px] font-medium"
-                    >
-                      <IconWrapper icon={PlayIcon} size={10} />
-                      Interactive
-                    </Badge>
+                    <div className="shrink-0">
+                      {isCompletedTopic ? (
+                        <CheckmarkCircleIcon className="h-4 w-4 text-emerald-500" />
+                      ) : isCurrent ? (
+                        <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                      ) : (
+                        <div className="h-1.5 w-1.5 rounded-full bg-border" />
+                      )}
+                    </div>
+                    <span className="truncate flex-1">{t.title}</span>
+                  </Link>
+                )
+              })}
+            </div>
+
+            {/* Actions & Navigation Footer */}
+            <div className="border-border/50 bg-muted/5 border-t p-3 space-y-3">
+              {/* Navigation Buttons */}
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!prevTopic}
+                  className="h-8 text-xs w-full"
+                  asChild={!!prevTopic}
+                >
+                  {prevTopic ? (
+                    <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
+                      <ChevronLeftIcon className="mr-1 h-3 w-3" /> Prev
+                    </Link>
+                  ) : (
+                    <span><ChevronLeftIcon className="mr-1 h-3 w-3" /> Prev</span>
                   )}
-                  {isTopicCompleted && (
-                    <Badge
-                      variant="default"
-                      className="flex h-5 items-center gap-1 border-0 bg-emerald-500 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-emerald-600"
-                    >
-                      <IconWrapper icon={CheckmarkCircleIcon} size={10} />
-                      Completed
-                    </Badge>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!nextTopic}
+                  className="h-8 text-xs w-full"
+                  asChild={!!nextTopic}
+                >
+                  {nextTopic ? (
+                    <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
+                      Next <ChevronRightIcon className="ml-1 h-3 w-3" />
+                    </Link>
+                  ) : (
+                    <span>Next <ChevronRightIcon className="ml-1 h-3 w-3" /></span>
                   )}
+                </Button>
+              </div>
+
+              <Separator className="bg-border/40" />
+
+              {/* Metadata / Complexity */}
+              <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold uppercase tracking-wider">Time:</span>
+                  <Badge variant="secondary" className="h-4 px-1 text-[9px]">{topic.complexity.time}</Badge>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold uppercase tracking-wider">Space:</span>
+                  <Badge variant="secondary" className="h-4 px-1 text-[9px]">{topic.complexity.space}</Badge>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
     </motion.div>
   )

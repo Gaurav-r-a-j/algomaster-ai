@@ -1,7 +1,11 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { generateBFSSteps, generateDFSSteps } from "@/utils/algorithm-logic"
+import {
+  generateBFSSteps,
+  generateDFSSteps,
+  generateDijkstraSteps,
+} from "@/utils/algorithm-logic"
 import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
@@ -26,8 +30,14 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
   const timerRef = useRef<number | null>(null)
 
   const generateData = useCallback(() => {
-    const newSteps =
-      topic.id === "dfs" ? generateDFSSteps() : generateBFSSteps()
+    let newSteps: VisualizationStep[] = []
+    if (topic.id === "dfs") {
+      newSteps = generateDFSSteps()
+    } else if (topic.id === "dijkstra") {
+      newSteps = generateDijkstraSteps()
+    } else {
+      newSteps = generateBFSSteps()
+    }
     setSteps(newSteps)
     setCurrentStep(0)
     setIsPlaying(false)
@@ -65,6 +75,11 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
     }
   }
 
+  const handleStepChange = (step: number) => {
+    setIsPlaying(false)
+    setCurrentStep(step)
+  }
+
   const handleNextStep = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1)
@@ -98,6 +113,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
       onPreviousStep={handlePreviousStep}
       onNextStep={handleNextStep}
       onSpeedChange={setPlaybackSpeed}
+      onStepChange={handleStepChange}
       disabled={steps.length === 0}
       showSpeedControl={true}
     />
@@ -107,23 +123,23 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-4 text-xs">
         <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-emerald-500"></div>
+          <div className="h-3 w-3 rounded bg-green-600 shadow-sm"></div>
           <span className="text-muted-foreground">Start</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-red-500"></div>
+          <div className="h-3 w-3 rounded bg-destructive shadow-sm"></div>
           <span className="text-muted-foreground">End</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-slate-800 dark:bg-slate-600"></div>
+          <div className="h-3 w-3 rounded bg-foreground"></div>
           <span className="text-muted-foreground">Wall</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-blue-200 dark:bg-blue-900"></div>
+          <div className="h-3 w-3 rounded bg-muted/50 border border-border"></div>
           <span className="text-muted-foreground">Visited</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-yellow-400"></div>
+          <div className="h-3 w-3 rounded bg-yellow-500 shadow-sm"></div>
           <span className="text-muted-foreground">Path</span>
         </div>
       </div>
@@ -151,17 +167,17 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
 
           let bgColor = "hsl(var(--muted))"
           if (isWall) {
-            bgColor = "rgb(30 41 59)"
+            bgColor = "hsl(var(--foreground))"
           } else if (isPath) {
-            bgColor = "rgb(250 204 21)"
+            bgColor = "rgb(234 179 8)" // yellow-500
           } else if (isActive) {
             bgColor = "hsl(var(--primary))"
           } else if (isStart) {
-            bgColor = "rgb(16 185 129)"
+            bgColor = "rgb(22 163 74)" // green-600
           } else if (isEnd) {
-            bgColor = "rgb(239 68 68)"
+            bgColor = "hsl(var(--destructive))"
           } else if (isVisited) {
-            bgColor = "rgb(191 219 254)"
+            bgColor = "hsl(var(--muted) / 0.5)"
           }
 
           return (

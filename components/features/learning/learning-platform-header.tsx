@@ -1,14 +1,14 @@
 "use client"
 
 import Link from "next/link"
-import { useTheme } from "next-themes"
 import { ROUTES } from "@/constants/routes"
 
-import { Menu01Icon, SunIcon, MoonIcon } from "@/lib/icons"
+import { Menu01Icon } from "@/lib/icons"
 import { useProgressStats } from "@/hooks/use-progress-stats"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { IconWrapper } from "@/components/common/icon-wrapper"
+import { ThemeToggle } from "@/components/common/theme-toggle"
 
 interface LearningPlatformHeaderProps {
   onMenuClick: () => void
@@ -18,11 +18,6 @@ export function LearningPlatformHeader({
   onMenuClick,
 }: LearningPlatformHeaderProps) {
   const stats = useProgressStats()
-  const { theme, setTheme } = useTheme()
-
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark")
-  }
 
   return (
     <header className="border-border bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 w-full border-b backdrop-blur">
@@ -61,17 +56,7 @@ export function LearningPlatformHeader({
         {/* Right Actions */}
         <div className="ml-auto flex items-center gap-2">
           {/* Theme Toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            <IconWrapper 
-              icon={theme === "dark" ? SunIcon : MoonIcon} 
-              size={18} 
-            />
-          </Button>
+          <ThemeToggle />
           <Button variant="ghost" size="sm" asChild>
             <Link href={ROUTES.DASHBOARD}>View Stats</Link>
           </Button>

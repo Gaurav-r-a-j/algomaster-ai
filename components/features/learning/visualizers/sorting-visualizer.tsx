@@ -10,10 +10,14 @@ import {
 } from "@/utils/algorithm-logic"
 import { ChartBarIcon } from "@heroicons/react/24/outline"
 import { motion } from "motion/react"
+import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
 import { staggerItem, transitions } from "@/lib/animations"
 import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 import { VisualizerControls } from "./visualizer-controls"
 import { VisualizerLayout } from "./visualizer-layout"
@@ -89,6 +93,11 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1)
     }
+  }
+
+  const handleStepChange = (step: number) => {
+    setIsPlaying(false)
+    setCurrentStep(step)
   }
 
   const handleNextStep = () => {
@@ -185,7 +194,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
       description: "Ready to sort",
     } as VisualizationStep)
 
-  const controls = (
+  const renderControls = (isPanelOpen: boolean, togglePanel: () => void) => (
     <VisualizerControls
       isPlaying={isPlaying}
       currentStep={currentStep}
@@ -197,26 +206,49 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
       onPreviousStep={handlePreviousStep}
       onNextStep={handleNextStep}
       onSpeedChange={setPlaybackSpeed}
+      onStepChange={handleStepChange}
       disabled={steps.length === 0}
       showSpeedControl={true}
       arraySize={arraySize}
       onArraySizeChange={handleArraySizeChange}
       showArraySizeControl={true}
+      extraControlsLeft={
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={togglePanel}
+              className="h-9 w-9 shrink-0"
+              aria-label={isPanelOpen ? "Collapse sidebar" : "Expand sidebar"}
+            >
+              <IconWrapper
+                icon={isPanelOpen ? ChevronLeftIcon : ChevronRightIcon}
+                size={18}
+                className="text-muted-foreground"
+              />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            {isPanelOpen ? "Hide Info" : "Show Info"}
+          </TooltipContent>
+        </Tooltip>
+      }
     />
   )
 
   const description = (
     <>
-      <div className="mb-2 flex items-center gap-4">
-        <div className="text-muted-foreground flex items-center gap-2 text-xs">
-          <span className="bg-primary h-3 w-3 rounded-full"></span> Unsorted
-        </div>
-        <div className="text-muted-foreground flex items-center gap-2 text-xs">
-          <span className="h-3 w-3 rounded-full bg-amber-500"></span> Active
-        </div>
-        <div className="text-muted-foreground flex items-center gap-2 text-xs">
-          <span className="h-3 w-3 rounded-full bg-emerald-500"></span> Sorted
-        </div>
+      <div className="mb-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+        <span className="inline-flex items-center gap-1 rounded-full border border-border/60 px-2 py-1">
+          <span className="bg-primary h-2 w-2 rounded-full" /> Unsorted
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-border/60 px-2 py-1">
+          <span className="h-2 w-2 rounded-full bg-amber-500" /> Active
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-border/60 px-2 py-1">
+          <span className="h-2 w-2 rounded-full bg-emerald-500" /> Sorted
+        </span>
       </div>
       <p className="text-foreground text-sm font-medium">
         {currentData.description}
@@ -228,12 +260,27 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     <VisualizerLayout
       title="Sorting Visualization"
       icon={<ChartBarIcon className="text-primary h-5 w-5" />}
-      controls={controls}
+      renderControls={renderControls}
       description={description}
+      hideTitle
+      hideDescription
     >
-      <motion.div className="flex flex-col gap-3">
+      <motion.div className="flex flex-col gap-4 p-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs font-semibold uppercase text-muted-foreground">
+            <span className="text-foreground font-bold capitalize">
+              {topic.id.replace("-", " ")}
+            </span>
+          </div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs font-semibold uppercase text-muted-foreground">
+            Array Size <span className="font-mono text-sm text-foreground">{arraySize}</span>
+          </div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs font-semibold uppercase text-muted-foreground">
+            Steps <span className="font-mono text-sm text-foreground">{steps.length || 1}</span>
+          </div>
+        </div>
         {/* Number-based visualization */}
-        <Card>
+        <Card className="w-full">
           <CardContent className="p-4">
             <div className="flex min-h-[150px] flex-wrap items-center justify-center gap-3">
               {currentData.array.map((value, idx) => {
@@ -248,7 +295,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
                     animate={{
                       scale: isActive ? 1.15 : 1,
                       zIndex: isActive ? 10 : 1,
-                      opacity: isSorted ? 0.75 : 1,
+                      opacity: isSorted ? 0.85 : 1,
                     }}
                     transition={transitions.spring}
                     className="flex flex-col items-center gap-2"
@@ -261,9 +308,9 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
                             ? "rgb(16 185 129)"
                             : "hsl(var(--border))",
                         backgroundColor: isActive
-                          ? "rgb(245 158 11 / 0.1)"
+                          ? "rgb(245 158 11 / 0.12)"
                           : isSorted
-                            ? "rgb(16 185 129 / 0.1)"
+                            ? "rgb(16 185 129 / 0.12)"
                             : "hsl(var(--card))",
                         color: isActive
                           ? "rgb(180 83 9)"
@@ -271,7 +318,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
                             ? "rgb(5 150 105)"
                             : "hsl(var(--foreground))",
                         boxShadow: isActive
-                          ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+                          ? "0 10px 15px -3px rgb(0 0 0 / 0.12), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
                           : "none",
                       }}
                       transition={transitions.smooth}

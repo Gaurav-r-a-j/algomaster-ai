@@ -104,16 +104,14 @@ export function VisualizeView({ topic }: VisualizeViewProps) {
       animate="animate"
       variants={fadeIn}
       transition={transitions.smooth}
-      className="flex h-full flex-col"
+      className="relative flex h-full w-full flex-col"
     >
       <motion.div
         variants={slideUp}
         transition={{ ...transitions.spring, delay: 0.1 }}
-        className="flex-1 min-h-0"
+        className="relative flex h-full w-full flex-1 min-h-0 overflow-auto"
       >
-        <div className="relative h-full w-full overflow-hidden border-0 bg-background">
-          {renderVisualizer(topic)}
-        </div>
+        {renderVisualizer(topic)}
       </motion.div>
     </motion.div>
   )

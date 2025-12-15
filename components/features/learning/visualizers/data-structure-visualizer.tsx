@@ -2,12 +2,18 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import {
+  generateAVLTreeSteps,
+  generateBinaryTreeSteps,
+  generateGraphSteps,
+  generateHashTableSteps,
   generateLinkedListSteps,
   generateQueueSteps,
   generateStackSteps,
+  generateTrieSteps,
+  TreeNode as TreeNodeType,
 } from "@/utils/algorithm-logic"
 import { Squares2X2Icon } from "@heroicons/react/24/outline"
-import { motion } from "motion/react"
+import { motion, AnimatePresence } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
 import { VisualizerType } from "@/types/curriculum"
@@ -23,45 +29,43 @@ interface DataStructureVisualizerProps {
   topic: Topic
 }
 
-const TreeNode: React.FC<{
-  val: number | null
-  idx: number
-  isActive: boolean
-  totalLevels: number
-}> = ({ val, idx, isActive, totalLevels: _totalLevels }) => {
-  if (val === null) {
-    return null
-  }
-  const level = Math.floor(Math.log2(idx + 1))
-  const posInLevel = idx - (Math.pow(2, level) - 1)
-  const levelWidth = Math.pow(2, level)
-  const left = (posInLevel / levelWidth) * 100
+// Tree Rendering Helper
+const renderTreeNodes = (
+  root: TreeNodeType | null,
+  highlightId: string | null
+) => {
+  if (!root) return { nodes: [], edges: [] }
 
-  return (
-    <motion.div
-      layout
-      animate={{
-        scale: isActive ? 1.1 : 1,
-        borderColor: isActive ? "hsl(var(--primary))" : "hsl(var(--border))",
-        backgroundColor: isActive
-          ? "hsl(var(--primary) / 0.1)"
-          : "hsl(var(--card))",
-        color: isActive ? "hsl(var(--primary))" : "hsl(var(--foreground))",
-        boxShadow: isActive
-          ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
-          : "none",
-      }}
-      transition={transitions.spring}
-      className="absolute flex h-12 w-12 items-center justify-center rounded-full border-2 text-sm font-bold"
-      style={{
-        top: `${level * 80 + 20}px`,
-        left: `${left}%`,
-        transform: `translateX(-50%)`,
-      }}
-    >
-      {val}
-    </motion.div>
-  )
+  const nodes: TreeNodeType[] = []
+  const edges: { x1: number; y1: number; x2: number; y2: number; id: string }[] =
+    []
+
+  const traverse = (node: TreeNodeType) => {
+    nodes.push(node)
+    if (node.left) {
+      edges.push({
+        x1: node.x,
+        y1: node.y + 12, // + offset for node center/bottom
+        x2: node.left.x,
+        y2: node.left.y,
+        id: `${node.id}-${node.left.id}`,
+      })
+      traverse(node.left)
+    }
+    if (node.right) {
+      edges.push({
+        x1: node.x,
+        y1: node.y + 12,
+        x2: node.right.x,
+        y2: node.right.y,
+        id: `${node.id}-${node.right.id}`,
+      })
+      traverse(node.right)
+    }
+  }
+
+  traverse(root)
+  return { nodes, edges }
 }
 
 export function DataStructureVisualizer({
@@ -86,27 +90,22 @@ export function DataStructureVisualizer({
         newSteps = generateLinkedListSteps()
         break
       case VisualizerType.BINARY_TREE:
+        newSteps = generateBinaryTreeSteps()
+        break
       case VisualizerType.AVL_TREE:
-        // TODO: Implement tree visualizations
-        newSteps = [
-          {
-            array: [],
-            activeIndices: [],
-            sortedIndices: [],
-            description: "Tree visualization coming soon.",
-            auxiliary: { tree: [] },
-          },
-        ]
+        newSteps = generateAVLTreeSteps()
+        break
+      case VisualizerType.HASH_TABLE:
+        newSteps = generateHashTableSteps()
+        break
+      case VisualizerType.TRIE:
+        newSteps = generateTrieSteps()
+        break
+      case VisualizerType.GRAPH:
+        newSteps = generateGraphSteps(topic.id)
         break
       default:
-        newSteps = [
-          {
-            array: [],
-            activeIndices: [],
-            sortedIndices: [],
-            description: "Visualization not implemented.",
-          },
-        ]
+        newSteps = []
     }
     setSteps(newSteps)
     setCurrentStep(0)
@@ -145,6 +144,11 @@ export function DataStructureVisualizer({
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1)
     }
+  }
+
+  const handleStepChange = (step: number) => {
+    setIsPlaying(false)
+    setCurrentStep(step)
   }
 
   const handleNextStep = () => {
@@ -187,6 +191,7 @@ export function DataStructureVisualizer({
       onPreviousStep={handlePreviousStep}
       onNextStep={handleNextStep}
       onSpeedChange={setPlaybackSpeed}
+      onStepChange={handleStepChange}
       disabled={steps.length === 0}
       showSpeedControl={true}
     />
@@ -202,171 +207,327 @@ export function DataStructureVisualizer({
     switch (topic.visualizerType) {
       case VisualizerType.STACK:
         return (
-          <div className="w-full">
-            <div className="border-border bg-muted/30 relative flex min-h-[180px] flex-col items-center gap-2 rounded-lg border-2 p-4">
-              <div className="text-muted-foreground absolute top-1/2 -left-20 -translate-y-1/2 font-mono text-xs font-bold uppercase">
-                TOP
+          <div className="flex w-full flex-col items-center justify-center p-8">
+            <div className="relative flex min-h-[300px] w-40 flex-col justify-end rounded-t-lg border-x-4 border-b-4 border-slate-300 bg-slate-50/50 p-4 shadow-inner dark:border-slate-700 dark:bg-slate-900/50">
+              <div className="absolute -left-12 top-1/2 -translate-y-1/2 rotate-180 py-2 text-xs font-bold uppercase tracking-widest text-muted-foreground [writing-mode:vertical-lr]">
+                Stack Memory
               </div>
-              {currentData.array.length === 0 ? (
-                <div className="text-muted-foreground text-sm italic">
-                  Stack is empty
-                </div>
-              ) : (
-                currentData.array.map((val, idx) => (
+              <AnimatePresence mode="popLayout">
+                {currentData.array.length === 0 ? (
                   <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ ...transitions.spring, delay: idx * 0.1 }}
-                    layout
-                    className="border-primary bg-primary/10 flex h-12 w-16 items-center justify-center rounded-lg border-2 text-base font-bold shadow-sm"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 flex items-center justify-center text-sm italic text-muted-foreground"
                   >
-                    {val}
+                    Empty
                   </motion.div>
-                ))
-              )}
+                ) : (
+                  currentData.array.map((val, idx) => (
+                    <motion.div
+                      key={`${idx}-${val}`}
+                      layout
+                      initial={{ opacity: 0, y: -50, scale: 0.8 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                      className="mb-2 flex h-12 w-full items-center justify-center rounded-md bg-gradient-to-br from-indigo-500 to-indigo-600 font-bold text-white shadow-md ring-1 ring-white/20"
+                    >
+                      {val}
+                    </motion.div>
+                  ))
+                )}
+              </AnimatePresence>
+            </div>
+            <div className="mt-4 text-center text-sm text-muted-foreground">
+                LIFO: Last In, First Out
             </div>
           </div>
         )
       case VisualizerType.QUEUE:
         return (
-          <div className="w-full">
-            <div className="border-border bg-muted/30 relative flex min-h-[100px] items-center gap-2 rounded-lg border-2 p-4">
-              <div className="text-muted-foreground absolute top-1/2 -left-20 -translate-y-1/2 font-mono text-xs font-bold uppercase">
-                FRONT
+          <div className="flex w-full flex-col items-center justify-center p-8">
+            <div className="relative flex min-h-[120px] w-full max-w-2xl items-center gap-4 overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 px-12 py-6 dark:border-slate-700 dark:bg-slate-900/50">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase text-muted-foreground">
+                Front
               </div>
-              {currentData.array.length === 0 ? (
-                <div className="text-muted-foreground flex-1 text-center text-sm italic">
-                  Queue is empty
-                </div>
-              ) : (
-                currentData.array.map((val, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: idx === 0 ? -20 : 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ ...transitions.spring, delay: idx * 0.1 }}
-                    layout
-                    className="flex h-12 w-16 items-center justify-center rounded-lg border-2 border-emerald-500 bg-emerald-500/10 text-base font-bold shadow-sm"
-                  >
-                    {val}
-                  </motion.div>
-                ))
-              )}
-              <div className="text-muted-foreground absolute top-1/2 -right-20 -translate-y-1/2 font-mono text-xs font-bold uppercase">
-                BACK
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase text-muted-foreground">
+                Back
               </div>
+              
+              <div className="flex flex-1 items-center justify-start gap-3 overflow-x-auto p-2 no-scrollbar">
+                <AnimatePresence mode="popLayout">
+                  {currentData.array.length === 0 ? (
+                     <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="w-full text-center text-sm italic text-muted-foreground"
+                     >
+                        Queue is empty
+                     </motion.div>
+                  ) : (
+                    currentData.array.map((val, idx) => (
+                      <motion.div
+                        key={`${idx}-${val}`}
+                        layout
+                        initial={{ opacity: 0, x: 50, scale: 0.8 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        exit={{ opacity: 0, x: -50, scale: 0.8, transition: { duration: 0.2 } }}
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 font-bold text-white shadow-md ring-1 ring-white/20"
+                      >
+                        {val}
+                      </motion.div>
+                    ))
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+             <div className="mt-4 text-center text-sm text-muted-foreground">
+                FIFO: First In, First Out
             </div>
           </div>
         )
       case VisualizerType.LINKED_LIST:
         return (
-          <div className="w-full overflow-x-auto">
-            <motion.div className="flex min-w-fit items-center justify-start gap-0 px-2">
+          <div className="w-full overflow-x-auto p-8">
+            <motion.div className="flex min-w-fit items-center justify-start gap-1">
+              <AnimatePresence>
               {currentData.array.map((val, idx) => {
                 const isActive = currentData.activeIndices.includes(idx)
                 return (
                   <motion.div
                     key={idx}
-                    variants={staggerItem}
-                    className="flex items-center"
+                    layout
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="flex items-center group"
                   >
-                    {/* Node */}
-                    <div className="flex flex-col items-center">
+                    <div className="relative flex flex-col items-center">
                       <motion.div
                         animate={{
-                          scale: isActive ? 1.05 : 1,
-                          borderColor: isActive
-                            ? "hsl(var(--foreground))"
-                            : "hsl(var(--border))",
-                          backgroundColor: isActive
-                            ? "hsl(var(--muted) / 0.8)"
-                            : "hsl(var(--card))",
-                          boxShadow: isActive
-                            ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
-                            : "none",
+                          scale: isActive ? 1.15 : 1,
+                          backgroundColor: isActive ? "hsl(var(--primary))" : "hsl(var(--card))",
+                          borderColor: isActive ? "hsl(var(--primary))" : "hsl(var(--border))",
+                          color: isActive ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))",
+                          boxShadow: isActive ? "0 4px 12px hsl(var(--primary)/0.3)" : "0 1px 2px rgb(0 0 0 / 0.05)"
                         }}
                         transition={transitions.spring}
-                        className="flex h-14 w-14 items-center justify-center rounded-xl border-2 text-lg font-bold"
+                        className="relative z-10 flex h-14 w-14 items-center justify-center rounded-xl border-2 text-lg font-bold transition-shadow"
                       >
                         {val}
+                        {/* Pointer dot */}
+                        <div className="absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-inherit border border-inherit"></div>
                       </motion.div>
-                      <div className="text-muted-foreground mt-2 font-mono text-xs font-semibold">
-                        Node {idx}
+                      <div className="mt-2 font-mono text-xs font-medium text-muted-foreground">
+                        {idx === 0 ? "HEAD" : `#${idx}`}
                       </div>
                     </div>
+                    
                     {idx < currentData.array.length - 1 && (
-                      <div className="mx-2 flex items-center">
-                        <svg
-                          width="32"
-                          height="2"
-                          viewBox="0 0 32 2"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="text-foreground"
-                        >
-                          <line
-                            x1="0"
-                            y1="1"
-                            x2="28"
-                            y2="1"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          />
-                          <path d="M28 1L24 0L24 2L28 1Z" fill="currentColor" />
-                        </svg>
+                      <div className="relative mx-1 h-0.5 w-12 bg-border">
+                         <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
+                            <svg width="10" height="10" viewBox="0 0 10 10" className="text-border fill-current rotate-[-90deg]">
+                                <path d="M5 10L0 0h10L5 10z" />
+                            </svg>
+                         </div>
                       </div>
                     )}
                   </motion.div>
                 )
               })}
-              {/* NULL pointer */}
-              <div className="ml-2 flex items-center">
-                <svg
-                  width="32"
-                  height="2"
-                  viewBox="0 0 32 2"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="text-border mr-2"
-                >
-                  <line
-                    x1="0"
-                    y1="1"
-                    x2="24"
-                    y2="1"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <path d="M24 1L20 0L20 2L24 1Z" fill="currentColor" />
-                </svg>
-                <div className="bg-muted border-border rounded-lg border px-4 py-2">
-                  <span className="text-muted-foreground font-mono text-sm font-semibold">
-                    NULL
-                  </span>
-                </div>
-              </div>
+              </AnimatePresence>
+               <div className="ml-2 flex items-center gap-3 opacity-60">
+                    <div className="h-0.5 w-8 bg-border"></div>
+                    <div className="flex h-10 w-16 items-center justify-center rounded border border-dashed border-border bg-muted/50 font-mono text-xs text-muted-foreground">
+                        NULL
+                    </div>
+               </div>
             </motion.div>
           </div>
         )
       case VisualizerType.BINARY_TREE:
       case VisualizerType.AVL_TREE:
-        const tree =
-          (currentData.auxiliary as { tree?: (number | null)[] })?.tree || []
+      case VisualizerType.TRIE:
+        const { root, highlightNodeId } = (currentData.auxiliary as {
+          root?: TreeNodeType
+          highlightNodeId?: string
+        }) || { root: null }
+        
+        const treeData = renderTreeNodes(root || null, highlightNodeId || null)
+
         return (
-          <motion.div className="relative h-full min-h-[300px] w-full">
-            {tree.map((val, idx) => (
-              <motion.div key={idx} variants={staggerItem}>
-                <TreeNode
-                  val={val}
-                  idx={idx}
-                  isActive={currentData.activeIndices.includes(idx)}
-                  totalLevels={4}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+          <div className="relative h-[500px] w-full overflow-hidden rounded-xl border bg-slate-50/50 dark:bg-slate-900/50 shadow-inner">
+             {/* Simple Dot Pattern Background */}
+             <div className="absolute inset-0 opacity-[0.03]" style={{
+                 backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
+                 backgroundSize: '20px 20px'
+             }}></div>
+
+             <svg className="absolute inset-0 h-full w-full pointer-events-none">
+                {treeData.edges.map((edge) => (
+                    <line
+                        key={edge.id}
+                        x1={`${edge.x1}%`}
+                        y1={`${edge.y1}px`}
+                        x2={`${edge.x2}%`}
+                        y2={`${edge.y2}px`}
+                        stroke="currentColor" 
+                        strokeOpacity="0.2"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                    />
+                ))}
+             </svg>
+             <AnimatePresence>
+             {treeData.nodes.map((node) => {
+                 const isHighlighed = highlightNodeId === node.id;
+                 return (
+                 <motion.div
+                    key={node.id}
+                    layoutId={node.id}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ 
+                        scale: isHighlighed ? 1.2 : 1, 
+                        opacity: 1,
+                        backgroundColor: isHighlighed ? "hsl(var(--primary))" : "hsl(var(--card))",
+                        borderColor: isHighlighed ? "hsl(var(--primary))" : "hsl(var(--border))",
+                        color: isHighlighed ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))",
+                        left: `${node.x}%`,
+                        top: `${node.y}px`,
+                        zIndex: isHighlighed ? 20 : 10,
+                        boxShadow: isHighlighed ? "0 0 20px hsl(var(--primary)/0.4)" : "0 2px 4px rgb(0 0 0 / 0.1)"
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    className="absolute flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border-2 text-sm font-bold"
+                 >
+                     {node.val}
+                 </motion.div>
+                 )
+             })}
+             </AnimatePresence>
+             {treeData.nodes.length === 0 && (
+                 <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-2 text-muted-foreground/50">
+                        <Squares2X2Icon className="h-10 w-10" />
+                        <span className="text-sm font-medium">Empty Tree</span>
+                    </div>
+                 </div>
+             )}
+          </div>
         )
+      case VisualizerType.HASH_TABLE:
+          const buckets = (currentData.auxiliary as any)?.buckets || []
+          return (
+              <div className="flex w-full flex-col gap-3 p-6 max-w-3xl mx-auto">
+                  {buckets.map((bucket: number[], idx: number) => {
+                      const isTargetBucket = (currentData.auxiliary as any)?.currentBucket === idx
+                      return (
+                      <div key={idx} className="flex items-center gap-4">
+                          {/* Index Bucket */}
+                          <motion.div 
+                            animate={{
+                                backgroundColor: isTargetBucket ? "hsl(var(--primary)/0.1)" : "hsl(var(--muted))",
+                                borderColor: isTargetBucket ? "hsl(var(--primary))" : "transparent"
+                            }}
+                            className="flex h-12 w-16 shrink-0 items-center justify-center rounded-lg border bg-muted text-sm font-mono font-bold text-muted-foreground shadow-sm"
+                          >
+                              {idx}
+                          </motion.div>
+                          
+                          {/* Connector */}
+                          <div className="h-0.5 w-6 bg-border relative">
+                              <div className="absolute right-0 top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-border"></div>
+                          </div>
+
+                          {/* Chain */}
+                          <div className="flex flex-1 flex-wrap gap-2">
+                              <AnimatePresence mode="popLayout">
+                              {bucket.map((val, bIdx) => (
+                                  <motion.div
+                                      key={`${idx}-${bIdx}-${val}`}
+                                      initial={{ opacity: 0, scale: 0.5, x: -20 }}
+                                      animate={{ opacity: 1, scale: 1, x: 0 }}
+                                      transition={{ type: "spring" }}
+                                      className="flex h-12 w-12 items-center justify-center rounded-lg border bg-card font-bold shadow-sm"
+                                  >
+                                      {val}
+                                  </motion.div>
+                              ))}
+                              </AnimatePresence>
+                              {bucket.length === 0 && (
+                                  <span className="text-xs italic text-muted-foreground self-center px-2">Null</span>
+                              )}
+                          </div>
+                      </div>
+                      )
+                  })}
+              </div>
+          )
+      case VisualizerType.GRAPH:
+          const graphNodes = (currentData.auxiliary as any)?.nodes || []
+          const graphEdges = (currentData.auxiliary as any)?.edges || []
+          const activeNodeId = (currentData.auxiliary as any)?.activeNode
+          
+          return (
+              <div className="relative h-[500px] w-full overflow-hidden rounded-xl border bg-slate-50/50 dark:bg-slate-900/50 shadow-inner">
+                   <div className="absolute inset-0 opacity-[0.03]" style={{
+                        backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
+                        backgroundSize: '20px 20px'
+                   }}></div>
+
+                   <svg className="absolute inset-0 h-full w-full pointer-events-none">
+                      <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="22" refY="3.5" orient="auto">
+                          <polygon points="0 0, 10 3.5, 0 7" className="text-muted-foreground" fill="currentColor" />
+                        </marker>
+                      </defs>
+                      {graphEdges.map((edge: any, i: number) => {
+                          const n1 = graphNodes.find((n:any) => n.id === edge.from)
+                          const n2 = graphNodes.find((n:any) => n.id === edge.to)
+                          if(!n1 || !n2) return null
+                          return (
+                              <motion.line
+                                  key={i}
+                                  initial={{ pathLength: 0, opacity: 0 }}
+                                  animate={{ pathLength: 1, opacity: 1 }}
+                                  x1={`${n1.x}%`}
+                                  y1={`${n1.y}%`}
+                                  x2={`${n2.x}%`}
+                                  y2={`${n2.y}%`}
+                                  className="text-muted-foreground"
+                                  stroke="currentColor"
+                                  strokeOpacity="0.4"
+                                  strokeWidth="2"
+                                  markerEnd="url(#arrowhead)"
+                              />
+                          )
+                      })}
+                   </svg>
+                   {graphNodes.map((node: any) => {
+                       const isActive = activeNodeId === node.id
+                       return (
+                           <motion.div
+                               key={node.id}
+                               layoutId={`node-${node.id}`}
+                               animate={{
+                                   backgroundColor: isActive ? "hsl(var(--primary))" : "hsl(var(--card))",
+                                   borderColor: isActive ? "hsl(var(--primary))" : "hsl(var(--border))",
+                                   color: isActive ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))",
+                                   scale: isActive ? 1.25 : 1,
+                                   boxShadow: isActive ? "0 0 20px hsl(var(--primary)/0.3)" : "0 4px 6px -1px rgb(0 0 0 / 0.1)"
+                               }}
+                               transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                               style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                               className="absolute flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 cursor-default items-center justify-center rounded-full border-2 text-lg font-bold"
+                           >
+                               {node.id}
+                           </motion.div>
+                       )
+                   })}
+              </div>
+          )
       default:
         return null
     }
@@ -374,13 +535,13 @@ export function DataStructureVisualizer({
 
   return (
     <VisualizerLayout
-      title="DS Visualizer"
-      icon={<Squares2X2Icon className="text-primary h-5 w-5" />}
+      title={`${topic.title} Visualizer`}
+      icon={<Squares2X2Icon className="h-5 w-5" />}
       controls={controls}
       description={description}
     >
-      <Card className="flex-1">
-        <CardContent className="flex items-center justify-center p-4">
+      <Card className="flex-1 overflow-hidden border-none shadow-none">
+        <CardContent className="p-0">
           {renderVisualization()}
         </CardContent>
       </Card>

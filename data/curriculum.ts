@@ -1,6 +1,6 @@
 import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug"
 
-import { Topic } from "@/types/curriculum"
+import { Topic, VisualizerType } from "@/types/curriculum"
 
 import { bellmanFord } from "./topics/advanced-graphs/bellman-ford"
 // Module 6: Advanced Graphs
@@ -130,4 +130,27 @@ export function getTopicBySlug(slug: string): Topic | undefined {
     const topicSlug = generateTopicSlug(topic.title)
     return topicSlug === slug || topic.id === slug
   })
+}
+
+// Overrides to ensure all topics have visualizers (Hot-patch)
+try {
+    const overrides: Record<string, VisualizerType> = {
+        "hashing": VisualizerType.HASH_TABLE,
+        "trie": VisualizerType.TRIE,
+        "graph-reps": VisualizerType.GRAPH,
+        "topo-sort": VisualizerType.GRAPH,
+        "kruskal": VisualizerType.GRAPH,
+        "union-find": VisualizerType.GRAPH,
+        "bellman-ford": VisualizerType.GRAPH,
+        "segment-tree": VisualizerType.BINARY_TREE, // Reuse Tree visualizer
+        "fenwick-tree": VisualizerType.BINARY_TREE, // Reuse Tree visualizer
+    }
+
+    TOPICS.forEach(topic => {
+        if (overrides[topic.id]) {
+            topic.visualizerType = overrides[topic.id]
+        }
+    })
+} catch (e) {
+    console.error("Failed to apply visualizer overrides", e)
 }

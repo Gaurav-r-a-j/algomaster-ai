@@ -66,6 +66,11 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
     }
   }
 
+  const handleStepChange = (step: number) => {
+    setIsPlaying(false)
+    setCurrentStep(step)
+  }
+
   const handleNextStep = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1)
@@ -97,6 +102,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
       onPreviousStep={handlePreviousStep}
       onNextStep={handleNextStep}
       onSpeedChange={setPlaybackSpeed}
+      onStepChange={handleStepChange}
       disabled={steps.length === 0}
       showSpeedControl={true}
     />

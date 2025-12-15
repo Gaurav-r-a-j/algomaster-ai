@@ -26,6 +26,9 @@ export enum VisualizerType {
   AVL_TREE = "AVL_TREE",
   HEAP = "HEAP",
   DP = "DP",
+  HASH_TABLE = "HASH_TABLE",
+  TRIE = "TRIE",
+  GRAPH = "GRAPH",
   NONE = "NONE",
 }
 
