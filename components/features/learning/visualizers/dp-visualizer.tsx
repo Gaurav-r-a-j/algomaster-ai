@@ -6,10 +6,11 @@ import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
 import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
-import { ArrowUp01Icon, PauseIcon, PlayIcon, RefreshCwIcon } from "@/lib/icons"
-import { Button } from "@/components/ui/button"
+import { ArrowUp01Icon } from "@/lib/icons"
+import { Card, CardContent } from "@/components/ui/card"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
+import { VisualizerControls } from "./visualizer-controls"
 import { VisualizerLayout } from "./visualizer-layout"
 
 interface DPVisualizerProps {
@@ -23,7 +24,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
   const [steps, setSteps] = useState<VisualizationStep[]>([])
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [playbackSpeed, _setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
+  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
   const timerRef = useRef<number | null>(null)
 
   const generateData = useCallback(() => {
@@ -59,6 +60,18 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
     }
   }, [isPlaying, steps.length, playbackSpeed])
 
+  const handlePreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
   const currentData =
     steps[currentStep] ||
     ({
@@ -73,36 +86,42 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
   const dp = auxiliary?.dp || []
 
   const controls = (
-    <div className="flex items-center gap-2">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={generateData}
-        disabled={isPlaying}
-      >
-        <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
-        Reset
-      </Button>
-      <Button
-        variant="default"
-        size="sm"
-        onClick={() => setIsPlaying(!isPlaying)}
-      >
-        <IconWrapper
-          icon={isPlaying ? PauseIcon : PlayIcon}
-          size={16}
-          className="mr-2"
-        />
-        {isPlaying ? "Pause" : "Play"}
-      </Button>
-    </div>
+    <VisualizerControls
+      isPlaying={isPlaying}
+      currentStep={currentStep}
+      totalSteps={steps.length}
+      playbackSpeed={playbackSpeed}
+      onPlay={() => setIsPlaying(true)}
+      onPause={() => setIsPlaying(false)}
+      onReset={generateData}
+      onPreviousStep={handlePreviousStep}
+      onNextStep={handleNextStep}
+      onSpeedChange={setPlaybackSpeed}
+      disabled={steps.length === 0}
+      showSpeedControl={true}
+    />
   )
 
   const description = (
     <div className="space-y-2">
-      <p className="text-primary font-mono text-sm">
-        Step {currentStep + 1} / {steps.length}
-      </p>
+      <div className="flex flex-wrap items-center gap-4 text-xs">
+        <div className="flex items-center gap-1.5">
+          <div className="h-3 w-3 rounded-full bg-emerald-500"></div>
+          <span className="text-muted-foreground">Active</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-3 w-3 rounded-full bg-blue-400"></div>
+          <span className="text-muted-foreground">Dependency</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-3 w-3 rounded-full border border-emerald-300 bg-background"></div>
+          <span className="text-muted-foreground">Calculated</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-3 w-3 rounded-full bg-muted border border-border"></div>
+          <span className="text-muted-foreground">Pending</span>
+        </div>
+      </div>
       <p className="text-foreground text-sm font-medium">
         {currentData.description}
       </p>
@@ -122,66 +141,72 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
       controls={controls}
       description={description}
     >
-      <motion.div
-        initial="initial"
-        animate="animate"
-        variants={staggerContainer}
-        className="bg-muted border-border flex items-center justify-center overflow-x-auto rounded-lg border p-4"
-      >
-        <div className="flex gap-2">
-          {dp.map((val: number | null, idx: number) => {
-            const isActive = currentData.activeIndices.includes(idx)
-            const isCalculated = val !== null
-            const isDependency =
-              currentData.activeIndices.length > 1 &&
-              currentData.activeIndices.slice(1).includes(idx)
-            return (
-              <motion.div
-                key={idx}
-                variants={staggerItem}
-                className="flex flex-col items-center"
-              >
-                <motion.div
-                  animate={{
-                    scale: isActive ? 1.1 : 1,
-                    backgroundColor: isActive
-                      ? "rgb(16 185 129)"
-                      : isDependency
-                        ? "rgb(191 219 254)"
-                        : isCalculated
-                          ? "hsl(var(--background))"
-                          : "hsl(var(--muted))",
-                    borderColor: isActive
-                      ? "rgb(5 150 105)"
-                      : isDependency
-                        ? "rgb(96 165 250)"
-                        : isCalculated
-                          ? "rgb(167 243 208)"
-                          : "hsl(var(--border))",
-                    color: isActive
-                      ? "white"
-                      : isDependency
-                        ? "rgb(30 64 175)"
-                        : isCalculated
-                          ? "hsl(var(--foreground))"
-                          : "hsl(var(--muted-foreground))",
-                    boxShadow: isActive
-                      ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
-                      : "none",
-                  }}
-                  transition={transitions.spring}
-                  className="flex h-14 w-14 items-center justify-center rounded-lg border-2 text-lg font-bold"
-                >
-                  {val !== null ? val : "?"}
-                </motion.div>
-                <span className="text-muted-foreground mt-2 font-mono text-xs">
-                  index {idx}
-                </span>
-              </motion.div>
-            )
-          })}
-        </div>
-      </motion.div>
+      <Card className="flex-1">
+        <CardContent className="p-4">
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={staggerContainer}
+            className="flex min-h-[180px] items-center justify-center overflow-x-auto"
+          >
+            <div className="flex gap-3">
+              {dp.map((val: number | null, idx: number) => {
+                const isActive = currentData.activeIndices.includes(idx)
+                const isCalculated = val !== null
+                const isDependency =
+                  currentData.activeIndices.length > 1 &&
+                  currentData.activeIndices.slice(1).includes(idx)
+                return (
+                  <motion.div
+                    key={idx}
+                    variants={staggerItem}
+                    className="flex flex-col items-center"
+                  >
+                    <motion.div
+                      animate={{
+                        scale: isActive ? 1.15 : 1,
+                        backgroundColor: isActive
+                          ? "rgb(16 185 129)"
+                          : isDependency
+                            ? "rgb(96 165 250)"
+                            : isCalculated
+                              ? "hsl(var(--background))"
+                              : "hsl(var(--muted))",
+                        borderColor: isActive
+                          ? "rgb(5 150 105)"
+                          : isDependency
+                            ? "rgb(59 130 246)"
+                            : isCalculated
+                              ? "rgb(167 243 208)"
+                              : "hsl(var(--border))",
+                        color: isActive
+                          ? "white"
+                          : isDependency
+                            ? "white"
+                            : isCalculated
+                              ? "hsl(var(--foreground))"
+                              : "hsl(var(--muted-foreground))",
+                        boxShadow: isActive
+                          ? "0 10px 25px -5px rgb(16 185 129 / 0.4), 0 8px 10px -6px rgb(16 185 129 / 0.3)"
+                          : isDependency
+                            ? "0 4px 15px -3px rgb(96 165 250 / 0.3)"
+                            : "none",
+                      }}
+                      transition={transitions.spring}
+                      className="flex h-14 w-14 items-center justify-center rounded-xl border-2 text-lg font-bold"
+                    >
+                      {val !== null ? val : "?"}
+                    </motion.div>
+                    <span className="text-muted-foreground mt-2 font-mono text-xs font-medium">
+                      F({idx})
+                    </span>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </motion.div>
+        </CardContent>
+      </Card>
     </VisualizerLayout>
   )
 }

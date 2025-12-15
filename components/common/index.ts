@@ -12,6 +12,7 @@ export { SuccessMessage } from "./success-message"
 export { IconWrapper } from "./icon-wrapper"
 export { Icon } from "./icon"
 export { MarkdownRenderer } from "./markdown-renderer"
+export { MultiLangCodeBlock } from "./multi-lang-code-block"
 export { CodeBlockWrapper } from "./code-block-wrapper"
 export { CodePreview } from "./code-preview"
 

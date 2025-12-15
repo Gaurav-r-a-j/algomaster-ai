@@ -169,23 +169,23 @@ export function MarkdownRenderer({
                     if (Component) {
                       // Parse props (simple implementation)
                       const propsString = jsxMatch[2]
-                      const props: Record<string, any> = {}
+                      const componentProps: Record<string, any> = {}
 
                       // Extract props like variant="default" or size="lg"
                       const propMatches = propsString.matchAll(
                         /(\w+)=["']([^"']+)["']/g
                       )
                       for (const match of propMatches) {
-                        props[match[1]] = match[2]
+                        componentProps[match[1]] = match[2]
                       }
 
                       // Extract children
                       const childrenText = jsxMatch[3]?.trim()
                       if (childrenText) {
-                        props.children = childrenText
+                        componentProps.children = childrenText
                       }
 
-                      preview = <Component {...props} />
+                      preview = <Component {...componentProps} />
                     }
                   }
                 }

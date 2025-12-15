@@ -12,6 +12,11 @@ import {
 } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
 interface VisualizerControlsProps {
@@ -56,69 +61,81 @@ export function VisualizerControls({
     <div className="flex flex-col gap-3">
       {/* Main Controls */}
       <div className="flex flex-wrap items-center gap-2">
-        <div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onReset}
-            disabled={disabled || isPlaying}
-            title="Reset visualization"
-          >
-            <motion.div
-              animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
-              transition={transitions.quick}
+        {/* Reset Button */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onReset}
+              disabled={disabled || isPlaying}
             >
-              <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
-            </motion.div>
-            Reset
-          </Button>
-        </div>
+              <motion.div
+                animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
+                transition={transitions.quick}
+              >
+                <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
+              </motion.div>
+              Reset
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Reset visualization</TooltipContent>
+        </Tooltip>
 
-        <div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onPreviousStep}
-            disabled={disabled || isPlaying || !canGoPrevious}
-            title="Previous step"
-          >
-            <IconWrapper icon={ChevronLeftIcon} size={16} />
-          </Button>
-        </div>
-
-        <div>
-          <Button
-            size="sm"
-            onClick={isPlaying ? onPause : onPlay}
-            disabled={disabled}
-            title={isPlaying ? "Pause" : "Play"}
-            className="min-w-[100px]"
-          >
-            <motion.div
-              animate={isPlaying ? { scale: [1, 1.1, 1] } : {}}
-              transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+        {/* Previous Step Button */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onPreviousStep}
+              disabled={disabled || isPlaying || !canGoPrevious}
             >
-              <IconWrapper
-                icon={isPlaying ? PauseIcon : PlayIcon}
-                size={16}
-                className="mr-2"
-              />
-            </motion.div>
-            {isPlaying ? "Pause" : "Play"}
-          </Button>
-        </div>
+              <IconWrapper icon={ChevronLeftIcon} size={16} />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Previous step</TooltipContent>
+        </Tooltip>
 
-        <div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onNextStep}
-            disabled={disabled || isPlaying || !canGoNext}
-            title="Next step"
-          >
-            <IconWrapper icon={ChevronRightIcon} size={16} />
-          </Button>
-        </div>
+        {/* Play/Pause Button */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              size="sm"
+              onClick={isPlaying ? onPause : onPlay}
+              disabled={disabled}
+              className="min-w-[100px]"
+            >
+              <motion.div
+                animate={isPlaying ? { scale: [1, 1.1, 1] } : {}}
+                transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <IconWrapper
+                  icon={isPlaying ? PauseIcon : PlayIcon}
+                  size={16}
+                  className="mr-2"
+                />
+              </motion.div>
+              {isPlaying ? "Pause" : "Play"}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>{isPlaying ? "Pause animation" : "Play animation"}</TooltipContent>
+        </Tooltip>
+
+        {/* Next Step Button */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onNextStep}
+              disabled={disabled || isPlaying || !canGoNext}
+            >
+              <IconWrapper icon={ChevronRightIcon} size={16} />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Next step</TooltipContent>
+        </Tooltip>
 
         {/* Step Counter */}
         <motion.div

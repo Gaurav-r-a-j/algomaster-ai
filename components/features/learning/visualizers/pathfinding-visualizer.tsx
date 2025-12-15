@@ -6,10 +6,10 @@ import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
 import { staggerItem, transitions } from "@/lib/animations"
-import { CodeIcon, PauseIcon, PlayIcon, RefreshCwIcon } from "@/lib/icons"
-import { Button } from "@/components/ui/button"
+import { CodeIcon } from "@/lib/icons"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
+import { VisualizerControls } from "./visualizer-controls"
 import { VisualizerLayout } from "./visualizer-layout"
 
 interface PathfindingVisualizerProps {
@@ -22,7 +22,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
   const [steps, setSteps] = useState<VisualizationStep[]>([])
   const [currentStep, setCurrentStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [playbackSpeed, _setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
+  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
   const timerRef = useRef<number | null>(null)
 
   const generateData = useCallback(() => {
@@ -59,6 +59,18 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
     }
   }, [isPlaying, steps.length, playbackSpeed])
 
+  const handlePreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
   const currentData =
     steps[currentStep] ||
     ({
@@ -75,29 +87,20 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
   const pathSet = new Set(auxiliary.path || [])
 
   const controls = (
-    <div className="flex items-center gap-2">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={generateData}
-        disabled={isPlaying}
-      >
-        <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
-        Reset
-      </Button>
-      <Button
-        variant="default"
-        size="sm"
-        onClick={() => setIsPlaying(!isPlaying)}
-      >
-        <IconWrapper
-          icon={isPlaying ? PauseIcon : PlayIcon}
-          size={16}
-          className="mr-2"
-        />
-        {isPlaying ? "Pause" : "Play"}
-      </Button>
-    </div>
+    <VisualizerControls
+      isPlaying={isPlaying}
+      currentStep={currentStep}
+      totalSteps={steps.length}
+      playbackSpeed={playbackSpeed}
+      onPlay={() => setIsPlaying(true)}
+      onPause={() => setIsPlaying(false)}
+      onReset={generateData}
+      onPreviousStep={handlePreviousStep}
+      onNextStep={handleNextStep}
+      onSpeedChange={setPlaybackSpeed}
+      disabled={steps.length === 0}
+      showSpeedControl={true}
+    />
   )
 
   const description = (
@@ -127,9 +130,6 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
       <p className="text-foreground text-sm font-medium">
         {currentData.description}
       </p>
-      <div className="text-muted-foreground text-xs">
-        Step {currentStep + 1} / {steps.length}
-      </div>
     </div>
   )
 

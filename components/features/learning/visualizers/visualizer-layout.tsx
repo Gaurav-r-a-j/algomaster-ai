@@ -5,7 +5,6 @@ import { motion } from "motion/react"
 
 import { fadeIn, slideUp, transitions } from "@/lib/animations"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 
 interface VisualizerLayoutProps {
   title: ReactNode
@@ -30,15 +29,21 @@ export function VisualizerLayout({
       transition={transitions.smooth}
       className="flex h-full flex-col gap-3"
     >
-      {/* Header */}
+      {/* Header with Controls */}
       <motion.div variants={slideUp} transition={transitions.spring}>
-        <Card className="shrink-0">
+        <Card className="shrink-0 border-border/50 bg-card/80 backdrop-blur-sm">
           <CardHeader className="pb-2">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
-                {icon && <div className="text-primary">{icon}</div>}
+                {icon && (
+                  <div className="rounded-lg bg-primary/10 p-2 text-primary">
+                    {icon}
+                  </div>
+                )}
                 {typeof title === "string" ? (
-                  <CardTitle className="text-xl font-bold">{title}</CardTitle>
+                  <CardTitle className="text-xl font-bold tracking-tight">
+                    {title}
+                  </CardTitle>
                 ) : (
                   title
                 )}
@@ -58,13 +63,13 @@ export function VisualizerLayout({
         {children}
       </motion.div>
 
-      {/* Description */}
+      {/* Description Footer */}
       <motion.div
         variants={slideUp}
         transition={{ ...transitions.spring, delay: 0.2 }}
       >
-        <Card className="shrink-0">
-          <CardContent className="p-3">
+        <Card className="shrink-0 border-border/50 bg-card/80 backdrop-blur-sm">
+          <CardContent className="p-4">
             {description}
           </CardContent>
         </Card>
