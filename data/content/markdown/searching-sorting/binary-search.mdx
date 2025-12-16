@@ -1,0 +1,765 @@
+# Binary Search
+
+Binary Search is a highly efficient algorithm for finding an element in a **sorted** array by repeatedly dividing the search space in half.
+
+## Key Concept
+
+Instead of checking every element (linear search), binary search:
+1. Looks at the **middle element**
+2. Eliminates **half the remaining elements**
+3. Repeats until found or search space is empty
+
+**Result:** O(log n) time complexity - dramatically faster for large datasets!
+
+```
+Array of 1,000,000 elements:
+├── Linear Search: Up to 1,000,000 comparisons
+└── Binary Search: At most 20 comparisons (log₂ 1,000,000 ≈ 20)
+```
+
+---
+
+## How It Works
+
+```
+Array: [1, 3, 5, 7, 9, 11, 13, 15]
+Target: 9
+
+Step 1: mid = 7, target > 7 → search right half
+        [1, 3, 5, 7, 9, 11, 13, 15]
+                   ↑
+                  mid
+        
+Step 2: mid = 11, target < 11 → search left half
+        [9, 11, 13, 15]
+            ↑
+           mid
+
+Step 3: mid = 9, target == 9 → FOUND at index 4
+        [9]
+         ↑
+```
+
+---
+
+## Implementation
+
+```multi
+---javascript
+function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
+
+// Example
+const arr = [1, 3, 5, 7, 9, 11, 13, 15];
+console.log(binarySearch(arr, 9));  // 4
+console.log(binarySearch(arr, 6));  // -1
+---python
+def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return -1
+
+# Example
+arr = [1, 3, 5, 7, 9, 11, 13, 15]
+print(binary_search(arr, 9))  # 4
+print(binary_search(arr, 6))  # -1
+---java
+public static int binarySearch(int[] arr, int target) {
+    int left = 0;
+    int right = arr.length - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
+
+// Example
+int[] arr = {1, 3, 5, 7, 9, 11, 13, 15};
+System.out.println(binarySearch(arr, 9));  // 4
+---cpp
+int binarySearch(vector<int>& arr, int target) {
+    int left = 0;
+    int right = arr.size() - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
+
+// Example
+vector<int> arr = {1, 3, 5, 7, 9, 11, 13, 15};
+cout << binarySearch(arr, 9);  // 4
+```
+
+---
+
+## Common Variations
+
+### 1. Find First Occurrence
+
+```multi
+---javascript
+function findFirst(arr, target) {
+    let left = 0, right = arr.length - 1;
+    let result = -1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (arr[mid] === target) {
+            result = mid;
+            right = mid - 1;  // Keep searching left
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return result;
+}
+
+// [1, 2, 2, 2, 3] → findFirst(arr, 2) = 1
+---python
+def find_first(arr, target):
+    left, right = 0, len(arr) - 1
+    result = -1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if arr[mid] == target:
+            result = mid
+            right = mid - 1  # Keep searching left
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return result
+
+# [1, 2, 2, 2, 3] → find_first(arr, 2) = 1
+---java
+public static int findFirst(int[] arr, int target) {
+    int left = 0, right = arr.length - 1;
+    int result = -1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == target) {
+            result = mid;
+            right = mid - 1;  // Keep searching left
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return result;
+}
+
+// [1, 2, 2, 2, 3] → findFirst(arr, 2) = 1
+---cpp
+int findFirst(vector<int>& arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    int result = -1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == target) {
+            result = mid;
+            right = mid - 1;  // Keep searching left
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return result;
+}
+
+// [1, 2, 2, 2, 3] → findFirst(arr, 2) = 1
+```
+
+### 2. Find Last Occurrence
+
+```multi
+---javascript
+function findLast(arr, target) {
+    let left = 0, right = arr.length - 1;
+    let result = -1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (arr[mid] === target) {
+            result = mid;
+            left = mid + 1;  // Keep searching right
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return result;
+}
+
+// [1, 2, 2, 2, 3] → findLast(arr, 2) = 3
+---python
+def find_last(arr, target):
+    left, right = 0, len(arr) - 1
+    result = -1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if arr[mid] == target:
+            result = mid
+            left = mid + 1  # Keep searching right
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return result
+
+# [1, 2, 2, 2, 3] → find_last(arr, 2) = 3
+---java
+public static int findLast(int[] arr, int target) {
+    int left = 0, right = arr.length - 1;
+    int result = -1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == target) {
+            result = mid;
+            left = mid + 1;  // Keep searching right
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return result;
+}
+
+// [1, 2, 2, 2, 3] → findLast(arr, 2) = 3
+---cpp
+int findLast(vector<int>& arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    int result = -1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == target) {
+            result = mid;
+            left = mid + 1;  // Keep searching right
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return result;
+}
+
+// [1, 2, 2, 2, 3] → findLast(arr, 2) = 3
+```
+
+### 3. Find Insertion Position
+
+```multi
+---javascript
+function searchInsert(nums, target) {
+    let left = 0, right = nums.length - 1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (nums[mid] === target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return left;  // Insertion position
+}
+
+// [1, 3, 5, 6], target=5 → 2
+// [1, 3, 5, 6], target=2 → 1
+---python
+def search_insert(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return left  # Insertion position
+
+# [1, 3, 5, 6], target=5 → 2
+# [1, 3, 5, 6], target=2 → 1
+---java
+public static int searchInsert(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] == target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return left;  // Insertion position
+}
+
+// [1, 3, 5, 6], target=5 → 2
+// [1, 3, 5, 6], target=2 → 1
+---cpp
+int searchInsert(vector<int>& nums, int target) {
+    int left = 0, right = nums.size() - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] == target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return left;  // Insertion position
+}
+
+// [1, 3, 5, 6], target=5 → 2
+// [1, 3, 5, 6], target=2 → 1
+```
+
+### 4. Search in Rotated Sorted Array
+
+```multi
+---javascript
+function searchRotated(nums, target) {
+    let left = 0, right = nums.length - 1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (nums[mid] === target) return mid;
+        
+        // Left half is sorted
+        if (nums[left] <= nums[mid]) {
+            if (nums[left] <= target && target < nums[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        // Right half is sorted
+        else {
+            if (nums[mid] < target && target <= nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+    
+    return -1;
+}
+
+// [4, 5, 6, 7, 0, 1, 2], target=0 → 4
+---python
+def search_rotated(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if nums[mid] == target:
+            return mid
+        
+        # Left half is sorted
+        if nums[left] <= nums[mid]:
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        # Right half is sorted
+        else:
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+    
+    return -1
+
+# [4, 5, 6, 7, 0, 1, 2], target=0 → 4
+---java
+public static int searchRotated(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] == target) return mid;
+        
+        // Left half is sorted
+        if (nums[left] <= nums[mid]) {
+            if (nums[left] <= target && target < nums[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        // Right half is sorted
+        else {
+            if (nums[mid] < target && target <= nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+    
+    return -1;
+}
+
+// [4, 5, 6, 7, 0, 1, 2], target=0 → 4
+---cpp
+int searchRotated(vector<int>& nums, int target) {
+    int left = 0, right = nums.size() - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] == target) return mid;
+        
+        // Left half is sorted
+        if (nums[left] <= nums[mid]) {
+            if (nums[left] <= target && target < nums[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        // Right half is sorted
+        else {
+            if (nums[mid] < target && target <= nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+    
+    return -1;
+}
+
+// [4, 5, 6, 7, 0, 1, 2], target=0 → 4
+```
+
+### 5. Find Peak Element
+
+```multi
+---javascript
+function findPeak(nums) {
+    let left = 0, right = nums.length - 1;
+    
+    while (left < right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (nums[mid] > nums[mid + 1]) {
+            right = mid;  // Peak is on left (including mid)
+        } else {
+            left = mid + 1;  // Peak is on right
+        }
+    }
+    
+    return left;
+}
+
+// [1, 2, 3, 1] → 2 (index of peak element 3)
+---python
+def find_peak(nums):
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = (left + right) // 2
+        
+        if nums[mid] > nums[mid + 1]:
+            right = mid  # Peak is on left (including mid)
+        else:
+            left = mid + 1  # Peak is on right
+    
+    return left
+
+# [1, 2, 3, 1] → 2 (index of peak element 3)
+---java
+public static int findPeak(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] > nums[mid + 1]) {
+            right = mid;  // Peak is on left (including mid)
+        } else {
+            left = mid + 1;  // Peak is on right
+        }
+    }
+    
+    return left;
+}
+
+// [1, 2, 3, 1] → 2 (index of peak element 3)
+---cpp
+int findPeak(vector<int>& nums) {
+    int left = 0, right = nums.size() - 1;
+    
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] > nums[mid + 1]) {
+            right = mid;  // Peak is on left (including mid)
+        } else {
+            left = mid + 1;  // Peak is on right
+        }
+    }
+    
+    return left;
+}
+
+// [1, 2, 3, 1] → 2 (index of peak element 3)
+```
+
+### 6. Find Minimum in Rotated Array
+
+```multi
+---javascript
+function findMin(nums) {
+    let left = 0, right = nums.length - 1;
+    
+    while (left < right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (nums[mid] > nums[right]) {
+            left = mid + 1;  // Min is on right
+        } else {
+            right = mid;  // Min is on left (including mid)
+        }
+    }
+    
+    return nums[left];
+}
+
+// [3, 4, 5, 1, 2] → 1
+---python
+def find_min(nums):
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = (left + right) // 2
+        
+        if nums[mid] > nums[right]:
+            left = mid + 1  # Min is on right
+        else:
+            right = mid  # Min is on left (including mid)
+    
+    return nums[left]
+
+# [3, 4, 5, 1, 2] → 1
+---java
+public static int findMin(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] > nums[right]) {
+            left = mid + 1;  // Min is on right
+        } else {
+            right = mid;  // Min is on left (including mid)
+        }
+    }
+    
+    return nums[left];
+}
+
+// [3, 4, 5, 1, 2] → 1
+---cpp
+int findMin(vector<int>& nums) {
+    int left = 0, right = nums.size() - 1;
+    
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        
+        if (nums[mid] > nums[right]) {
+            left = mid + 1;  // Min is on right
+        } else {
+            right = mid;  // Min is on left (including mid)
+        }
+    }
+    
+    return nums[left];
+}
+
+// [3, 4, 5, 1, 2] → 1
+```
+
+---
+
+## Time & Space Complexity
+
+| Scenario | Time | Space (Iterative) | Space (Recursive) |
+|----------|------|-------------------|-------------------|
+| Best Case | O(1) | O(1) | O(1) |
+| Average Case | O(log n) | O(1) | O(log n) |
+| Worst Case | O(log n) | O(1) | O(log n) |
+
+---
+
+## Common Mistakes to Avoid
+
+### 1. Integer Overflow
+
+```multi
+---javascript
+// JavaScript handles big numbers, but be aware in other languages
+const mid = Math.floor((left + right) / 2);
+// Safer: const mid = left + Math.floor((right - left) / 2);
+---python
+# Python handles big integers natively
+mid = (left + right) // 2
+# Safer: mid = left + (right - left) // 2
+---java
+// WRONG: int mid = (left + right) / 2;  // Can overflow!
+// CORRECT:
+int mid = left + (right - left) / 2;
+---cpp
+// WRONG: int mid = (left + right) / 2;  // Can overflow!
+// CORRECT:
+int mid = left + (right - left) / 2;
+```
+
+### 2. Off-by-One Errors
+
+```multi
+---javascript
+// Common mistake: using < instead of <=
+// while (left < right)   // Wrong for some cases
+while (left <= right) {   // Correct
+    // ...
+}
+---python
+# Common mistake: using < instead of <=
+# while left < right:   # Wrong for some cases
+while left <= right:    # Correct
+    # ...
+---java
+// Common mistake: using < instead of <=
+// while (left < right)   // Wrong for some cases
+while (left <= right) {   // Correct
+    // ...
+}
+---cpp
+// Common mistake: using < instead of <=
+// while (left < right)   // Wrong for some cases
+while (left <= right) {   // Correct
+    // ...
+}
+```
+
+---
+
+## When to Use Binary Search
+
+| Use Case | Example |
+|----------|---------|
+| Searching sorted array | Find element in database index |
+| Finding boundaries | First/last occurrence of value |
+| Optimization problems | Minimize/maximize with monotonic property |
+| Range queries | Count elements in range |
+| Square root, nth root | Numerical computation |
+
+---
+
+## Key Takeaways
+
+1. **Only works on sorted data** - sort first if needed
+2. **O(log n) is powerful** - handles billions of elements efficiently
+3. **Watch for edge cases** - empty array, single element, duplicates
+4. **Use `left + (right - left) / 2`** to prevent overflow
+5. **Master the variations** - they appear frequently in interviews

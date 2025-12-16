@@ -15,6 +15,8 @@ export { MarkdownRenderer } from "./markdown-renderer"
 export { MultiLangCodeBlock } from "./multi-lang-code-block"
 export { CodeBlockWrapper } from "./code-block-wrapper"
 export { CodePreview } from "./code-preview"
+export { CodeBlock, SimpleCodeBlock } from "./code-block"
+export { CopyButton } from "./copy-button"
 
 export type { ContainerProps } from "./container"
 export type { SectionProps } from "./section"

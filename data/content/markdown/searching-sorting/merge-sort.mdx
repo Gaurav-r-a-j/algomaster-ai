@@ -1,0 +1,591 @@
+# Merge Sort
+
+Merge Sort is a divide-and-conquer algorithm that divides the array into halves, sorts them, and then merges them back together.
+
+## How It Works
+
+1. **Divide:** Split the array into two halves
+2. **Conquer:** Recursively sort both halves
+3. **Combine:** Merge the two sorted halves
+
+## Visual Representation
+
+```
+Original: [38, 27, 43, 3, 9, 82, 10]
+
+Divide Phase:
+                [38, 27, 43, 3, 9, 82, 10]
+                /                        \
+        [38, 27, 43, 3]            [9, 82, 10]
+        /            \              /        \
+    [38, 27]      [43, 3]      [9, 82]      [10]
+    /     \       /     \       /    \
+  [38]   [27]   [43]   [3]   [9]   [82]
+
+Merge Phase:
+  [38]   [27]   [43]   [3]   [9]   [82]   [10]
+    \     /       \     /     \    /        |
+    [27, 38]      [3, 43]    [9, 82]      [10]
+        \            /           \         /
+      [3, 27, 38, 43]          [9, 10, 82]
+              \                    /
+          [3, 9, 10, 27, 38, 43, 82]
+```
+
+## Implementation
+
+```multi
+[javascript]
+function mergeSort(arr) {
+    if (arr.length <= 1) return arr;
+    
+    // Divide
+    const mid = Math.floor(arr.length / 2);
+    const left = mergeSort(arr.slice(0, mid));
+    const right = mergeSort(arr.slice(mid));
+    
+    // Conquer and Combine
+    return merge(left, right);
+}
+
+function merge(left, right) {
+    const result = [];
+    let i = 0, j = 0;
+    
+    // Merge two sorted arrays
+    while (i < left.length && j < right.length) {
+        if (left[i] <= right[j]) {
+            result.push(left[i]);
+            i++;
+        } else {
+            result.push(right[j]);
+            j++;
+        }
+    }
+    
+    // Add remaining elements
+    return result.concat(left.slice(i)).concat(right.slice(j));
+}
+
+// Example
+const arr = [38, 27, 43, 3, 9, 82, 10];
+console.log(mergeSort(arr));  // [3, 9, 10, 27, 38, 43, 82]
+
+[python]
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    
+    # Divide
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+    
+    # Conquer and Combine
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+    
+    # Merge two sorted arrays
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    # Add remaining elements
+    result.extend(left[i:])
+    result.extend(right[j:])
+    
+    return result
+
+# Example
+arr = [38, 27, 43, 3, 9, 82, 10]
+sorted_arr = merge_sort(arr)
+print(sorted_arr)  # [3, 9, 10, 27, 38, 43, 82]
+
+[java]
+import java.util.Arrays;
+
+public class MergeSort {
+    public static void mergeSort(int[] arr, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+            
+            // Divide
+            mergeSort(arr, left, mid);
+            mergeSort(arr, mid + 1, right);
+            
+            // Conquer and Combine
+            merge(arr, left, mid, right);
+        }
+    }
+    
+    private static void merge(int[] arr, int left, int mid, int right) {
+        // Create temp arrays
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+        int[] L = new int[n1];
+        int[] R = new int[n2];
+        
+        // Copy data to temp arrays
+        for (int i = 0; i < n1; i++) L[i] = arr[left + i];
+        for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
+        
+        // Merge temp arrays back
+        int i = 0, j = 0, k = left;
+        
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k++] = L[i++];
+            } else {
+                arr[k++] = R[j++];
+            }
+        }
+        
+        // Copy remaining elements
+        while (i < n1) arr[k++] = L[i++];
+        while (j < n2) arr[k++] = R[j++];
+    }
+    
+    public static void main(String[] args) {
+        int[] arr = {38, 27, 43, 3, 9, 82, 10};
+        mergeSort(arr, 0, arr.length - 1);
+        System.out.println(Arrays.toString(arr));
+        // [3, 9, 10, 27, 38, 43, 82]
+    }
+}
+
+[cpp]
+#include <iostream>
+#include <vector>
+
+void merge(std::vector<int>& arr, int left, int mid, int right) {
+    // Create temp arrays
+    std::vector<int> L(arr.begin() + left, arr.begin() + mid + 1);
+    std::vector<int> R(arr.begin() + mid + 1, arr.begin() + right + 1);
+    
+    // Merge temp arrays back
+    int i = 0, j = 0, k = left;
+    
+    while (i < L.size() && j < R.size()) {
+        if (L[i] <= R[j]) {
+            arr[k++] = L[i++];
+        } else {
+            arr[k++] = R[j++];
+        }
+    }
+    
+    // Copy remaining elements
+    while (i < L.size()) arr[k++] = L[i++];
+    while (j < R.size()) arr[k++] = R[j++];
+}
+
+void mergeSort(std::vector<int>& arr, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        
+        // Divide
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        
+        // Conquer and Combine
+        merge(arr, left, mid, right);
+    }
+}
+
+int main() {
+    std::vector<int> arr = {38, 27, 43, 3, 9, 82, 10};
+    mergeSort(arr, 0, arr.size() - 1);
+    // arr is now {3, 9, 10, 27, 38, 43, 82}
+    for (int num : arr) {
+        std::cout << num << " ";
+    }
+    return 0;
+}
+```
+
+## Time Complexity
+
+| Case | Complexity | Description |
+|------|------------|-------------|
+| Best | O(n log n) | Always splits and merges |
+| Average | O(n log n) | Consistent for all inputs |
+| Worst | O(n log n) | Always O(n log n) |
+
+**Consistent performance** - always O(n log n) regardless of input.
+
+## Space Complexity
+
+O(n) - Requires additional space for the temporary arrays during merging.
+
+## Characteristics
+
+- **Stable:** Maintains relative order of equal elements
+- **Not In-place:** Requires O(n) extra space
+- **Predictable:** Always O(n log n) performance
+- **Divide and Conquer:** Recursive approach
+
+## In-Place Merge Sort
+
+```multi
+[javascript]
+// In-place merge sort (more complex, O(1) extra space)
+function mergeSortInPlace(arr, left = 0, right = arr.length - 1) {
+    if (left < right) {
+        const mid = Math.floor((left + right) / 2);
+        mergeSortInPlace(arr, left, mid);
+        mergeSortInPlace(arr, mid + 1, right);
+        mergeInPlace(arr, left, mid, right);
+    }
+    return arr;
+}
+
+function mergeInPlace(arr, left, mid, right) {
+    let i = left;
+    let j = mid + 1;
+    
+    if (arr[mid] <= arr[j]) return;  // Already sorted
+    
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) {
+            i++;
+        } else {
+            const value = arr[j];
+            let index = j;
+            
+            // Shift all elements between i and j right by one
+            while (index !== i) {
+                arr[index] = arr[index - 1];
+                index--;
+            }
+            arr[i] = value;
+            
+            i++;
+            mid++;
+            j++;
+        }
+    }
+}
+
+[python]
+def merge_sort_inplace(arr, left=0, right=None):
+    """In-place merge sort - O(1) extra space but slower"""
+    if right is None:
+        right = len(arr) - 1
+    
+    if left < right:
+        mid = (left + right) // 2
+        merge_sort_inplace(arr, left, mid)
+        merge_sort_inplace(arr, mid + 1, right)
+        merge_inplace(arr, left, mid, right)
+    
+    return arr
+
+def merge_inplace(arr, left, mid, right):
+    i = left
+    j = mid + 1
+    
+    if arr[mid] <= arr[j]:
+        return  # Already sorted
+    
+    while i <= mid and j <= right:
+        if arr[i] <= arr[j]:
+            i += 1
+        else:
+            value = arr[j]
+            index = j
+            
+            # Shift all elements between i and j right by one
+            while index != i:
+                arr[index] = arr[index - 1]
+                index -= 1
+            arr[i] = value
+            
+            i += 1
+            mid += 1
+            j += 1
+
+[java]
+public static void mergeSortInPlace(int[] arr, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSortInPlace(arr, left, mid);
+        mergeSortInPlace(arr, mid + 1, right);
+        mergeInPlace(arr, left, mid, right);
+    }
+}
+
+private static void mergeInPlace(int[] arr, int left, int mid, int right) {
+    int i = left;
+    int j = mid + 1;
+    
+    if (arr[mid] <= arr[j]) return;  // Already sorted
+    
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) {
+            i++;
+        } else {
+            int value = arr[j];
+            int index = j;
+            
+            // Shift all elements between i and j right by one
+            while (index != i) {
+                arr[index] = arr[index - 1];
+                index--;
+            }
+            arr[i] = value;
+            
+            i++;
+            mid++;
+            j++;
+        }
+    }
+}
+
+[cpp]
+void mergeInPlace(std::vector<int>& arr, int left, int mid, int right) {
+    int i = left;
+    int j = mid + 1;
+    
+    if (arr[mid] <= arr[j]) return;  // Already sorted
+    
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) {
+            i++;
+        } else {
+            int value = arr[j];
+            int index = j;
+            
+            // Shift all elements between i and j right by one
+            while (index != i) {
+                arr[index] = arr[index - 1];
+                index--;
+            }
+            arr[i] = value;
+            
+            i++;
+            mid++;
+            j++;
+        }
+    }
+}
+
+void mergeSortInPlace(std::vector<int>& arr, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSortInPlace(arr, left, mid);
+        mergeSortInPlace(arr, mid + 1, right);
+        mergeInPlace(arr, left, mid, right);
+    }
+}
+```
+
+## Merge Sort for Linked Lists
+
+Merge sort is particularly efficient for linked lists (O(1) extra space).
+
+```multi
+[javascript]
+function sortList(head) {
+    if (!head || !head.next) return head;
+    
+    // Find middle using slow/fast pointers
+    let slow = head, fast = head, prev = null;
+    while (fast && fast.next) {
+        prev = slow;
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    prev.next = null;  // Split the list
+    
+    // Recursively sort both halves
+    const left = sortList(head);
+    const right = sortList(slow);
+    
+    // Merge sorted halves
+    return mergeLists(left, right);
+}
+
+function mergeLists(l1, l2) {
+    const dummy = { next: null };
+    let curr = dummy;
+    
+    while (l1 && l2) {
+        if (l1.val <= l2.val) {
+            curr.next = l1;
+            l1 = l1.next;
+        } else {
+            curr.next = l2;
+            l2 = l2.next;
+        }
+        curr = curr.next;
+    }
+    
+    curr.next = l1 || l2;
+    return dummy.next;
+}
+
+[python]
+def sort_list(head):
+    if not head or not head.next:
+        return head
+    
+    # Find middle using slow/fast pointers
+    slow, fast, prev = head, head, None
+    while fast and fast.next:
+        prev = slow
+        slow = slow.next
+        fast = fast.next.next
+    prev.next = None  # Split the list
+    
+    # Recursively sort both halves
+    left = sort_list(head)
+    right = sort_list(slow)
+    
+    # Merge sorted halves
+    return merge_lists(left, right)
+
+def merge_lists(l1, l2):
+    dummy = ListNode(0)
+    curr = dummy
+    
+    while l1 and l2:
+        if l1.val <= l2.val:
+            curr.next = l1
+            l1 = l1.next
+        else:
+            curr.next = l2
+            l2 = l2.next
+        curr = curr.next
+    
+    curr.next = l1 or l2
+    return dummy.next
+
+[java]
+public ListNode sortList(ListNode head) {
+    if (head == null || head.next == null) return head;
+    
+    // Find middle using slow/fast pointers
+    ListNode slow = head, fast = head, prev = null;
+    while (fast != null && fast.next != null) {
+        prev = slow;
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    prev.next = null;  // Split the list
+    
+    // Recursively sort both halves
+    ListNode left = sortList(head);
+    ListNode right = sortList(slow);
+    
+    // Merge sorted halves
+    return mergeLists(left, right);
+}
+
+private ListNode mergeLists(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(0);
+    ListNode curr = dummy;
+    
+    while (l1 != null && l2 != null) {
+        if (l1.val <= l2.val) {
+            curr.next = l1;
+            l1 = l1.next;
+        } else {
+            curr.next = l2;
+            l2 = l2.next;
+        }
+        curr = curr.next;
+    }
+    
+    curr.next = (l1 != null) ? l1 : l2;
+    return dummy.next;
+}
+
+[cpp]
+ListNode* sortList(ListNode* head) {
+    if (!head || !head->next) return head;
+    
+    // Find middle using slow/fast pointers
+    ListNode* slow = head;
+    ListNode* fast = head;
+    ListNode* prev = nullptr;
+    
+    while (fast && fast->next) {
+        prev = slow;
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    prev->next = nullptr;  // Split the list
+    
+    // Recursively sort both halves
+    ListNode* left = sortList(head);
+    ListNode* right = sortList(slow);
+    
+    // Merge sorted halves
+    return mergeLists(left, right);
+}
+
+ListNode* mergeLists(ListNode* l1, ListNode* l2) {
+    ListNode dummy(0);
+    ListNode* curr = &dummy;
+    
+    while (l1 && l2) {
+        if (l1->val <= l2->val) {
+            curr->next = l1;
+            l1 = l1->next;
+        } else {
+            curr->next = l2;
+            l2 = l2->next;
+        }
+        curr = curr->next;
+    }
+    
+    curr->next = l1 ? l1 : l2;
+    return dummy.next;
+}
+```
+
+---
+
+## When to Use
+
+- When stable sorting is required
+- When consistent O(n log n) performance is needed
+- Sorting linked lists (efficient for linked lists)
+- External sorting (can sort data too large for memory)
+
+## Advantages
+
+- Guaranteed O(n log n) performance
+- Stable sorting
+- Good for large datasets
+- Parallelizable
+- Works well with linked lists
+
+## Disadvantages
+
+- Requires O(n) extra space
+- Not in-place
+- Slower than Quick Sort in practice (more memory operations)
+
+## Comparison with Quick Sort
+
+| Feature | Merge Sort | Quick Sort |
+|---------|------------|------------|
+| Stability | Stable | Not Stable |
+| Worst Case | O(n log n) | O(n²) |
+| Space | O(n) | O(log n) |
+| Performance | Predictable | Faster average |
+
+## Key Takeaways
+
+1. **Divide and Conquer** - Split, sort halves, merge
+2. **Always O(n log n)** - Predictable, consistent performance
+3. **Stable** - Maintains relative order of equal elements
+4. **Extra space** - Requires O(n) auxiliary space
+5. **Best for linked lists** - O(1) extra space for linked lists

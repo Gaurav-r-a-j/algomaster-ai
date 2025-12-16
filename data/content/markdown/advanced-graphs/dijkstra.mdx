@@ -1,0 +1,384 @@
+# Dijkstra's Algorithm
+
+Dijkstra's algorithm finds the shortest path from a source vertex to all other vertices in a weighted graph with **non-negative** edge weights.
+
+## How It Works
+
+```
+        A ——(1)—— B
+        |        |
+       (4)      (2)
+        |        |
+        C ——(1)—— D
+
+From A:
+1. Start at A (dist=0), mark visited
+2. Update neighbors: B=1, C=4
+3. Visit B (smallest), update: D=3 (via B)
+4. Visit D, update: C=4 (no change)
+5. Visit C
+
+Final distances from A: {A:0, B:1, C:4, D:3}
+```
+
+## Algorithm Steps
+
+1. Initialize distances: source = 0, others = infinity
+2. Use a priority queue (min-heap)
+3. Process vertex with smallest distance
+4. Update distances of neighbors if shorter path found
+5. Repeat until all vertices processed
+
+## Implementation
+
+```multi
+[javascript]
+function dijkstra(graph, start, n) {
+    // graph: adjacency list with [neighbor, weight]
+    const dist = new Array(n).fill(Infinity);
+    dist[start] = 0;
+    
+    // Min heap: [distance, vertex]
+    const heap = [[0, start]];
+    const visited = new Set();
+    
+    while (heap.length > 0) {
+        heap.sort((a, b) => a[0] - b[0]);
+        const [d, u] = heap.shift();
+        
+        if (visited.has(u)) continue;
+        visited.add(u);
+        
+        for (const [v, weight] of graph[u] || []) {
+            if (dist[u] + weight < dist[v]) {
+                dist[v] = dist[u] + weight;
+                heap.push([dist[v], v]);
+            }
+        }
+    }
+    
+    return dist;
+}
+
+// Usage
+const graph = {
+    0: [[1, 1], [2, 4]],
+    1: [[0, 1], [3, 2]],
+    2: [[0, 4], [3, 1]],
+    3: [[1, 2], [2, 1]]
+};
+console.log(dijkstra(graph, 0, 4));  // [0, 1, 4, 3]
+
+[python]
+import heapq
+from collections import defaultdict
+
+def dijkstra(graph, start, n):
+    """
+    Dijkstra's algorithm using min-heap.
+    graph: adjacency list with (neighbor, weight)
+    Time: O((V + E) log V)
+    """
+    dist = [float('inf')] * n
+    dist[start] = 0
+    
+    # Min heap: (distance, vertex)
+    heap = [(0, start)]
+    visited = set()
+    
+    while heap:
+        d, u = heapq.heappop(heap)
+        
+        if u in visited:
+            continue
+        visited.add(u)
+        
+        for v, weight in graph.get(u, []):
+            if dist[u] + weight < dist[v]:
+                dist[v] = dist[u] + weight
+                heapq.heappush(heap, (dist[v], v))
+    
+    return dist
+
+# Usage
+graph = {
+    0: [(1, 1), (2, 4)],
+    1: [(0, 1), (3, 2)],
+    2: [(0, 4), (3, 1)],
+    3: [(1, 2), (2, 1)]
+}
+print(dijkstra(graph, 0, 4))  # [0, 1, 4, 3]
+
+[java]
+import java.util.*;
+
+public class Dijkstra {
+    public int[] dijkstra(Map<Integer, List<int[]>> graph, int start, int n) {
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[start] = 0;
+        
+        // Min heap: {distance, vertex}
+        PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        heap.offer(new int[]{0, start});
+        Set<Integer> visited = new HashSet<>();
+        
+        while (!heap.isEmpty()) {
+            int[] curr = heap.poll();
+            int d = curr[0], u = curr[1];
+            
+            if (visited.contains(u)) continue;
+            visited.add(u);
+            
+            for (int[] edge : graph.getOrDefault(u, new ArrayList<>())) {
+                int v = edge[0], weight = edge[1];
+                if (dist[u] + weight < dist[v]) {
+                    dist[v] = dist[u] + weight;
+                    heap.offer(new int[]{dist[v], v});
+                }
+            }
+        }
+        
+        return dist;
+    }
+}
+
+[cpp]
+#include <vector>
+#include <queue>
+#include <unordered_map>
+#include <limits>
+
+std::vector<int> dijkstra(
+    std::unordered_map<int, std::vector<std::pair<int, int>>>& graph,
+    int start, int n
+) {
+    std::vector<int> dist(n, std::numeric_limits<int>::max());
+    dist[start] = 0;
+    
+    // Min heap: {distance, vertex}
+    std::priority_queue<
+        std::pair<int, int>,
+        std::vector<std::pair<int, int>>,
+        std::greater<std::pair<int, int>>
+    > heap;
+    
+    heap.push({0, start});
+    std::vector<bool> visited(n, false);
+    
+    while (!heap.empty()) {
+        auto [d, u] = heap.top();
+        heap.pop();
+        
+        if (visited[u]) continue;
+        visited[u] = true;
+        
+        for (auto& [v, weight] : graph[u]) {
+            if (dist[u] + weight < dist[v]) {
+                dist[v] = dist[u] + weight;
+                heap.push({dist[v], v});
+            }
+        }
+    }
+    
+    return dist;
+}
+```
+
+## With Path Reconstruction
+
+```multi
+[javascript]
+function dijkstraWithPath(graph, start, end, n) {
+    const dist = new Array(n).fill(Infinity);
+    dist[start] = 0;
+    const parent = new Array(n).fill(-1);
+    
+    const heap = [[0, start]];
+    const visited = new Set();
+    
+    while (heap.length > 0) {
+        heap.sort((a, b) => a[0] - b[0]);
+        const [d, u] = heap.shift();
+        
+        if (u === end) break;
+        if (visited.has(u)) continue;
+        visited.add(u);
+        
+        for (const [v, weight] of graph[u] || []) {
+            if (dist[u] + weight < dist[v]) {
+                dist[v] = dist[u] + weight;
+                parent[v] = u;
+                heap.push([dist[v], v]);
+            }
+        }
+    }
+    
+    // Reconstruct path
+    const path = [];
+    let current = end;
+    while (current !== -1) {
+        path.push(current);
+        current = parent[current];
+    }
+    
+    return { distance: dist[end], path: path.reverse() };
+}
+
+[python]
+def dijkstra_with_path(graph, start, end, n):
+    """
+    Dijkstra's algorithm with path reconstruction.
+    """
+    dist = [float('inf')] * n
+    dist[start] = 0
+    parent = [-1] * n
+    
+    heap = [(0, start)]
+    visited = set()
+    
+    while heap:
+        d, u = heapq.heappop(heap)
+        
+        if u == end:
+            break
+        
+        if u in visited:
+            continue
+        visited.add(u)
+        
+        for v, weight in graph.get(u, []):
+            if dist[u] + weight < dist[v]:
+                dist[v] = dist[u] + weight
+                parent[v] = u
+                heapq.heappush(heap, (dist[v], v))
+    
+    # Reconstruct path
+    path = []
+    current = end
+    while current != -1:
+        path.append(current)
+        current = parent[current]
+    
+    return dist[end], path[::-1]
+
+[java]
+public int[] dijkstraWithPath(Map<Integer, List<int[]>> graph, 
+                              int start, int end, int n) {
+    int[] dist = new int[n];
+    int[] parent = new int[n];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    Arrays.fill(parent, -1);
+    dist[start] = 0;
+    
+    PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    heap.offer(new int[]{0, start});
+    Set<Integer> visited = new HashSet<>();
+    
+    while (!heap.isEmpty()) {
+        int[] curr = heap.poll();
+        int u = curr[1];
+        
+        if (u == end) break;
+        if (visited.contains(u)) continue;
+        visited.add(u);
+        
+        for (int[] edge : graph.getOrDefault(u, new ArrayList<>())) {
+            int v = edge[0], weight = edge[1];
+            if (dist[u] + weight < dist[v]) {
+                dist[v] = dist[u] + weight;
+                parent[v] = u;
+                heap.offer(new int[]{dist[v], v});
+            }
+        }
+    }
+    
+    // Reconstruct path
+    List<Integer> path = new ArrayList<>();
+    int current = end;
+    while (current != -1) {
+        path.add(0, current);
+        current = parent[current];
+    }
+    
+    return path.stream().mapToInt(i -> i).toArray();
+}
+
+[cpp]
+std::pair<int, std::vector<int>> dijkstraWithPath(
+    std::unordered_map<int, std::vector<std::pair<int, int>>>& graph,
+    int start, int end, int n
+) {
+    std::vector<int> dist(n, INT_MAX);
+    std::vector<int> parent(n, -1);
+    dist[start] = 0;
+    
+    std::priority_queue<
+        std::pair<int, int>,
+        std::vector<std::pair<int, int>>,
+        std::greater<>
+    > heap;
+    
+    heap.push({0, start});
+    std::vector<bool> visited(n, false);
+    
+    while (!heap.empty()) {
+        auto [d, u] = heap.top();
+        heap.pop();
+        
+        if (u == end) break;
+        if (visited[u]) continue;
+        visited[u] = true;
+        
+        for (auto& [v, weight] : graph[u]) {
+            if (dist[u] + weight < dist[v]) {
+                dist[v] = dist[u] + weight;
+                parent[v] = u;
+                heap.push({dist[v], v});
+            }
+        }
+    }
+    
+    // Reconstruct path
+    std::vector<int> path;
+    int current = end;
+    while (current != -1) {
+        path.push_back(current);
+        current = parent[current];
+    }
+    std::reverse(path.begin(), path.end());
+    
+    return {dist[end], path};
+}
+```
+
+## Time Complexity
+
+| Implementation | Time Complexity |
+|----------------|-----------------|
+| Binary Heap | O((V + E) log V) |
+| Fibonacci Heap | O(E + V log V) |
+| Array (no heap) | O(V²) |
+
+## Limitations
+
+- **Does NOT work** with negative edge weights
+- For negative weights, use **Bellman-Ford** algorithm
+- Graph must be connected for valid paths
+
+## Applications
+
+| Application | Description |
+|-------------|-------------|
+| GPS Navigation | Finding shortest route |
+| Network Routing | OSPF routing protocol |
+| Game AI | Pathfinding in games |
+| Social Networks | Degrees of separation |
+
+## Key Takeaways
+
+1. **Non-negative weights only** - fails with negative edges
+2. **Use priority queue** for efficient implementation
+3. **O((V + E) log V)** with binary heap
+4. **Can reconstruct path** by tracking parent pointers
+5. **Greedy algorithm** - always processes closest unvisited vertex

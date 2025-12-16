@@ -1,0 +1,545 @@
+# Knapsack Problem
+
+The **Knapsack problem** is a classic optimization problem: given items with weights and values, select items to maximize value while staying within weight capacity.
+
+## Problem Types
+
+| Type | Description | Solution |
+|------|-------------|----------|
+| **0/1 Knapsack** | Each item taken at most once | DP |
+| **Unbounded** | Items can be taken unlimited times | DP |
+| **Fractional** | Items can be split | Greedy |
+| **Bounded** | Each item has a limit | DP (expanded) |
+
+---
+
+## 0/1 Knapsack
+
+**Problem:** Given `n` items with weights and values, and a knapsack capacity `W`, find maximum value without exceeding capacity.
+
+### Visual Example
+
+```
+Items: [{weight: 2, value: 3}, {weight: 3, value: 4}, {weight: 4, value: 5}]
+Capacity: 5
+
+DP Table:
+        0  1  2  3  4  5  <- capacity
+Item 0: 0  0  3  3  3  3
+Item 1: 0  0  3  4  4  7  <- best: items 0+1, value=7
+Item 2: 0  0  3  4  5  7
+```
+
+### Space-Optimized Implementation
+
+```multi
+[javascript]
+function knapsack(weights, values, W) {
+    /**
+     * 0/1 Knapsack - Space Optimized
+     * Time: O(n × W), Space: O(W)
+     * Key: Iterate capacity in reverse to avoid using same item twice
+     */
+    const n = weights.length;
+    const dp = new Array(W + 1).fill(0);
+    
+    for (let i = 0; i < n; i++) {
+        // Reverse order is crucial!
+        for (let w = W; w >= weights[i]; w--) {
+            dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
+        }
+    }
+    
+    return dp[W];
+}
+
+// Usage
+const weights = [2, 3, 4];
+const values = [3, 4, 5];
+console.log(knapsack(weights, values, 5));  // 7
+
+[python]
+def knapsack(weights, values, W):
+    """
+    0/1 Knapsack - Space Optimized
+    Time: O(n × W), Space: O(W)
+    Key: Iterate capacity in reverse to avoid using same item twice
+    """
+    n = len(weights)
+    dp = [0] * (W + 1)
+    
+    for i in range(n):
+        # Reverse order is crucial!
+        for w in range(W, weights[i] - 1, -1):
+            dp[w] = max(dp[w], dp[w - weights[i]] + values[i])
+    
+    return dp[W]
+
+# Usage
+weights = [2, 3, 4]
+values = [3, 4, 5]
+print(knapsack(weights, values, 5))  # 7
+
+[java]
+public int knapsack(int[] weights, int[] values, int W) {
+    /**
+     * 0/1 Knapsack - Space Optimized
+     * Time: O(n × W), Space: O(W)
+     */
+    int n = weights.length;
+    int[] dp = new int[W + 1];
+    
+    for (int i = 0; i < n; i++) {
+        // Reverse order is crucial!
+        for (int w = W; w >= weights[i]; w--) {
+            dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
+        }
+    }
+    
+    return dp[W];
+}
+
+[cpp]
+int knapsack(vector<int>& weights, vector<int>& values, int W) {
+    /**
+     * 0/1 Knapsack - Space Optimized
+     * Time: O(n × W), Space: O(W)
+     */
+    int n = weights.size();
+    vector<int> dp(W + 1, 0);
+    
+    for (int i = 0; i < n; i++) {
+        // Reverse order is crucial!
+        for (int w = W; w >= weights[i]; w--) {
+            dp[w] = max(dp[w], dp[w - weights[i]] + values[i]);
+        }
+    }
+    
+    return dp[W];
+}
+```
+
+### With Item Reconstruction
+
+```multi
+[javascript]
+function knapsackWithItems(weights, values, W) {
+    const n = weights.length;
+    const dp = Array(n + 1).fill(null).map(() => Array(W + 1).fill(0));
+    
+    for (let i = 1; i <= n; i++) {
+        for (let w = 0; w <= W; w++) {
+            if (weights[i - 1] <= w) {
+                dp[i][w] = Math.max(
+                    dp[i - 1][w],
+                    dp[i - 1][w - weights[i - 1]] + values[i - 1]
+                );
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+    
+    // Backtrack to find items
+    const items = [];
+    let w = W;
+    for (let i = n; i > 0; i--) {
+        if (dp[i][w] !== dp[i - 1][w]) {
+            items.push(i - 1);
+            w -= weights[i - 1];
+        }
+    }
+    
+    return { maxValue: dp[n][W], items: items.reverse() };
+}
+
+[python]
+def knapsack_with_items(weights, values, W):
+    n = len(weights)
+    dp = [[0] * (W + 1) for _ in range(n + 1)]
+    
+    for i in range(1, n + 1):
+        for w in range(W + 1):
+            if weights[i - 1] <= w:
+                dp[i][w] = max(
+                    dp[i - 1][w],
+                    dp[i - 1][w - weights[i - 1]] + values[i - 1]
+                )
+            else:
+                dp[i][w] = dp[i - 1][w]
+    
+    # Backtrack to find items
+    items = []
+    w = W
+    for i in range(n, 0, -1):
+        if dp[i][w] != dp[i - 1][w]:
+            items.append(i - 1)
+            w -= weights[i - 1]
+    
+    return dp[n][W], items[::-1]
+
+[java]
+public int[] knapsackWithItems(int[] weights, int[] values, int W) {
+    int n = weights.length;
+    int[][] dp = new int[n + 1][W + 1];
+    
+    for (int i = 1; i <= n; i++) {
+        for (int w = 0; w <= W; w++) {
+            if (weights[i - 1] <= w) {
+                dp[i][w] = Math.max(dp[i - 1][w],
+                    dp[i - 1][w - weights[i - 1]] + values[i - 1]);
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+    
+    // Backtrack to find items
+    List<Integer> items = new ArrayList<>();
+    int w = W;
+    for (int i = n; i > 0; i--) {
+        if (dp[i][w] != dp[i - 1][w]) {
+            items.add(0, i - 1);
+            w -= weights[i - 1];
+        }
+    }
+    
+    return items.stream().mapToInt(i -> i).toArray();
+}
+
+[cpp]
+pair<int, vector<int>> knapsackWithItems(
+    vector<int>& weights, vector<int>& values, int W
+) {
+    int n = weights.size();
+    vector<vector<int>> dp(n + 1, vector<int>(W + 1, 0));
+    
+    for (int i = 1; i <= n; i++) {
+        for (int w = 0; w <= W; w++) {
+            if (weights[i - 1] <= w) {
+                dp[i][w] = max(dp[i - 1][w],
+                    dp[i - 1][w - weights[i - 1]] + values[i - 1]);
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+    
+    // Backtrack to find items
+    vector<int> items;
+    int w = W;
+    for (int i = n; i > 0; i--) {
+        if (dp[i][w] != dp[i - 1][w]) {
+            items.push_back(i - 1);
+            w -= weights[i - 1];
+        }
+    }
+    
+    reverse(items.begin(), items.end());
+    return {dp[n][W], items};
+}
+```
+
+---
+
+## Unbounded Knapsack
+
+Each item can be used **unlimited times**.
+
+```multi
+[javascript]
+function unboundedKnapsack(weights, values, W) {
+    /**
+     * Unbounded Knapsack - items can repeat.
+     * Key difference: Forward iteration (not reverse!)
+     */
+    const dp = new Array(W + 1).fill(0);
+    
+    for (let i = 0; i < weights.length; i++) {
+        // Forward order allows reusing same item
+        for (let w = weights[i]; w <= W; w++) {
+            dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
+        }
+    }
+    
+    return dp[W];
+}
+
+[python]
+def unbounded_knapsack(weights, values, W):
+    """
+    Unbounded Knapsack - items can repeat.
+    Time: O(n × W), Space: O(W)
+    Key difference: Forward iteration (not reverse!)
+    """
+    dp = [0] * (W + 1)
+    
+    for i in range(len(weights)):
+        # Forward order allows reusing same item
+        for w in range(weights[i], W + 1):
+            dp[w] = max(dp[w], dp[w - weights[i]] + values[i])
+    
+    return dp[W]
+
+[java]
+public int unboundedKnapsack(int[] weights, int[] values, int W) {
+    int[] dp = new int[W + 1];
+    
+    for (int i = 0; i < weights.length; i++) {
+        // Forward order allows reusing same item
+        for (int w = weights[i]; w <= W; w++) {
+            dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
+        }
+    }
+    
+    return dp[W];
+}
+
+[cpp]
+int unboundedKnapsack(vector<int>& weights, vector<int>& values, int W) {
+    vector<int> dp(W + 1, 0);
+    
+    for (int i = 0; i < weights.size(); i++) {
+        // Forward order allows reusing same item
+        for (int w = weights[i]; w <= W; w++) {
+            dp[w] = max(dp[w], dp[w - weights[i]] + values[i]);
+        }
+    }
+    
+    return dp[W];
+}
+```
+
+---
+
+## Classic Variations
+
+### Subset Sum
+
+Can we select items to get **exactly** target weight?
+
+```multi
+[javascript]
+function subsetSum(nums, target) {
+    const dp = new Array(target + 1).fill(false);
+    dp[0] = true;
+    
+    for (const num of nums) {
+        for (let t = target; t >= num; t--) {
+            dp[t] = dp[t] || dp[t - num];
+        }
+    }
+    
+    return dp[target];
+}
+
+[python]
+def subset_sum(nums, target):
+    """Can we select subset summing to target?"""
+    dp = [False] * (target + 1)
+    dp[0] = True
+    
+    for num in nums:
+        for t in range(target, num - 1, -1):
+            dp[t] = dp[t] or dp[t - num]
+    
+    return dp[target]
+
+[java]
+public boolean subsetSum(int[] nums, int target) {
+    boolean[] dp = new boolean[target + 1];
+    dp[0] = true;
+    
+    for (int num : nums) {
+        for (int t = target; t >= num; t--) {
+            dp[t] = dp[t] || dp[t - num];
+        }
+    }
+    
+    return dp[target];
+}
+
+[cpp]
+bool subsetSum(vector<int>& nums, int target) {
+    vector<bool> dp(target + 1, false);
+    dp[0] = true;
+    
+    for (int num : nums) {
+        for (int t = target; t >= num; t--) {
+            dp[t] = dp[t] || dp[t - num];
+        }
+    }
+    
+    return dp[target];
+}
+```
+
+### Coin Change - Minimum Coins
+
+```multi
+[javascript]
+function coinChange(coins, amount) {
+    const dp = new Array(amount + 1).fill(Infinity);
+    dp[0] = 0;
+    
+    for (const coin of coins) {
+        for (let x = coin; x <= amount; x++) {
+            dp[x] = Math.min(dp[x], dp[x - coin] + 1);
+        }
+    }
+    
+    return dp[amount] === Infinity ? -1 : dp[amount];
+}
+
+[python]
+def coin_change(coins, amount):
+    """Minimum coins to make amount."""
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0
+    
+    for coin in coins:
+        for x in range(coin, amount + 1):
+            dp[x] = min(dp[x], dp[x - coin] + 1)
+    
+    return dp[amount] if dp[amount] != float('inf') else -1
+
+[java]
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1);
+    dp[0] = 0;
+    
+    for (int coin : coins) {
+        for (int x = coin; x <= amount; x++) {
+            dp[x] = Math.min(dp[x], dp[x - coin] + 1);
+        }
+    }
+    
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+
+[cpp]
+int coinChange(vector<int>& coins, int amount) {
+    vector<int> dp(amount + 1, amount + 1);
+    dp[0] = 0;
+    
+    for (int coin : coins) {
+        for (int x = coin; x <= amount; x++) {
+            dp[x] = min(dp[x], dp[x - coin] + 1);
+        }
+    }
+    
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+```
+
+### Partition Equal Subset Sum
+
+```multi
+[javascript]
+function canPartition(nums) {
+    const total = nums.reduce((a, b) => a + b, 0);
+    if (total % 2 !== 0) return false;
+    
+    const target = total / 2;
+    const dp = new Array(target + 1).fill(false);
+    dp[0] = true;
+    
+    for (const num of nums) {
+        for (let t = target; t >= num; t--) {
+            dp[t] = dp[t] || dp[t - num];
+        }
+    }
+    
+    return dp[target];
+}
+
+[python]
+def can_partition(nums):
+    """Partition into two equal subsets."""
+    total = sum(nums)
+    if total % 2 != 0:
+        return False
+    
+    target = total // 2
+    dp = [False] * (target + 1)
+    dp[0] = True
+    
+    for num in nums:
+        for t in range(target, num - 1, -1):
+            dp[t] = dp[t] or dp[t - num]
+    
+    return dp[target]
+
+[java]
+public boolean canPartition(int[] nums) {
+    int total = Arrays.stream(nums).sum();
+    if (total % 2 != 0) return false;
+    
+    int target = total / 2;
+    boolean[] dp = new boolean[target + 1];
+    dp[0] = true;
+    
+    for (int num : nums) {
+        for (int t = target; t >= num; t--) {
+            dp[t] = dp[t] || dp[t - num];
+        }
+    }
+    
+    return dp[target];
+}
+
+[cpp]
+bool canPartition(vector<int>& nums) {
+    int total = accumulate(nums.begin(), nums.end(), 0);
+    if (total % 2 != 0) return false;
+    
+    int target = total / 2;
+    vector<bool> dp(target + 1, false);
+    dp[0] = true;
+    
+    for (int num : nums) {
+        for (int t = target; t >= num; t--) {
+            dp[t] = dp[t] || dp[t - num];
+        }
+    }
+    
+    return dp[target];
+}
+```
+
+---
+
+## Comparison: 0/1 vs Unbounded
+
+| Aspect | 0/1 Knapsack | Unbounded |
+|--------|--------------|-----------|
+| Item usage | At most once | Unlimited |
+| Loop order | **Reverse** capacity | Forward capacity |
+| Example | Buying unique items | Coin change |
+
+**Why reverse for 0/1?**
+- Forward order would use the same item multiple times
+- Reverse ensures we only use each item once
+
+---
+
+## Time & Space Complexity
+
+| Variant | Time | Space | Optimized Space |
+|---------|------|-------|-----------------|
+| 0/1 Knapsack | O(n × W) | O(n × W) | O(W) |
+| Unbounded | O(n × W) | O(W) | O(W) |
+| Subset Sum | O(n × T) | O(T) | O(T) |
+| Coin Change | O(n × A) | O(A) | O(A) |
+
+---
+
+## Key Takeaways
+
+1. **0/1 Knapsack**: Each item once → iterate capacity in **reverse**
+2. **Unbounded**: Items repeat → iterate capacity **forward**
+3. **Subset Sum** is Knapsack with boolean values
+4. **Coin Change** is Unbounded Knapsack variant
+5. **Space optimization**: Usually can reduce from O(n × W) to O(W)
+6. **Backtracking**: Store full DP table if you need to reconstruct items

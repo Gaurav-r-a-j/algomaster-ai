@@ -1,0 +1,485 @@
+# Segment Tree
+
+A Segment Tree is a binary tree used for storing intervals or segments. It allows efficient range queries and point updates in O(log n).
+
+## When to Use
+
+- Range sum queries
+- Range minimum/maximum queries
+- Range updates
+- Need both queries and updates to be fast
+
+## Visual Structure
+
+```
+Array: [1, 3, 5, 7, 9, 11]
+
+Segment Tree (Sum):
+                 36 [0-5]
+               /        \
+         9 [0-2]        27 [3-5]
+         /    \         /      \
+      4 [0-1]  5[2]  16[3-4]  11[5]
+      /    \         /    \
+    1[0]  3[1]     7[3]  9[4]
+
+Each node stores: aggregate of its range
+```
+
+## Implementation
+
+```multi
+[javascript]
+class SegmentTree {
+    constructor(arr) {
+        this.n = arr.length;
+        this.tree = new Array(4 * this.n).fill(0);  // 4n is safe upper bound
+        if (this.n > 0) {
+            this._build(arr, 0, 0, this.n - 1);
+        }
+    }
+    
+    _build(arr, node, start, end) {
+        if (start === end) {
+            this.tree[node] = arr[start];
+        } else {
+            const mid = Math.floor((start + end) / 2);
+            const leftChild = 2 * node + 1;
+            const rightChild = 2 * node + 2;
+            this._build(arr, leftChild, start, mid);
+            this._build(arr, rightChild, mid + 1, end);
+            this.tree[node] = this.tree[leftChild] + this.tree[rightChild];
+        }
+    }
+    
+    update(idx, val) {
+        this._update(0, 0, this.n - 1, idx, val);
+    }
+    
+    _update(node, start, end, idx, val) {
+        if (start === end) {
+            this.tree[node] = val;
+        } else {
+            const mid = Math.floor((start + end) / 2);
+            const leftChild = 2 * node + 1;
+            const rightChild = 2 * node + 2;
+            if (idx <= mid) {
+                this._update(leftChild, start, mid, idx, val);
+            } else {
+                this._update(rightChild, mid + 1, end, idx, val);
+            }
+            this.tree[node] = this.tree[leftChild] + this.tree[rightChild];
+        }
+    }
+    
+    rangeSum(l, r) {
+        return this._query(0, 0, this.n - 1, l, r);
+    }
+    
+    _query(node, start, end, l, r) {
+        if (r < start || end < l) {
+            return 0;  // Out of range
+        }
+        if (l <= start && end <= r) {
+            return this.tree[node];  // Completely inside
+        }
+        const mid = Math.floor((start + end) / 2);
+        const leftChild = 2 * node + 1;
+        const rightChild = 2 * node + 2;
+        const leftSum = this._query(leftChild, start, mid, l, r);
+        const rightSum = this._query(rightChild, mid + 1, end, l, r);
+        return leftSum + rightSum;
+    }
+}
+
+// Usage
+const st = new SegmentTree([1, 3, 5, 7, 9, 11]);
+console.log(st.rangeSum(1, 3));  // 15 (3 + 5 + 7)
+st.update(2, 10);  // Change index 2 from 5 to 10
+console.log(st.rangeSum(1, 3));  // 20 (3 + 10 + 7)
+
+[python]
+class SegmentTree:
+    def __init__(self, arr):
+        self.n = len(arr)
+        self.tree = [0] * (4 * self.n)  # 4n is safe upper bound
+        if self.n > 0:
+            self._build(arr, 0, 0, self.n - 1)
+    
+    def _build(self, arr, node, start, end):
+        if start == end:
+            self.tree[node] = arr[start]
+        else:
+            mid = (start + end) // 2
+            left_child = 2 * node + 1
+            right_child = 2 * node + 2
+            self._build(arr, left_child, start, mid)
+            self._build(arr, right_child, mid + 1, end)
+            self.tree[node] = self.tree[left_child] + self.tree[right_child]
+    
+    def update(self, idx, val):
+        self._update(0, 0, self.n - 1, idx, val)
+    
+    def _update(self, node, start, end, idx, val):
+        if start == end:
+            self.tree[node] = val
+        else:
+            mid = (start + end) // 2
+            left_child = 2 * node + 1
+            right_child = 2 * node + 2
+            if idx <= mid:
+                self._update(left_child, start, mid, idx, val)
+            else:
+                self._update(right_child, mid + 1, end, idx, val)
+            self.tree[node] = self.tree[left_child] + self.tree[right_child]
+    
+    def range_sum(self, l, r):
+        return self._query(0, 0, self.n - 1, l, r)
+    
+    def _query(self, node, start, end, l, r):
+        if r < start or end < l:
+            return 0  # Out of range
+        if l <= start and end <= r:
+            return self.tree[node]  # Completely inside
+        mid = (start + end) // 2
+        left_child = 2 * node + 1
+        right_child = 2 * node + 2
+        left_sum = self._query(left_child, start, mid, l, r)
+        right_sum = self._query(right_child, mid + 1, end, l, r)
+        return left_sum + right_sum
+
+# Usage
+st = SegmentTree([1, 3, 5, 7, 9, 11])
+print(st.range_sum(1, 3))  # 15 (3 + 5 + 7)
+st.update(2, 10)  # Change index 2 from 5 to 10
+print(st.range_sum(1, 3))  # 20 (3 + 10 + 7)
+
+[java]
+class SegmentTree {
+    private int n;
+    private int[] tree;
+    
+    public SegmentTree(int[] arr) {
+        n = arr.length;
+        tree = new int[4 * n];
+        if (n > 0) {
+            build(arr, 0, 0, n - 1);
+        }
+    }
+    
+    private void build(int[] arr, int node, int start, int end) {
+        if (start == end) {
+            tree[node] = arr[start];
+        } else {
+            int mid = (start + end) / 2;
+            int leftChild = 2 * node + 1;
+            int rightChild = 2 * node + 2;
+            build(arr, leftChild, start, mid);
+            build(arr, rightChild, mid + 1, end);
+            tree[node] = tree[leftChild] + tree[rightChild];
+        }
+    }
+    
+    public void update(int idx, int val) {
+        update(0, 0, n - 1, idx, val);
+    }
+    
+    private void update(int node, int start, int end, int idx, int val) {
+        if (start == end) {
+            tree[node] = val;
+        } else {
+            int mid = (start + end) / 2;
+            int leftChild = 2 * node + 1;
+            int rightChild = 2 * node + 2;
+            if (idx <= mid) {
+                update(leftChild, start, mid, idx, val);
+            } else {
+                update(rightChild, mid + 1, end, idx, val);
+            }
+            tree[node] = tree[leftChild] + tree[rightChild];
+        }
+    }
+    
+    public int rangeSum(int l, int r) {
+        return query(0, 0, n - 1, l, r);
+    }
+    
+    private int query(int node, int start, int end, int l, int r) {
+        if (r < start || end < l) {
+            return 0;  // Out of range
+        }
+        if (l <= start && end <= r) {
+            return tree[node];  // Completely inside
+        }
+        int mid = (start + end) / 2;
+        int leftChild = 2 * node + 1;
+        int rightChild = 2 * node + 2;
+        int leftSum = query(leftChild, start, mid, l, r);
+        int rightSum = query(rightChild, mid + 1, end, l, r);
+        return leftSum + rightSum;
+    }
+}
+
+[cpp]
+class SegmentTree {
+private:
+    int n;
+    vector<int> tree;
+    
+    void build(vector<int>& arr, int node, int start, int end) {
+        if (start == end) {
+            tree[node] = arr[start];
+        } else {
+            int mid = (start + end) / 2;
+            int leftChild = 2 * node + 1;
+            int rightChild = 2 * node + 2;
+            build(arr, leftChild, start, mid);
+            build(arr, rightChild, mid + 1, end);
+            tree[node] = tree[leftChild] + tree[rightChild];
+        }
+    }
+    
+    void update(int node, int start, int end, int idx, int val) {
+        if (start == end) {
+            tree[node] = val;
+        } else {
+            int mid = (start + end) / 2;
+            int leftChild = 2 * node + 1;
+            int rightChild = 2 * node + 2;
+            if (idx <= mid) {
+                update(leftChild, start, mid, idx, val);
+            } else {
+                update(rightChild, mid + 1, end, idx, val);
+            }
+            tree[node] = tree[leftChild] + tree[rightChild];
+        }
+    }
+    
+    int query(int node, int start, int end, int l, int r) {
+        if (r < start || end < l) {
+            return 0;  // Out of range
+        }
+        if (l <= start && end <= r) {
+            return tree[node];  // Completely inside
+        }
+        int mid = (start + end) / 2;
+        int leftChild = 2 * node + 1;
+        int rightChild = 2 * node + 2;
+        int leftSum = query(leftChild, start, mid, l, r);
+        int rightSum = query(rightChild, mid + 1, end, l, r);
+        return leftSum + rightSum;
+    }
+    
+public:
+    SegmentTree(vector<int>& arr) {
+        n = arr.size();
+        tree.resize(4 * n, 0);
+        if (n > 0) {
+            build(arr, 0, 0, n - 1);
+        }
+    }
+    
+    void update(int idx, int val) {
+        update(0, 0, n - 1, idx, val);
+    }
+    
+    int rangeSum(int l, int r) {
+        return query(0, 0, n - 1, l, r);
+    }
+};
+```
+
+## Range Minimum Query (RMQ)
+
+```multi
+[javascript]
+class SegmentTreeMin {
+    constructor(arr) {
+        this.n = arr.length;
+        this.tree = new Array(4 * this.n).fill(Infinity);
+        if (this.n > 0) {
+            this._build(arr, 0, 0, this.n - 1);
+        }
+    }
+    
+    _build(arr, node, start, end) {
+        if (start === end) {
+            this.tree[node] = arr[start];
+        } else {
+            const mid = Math.floor((start + end) / 2);
+            this._build(arr, 2 * node + 1, start, mid);
+            this._build(arr, 2 * node + 2, mid + 1, end);
+            this.tree[node] = Math.min(
+                this.tree[2 * node + 1],
+                this.tree[2 * node + 2]
+            );
+        }
+    }
+    
+    rangeMin(l, r) {
+        return this._query(0, 0, this.n - 1, l, r);
+    }
+    
+    _query(node, start, end, l, r) {
+        if (r < start || end < l) return Infinity;
+        if (l <= start && end <= r) return this.tree[node];
+        
+        const mid = Math.floor((start + end) / 2);
+        return Math.min(
+            this._query(2 * node + 1, start, mid, l, r),
+            this._query(2 * node + 2, mid + 1, end, l, r)
+        );
+    }
+}
+
+[python]
+class SegmentTreeMin:
+    def __init__(self, arr):
+        self.n = len(arr)
+        self.tree = [float('inf')] * (4 * self.n)
+        if self.n > 0:
+            self._build(arr, 0, 0, self.n - 1)
+    
+    def _build(self, arr, node, start, end):
+        if start == end:
+            self.tree[node] = arr[start]
+        else:
+            mid = (start + end) // 2
+            self._build(arr, 2*node + 1, start, mid)
+            self._build(arr, 2*node + 2, mid + 1, end)
+            self.tree[node] = min(
+                self.tree[2*node + 1],
+                self.tree[2*node + 2]
+            )
+    
+    def range_min(self, l, r):
+        return self._query(0, 0, self.n - 1, l, r)
+    
+    def _query(self, node, start, end, l, r):
+        if r < start or end < l:
+            return float('inf')
+        if l <= start and end <= r:
+            return self.tree[node]
+        
+        mid = (start + end) // 2
+        return min(
+            self._query(2*node + 1, start, mid, l, r),
+            self._query(2*node + 2, mid + 1, end, l, r)
+        )
+
+[java]
+class SegmentTreeMin {
+    private int n;
+    private int[] tree;
+    
+    public SegmentTreeMin(int[] arr) {
+        n = arr.length;
+        tree = new int[4 * n];
+        Arrays.fill(tree, Integer.MAX_VALUE);
+        if (n > 0) build(arr, 0, 0, n - 1);
+    }
+    
+    private void build(int[] arr, int node, int start, int end) {
+        if (start == end) {
+            tree[node] = arr[start];
+        } else {
+            int mid = (start + end) / 2;
+            build(arr, 2*node + 1, start, mid);
+            build(arr, 2*node + 2, mid + 1, end);
+            tree[node] = Math.min(tree[2*node + 1], tree[2*node + 2]);
+        }
+    }
+    
+    public int rangeMin(int l, int r) {
+        return query(0, 0, n - 1, l, r);
+    }
+    
+    private int query(int node, int start, int end, int l, int r) {
+        if (r < start || end < l) return Integer.MAX_VALUE;
+        if (l <= start && end <= r) return tree[node];
+        
+        int mid = (start + end) / 2;
+        return Math.min(
+            query(2*node + 1, start, mid, l, r),
+            query(2*node + 2, mid + 1, end, l, r)
+        );
+    }
+}
+
+[cpp]
+class SegmentTreeMin {
+    int n;
+    vector<int> tree;
+    
+    void build(vector<int>& arr, int node, int start, int end) {
+        if (start == end) {
+            tree[node] = arr[start];
+        } else {
+            int mid = (start + end) / 2;
+            build(arr, 2*node + 1, start, mid);
+            build(arr, 2*node + 2, mid + 1, end);
+            tree[node] = min(tree[2*node + 1], tree[2*node + 2]);
+        }
+    }
+    
+    int query(int node, int start, int end, int l, int r) {
+        if (r < start || end < l) return INT_MAX;
+        if (l <= start && end <= r) return tree[node];
+        
+        int mid = (start + end) / 2;
+        return min(
+            query(2*node + 1, start, mid, l, r),
+            query(2*node + 2, mid + 1, end, l, r)
+        );
+    }
+    
+public:
+    SegmentTreeMin(vector<int>& arr) {
+        n = arr.size();
+        tree.resize(4 * n, INT_MAX);
+        if (n > 0) build(arr, 0, 0, n - 1);
+    }
+    
+    int rangeMin(int l, int r) {
+        return query(0, 0, n - 1, l, r);
+    }
+};
+```
+
+## Time Complexity
+
+| Operation | Time |
+| --------- | -------- |
+| Build | O(n) |
+| Update | O(log n) |
+| Query | O(log n) |
+
+**Space:** O(4n) ≈ O(n)
+
+## Segment Tree vs Fenwick Tree
+
+| Feature | Segment Tree | Fenwick Tree |
+|---------|--------------|--------------|
+| Space | O(4n) | O(n) |
+| Code | More complex | Simpler |
+| Range Updates | Easy (lazy) | Hard |
+| Min/Max Queries | Easy | Hard |
+| Flexibility | More versatile | Limited |
+
+## Applications
+
+| Application | Query Type |
+|-------------|------------|
+| **Range Sum** | Sum of elements in [l, r] |
+| **Range Min/Max** | Min/Max in [l, r] |
+| **Range GCD** | GCD of elements in [l, r] |
+| **Count Elements** | Elements satisfying condition |
+| **Lazy Propagation** | Efficient range updates |
+
+## Key Takeaways
+
+1. **Binary tree** where each node represents a range
+2. **Leaf nodes** store individual elements
+3. **Internal nodes** store aggregate of children
+4. **Query cases**: out of range, fully inside, partial overlap
+5. **4n space** is safe upper bound for array size n

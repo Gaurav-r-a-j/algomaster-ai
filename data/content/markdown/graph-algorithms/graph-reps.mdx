@@ -1,0 +1,742 @@
+# Graph Representations
+
+Graphs can be represented in multiple ways. The choice depends on graph density, operations needed, and memory constraints.
+
+## Visual Comparison
+
+```
+Graph:            Adjacency Matrix:    Adjacency List:
+  0 ——— 1           0  1  2  3         0: [1, 2]
+  |   / |        0 [0, 1, 1, 0]        1: [0, 2, 3]
+  |  /  |        1 [1, 0, 1, 1]        2: [0, 1]
+  | /   |        2 [1, 1, 0, 0]        3: [1]
+  2     3        3 [0, 1, 0, 0]
+```
+
+---
+
+## Adjacency Matrix
+
+A 2D array where `matrix[i][j]` represents edge from i to j.
+
+### Implementation
+
+```multi
+[javascript]
+class GraphMatrix {
+    constructor(numVertices) {
+        this.V = numVertices;
+        this.matrix = Array(numVertices).fill(null)
+            .map(() => Array(numVertices).fill(0));
+    }
+    
+    addEdge(u, v, weight = 1, directed = false) {
+        this.matrix[u][v] = weight;
+        if (!directed) this.matrix[v][u] = weight;
+    }
+    
+    removeEdge(u, v, directed = false) {
+        this.matrix[u][v] = 0;
+        if (!directed) this.matrix[v][u] = 0;
+    }
+    
+    hasEdge(u, v) {
+        return this.matrix[u][v] !== 0;
+    }
+    
+    getWeight(u, v) {
+        return this.matrix[u][v];
+    }
+    
+    getNeighbors(u) {
+        const neighbors = [];
+        for (let v = 0; v < this.V; v++) {
+            if (this.matrix[u][v] !== 0) {
+                neighbors.push(v);
+            }
+        }
+        return neighbors;
+    }
+    
+    getDegree(u) {
+        return this.getNeighbors(u).length;
+    }
+}
+
+// Usage
+const g = new GraphMatrix(4);
+g.addEdge(0, 1);
+g.addEdge(0, 2);
+g.addEdge(1, 2);
+g.addEdge(1, 3);
+console.log(g.hasEdge(0, 1));    // true
+console.log(g.getNeighbors(1)); // [0, 2, 3]
+
+[python]
+class GraphMatrix:
+    def __init__(self, num_vertices):
+        self.V = num_vertices
+        self.matrix = [[0] * num_vertices for _ in range(num_vertices)]
+    
+    def add_edge(self, u, v, weight=1, directed=False):
+        """Add edge with optional weight."""
+        self.matrix[u][v] = weight
+        if not directed:
+            self.matrix[v][u] = weight
+    
+    def remove_edge(self, u, v, directed=False):
+        """Remove edge."""
+        self.matrix[u][v] = 0
+        if not directed:
+            self.matrix[v][u] = 0
+    
+    def has_edge(self, u, v):
+        """Check if edge exists - O(1)."""
+        return self.matrix[u][v] != 0
+    
+    def get_weight(self, u, v):
+        """Get edge weight - O(1)."""
+        return self.matrix[u][v]
+    
+    def get_neighbors(self, u):
+        """Get all neighbors - O(V)."""
+        return [v for v in range(self.V) if self.matrix[u][v] != 0]
+    
+    def get_degree(self, u):
+        """Count edges from vertex - O(V)."""
+        return sum(1 for v in range(self.V) if self.matrix[u][v] != 0)
+
+# Usage
+g = GraphMatrix(4)
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+g.add_edge(1, 2)
+g.add_edge(1, 3)
+print(g.has_edge(0, 1))    # True
+print(g.get_neighbors(1))  # [0, 2, 3]
+
+[java]
+public class GraphMatrix {
+    private int V;
+    private int[][] matrix;
+    
+    public GraphMatrix(int numVertices) {
+        this.V = numVertices;
+        this.matrix = new int[numVertices][numVertices];
+    }
+    
+    public void addEdge(int u, int v, int weight, boolean directed) {
+        matrix[u][v] = weight;
+        if (!directed) matrix[v][u] = weight;
+    }
+    
+    public void addEdge(int u, int v) {
+        addEdge(u, v, 1, false);
+    }
+    
+    public boolean hasEdge(int u, int v) {
+        return matrix[u][v] != 0;
+    }
+    
+    public int getWeight(int u, int v) {
+        return matrix[u][v];
+    }
+    
+    public List<Integer> getNeighbors(int u) {
+        List<Integer> neighbors = new ArrayList<>();
+        for (int v = 0; v < V; v++) {
+            if (matrix[u][v] != 0) {
+                neighbors.add(v);
+            }
+        }
+        return neighbors;
+    }
+    
+    public static void main(String[] args) {
+        GraphMatrix g = new GraphMatrix(4);
+        g.addEdge(0, 1);
+        g.addEdge(0, 2);
+        System.out.println(g.hasEdge(0, 1));    // true
+        System.out.println(g.getNeighbors(1));  // [0, 2]
+    }
+}
+
+[cpp]
+#include <iostream>
+#include <vector>
+
+class GraphMatrix {
+private:
+    int V;
+    std::vector<std::vector<int>> matrix;
+    
+public:
+    GraphMatrix(int numVertices) : V(numVertices) {
+        matrix.resize(V, std::vector<int>(V, 0));
+    }
+    
+    void addEdge(int u, int v, int weight = 1, bool directed = false) {
+        matrix[u][v] = weight;
+        if (!directed) matrix[v][u] = weight;
+    }
+    
+    void removeEdge(int u, int v, bool directed = false) {
+        matrix[u][v] = 0;
+        if (!directed) matrix[v][u] = 0;
+    }
+    
+    bool hasEdge(int u, int v) {
+        return matrix[u][v] != 0;
+    }
+    
+    int getWeight(int u, int v) {
+        return matrix[u][v];
+    }
+    
+    std::vector<int> getNeighbors(int u) {
+        std::vector<int> neighbors;
+        for (int v = 0; v < V; v++) {
+            if (matrix[u][v] != 0) {
+                neighbors.push_back(v);
+            }
+        }
+        return neighbors;
+    }
+};
+
+int main() {
+    GraphMatrix g(4);
+    g.addEdge(0, 1);
+    g.addEdge(0, 2);
+    std::cout << g.hasEdge(0, 1) << std::endl;  // 1 (true)
+    return 0;
+}
+```
+
+### Pros & Cons
+
+| Pros | Cons |
+|------|------|
+| O(1) edge lookup | O(V²) space always |
+| Easy to implement | Adding vertex is expensive |
+| Good for dense graphs | Wastes space for sparse graphs |
+| Easy weight storage | Iterating neighbors is O(V) |
+
+---
+
+## Adjacency List
+
+An array/map where each index stores a list of neighbors.
+
+### Implementation
+
+```multi
+[javascript]
+class GraphList {
+    constructor(directed = false) {
+        this.graph = new Map();
+        this.directed = directed;
+    }
+    
+    addEdge(u, v, weight = null) {
+        if (!this.graph.has(u)) this.graph.set(u, []);
+        if (!this.graph.has(v)) this.graph.set(v, []);
+        
+        if (weight !== null) {
+            this.graph.get(u).push([v, weight]);
+            if (!this.directed) {
+                this.graph.get(v).push([u, weight]);
+            }
+        } else {
+            this.graph.get(u).push(v);
+            if (!this.directed) {
+                this.graph.get(v).push(u);
+            }
+        }
+    }
+    
+    hasEdge(u, v) {
+        const neighbors = this.graph.get(u) || [];
+        for (const n of neighbors) {
+            const target = Array.isArray(n) ? n[0] : n;
+            if (target === v) return true;
+        }
+        return false;
+    }
+    
+    getNeighbors(u) {
+        return this.graph.get(u) || [];
+    }
+    
+    getAllVertices() {
+        return Array.from(this.graph.keys());
+    }
+}
+
+// Usage - Unweighted
+const g = new GraphList();
+g.addEdge(0, 1);
+g.addEdge(0, 2);
+console.log(g.getNeighbors(0));  // [1, 2]
+
+// Usage - Weighted
+const gw = new GraphList();
+gw.addEdge(0, 1, 5);
+gw.addEdge(0, 2, 3);
+console.log(gw.getNeighbors(0));  // [[1, 5], [2, 3]]
+
+[python]
+from collections import defaultdict
+
+class GraphList:
+    def __init__(self, directed=False):
+        self.graph = defaultdict(list)
+        self.directed = directed
+    
+    def add_edge(self, u, v, weight=None):
+        """Add edge - O(1)."""
+        if weight is not None:
+            self.graph[u].append((v, weight))
+            if not self.directed:
+                self.graph[v].append((u, weight))
+        else:
+            self.graph[u].append(v)
+            if not self.directed:
+                self.graph[v].append(u)
+    
+    def remove_edge(self, u, v):
+        """Remove edge - O(degree)."""
+        self.graph[u] = [n for n in self.graph[u] 
+                         if (n != v and (not isinstance(n, tuple) or n[0] != v))]
+        if not self.directed:
+            self.graph[v] = [n for n in self.graph[v] 
+                             if (n != u and (not isinstance(n, tuple) or n[0] != u))]
+    
+    def has_edge(self, u, v):
+        """Check edge exists - O(degree)."""
+        for neighbor in self.graph[u]:
+            target = neighbor[0] if isinstance(neighbor, tuple) else neighbor
+            if target == v:
+                return True
+        return False
+    
+    def get_neighbors(self, u):
+        """Get neighbors - O(1) access."""
+        return self.graph[u]
+    
+    def get_all_vertices(self):
+        """Get all vertices."""
+        vertices = set()
+        for u in self.graph:
+            vertices.add(u)
+            for n in self.graph[u]:
+                v = n[0] if isinstance(n, tuple) else n
+                vertices.add(v)
+        return vertices
+
+# Usage - Unweighted
+g = GraphList()
+g.add_edge(0, 1)
+g.add_edge(0, 2)
+print(g.get_neighbors(0))  # [1, 2]
+
+# Usage - Weighted
+g = GraphList()
+g.add_edge(0, 1, weight=5)
+g.add_edge(0, 2, weight=3)
+print(g.get_neighbors(0))  # [(1, 5), (2, 3)]
+
+[java]
+import java.util.*;
+
+public class GraphList {
+    private Map<Integer, List<int[]>> graph;
+    private boolean directed;
+    
+    public GraphList(boolean directed) {
+        this.graph = new HashMap<>();
+        this.directed = directed;
+    }
+    
+    public void addEdge(int u, int v, int weight) {
+        graph.computeIfAbsent(u, k -> new ArrayList<>()).add(new int[]{v, weight});
+        if (!directed) {
+            graph.computeIfAbsent(v, k -> new ArrayList<>()).add(new int[]{u, weight});
+        }
+    }
+    
+    public void addEdge(int u, int v) {
+        addEdge(u, v, 1);
+    }
+    
+    public boolean hasEdge(int u, int v) {
+        List<int[]> neighbors = graph.getOrDefault(u, new ArrayList<>());
+        for (int[] n : neighbors) {
+            if (n[0] == v) return true;
+        }
+        return false;
+    }
+    
+    public List<int[]> getNeighbors(int u) {
+        return graph.getOrDefault(u, new ArrayList<>());
+    }
+    
+    public Set<Integer> getAllVertices() {
+        Set<Integer> vertices = new HashSet<>(graph.keySet());
+        for (List<int[]> neighbors : graph.values()) {
+            for (int[] n : neighbors) {
+                vertices.add(n[0]);
+            }
+        }
+        return vertices;
+    }
+}
+
+[cpp]
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+
+class GraphList {
+private:
+    std::unordered_map<int, std::vector<std::pair<int, int>>> graph;
+    bool directed;
+    
+public:
+    GraphList(bool directed = false) : directed(directed) {}
+    
+    void addEdge(int u, int v, int weight = 1) {
+        graph[u].push_back({v, weight});
+        if (!directed) {
+            graph[v].push_back({u, weight});
+        }
+    }
+    
+    bool hasEdge(int u, int v) {
+        for (const auto& [neighbor, weight] : graph[u]) {
+            if (neighbor == v) return true;
+        }
+        return false;
+    }
+    
+    std::vector<std::pair<int, int>>& getNeighbors(int u) {
+        return graph[u];
+    }
+    
+    std::unordered_set<int> getAllVertices() {
+        std::unordered_set<int> vertices;
+        for (const auto& [u, neighbors] : graph) {
+            vertices.insert(u);
+            for (const auto& [v, w] : neighbors) {
+                vertices.insert(v);
+            }
+        }
+        return vertices;
+    }
+};
+
+int main() {
+    GraphList g;
+    g.addEdge(0, 1, 5);
+    g.addEdge(0, 2, 3);
+    std::cout << g.hasEdge(0, 1) << std::endl;  // 1 (true)
+    return 0;
+}
+```
+
+### Pros & Cons
+
+| Pros | Cons |
+|------|------|
+| O(V + E) space | O(degree) edge lookup |
+| Easy to add vertices | Edge removal is O(E) |
+| Fast neighbor iteration | Not ideal for dense graphs |
+| Perfect for sparse graphs | Need extra storage for weights |
+
+---
+
+## Edge List
+
+Simply a list of all edges - great for algorithms like Kruskal's.
+
+```multi
+[javascript]
+class GraphEdgeList {
+    constructor(directed = false) {
+        this.edges = [];  // [{u, v, weight}, ...]
+        this.directed = directed;
+    }
+    
+    addEdge(u, v, weight = 1) {
+        this.edges.push({ u, v, weight });
+    }
+    
+    getAllEdges() {
+        return this.edges;
+    }
+    
+    sortByWeight() {
+        this.edges.sort((a, b) => a.weight - b.weight);
+    }
+}
+
+// Usage
+const g = new GraphEdgeList();
+g.addEdge(0, 1, 4);
+g.addEdge(0, 2, 3);
+g.addEdge(1, 2, 1);
+g.sortByWeight();
+console.log(g.edges);  // [{u:1,v:2,w:1}, {u:0,v:2,w:3}, {u:0,v:1,w:4}]
+
+[python]
+class GraphEdgeList:
+    def __init__(self, directed=False):
+        self.edges = []  # [(u, v, weight), ...]
+        self.directed = directed
+    
+    def add_edge(self, u, v, weight=1):
+        self.edges.append((u, v, weight))
+    
+    def get_all_edges(self):
+        return self.edges
+    
+    def sort_by_weight(self):
+        """For Kruskal's algorithm."""
+        self.edges.sort(key=lambda x: x[2])
+
+# Usage
+g = GraphEdgeList()
+g.add_edge(0, 1, 4)
+g.add_edge(0, 2, 3)
+g.add_edge(1, 2, 1)
+g.sort_by_weight()
+print(g.edges)  # [(1, 2, 1), (0, 2, 3), (0, 1, 4)]
+
+[java]
+import java.util.*;
+
+public class GraphEdgeList {
+    private List<int[]> edges;  // [u, v, weight]
+    
+    public GraphEdgeList() {
+        this.edges = new ArrayList<>();
+    }
+    
+    public void addEdge(int u, int v, int weight) {
+        edges.add(new int[]{u, v, weight});
+    }
+    
+    public List<int[]> getAllEdges() {
+        return edges;
+    }
+    
+    public void sortByWeight() {
+        edges.sort((a, b) -> a[2] - b[2]);
+    }
+}
+
+[cpp]
+#include <vector>
+#include <algorithm>
+
+class GraphEdgeList {
+private:
+    std::vector<std::tuple<int, int, int>> edges;  // (u, v, weight)
+    
+public:
+    void addEdge(int u, int v, int weight = 1) {
+        edges.push_back({u, v, weight});
+    }
+    
+    std::vector<std::tuple<int, int, int>>& getAllEdges() {
+        return edges;
+    }
+    
+    void sortByWeight() {
+        std::sort(edges.begin(), edges.end(), 
+            [](const auto& a, const auto& b) {
+                return std::get<2>(a) < std::get<2>(b);
+            });
+    }
+};
+```
+
+---
+
+## Complexity Comparison
+
+| Operation | Matrix | Adjacency List | Edge List |
+|-----------|--------|----------------|-----------|
+| Space | O(V²) | O(V + E) | O(E) |
+| Add Edge | O(1) | O(1) | O(1) |
+| Remove Edge | O(1) | O(E) | O(E) |
+| Check Edge | **O(1)** | O(degree) | O(E) |
+| Get Neighbors | O(V) | **O(1)** | O(E) |
+| Get All Edges | O(V²) | O(E) | **O(1)** |
+
+---
+
+## When to Use What?
+
+| Use Case | Best Representation |
+|----------|---------------------|
+| Dense graphs (E ≈ V²) | Adjacency Matrix |
+| Sparse graphs | Adjacency List |
+| Frequent edge lookups | Adjacency Matrix |
+| Graph traversals | Adjacency List |
+| Kruskal's MST | Edge List |
+| Weighted graphs | Any (list most flexible) |
+| Memory constrained | Edge List or Adjacency List |
+
+---
+
+## Building Graphs from Input
+
+```multi
+[javascript]
+// From edges list
+function buildFromEdges(n, edges, directed = false) {
+    const graph = {};
+    for (let i = 0; i < n; i++) graph[i] = [];
+    
+    for (const [u, v] of edges) {
+        graph[u].push(v);
+        if (!directed) graph[v].push(u);
+    }
+    return graph;
+}
+
+// From adjacency matrix
+function buildFromMatrix(matrix) {
+    const n = matrix.length;
+    const graph = {};
+    for (let i = 0; i < n; i++) graph[i] = [];
+    
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            if (matrix[i][j]) {
+                graph[i].push(j);
+            }
+        }
+    }
+    return graph;
+}
+
+[python]
+# From edges list
+def build_from_edges(n, edges, directed=False):
+    graph = {i: [] for i in range(n)}
+    for u, v in edges:
+        graph[u].append(v)
+        if not directed:
+            graph[v].append(u)
+    return graph
+
+# From adjacency matrix
+def build_from_matrix(matrix):
+    n = len(matrix)
+    graph = {i: [] for i in range(n)}
+    for i in range(n):
+        for j in range(n):
+            if matrix[i][j]:
+                graph[i].append(j)
+    return graph
+
+# From grid (implicit graph)
+def grid_to_graph(grid):
+    """Convert 2D grid to explicit graph."""
+    rows, cols = len(grid), len(grid[0])
+    graph = {}
+    
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] != '#':
+                graph[(r, c)] = []
+                for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < rows and 0 <= nc < cols:
+                        if grid[nr][nc] != '#':
+                            graph[(r, c)].append((nr, nc))
+    
+    return graph
+
+[java]
+import java.util.*;
+
+// From edges list
+public static Map<Integer, List<Integer>> buildFromEdges(
+    int n, int[][] edges, boolean directed
+) {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    for (int i = 0; i < n; i++) graph.put(i, new ArrayList<>());
+    
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+        if (!directed) graph.get(edge[1]).add(edge[0]);
+    }
+    return graph;
+}
+
+// From adjacency matrix
+public static Map<Integer, List<Integer>> buildFromMatrix(int[][] matrix) {
+    int n = matrix.length;
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    for (int i = 0; i < n; i++) graph.put(i, new ArrayList<>());
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != 0) {
+                graph.get(i).add(j);
+            }
+        }
+    }
+    return graph;
+}
+
+[cpp]
+#include <vector>
+#include <unordered_map>
+
+// From edges list
+std::unordered_map<int, std::vector<int>> buildFromEdges(
+    int n, std::vector<std::vector<int>>& edges, bool directed = false
+) {
+    std::unordered_map<int, std::vector<int>> graph;
+    for (int i = 0; i < n; i++) graph[i] = {};
+    
+    for (auto& edge : edges) {
+        graph[edge[0]].push_back(edge[1]);
+        if (!directed) graph[edge[1]].push_back(edge[0]);
+    }
+    return graph;
+}
+
+// From adjacency matrix
+std::unordered_map<int, std::vector<int>> buildFromMatrix(
+    std::vector<std::vector<int>>& matrix
+) {
+    int n = matrix.size();
+    std::unordered_map<int, std::vector<int>> graph;
+    for (int i = 0; i < n; i++) graph[i] = {};
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != 0) {
+                graph[i].push_back(j);
+            }
+        }
+    }
+    return graph;
+}
+```
+
+---
+
+## Key Takeaways
+
+1. **Adjacency List** is the default choice for most algorithms
+2. **Adjacency Matrix** for dense graphs or frequent edge lookups
+3. **Edge List** for edge-centric algorithms (Kruskal's)
+4. **Grid problems** often use implicit representation
+5. Consider **memory vs speed** tradeoffs based on graph density

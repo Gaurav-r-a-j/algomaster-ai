@@ -1,0 +1,364 @@
+# Union-Find (Disjoint Set Union)
+
+Union-Find is a data structure that tracks elements partitioned into disjoint sets. It supports two operations efficiently: **Find** (which set an element belongs to) and **Union** (merge two sets).
+
+## Visual Example
+
+```
+Initial: 5 elements, each in its own set
+[0] [1] [2] [3] [4]
+
+Union(0, 1):  [0-1] [2] [3] [4]
+Union(2, 3):  [0-1] [2-3] [4]
+Union(0, 2):  [0-1-2-3] [4]
+
+Find(1) = Find(3) = same root (connected!)
+Find(4) = different root (not connected)
+```
+
+## Implementation
+
+```multi
+[javascript]
+class UnionFind {
+    constructor(n) {
+        this.parent = Array.from({ length: n }, (_, i) => i);
+        this.rank = new Array(n).fill(0);
+    }
+    
+    find(x) {
+        if (this.parent[x] !== x) {
+            this.parent[x] = this.find(this.parent[x]);  // Path compression
+        }
+        return this.parent[x];
+    }
+    
+    union(x, y) {
+        const px = this.find(x);
+        const py = this.find(y);
+        
+        if (px === py) {
+            return false;  // Already in same set
+        }
+        
+        // Union by rank
+        if (this.rank[px] < this.rank[py]) {
+            this.parent[px] = py;
+        } else if (this.rank[px] > this.rank[py]) {
+            this.parent[py] = px;
+        } else {
+            this.parent[py] = px;
+            this.rank[px]++;
+        }
+        
+        return true;
+    }
+    
+    connected(x, y) {
+        return this.find(x) === this.find(y);
+    }
+}
+
+// Usage
+const uf = new UnionFind(5);
+uf.union(0, 1);
+uf.union(2, 3);
+console.log(uf.connected(0, 1));  // true
+console.log(uf.connected(0, 2));  // false
+uf.union(1, 2);
+console.log(uf.connected(0, 3));  // true
+
+[python]
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+    
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # Path compression
+        return self.parent[x]
+    
+    def union(self, x, y):
+        px, py = self.find(x), self.find(y)
+        if px == py:
+            return False  # Already in same set
+        
+        # Union by rank
+        if self.rank[px] < self.rank[py]:
+            px, py = py, px
+        self.parent[py] = px
+        if self.rank[px] == self.rank[py]:
+            self.rank[px] += 1
+        
+        return True
+    
+    def connected(self, x, y):
+        return self.find(x) == self.find(y)
+
+# Usage
+uf = UnionFind(5)
+uf.union(0, 1)
+uf.union(2, 3)
+print(uf.connected(0, 1))  # True
+print(uf.connected(0, 2))  # False
+uf.union(1, 2)
+print(uf.connected(0, 3))  # True
+
+[java]
+public class UnionFind {
+    private int[] parent;
+    private int[] rank;
+    
+    public UnionFind(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+    }
+    
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);  // Path compression
+        }
+        return parent[x];
+    }
+    
+    public boolean union(int x, int y) {
+        int px = find(x);
+        int py = find(y);
+        
+        if (px == py) {
+            return false;  // Already in same set
+        }
+        
+        // Union by rank
+        if (rank[px] < rank[py]) {
+            parent[px] = py;
+        } else if (rank[px] > rank[py]) {
+            parent[py] = px;
+        } else {
+            parent[py] = px;
+            rank[px]++;
+        }
+        
+        return true;
+    }
+    
+    public boolean connected(int x, int y) {
+        return find(x) == find(y);
+    }
+}
+
+[cpp]
+class UnionFind {
+private:
+    std::vector<int> parent;
+    std::vector<int> rank;
+    
+public:
+    UnionFind(int n) {
+        parent.resize(n);
+        rank.resize(n, 0);
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+    }
+    
+    int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);  // Path compression
+        }
+        return parent[x];
+    }
+    
+    bool unite(int x, int y) {
+        int px = find(x);
+        int py = find(y);
+        
+        if (px == py) {
+            return false;  // Already in same set
+        }
+        
+        // Union by rank
+        if (rank[px] < rank[py]) {
+            parent[px] = py;
+        } else if (rank[px] > rank[py]) {
+            parent[py] = px;
+        } else {
+            parent[py] = px;
+            rank[px]++;
+        }
+        
+        return true;
+    }
+    
+    bool connected(int x, int y) {
+        return find(x) == find(y);
+    }
+};
+```
+
+## Optimizations
+
+### Path Compression
+
+Makes `find()` faster by pointing all nodes directly to root during traversal.
+
+### Union by Rank/Size
+
+Attaches smaller tree under larger tree to keep trees flat.
+
+## Time Complexity
+
+With both optimizations:
+
+| Operation | Complexity |
+|-----------|------------|
+| Find | O(α(n)) ≈ O(1) amortized |
+| Union | O(α(n)) ≈ O(1) amortized |
+
+Where α is the inverse Ackermann function (practically constant).
+
+## Common Applications
+
+### Count Connected Components
+
+```multi
+[javascript]
+function countComponents(n, edges) {
+    const uf = new UnionFind(n);
+    
+    for (const [u, v] of edges) {
+        uf.union(u, v);
+    }
+    
+    // Count unique roots
+    const roots = new Set();
+    for (let i = 0; i < n; i++) {
+        roots.add(uf.find(i));
+    }
+    
+    return roots.size;
+}
+
+[python]
+def count_components(n, edges):
+    uf = UnionFind(n)
+    for u, v in edges:
+        uf.union(u, v)
+    
+    # Count unique roots
+    return len(set(uf.find(i) for i in range(n)))
+
+[java]
+public int countComponents(int n, int[][] edges) {
+    UnionFind uf = new UnionFind(n);
+    
+    for (int[] edge : edges) {
+        uf.union(edge[0], edge[1]);
+    }
+    
+    // Count unique roots
+    Set<Integer> roots = new HashSet<>();
+    for (int i = 0; i < n; i++) {
+        roots.add(uf.find(i));
+    }
+    
+    return roots.size();
+}
+
+[cpp]
+int countComponents(int n, std::vector<std::vector<int>>& edges) {
+    UnionFind uf(n);
+    
+    for (auto& edge : edges) {
+        uf.unite(edge[0], edge[1]);
+    }
+    
+    // Count unique roots
+    std::unordered_set<int> roots;
+    for (int i = 0; i < n; i++) {
+        roots.insert(uf.find(i));
+    }
+    
+    return roots.size();
+}
+```
+
+### Detect Cycle in Undirected Graph
+
+```multi
+[javascript]
+function hasCycle(n, edges) {
+    const uf = new UnionFind(n);
+    
+    for (const [u, v] of edges) {
+        // If already connected, adding this edge creates cycle
+        if (!uf.union(u, v)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+[python]
+def has_cycle(n, edges):
+    uf = UnionFind(n)
+    
+    for u, v in edges:
+        # If already connected, adding this edge creates cycle
+        if not uf.union(u, v):
+            return True
+    
+    return False
+
+[java]
+public boolean hasCycle(int n, int[][] edges) {
+    UnionFind uf = new UnionFind(n);
+    
+    for (int[] edge : edges) {
+        // If already connected, adding this edge creates cycle
+        if (!uf.union(edge[0], edge[1])) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+[cpp]
+bool hasCycle(int n, std::vector<std::vector<int>>& edges) {
+    UnionFind uf(n);
+    
+    for (auto& edge : edges) {
+        // If already connected, adding this edge creates cycle
+        if (!uf.unite(edge[0], edge[1])) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+```
+
+## Applications
+
+| Application | Use Case |
+|-------------|----------|
+| **Kruskal's MST** | Build minimum spanning tree |
+| **Cycle Detection** | Detect cycles in undirected graphs |
+| **Connected Components** | Count/find connected regions |
+| **Network Connectivity** | Check if nodes are connected |
+| **Image Processing** | Find connected regions |
+| **Dynamic Connectivity** | Online connectivity queries |
+
+## Key Takeaways
+
+1. **Near O(1)** operations with path compression + union by rank
+2. **Perfect for connectivity** queries in undirected graphs
+3. **Used in Kruskal's** MST algorithm
+4. **Cycle detection** - if union returns false, edge creates cycle
+5. **Space efficient** - O(n) for n elements

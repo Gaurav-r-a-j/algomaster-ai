@@ -60,9 +60,16 @@ export function CodeBlock({
   className 
 }: CodeBlockProps) {
   const availableLanguages = Object.keys(code).filter(lang => code[lang])
-  const [activeLanguage, setActiveLanguage] = React.useState(
-    availableLanguages.includes(defaultLanguage) ? defaultLanguage : availableLanguages[0] || "javascript"
-  )
+  
+  // Compute initial language
+  const getInitialLanguage = () => {
+    if (availableLanguages.includes(defaultLanguage)) return defaultLanguage
+    if (defaultLanguage === "javascript" && availableLanguages.includes("js")) return "js"
+    if (defaultLanguage === "python" && availableLanguages.includes("py")) return "py"
+    return availableLanguages[0] || "javascript"
+  }
+  
+  const [activeLanguage, setActiveLanguage] = React.useState(getInitialLanguage)
   
   const activeCode = code[activeLanguage] || ""
   
@@ -114,26 +121,31 @@ export function CodeBlock({
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="start" 
-                className="min-w-[140px] bg-[#1c2128] border-white/10"
+                sideOffset={8}
+                className="z-[100] min-w-[160px] overflow-hidden rounded-xl border border-white/10 bg-[#1c2128] p-1.5 shadow-2xl"
               >
                 {availableLanguages.map((lang) => {
                   const config = LANGUAGES[lang] || { label: lang, color: "#888" }
+                  const isActive = activeLanguage === lang
                   return (
                     <DropdownMenuItem
                       key={lang}
                       onClick={() => setActiveLanguage(lang)}
                       className={cn(
-                        "flex items-center gap-2 text-xs cursor-pointer",
-                        activeLanguage === lang 
+                        "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium cursor-pointer transition-colors",
+                        isActive 
                           ? "bg-white/10 text-white" 
-                          : "text-white/60 hover:text-white hover:bg-white/5"
+                          : "text-white/70 hover:text-white hover:bg-white/5"
                       )}
                     >
                       <span 
-                        className="h-2 w-2 rounded-full" 
+                        className="h-2.5 w-2.5 rounded-full ring-2 ring-white/10" 
                         style={{ backgroundColor: config.color }}
                       />
                       {config.label}
+                      {isActive && (
+                        <span className="ml-auto text-xs text-emerald-400">✓</span>
+                      )}
                     </DropdownMenuItem>
                   )
                 })}

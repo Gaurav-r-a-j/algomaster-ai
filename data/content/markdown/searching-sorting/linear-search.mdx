@@ -1,0 +1,327 @@
+# Linear Search
+
+Linear Search is the simplest search algorithm. It checks each element in the array sequentially until it finds the target or reaches the end.
+
+## How It Works
+
+1. Start from the first element
+2. Compare each element with the target
+3. If found, return the index
+4. If not found after checking all elements, return -1
+
+## Visual Representation
+
+```
+Finding 5 in [3, 1, 4, 1, 5, 9, 2, 6]
+
+Step 1: [3, 1, 4, 1, 5, 9, 2, 6]
+         ^
+         3 ≠ 5
+
+Step 2: [3, 1, 4, 1, 5, 9, 2, 6]
+            ^
+            1 ≠ 5
+
+Step 3: [3, 1, 4, 1, 5, 9, 2, 6]
+               ^
+               4 ≠ 5
+
+Step 4: [3, 1, 4, 1, 5, 9, 2, 6]
+                  ^
+                  1 ≠ 5
+
+Step 5: [3, 1, 4, 1, 5, 9, 2, 6]
+                     ^
+                     5 = 5 ✓ Found at index 4!
+```
+
+## Implementation
+
+```multi
+[javascript]
+function linearSearch(arr, target) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === target) {
+            return i;
+        }
+    }
+    return -1;  // Not found
+}
+
+// Example
+const arr = [3, 1, 4, 1, 5, 9, 2, 6];
+const index = linearSearch(arr, 5);  // Returns 4
+console.log(index);
+
+// Using built-in methods
+const index2 = arr.indexOf(5);  // Returns 4
+const index3 = arr.findIndex(x => x === 5);  // Returns 4
+
+[python]
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1  # Not found
+
+# Example
+arr = [3, 1, 4, 1, 5, 9, 2, 6]
+index = linear_search(arr, 5)  # Returns 4
+print(index)
+
+# Using built-in methods
+index2 = arr.index(5)  # Returns 4 (raises ValueError if not found)
+
+# Safe version
+def safe_index(arr, target):
+    try:
+        return arr.index(target)
+    except ValueError:
+        return -1
+
+[java]
+public class LinearSearch {
+    public static int linearSearch(int[] arr, int target) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == target) {
+                return i;
+            }
+        }
+        return -1;  // Not found
+    }
+    
+    public static void main(String[] args) {
+        int[] arr = {3, 1, 4, 1, 5, 9, 2, 6};
+        int index = linearSearch(arr, 5);  // Returns 4
+        System.out.println(index);
+    }
+}
+
+// Using Arrays for objects
+// int index = Arrays.asList(arr).indexOf(target);  // For Object arrays
+
+[cpp]
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int linearSearch(const std::vector<int>& arr, int target) {
+    for (int i = 0; i < arr.size(); i++) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;  // Not found
+}
+
+int main() {
+    std::vector<int> arr = {3, 1, 4, 1, 5, 9, 2, 6};
+    int index = linearSearch(arr, 5);  // Returns 4
+    std::cout << index << std::endl;
+    
+    // Using STL find
+    auto it = std::find(arr.begin(), arr.end(), 5);
+    if (it != arr.end()) {
+        int idx = std::distance(arr.begin(), it);  // Returns 4
+        std::cout << idx << std::endl;
+    }
+    
+    return 0;
+}
+```
+
+## Time Complexity
+
+| Case | Complexity | Description |
+|------|------------|-------------|
+| Best | O(1) | Target is at the first position |
+| Average | O(n) | Target is in the middle |
+| Worst | O(n) | Target is at the end or not present |
+
+## Space Complexity
+
+O(1) - Only uses a constant amount of extra space.
+
+## When to Use
+
+- Small arrays
+- Unsorted data
+- When simplicity is more important than speed
+- When you need to find all occurrences
+
+## Variations
+
+### Find All Occurrences
+
+```multi
+[javascript]
+function linearSearchAll(arr, target) {
+    const indices = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === target) {
+            indices.push(i);
+        }
+    }
+    return indices;
+}
+
+// Example
+const arr = [3, 1, 4, 1, 5, 1, 2, 6];
+console.log(linearSearchAll(arr, 1));  // [1, 3, 5]
+
+[python]
+def linear_search_all(arr, target):
+    indices = []
+    for i in range(len(arr)):
+        if arr[i] == target:
+            indices.append(i)
+    return indices
+
+# Example
+arr = [3, 1, 4, 1, 5, 1, 2, 6]
+print(linear_search_all(arr, 1))  # [1, 3, 5]
+
+# Pythonic way using list comprehension
+indices = [i for i, x in enumerate(arr) if x == target]
+
+[java]
+import java.util.ArrayList;
+import java.util.List;
+
+public static List<Integer> linearSearchAll(int[] arr, int target) {
+    List<Integer> indices = new ArrayList<>();
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == target) {
+            indices.add(i);
+        }
+    }
+    return indices;
+}
+
+// Example
+int[] arr = {3, 1, 4, 1, 5, 1, 2, 6};
+System.out.println(linearSearchAll(arr, 1));  // [1, 3, 5]
+
+[cpp]
+#include <vector>
+
+std::vector<int> linearSearchAll(const std::vector<int>& arr, int target) {
+    std::vector<int> indices;
+    for (int i = 0; i < arr.size(); i++) {
+        if (arr[i] == target) {
+            indices.push_back(i);
+        }
+    }
+    return indices;
+}
+
+// Example
+std::vector<int> arr = {3, 1, 4, 1, 5, 1, 2, 6};
+auto result = linearSearchAll(arr, 1);  // {1, 3, 5}
+```
+
+### Search in 2D Array
+
+```multi
+[javascript]
+function linearSearch2D(matrix, target) {
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+            if (matrix[i][j] === target) {
+                return [i, j];
+            }
+        }
+    }
+    return [-1, -1];
+}
+
+// Example
+const matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+console.log(linearSearch2D(matrix, 5));  // [1, 1]
+
+[python]
+def linear_search_2d(matrix, target):
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if matrix[i][j] == target:
+                return (i, j)
+    return (-1, -1)
+
+# Example
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+print(linear_search_2d(matrix, 5))  # (1, 1)
+
+[java]
+public static int[] linearSearch2D(int[][] matrix, int target) {
+    for (int i = 0; i < matrix.length; i++) {
+        for (int j = 0; j < matrix[i].length; j++) {
+            if (matrix[i][j] == target) {
+                return new int[]{i, j};
+            }
+        }
+    }
+    return new int[]{-1, -1};
+}
+
+// Example
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+int[] result = linearSearch2D(matrix, 5);  // [1, 1]
+
+[cpp]
+#include <vector>
+#include <utility>
+
+std::pair<int, int> linearSearch2D(
+    const std::vector<std::vector<int>>& matrix, 
+    int target
+) {
+    for (int i = 0; i < matrix.size(); i++) {
+        for (int j = 0; j < matrix[i].size(); j++) {
+            if (matrix[i][j] == target) {
+                return {i, j};
+            }
+        }
+    }
+    return {-1, -1};
+}
+
+// Example
+std::vector<std::vector<int>> matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+auto [row, col] = linearSearch2D(matrix, 5);  // (1, 1)
+```
+
+---
+
+## Advantages
+
+- Simple to understand and implement
+- Works on unsorted arrays
+- No preprocessing required
+
+## Disadvantages
+
+- Slow for large arrays
+- Inefficient compared to binary search for sorted data
+
+## Key Takeaways
+
+1. **Simplest search algorithm** - O(n) time complexity
+2. **Works on unsorted data** - No need to sort first
+3. **Sequential checking** - Checks each element one by one
+4. **Use when**: Small arrays, unsorted data, or simplicity matters

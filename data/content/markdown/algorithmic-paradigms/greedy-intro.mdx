@@ -1,0 +1,391 @@
+# Greedy Algorithms
+
+Greedy algorithms make locally optimal choices at each step, hoping to find a global optimum. They work when the problem has the **greedy choice property**.
+
+## Key Properties
+
+### Greedy Choice Property
+
+A globally optimal solution can be arrived at by making locally optimal choices.
+
+### Optimal Substructure
+
+An optimal solution contains optimal solutions to subproblems.
+
+## When Greedy Works
+
+- Making the best choice now leads to the best overall solution
+- No need to reconsider previous choices
+- Examples: Huffman coding, Kruskal's MST, Activity selection
+
+## When Greedy Fails
+
+- Coin change (with arbitrary denominations)
+- 0/1 Knapsack problem
+- Shortest path with negative weights
+
+## Classic Problems
+
+### Activity Selection
+
+Select maximum number of non-overlapping activities.
+
+```multi
+[javascript]
+function activitySelection(activities) {
+    // activities: array of [start, end]
+    // Sort by end time
+    activities.sort((a, b) => a[1] - b[1]);
+    
+    const selected = [activities[0]];
+    let lastEnd = activities[0][1];
+    
+    for (let i = 1; i < activities.length; i++) {
+        const [start, end] = activities[i];
+        if (start >= lastEnd) {
+            selected.push([start, end]);
+            lastEnd = end;
+        }
+    }
+    
+    return selected;
+}
+
+// Usage
+const activities = [[1, 4], [3, 5], [0, 6], [5, 7], [8, 9], [5, 9]];
+console.log(activitySelection(activities));  // [[1,4], [5,7], [8,9]]
+
+[python]
+def activity_selection(activities):
+    """
+    Select maximum non-overlapping activities.
+    Greedy choice: Always pick activity that ends earliest.
+    Time: O(n log n) for sorting
+    """
+    # activities: list of (start, end)
+    # Sort by end time
+    activities.sort(key=lambda x: x[1])
+    
+    selected = [activities[0]]
+    last_end = activities[0][1]
+    
+    for start, end in activities[1:]:
+        if start >= last_end:
+            selected.append((start, end))
+            last_end = end
+    
+    return selected
+
+# Usage
+activities = [(1, 4), (3, 5), (0, 6), (5, 7), (8, 9), (5, 9)]
+print(activity_selection(activities))  # [(1, 4), (5, 7), (8, 9)]
+
+[java]
+import java.util.*;
+
+public List<int[]> activitySelection(int[][] activities) {
+    // Sort by end time
+    Arrays.sort(activities, (a, b) -> a[1] - b[1]);
+    
+    List<int[]> selected = new ArrayList<>();
+    selected.add(activities[0]);
+    int lastEnd = activities[0][1];
+    
+    for (int i = 1; i < activities.length; i++) {
+        if (activities[i][0] >= lastEnd) {
+            selected.add(activities[i]);
+            lastEnd = activities[i][1];
+        }
+    }
+    
+    return selected;
+}
+
+[cpp]
+#include <vector>
+#include <algorithm>
+
+std::vector<std::pair<int, int>> activitySelection(
+    std::vector<std::pair<int, int>>& activities
+) {
+    // Sort by end time
+    std::sort(activities.begin(), activities.end(),
+        [](auto& a, auto& b) { return a.second < b.second; });
+    
+    std::vector<std::pair<int, int>> selected;
+    selected.push_back(activities[0]);
+    int lastEnd = activities[0].second;
+    
+    for (int i = 1; i < activities.size(); i++) {
+        if (activities[i].first >= lastEnd) {
+            selected.push_back(activities[i]);
+            lastEnd = activities[i].second;
+        }
+    }
+    
+    return selected;
+}
+```
+
+### Fractional Knapsack
+
+Take fractions of items to maximize value.
+
+```multi
+[javascript]
+function fractionalKnapsack(items, capacity) {
+    // items: array of [value, weight]
+    // Sort by value/weight ratio (descending)
+    items.sort((a, b) => (b[0] / b[1]) - (a[0] / a[1]));
+    
+    let totalValue = 0;
+    let remaining = capacity;
+    
+    for (const [value, weight] of items) {
+        if (remaining >= weight) {
+            totalValue += value;
+            remaining -= weight;
+        } else {
+            totalValue += (remaining / weight) * value;
+            break;
+        }
+    }
+    
+    return totalValue;
+}
+
+[python]
+def fractional_knapsack(items, capacity):
+    """
+    Take fractions of items to maximize value.
+    Greedy choice: Take items with highest value/weight ratio first.
+    Time: O(n log n)
+    """
+    # items: list of (value, weight)
+    # Sort by value/weight ratio (descending)
+    items.sort(key=lambda x: x[0] / x[1], reverse=True)
+    
+    total_value = 0
+    for value, weight in items:
+        if capacity >= weight:
+            total_value += value
+            capacity -= weight
+        else:
+            total_value += (capacity / weight) * value
+            break
+    
+    return total_value
+
+# Usage
+items = [(60, 10), (100, 20), (120, 30)]  # (value, weight)
+print(fractional_knapsack(items, 50))  # 240.0
+
+[java]
+public double fractionalKnapsack(int[][] items, int capacity) {
+    // Sort by value/weight ratio (descending)
+    Arrays.sort(items, (a, b) -> 
+        Double.compare((double)b[0] / b[1], (double)a[0] / a[1]));
+    
+    double totalValue = 0;
+    int remaining = capacity;
+    
+    for (int[] item : items) {
+        int value = item[0], weight = item[1];
+        if (remaining >= weight) {
+            totalValue += value;
+            remaining -= weight;
+        } else {
+            totalValue += ((double)remaining / weight) * value;
+            break;
+        }
+    }
+    
+    return totalValue;
+}
+
+[cpp]
+double fractionalKnapsack(std::vector<std::pair<int, int>>& items, int capacity) {
+    // Sort by value/weight ratio (descending)
+    std::sort(items.begin(), items.end(), [](auto& a, auto& b) {
+        return (double)a.first / a.second > (double)b.first / b.second;
+    });
+    
+    double totalValue = 0;
+    int remaining = capacity;
+    
+    for (auto& [value, weight] : items) {
+        if (remaining >= weight) {
+            totalValue += value;
+            remaining -= weight;
+        } else {
+            totalValue += ((double)remaining / weight) * value;
+            break;
+        }
+    }
+    
+    return totalValue;
+}
+```
+
+### Coin Change (Greedy - for specific denominations)
+
+```multi
+[javascript]
+function coinChangeGreedy(coins, amount) {
+    // Works for standard coin systems (1, 5, 10, 25)
+    coins.sort((a, b) => b - a);
+    let count = 0;
+    
+    for (const coin of coins) {
+        if (amount >= coin) {
+            count += Math.floor(amount / coin);
+            amount %= coin;
+        }
+    }
+    
+    return amount === 0 ? count : -1;
+}
+
+[python]
+def coin_change_greedy(coins, amount):
+    """
+    Greedy coin change - works for standard denominations.
+    WARNING: Fails for arbitrary coin systems!
+    Example failure: coins=[1, 3, 4], amount=6
+    Greedy: 4+1+1=3 coins, Optimal: 3+3=2 coins
+    """
+    coins.sort(reverse=True)
+    count = 0
+    
+    for coin in coins:
+        if amount >= coin:
+            count += amount // coin
+            amount %= coin
+    
+    return count if amount == 0 else -1
+
+[java]
+public int coinChangeGreedy(int[] coins, int amount) {
+    Arrays.sort(coins);
+    // Reverse for descending
+    for (int i = 0; i < coins.length / 2; i++) {
+        int temp = coins[i];
+        coins[i] = coins[coins.length - 1 - i];
+        coins[coins.length - 1 - i] = temp;
+    }
+    
+    int count = 0;
+    for (int coin : coins) {
+        if (amount >= coin) {
+            count += amount / coin;
+            amount %= coin;
+        }
+    }
+    
+    return amount == 0 ? count : -1;
+}
+
+[cpp]
+int coinChangeGreedy(std::vector<int>& coins, int amount) {
+    std::sort(coins.begin(), coins.end(), std::greater<int>());
+    int count = 0;
+    
+    for (int coin : coins) {
+        if (amount >= coin) {
+            count += amount / coin;
+            amount %= coin;
+        }
+    }
+    
+    return amount == 0 ? count : -1;
+}
+```
+
+### Jump Game
+
+Check if you can reach the last index.
+
+```multi
+[javascript]
+function canJump(nums) {
+    let maxReach = 0;
+    
+    for (let i = 0; i < nums.length; i++) {
+        if (i > maxReach) return false;
+        maxReach = Math.max(maxReach, i + nums[i]);
+        if (maxReach >= nums.length - 1) return true;
+    }
+    
+    return true;
+}
+
+[python]
+def can_jump(nums):
+    """
+    Greedy: Track the farthest reachable position.
+    Time: O(n), Space: O(1)
+    """
+    max_reach = 0
+    
+    for i, jump in enumerate(nums):
+        if i > max_reach:
+            return False
+        max_reach = max(max_reach, i + jump)
+        if max_reach >= len(nums) - 1:
+            return True
+    
+    return True
+
+[java]
+public boolean canJump(int[] nums) {
+    int maxReach = 0;
+    
+    for (int i = 0; i < nums.length; i++) {
+        if (i > maxReach) return false;
+        maxReach = Math.max(maxReach, i + nums[i]);
+        if (maxReach >= nums.length - 1) return true;
+    }
+    
+    return true;
+}
+
+[cpp]
+bool canJump(std::vector<int>& nums) {
+    int maxReach = 0;
+    
+    for (int i = 0; i < nums.size(); i++) {
+        if (i > maxReach) return false;
+        maxReach = std::max(maxReach, i + nums[i]);
+        if (maxReach >= nums.size() - 1) return true;
+    }
+    
+    return true;
+}
+```
+
+## Greedy vs DP
+
+| Greedy | Dynamic Programming |
+|--------|---------------------|
+| Makes one choice | Considers all choices |
+| Faster (usually O(n) or O(n log n)) | Slower but always optimal |
+| May not be optimal | Always finds optimal solution |
+| Simpler to implement | More complex |
+
+## Classic Greedy Problems
+
+| Problem | Greedy Choice | Time |
+|---------|---------------|------|
+| Activity Selection | Pick earliest ending | O(n log n) |
+| Fractional Knapsack | Best value/weight ratio | O(n log n) |
+| Huffman Coding | Combine lowest frequencies | O(n log n) |
+| Job Scheduling | Minimize lateness | O(n log n) |
+| MST (Kruskal/Prim) | Pick minimum edge | O(E log V) |
+
+## Key Takeaways
+
+1. **Greedy = local optimal choice** hoping for global optimum
+2. **Works when** greedy choice property holds
+3. **Prove correctness** using exchange argument or greedy stays ahead
+4. **Usually O(n log n)** due to sorting
+5. **When in doubt**, use DP instead (always optimal)

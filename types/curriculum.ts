@@ -58,7 +58,7 @@ export interface Topic {
     space: string
   }
   visualizerType: VisualizerType
-  content: string // Markdown text
+  content: string // Markdown or MDX text
   module: string // "Module 1: Foundations"
   order: number
   practiceLinks?: PracticeLink[]
@@ -66,6 +66,7 @@ export interface Topic {
   difficulty?: "Easy" | "Medium" | "Hard"
   quiz?: QuizQuestion[]
   practiceProblems?: PracticeProblem[]
+  tags?: string[] // Search tags for fuzzy matching
 }
 
 export interface PracticeProblem {

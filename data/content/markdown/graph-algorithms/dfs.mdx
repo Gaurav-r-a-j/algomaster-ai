@@ -1,0 +1,813 @@
+# Depth-First Search (DFS)
+
+**DFS** explores as far as possible along each branch before backtracking. It uses a **stack** (LIFO) - either explicitly or via recursion.
+
+## Visual Understanding
+
+```
+Graph:          DFS from 0:
+    0           Step 1: Visit 0
+   /|\          Step 2: Visit 1 (first child)
+  1 2 3         Step 3: Visit 4 (child of 1)
+ / \            Step 4: Backtrack to 1, then 0
+4   5           Step 5: Visit 2
+    |           Step 6: Backtrack, Visit 3
+    6
+                Order: 0 → 1 → 4 → 5 → 6 → 2 → 3
+```
+
+---
+
+## Algorithm Steps
+
+1. **Start** at source vertex, mark as visited
+2. **Process** current vertex
+3. **For each** unvisited neighbor:
+   - Recursively visit that neighbor
+4. **Backtrack** when no unvisited neighbors remain
+
+---
+
+## Implementation
+
+```multi
+[javascript]
+// Recursive DFS
+function dfs(graph, start, visited = new Set()) {
+    visited.add(start);
+    const result = [start];
+    
+    for (const neighbor of graph[start] || []) {
+        if (!visited.has(neighbor)) {
+            result.push(...dfs(graph, neighbor, visited));
+        }
+    }
+    
+    return result;
+}
+
+// Iterative DFS using stack
+function dfsIterative(graph, start) {
+    const visited = new Set();
+    const stack = [start];
+    const result = [];
+    
+    while (stack.length > 0) {
+        const vertex = stack.pop();
+        
+        if (!visited.has(vertex)) {
+            visited.add(vertex);
+            result.push(vertex);
+            
+            // Add neighbors in reverse for same order as recursive
+            const neighbors = graph[vertex] || [];
+            for (let i = neighbors.length - 1; i >= 0; i--) {
+                if (!visited.has(neighbors[i])) {
+                    stack.push(neighbors[i]);
+                }
+            }
+        }
+    }
+    
+    return result;
+}
+
+// Usage
+const graph = {
+    0: [1, 2, 3],
+    1: [4, 5],
+    2: [],
+    3: [],
+    4: [],
+    5: [6],
+    6: []
+};
+console.log(dfs(graph, 0));  // [0, 1, 4, 5, 6, 2, 3]
+
+[python]
+def dfs(graph, start, visited=None):
+    """
+    Recursive DFS traversal.
+    Time: O(V + E), Space: O(V) for recursion stack
+    """
+    if visited is None:
+        visited = set()
+    
+    visited.add(start)
+    result = [start]
+    
+    for neighbor in graph.get(start, []):
+        if neighbor not in visited:
+            result.extend(dfs(graph, neighbor, visited))
+    
+    return result
+
+def dfs_iterative(graph, start):
+    """
+    Iterative DFS using explicit stack.
+    Avoids recursion limit for deep graphs.
+    """
+    visited = set()
+    stack = [start]
+    result = []
+    
+    while stack:
+        vertex = stack.pop()
+        
+        if vertex not in visited:
+            visited.add(vertex)
+            result.append(vertex)
+            
+            # Add neighbors in reverse for same order as recursive
+            for neighbor in reversed(graph.get(vertex, [])):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+    
+    return result
+
+# Usage
+graph = {
+    0: [1, 2, 3],
+    1: [4, 5],
+    2: [],
+    3: [],
+    4: [],
+    5: [6],
+    6: []
+}
+print(dfs(graph, 0))  # [0, 1, 4, 5, 6, 2, 3]
+
+[java]
+import java.util.*;
+
+public class DFS {
+    public List<Integer> dfs(Map<Integer, List<Integer>> graph, int start) {
+        Set<Integer> visited = new HashSet<>();
+        List<Integer> result = new ArrayList<>();
+        dfsHelper(graph, start, visited, result);
+        return result;
+    }
+    
+    private void dfsHelper(Map<Integer, List<Integer>> graph, int vertex,
+                           Set<Integer> visited, List<Integer> result) {
+        visited.add(vertex);
+        result.add(vertex);
+        
+        for (int neighbor : graph.getOrDefault(vertex, List.of())) {
+            if (!visited.contains(neighbor)) {
+                dfsHelper(graph, neighbor, visited, result);
+            }
+        }
+    }
+    
+    // Iterative version
+    public List<Integer> dfsIterative(Map<Integer, List<Integer>> graph, int start) {
+        Set<Integer> visited = new HashSet<>();
+        Stack<Integer> stack = new Stack<>();
+        List<Integer> result = new ArrayList<>();
+        
+        stack.push(start);
+        
+        while (!stack.isEmpty()) {
+            int vertex = stack.pop();
+            
+            if (!visited.contains(vertex)) {
+                visited.add(vertex);
+                result.add(vertex);
+                
+                List<Integer> neighbors = graph.getOrDefault(vertex, List.of());
+                for (int i = neighbors.size() - 1; i >= 0; i--) {
+                    if (!visited.contains(neighbors.get(i))) {
+                        stack.push(neighbors.get(i));
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+}
+
+[cpp]
+#include <iostream>
+#include <unordered_set>
+#include <unordered_map>
+#include <vector>
+#include <stack>
+
+class DFS {
+public:
+    std::vector<int> dfs(std::unordered_map<int, std::vector<int>>& graph, int start) {
+        std::unordered_set<int> visited;
+        std::vector<int> result;
+        dfsHelper(graph, start, visited, result);
+        return result;
+    }
+    
+private:
+    void dfsHelper(std::unordered_map<int, std::vector<int>>& graph, int vertex,
+                   std::unordered_set<int>& visited, std::vector<int>& result) {
+        visited.insert(vertex);
+        result.push_back(vertex);
+        
+        for (int neighbor : graph[vertex]) {
+            if (visited.find(neighbor) == visited.end()) {
+                dfsHelper(graph, neighbor, visited, result);
+            }
+        }
+    }
+    
+public:
+    // Iterative version
+    std::vector<int> dfsIterative(std::unordered_map<int, std::vector<int>>& graph, int start) {
+        std::unordered_set<int> visited;
+        std::stack<int> stk;
+        std::vector<int> result;
+        
+        stk.push(start);
+        
+        while (!stk.empty()) {
+            int vertex = stk.top();
+            stk.pop();
+            
+            if (visited.find(vertex) == visited.end()) {
+                visited.insert(vertex);
+                result.push_back(vertex);
+                
+                auto& neighbors = graph[vertex];
+                for (int i = neighbors.size() - 1; i >= 0; i--) {
+                    if (visited.find(neighbors[i]) == visited.end()) {
+                        stk.push(neighbors[i]);
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+};
+```
+
+---
+
+## Cycle Detection
+
+### In Directed Graph
+
+```multi
+[javascript]
+function hasCycleDirected(graph, n) {
+    const WHITE = 0, GRAY = 1, BLACK = 2;
+    const color = new Array(n).fill(WHITE);
+    
+    function dfs(node) {
+        color[node] = GRAY;
+        
+        for (const neighbor of graph[node] || []) {
+            if (color[neighbor] === GRAY) {  // Back edge found
+                return true;
+            }
+            if (color[neighbor] === WHITE) {
+                if (dfs(neighbor)) return true;
+            }
+        }
+        
+        color[node] = BLACK;
+        return false;
+    }
+    
+    for (let node = 0; node < n; node++) {
+        if (color[node] === WHITE) {
+            if (dfs(node)) return true;
+        }
+    }
+    
+    return false;
+}
+
+[python]
+def has_cycle_directed(graph, n):
+    """
+    Detect cycle in directed graph using DFS.
+    Uses three colors: WHITE (unvisited), GRAY (in progress), BLACK (done)
+    """
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color = [WHITE] * n
+    
+    def dfs(node):
+        color[node] = GRAY
+        
+        for neighbor in graph.get(node, []):
+            if color[neighbor] == GRAY:  # Back edge found
+                return True
+            if color[neighbor] == WHITE:
+                if dfs(neighbor):
+                    return True
+        
+        color[node] = BLACK
+        return False
+    
+    for node in range(n):
+        if color[node] == WHITE:
+            if dfs(node):
+                return True
+    
+    return False
+
+[java]
+public boolean hasCycleDirected(Map<Integer, List<Integer>> graph, int n) {
+    final int WHITE = 0, GRAY = 1, BLACK = 2;
+    int[] color = new int[n];
+    
+    for (int node = 0; node < n; node++) {
+        if (color[node] == WHITE) {
+            if (dfs(graph, node, color, WHITE, GRAY, BLACK)) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+private boolean dfs(Map<Integer, List<Integer>> graph, int node, 
+                    int[] color, int WHITE, int GRAY, int BLACK) {
+    color[node] = GRAY;
+    
+    for (int neighbor : graph.getOrDefault(node, List.of())) {
+        if (color[neighbor] == GRAY) return true;  // Back edge
+        if (color[neighbor] == WHITE) {
+            if (dfs(graph, neighbor, color, WHITE, GRAY, BLACK)) {
+                return true;
+            }
+        }
+    }
+    
+    color[node] = BLACK;
+    return false;
+}
+
+[cpp]
+bool hasCycleDirected(std::unordered_map<int, std::vector<int>>& graph, int n) {
+    const int WHITE = 0, GRAY = 1, BLACK = 2;
+    std::vector<int> color(n, WHITE);
+    
+    std::function<bool(int)> dfs = [&](int node) -> bool {
+        color[node] = GRAY;
+        
+        for (int neighbor : graph[node]) {
+            if (color[neighbor] == GRAY) return true;  // Back edge
+            if (color[neighbor] == WHITE) {
+                if (dfs(neighbor)) return true;
+            }
+        }
+        
+        color[node] = BLACK;
+        return false;
+    };
+    
+    for (int node = 0; node < n; node++) {
+        if (color[node] == WHITE) {
+            if (dfs(node)) return true;
+        }
+    }
+    
+    return false;
+}
+```
+
+### In Undirected Graph
+
+```multi
+[javascript]
+function hasCycleUndirected(graph, n) {
+    const visited = new Set();
+    
+    function dfs(node, parent) {
+        visited.add(node);
+        
+        for (const neighbor of graph[node] || []) {
+            if (!visited.has(neighbor)) {
+                if (dfs(neighbor, node)) return true;
+            } else if (neighbor !== parent) {  // Back edge (not parent)
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    for (let node = 0; node < n; node++) {
+        if (!visited.has(node)) {
+            if (dfs(node, -1)) return true;
+        }
+    }
+    
+    return false;
+}
+
+[python]
+def has_cycle_undirected(graph, n):
+    """
+    Detect cycle in undirected graph.
+    Track parent to avoid false positives from back-traversal.
+    """
+    visited = set()
+    
+    def dfs(node, parent):
+        visited.add(node)
+        
+        for neighbor in graph.get(node, []):
+            if neighbor not in visited:
+                if dfs(neighbor, node):
+                    return True
+            elif neighbor != parent:  # Back edge (not parent)
+                return True
+        
+        return False
+    
+    for node in range(n):
+        if node not in visited:
+            if dfs(node, -1):
+                return True
+    
+    return False
+
+[java]
+public boolean hasCycleUndirected(Map<Integer, List<Integer>> graph, int n) {
+    Set<Integer> visited = new HashSet<>();
+    
+    for (int node = 0; node < n; node++) {
+        if (!visited.contains(node)) {
+            if (dfs(graph, node, -1, visited)) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+private boolean dfs(Map<Integer, List<Integer>> graph, int node, 
+                    int parent, Set<Integer> visited) {
+    visited.add(node);
+    
+    for (int neighbor : graph.getOrDefault(node, List.of())) {
+        if (!visited.contains(neighbor)) {
+            if (dfs(graph, neighbor, node, visited)) return true;
+        } else if (neighbor != parent) {  // Back edge
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+[cpp]
+bool hasCycleUndirected(std::unordered_map<int, std::vector<int>>& graph, int n) {
+    std::unordered_set<int> visited;
+    
+    std::function<bool(int, int)> dfs = [&](int node, int parent) -> bool {
+        visited.insert(node);
+        
+        for (int neighbor : graph[node]) {
+            if (visited.find(neighbor) == visited.end()) {
+                if (dfs(neighbor, node)) return true;
+            } else if (neighbor != parent) {  // Back edge
+                return true;
+            }
+        }
+        
+        return false;
+    };
+    
+    for (int node = 0; node < n; node++) {
+        if (visited.find(node) == visited.end()) {
+            if (dfs(node, -1)) return true;
+        }
+    }
+    
+    return false;
+}
+```
+
+---
+
+## Connected Components
+
+```multi
+[javascript]
+function countComponents(n, edges) {
+    // Build adjacency list
+    const graph = {};
+    for (let i = 0; i < n; i++) graph[i] = [];
+    for (const [u, v] of edges) {
+        graph[u].push(v);
+        graph[v].push(u);
+    }
+    
+    const visited = new Set();
+    let components = 0;
+    
+    function dfs(node) {
+        visited.add(node);
+        for (const neighbor of graph[node]) {
+            if (!visited.has(neighbor)) {
+                dfs(neighbor);
+            }
+        }
+    }
+    
+    for (let node = 0; node < n; node++) {
+        if (!visited.has(node)) {
+            dfs(node);
+            components++;
+        }
+    }
+    
+    return components;
+}
+
+[python]
+def count_components(n, edges):
+    """Count connected components in undirected graph."""
+    # Build adjacency list
+    graph = {i: [] for i in range(n)}
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    visited = set()
+    components = 0
+    
+    def dfs(node):
+        visited.add(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor)
+    
+    for node in range(n):
+        if node not in visited:
+            dfs(node)
+            components += 1
+    
+    return components
+
+# Get actual components (not just count)
+def get_components(n, edges):
+    """Return list of connected components."""
+    graph = {i: [] for i in range(n)}
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+    
+    visited = set()
+    components = []
+    
+    def dfs(node, component):
+        visited.add(node)
+        component.append(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor, component)
+    
+    for node in range(n):
+        if node not in visited:
+            component = []
+            dfs(node, component)
+            components.append(component)
+    
+    return components
+
+[java]
+public int countComponents(int n, int[][] edges) {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    for (int i = 0; i < n; i++) graph.put(i, new ArrayList<>());
+    
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+        graph.get(edge[1]).add(edge[0]);
+    }
+    
+    Set<Integer> visited = new HashSet<>();
+    int components = 0;
+    
+    for (int node = 0; node < n; node++) {
+        if (!visited.contains(node)) {
+            dfs(graph, node, visited);
+            components++;
+        }
+    }
+    
+    return components;
+}
+
+private void dfs(Map<Integer, List<Integer>> graph, int node, Set<Integer> visited) {
+    visited.add(node);
+    for (int neighbor : graph.get(node)) {
+        if (!visited.contains(neighbor)) {
+            dfs(graph, neighbor, visited);
+        }
+    }
+}
+
+[cpp]
+int countComponents(int n, std::vector<std::vector<int>>& edges) {
+    std::unordered_map<int, std::vector<int>> graph;
+    for (int i = 0; i < n; i++) graph[i] = {};
+    
+    for (auto& edge : edges) {
+        graph[edge[0]].push_back(edge[1]);
+        graph[edge[1]].push_back(edge[0]);
+    }
+    
+    std::unordered_set<int> visited;
+    int components = 0;
+    
+    std::function<void(int)> dfs = [&](int node) {
+        visited.insert(node);
+        for (int neighbor : graph[node]) {
+            if (visited.find(neighbor) == visited.end()) {
+                dfs(neighbor);
+            }
+        }
+    };
+    
+    for (int node = 0; node < n; node++) {
+        if (visited.find(node) == visited.end()) {
+            dfs(node);
+            components++;
+        }
+    }
+    
+    return components;
+}
+```
+
+---
+
+## Number of Islands (DFS on Matrix)
+
+```multi
+[javascript]
+function numIslands(grid) {
+    if (!grid || grid.length === 0) return 0;
+    
+    const rows = grid.length;
+    const cols = grid[0].length;
+    let count = 0;
+    
+    function dfs(r, c) {
+        if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+        if (grid[r][c] !== '1') return;
+        
+        grid[r][c] = '#';  // Mark visited
+        
+        dfs(r + 1, c);
+        dfs(r - 1, c);
+        dfs(r, c + 1);
+        dfs(r, c - 1);
+    }
+    
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (grid[r][c] === '1') {
+                count++;
+                dfs(r, c);
+            }
+        }
+    }
+    
+    return count;
+}
+
+[python]
+def num_islands(grid):
+    """Count connected components of '1's in grid."""
+    if not grid:
+        return 0
+    
+    rows, cols = len(grid), len(grid[0])
+    count = 0
+    
+    def dfs(r, c):
+        if r < 0 or r >= rows or c < 0 or c >= cols:
+            return
+        if grid[r][c] != '1':
+            return
+        
+        grid[r][c] = '#'  # Mark visited
+        
+        dfs(r + 1, c)
+        dfs(r - 1, c)
+        dfs(r, c + 1)
+        dfs(r, c - 1)
+    
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1':
+                count += 1
+                dfs(r, c)
+    
+    return count
+
+[java]
+public int numIslands(char[][] grid) {
+    if (grid == null || grid.length == 0) return 0;
+    
+    int rows = grid.length;
+    int cols = grid[0].length;
+    int count = 0;
+    
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (grid[r][c] == '1') {
+                count++;
+                dfs(grid, r, c);
+            }
+        }
+    }
+    
+    return count;
+}
+
+private void dfs(char[][] grid, int r, int c) {
+    int rows = grid.length, cols = grid[0].length;
+    
+    if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+    if (grid[r][c] != '1') return;
+    
+    grid[r][c] = '#';  // Mark visited
+    
+    dfs(grid, r + 1, c);
+    dfs(grid, r - 1, c);
+    dfs(grid, r, c + 1);
+    dfs(grid, r, c - 1);
+}
+
+[cpp]
+int numIslands(std::vector<std::vector<char>>& grid) {
+    if (grid.empty()) return 0;
+    
+    int rows = grid.size();
+    int cols = grid[0].size();
+    int count = 0;
+    
+    std::function<void(int, int)> dfs = [&](int r, int c) {
+        if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+        if (grid[r][c] != '1') return;
+        
+        grid[r][c] = '#';  // Mark visited
+        
+        dfs(r + 1, c);
+        dfs(r - 1, c);
+        dfs(r, c + 1);
+        dfs(r, c - 1);
+    };
+    
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (grid[r][c] == '1') {
+                count++;
+                dfs(r, c);
+            }
+        }
+    }
+    
+    return count;
+}
+```
+
+---
+
+## Time & Space Complexity
+
+| Aspect | Complexity | Notes |
+|--------|------------|-------|
+| Time | **O(V + E)** | Each vertex and edge visited once |
+| Space | **O(V)** | Recursion stack + visited set |
+
+For matrix/grid: O(rows × cols)
+
+---
+
+## DFS vs BFS
+
+| Feature | DFS | BFS |
+|---------|-----|-----|
+| Data Structure | Stack/Recursion | Queue |
+| Traversal | Deep first | Level by level |
+| Memory | Less (usually) | More for wide graphs |
+| Shortest Path | ❌ Not guaranteed | ✅ Unweighted graphs |
+| Best for | Cycles, paths, topological | Shortest path, levels |
+
+---
+
+## Key Takeaways
+
+1. **Use recursion or stack** - recursion is cleaner, stack avoids depth limits
+2. **Mark visited early** to prevent revisiting
+3. **Backtracking** - restore state when returning (for path finding)
+4. **Three-color marking** for directed cycle detection
+5. **Track parent** for undirected cycle detection
+6. **Matrix DFS** - check bounds, mark visited, explore 4/8 directions

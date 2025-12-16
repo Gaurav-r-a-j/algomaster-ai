@@ -1,0 +1,432 @@
+# Bit Manipulation
+
+Bit manipulation involves operations on binary representations of integers. It's fast and memory-efficient for certain problems.
+
+## Bitwise Operators
+
+| Operator | Name        | Example                         |
+| -------- | ----------- | ------------------------------- |
+| `&`      | AND         | `5 & 3 = 1` (101 & 011 = 001)   |
+| `\|`     | OR          | `5 \| 3 = 7` (101 \| 011 = 111) |
+| `^`      | XOR         | `5 ^ 3 = 6` (101 ^ 011 = 110)   |
+| `~`      | NOT         | `~5 = -6` (inverts all bits)    |
+| `<<`     | Left Shift  | `5 << 1 = 10`                   |
+| `>>`     | Right Shift | `5 >> 1 = 2`                    |
+
+## Common Tricks
+
+### Check if Bit is Set
+
+```multi
+[javascript]
+function isBitSet(n, i) {
+    return (n & (1 << i)) !== 0;
+}
+
+// Usage
+console.log(isBitSet(5, 0));  // true  (5 = 101, bit 0 is set)
+console.log(isBitSet(5, 1));  // false (5 = 101, bit 1 is not set)
+console.log(isBitSet(5, 2));  // true  (5 = 101, bit 2 is set)
+
+[python]
+def is_bit_set(n, i):
+    return (n & (1 << i)) != 0
+
+# Usage
+print(is_bit_set(5, 0))  # True  (5 = 101, bit 0 is set)
+print(is_bit_set(5, 1))  # False (5 = 101, bit 1 is not set)
+print(is_bit_set(5, 2))  # True  (5 = 101, bit 2 is set)
+
+[java]
+public boolean isBitSet(int n, int i) {
+    return (n & (1 << i)) != 0;
+}
+
+[cpp]
+bool isBitSet(int n, int i) {
+    return (n & (1 << i)) != 0;
+}
+```
+
+### Set, Clear, Toggle a Bit
+
+```multi
+[javascript]
+// Set bit i (make it 1)
+function setBit(n, i) {
+    return n | (1 << i);
+}
+
+// Clear bit i (make it 0)
+function clearBit(n, i) {
+    return n & ~(1 << i);
+}
+
+// Toggle bit i (flip it)
+function toggleBit(n, i) {
+    return n ^ (1 << i);
+}
+
+// Usage
+console.log(setBit(5, 1).toString(2));    // "111" (5 = 101 → 7 = 111)
+console.log(clearBit(5, 2).toString(2));  // "1" (5 = 101 → 1 = 001)
+console.log(toggleBit(5, 0).toString(2)); // "100" (5 = 101 → 4 = 100)
+
+[python]
+def set_bit(n, i):
+    """Set bit i (make it 1)"""
+    return n | (1 << i)
+
+def clear_bit(n, i):
+    """Clear bit i (make it 0)"""
+    return n & ~(1 << i)
+
+def toggle_bit(n, i):
+    """Toggle bit i (flip it)"""
+    return n ^ (1 << i)
+
+# Usage
+print(bin(set_bit(5, 1)))     # 0b111 (5 = 101 → 7 = 111)
+print(bin(clear_bit(5, 2)))   # 0b1 (5 = 101 → 1 = 001)
+print(bin(toggle_bit(5, 0)))  # 0b100 (5 = 101 → 4 = 100)
+
+[java]
+public int setBit(int n, int i) {
+    return n | (1 << i);
+}
+
+public int clearBit(int n, int i) {
+    return n & ~(1 << i);
+}
+
+public int toggleBit(int n, int i) {
+    return n ^ (1 << i);
+}
+
+[cpp]
+int setBit(int n, int i) {
+    return n | (1 << i);
+}
+
+int clearBit(int n, int i) {
+    return n & ~(1 << i);
+}
+
+int toggleBit(int n, int i) {
+    return n ^ (1 << i);
+}
+```
+
+### Check if Power of 2
+
+```multi
+[javascript]
+function isPowerOfTwo(n) {
+    return n > 0 && (n & (n - 1)) === 0;
+}
+
+// Why it works:
+// 8 = 1000, 7 = 0111 → 8 & 7 = 0000 ✓
+// 6 = 0110, 5 = 0101 → 6 & 5 = 0100 ✗
+
+[python]
+def is_power_of_two(n):
+    """
+    Power of 2 has exactly one set bit.
+    n & (n-1) clears the lowest set bit.
+    If result is 0, only one bit was set.
+    """
+    return n > 0 and (n & (n - 1)) == 0
+
+[java]
+public boolean isPowerOfTwo(int n) {
+    return n > 0 && (n & (n - 1)) == 0;
+}
+
+[cpp]
+bool isPowerOfTwo(int n) {
+    return n > 0 && (n & (n - 1)) == 0;
+}
+```
+
+### Count Set Bits (Brian Kernighan's Algorithm)
+
+```multi
+[javascript]
+function countBits(n) {
+    let count = 0;
+    while (n) {
+        n &= (n - 1);  // Clear lowest set bit
+        count++;
+    }
+    return count;
+}
+
+// n & (n-1) removes the lowest set bit
+// 12 = 1100 → 8 = 1000 → 0
+// Count: 2 bits set
+
+[python]
+def count_bits(n):
+    """
+    Brian Kernighan's Algorithm
+    Each iteration removes one set bit.
+    Time: O(number of set bits)
+    """
+    count = 0
+    while n:
+        n &= (n - 1)  # Clear lowest set bit
+        count += 1
+    return count
+
+[java]
+public int countBits(int n) {
+    int count = 0;
+    while (n != 0) {
+        n &= (n - 1);  // Clear lowest set bit
+        count++;
+    }
+    return count;
+}
+
+// Or use built-in: Integer.bitCount(n)
+
+[cpp]
+int countBits(int n) {
+    int count = 0;
+    while (n) {
+        n &= (n - 1);  // Clear lowest set bit
+        count++;
+    }
+    return count;
+}
+
+// Or use built-in: __builtin_popcount(n)
+```
+
+### Get Lowest Set Bit
+
+```multi
+[javascript]
+function lowestSetBit(n) {
+    return n & (-n);
+}
+
+// -n is two's complement: inverts bits and adds 1
+// 12 = 01100, -12 = 10100 → 12 & -12 = 00100 = 4
+
+[python]
+def lowest_set_bit(n):
+    """Returns the value of the lowest set bit."""
+    return n & (-n)
+
+[java]
+public int lowestSetBit(int n) {
+    return n & (-n);
+}
+
+// Or use: Integer.lowestOneBit(n)
+
+[cpp]
+int lowestSetBit(int n) {
+    return n & (-n);
+}
+```
+
+## XOR Properties
+
+- `x ^ 0 = x` (identity)
+- `x ^ x = 0` (self-inverse)
+- `x ^ y = y ^ x` (commutative)
+- `(x ^ y) ^ z = x ^ (y ^ z)` (associative)
+
+### Find Single Number (Others Appear Twice)
+
+```multi
+[javascript]
+function singleNumber(nums) {
+    let result = 0;
+    for (const num of nums) {
+        result ^= num;
+    }
+    return result;
+}
+
+// [4, 1, 2, 1, 2]
+// 4 ^ 1 ^ 2 ^ 1 ^ 2 = 4 ^ (1 ^ 1) ^ (2 ^ 2) = 4 ^ 0 ^ 0 = 4
+
+[python]
+def single_number(nums):
+    """
+    XOR all numbers. Pairs cancel out (x ^ x = 0).
+    Time: O(n), Space: O(1)
+    """
+    result = 0
+    for num in nums:
+        result ^= num
+    return result
+
+[java]
+public int singleNumber(int[] nums) {
+    int result = 0;
+    for (int num : nums) {
+        result ^= num;
+    }
+    return result;
+}
+
+[cpp]
+int singleNumber(vector<int>& nums) {
+    int result = 0;
+    for (int num : nums) {
+        result ^= num;
+    }
+    return result;
+}
+```
+
+### Swap Without Temp Variable
+
+```multi
+[javascript]
+function swap(a, b) {
+    a = a ^ b;
+    b = a ^ b;  // b = (a ^ b) ^ b = a
+    a = a ^ b;  // a = (a ^ b) ^ a = b
+    return [a, b];
+}
+
+[python]
+def swap(a, b):
+    a = a ^ b
+    b = a ^ b  # b = (a ^ b) ^ b = a
+    a = a ^ b  # a = (a ^ b) ^ a = b
+    return a, b
+
+# Python's tuple unpacking is cleaner: a, b = b, a
+
+[java]
+public void swap(int[] arr, int i, int j) {
+    arr[i] = arr[i] ^ arr[j];
+    arr[j] = arr[i] ^ arr[j];
+    arr[i] = arr[i] ^ arr[j];
+}
+
+[cpp]
+void swap(int& a, int& b) {
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+}
+```
+
+### Generate All Subsets Using Bitmask
+
+```multi
+[javascript]
+function subsets(nums) {
+    const n = nums.length;
+    const result = [];
+    
+    // 2^n possible subsets
+    for (let mask = 0; mask < (1 << n); mask++) {
+        const subset = [];
+        for (let i = 0; i < n; i++) {
+            if (mask & (1 << i)) {
+                subset.push(nums[i]);
+            }
+        }
+        result.push(subset);
+    }
+    
+    return result;
+}
+
+[python]
+def subsets(nums):
+    """
+    Generate all 2^n subsets using bitmasks.
+    Each bit represents whether to include that element.
+    """
+    n = len(nums)
+    result = []
+    
+    # 2^n possible subsets
+    for mask in range(1 << n):
+        subset = []
+        for i in range(n):
+            if mask & (1 << i):
+                subset.append(nums[i])
+        result.append(subset)
+    
+    return result
+
+[java]
+public List<List<Integer>> subsets(int[] nums) {
+    int n = nums.length;
+    List<List<Integer>> result = new ArrayList<>();
+    
+    for (int mask = 0; mask < (1 << n); mask++) {
+        List<Integer> subset = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if ((mask & (1 << i)) != 0) {
+                subset.add(nums[i]);
+            }
+        }
+        result.add(subset);
+    }
+    
+    return result;
+}
+
+[cpp]
+vector<vector<int>> subsets(vector<int>& nums) {
+    int n = nums.size();
+    vector<vector<int>> result;
+    
+    for (int mask = 0; mask < (1 << n); mask++) {
+        vector<int> subset;
+        for (int i = 0; i < n; i++) {
+            if (mask & (1 << i)) {
+                subset.push_back(nums[i]);
+            }
+        }
+        result.push_back(subset);
+    }
+    
+    return result;
+}
+```
+
+## Quick Reference
+
+| Operation | Formula | Example |
+|-----------|---------|---------|
+| Check bit i | `n & (1 << i)` | Is bit 2 set in 5? |
+| Set bit i | `n \| (1 << i)` | Set bit 1 in 5 → 7 |
+| Clear bit i | `n & ~(1 << i)` | Clear bit 2 in 5 → 1 |
+| Toggle bit i | `n ^ (1 << i)` | Toggle bit 0 in 5 → 4 |
+| Lowest set bit | `n & (-n)` | LSB of 12 → 4 |
+| Clear lowest bit | `n & (n-1)` | 12 → 8 |
+| Is power of 2 | `n & (n-1) == 0` | 8 is, 6 isn't |
+| Multiply by 2 | `n << 1` | 5 << 1 = 10 |
+| Divide by 2 | `n >> 1` | 5 >> 1 = 2 |
+
+## Applications
+
+| Application | Use Case |
+|-------------|----------|
+| **Flags** | Permission systems (rwx) |
+| **Sets** | Subset generation, DP with bitmasks |
+| **Cryptography** | XOR encryption |
+| **Compression** | Huffman coding |
+| **Fast Math** | Multiply/divide by powers of 2 |
+| **Counting** | Efficient set bit counting |
+
+## Key Takeaways
+
+1. **XOR is self-inverse** - `a ^ b ^ b = a`
+2. **n & (n-1)** removes the lowest set bit
+3. **n & (-n)** isolates the lowest set bit
+4. **Power of 2** has exactly one bit set
+5. **Bitmasks** can represent subsets efficiently

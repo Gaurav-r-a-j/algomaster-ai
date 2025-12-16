@@ -1,0 +1,829 @@
+# Breadth-First Search (BFS)
+
+**BFS** explores a graph level by level, visiting all neighbors at the current depth before moving deeper. It uses a **queue** (FIFO) data structure.
+
+## Visual Understanding
+
+```
+Graph:          BFS from 0:
+    0           Level 0: [0]
+   /|\          Level 1: [1, 2, 3]
+  1 2 3         Level 2: [4, 5]
+   \|/          
+    4           Order: 0 → 1 → 2 → 3 → 4 → 5
+    |
+    5
+```
+
+---
+
+## Algorithm Steps
+
+1. **Start** at source vertex, mark as visited
+2. **Add** source to queue
+3. **While** queue is not empty:
+   - Dequeue front vertex
+   - Process it (add to result)
+   - Enqueue all unvisited neighbors
+   - Mark neighbors as visited
+
+> 💡 **Key insight**: Mark as visited BEFORE adding to queue (not after dequeueing) to avoid duplicates.
+
+---
+
+## Implementation
+
+```multi
+[javascript]
+function bfs(graph, start) {
+    const visited = new Set([start]);
+    const queue = [start];
+    const result = [];
+    
+    while (queue.length > 0) {
+        const vertex = queue.shift();
+        result.push(vertex);
+        
+        for (const neighbor of graph[vertex] || []) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                queue.push(neighbor);
+            }
+        }
+    }
+    
+    return result;
+}
+
+// Usage
+const graph = {
+    0: [1, 2],
+    1: [0, 3, 4],
+    2: [0, 5, 6],
+    3: [1],
+    4: [1],
+    5: [2],
+    6: [2]
+};
+console.log(bfs(graph, 0));  // [0, 1, 2, 3, 4, 5, 6]
+
+[python]
+from collections import deque
+
+def bfs(graph, start):
+    """
+    Basic BFS traversal
+    Time: O(V + E), Space: O(V)
+    """
+    visited = {start}
+    queue = deque([start])
+    result = []
+    
+    while queue:
+        vertex = queue.popleft()
+        result.append(vertex)
+        
+        for neighbor in graph.get(vertex, []):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+    
+    return result
+
+# Usage
+graph = {
+    0: [1, 2],
+    1: [0, 3, 4],
+    2: [0, 5, 6],
+    3: [1],
+    4: [1],
+    5: [2],
+    6: [2]
+}
+print(bfs(graph, 0))  # [0, 1, 2, 3, 4, 5, 6]
+
+[java]
+import java.util.*;
+
+public class BFS {
+public List<Integer> bfs(Map<Integer, List<Integer>> graph, int start) {
+    Set<Integer> visited = new HashSet<>();
+    Queue<Integer> queue = new LinkedList<>();
+    List<Integer> result = new ArrayList<>();
+    
+    visited.add(start);
+    queue.offer(start);
+    
+    while (!queue.isEmpty()) {
+        int vertex = queue.poll();
+        result.add(vertex);
+        
+        for (int neighbor : graph.getOrDefault(vertex, List.of())) {
+            if (!visited.contains(neighbor)) {
+                visited.add(neighbor);
+                queue.offer(neighbor);
+            }
+        }
+    }
+    
+    return result;
+}
+    
+    public static void main(String[] args) {
+        BFS bfs = new BFS();
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        graph.put(0, Arrays.asList(1, 2));
+        graph.put(1, Arrays.asList(0, 3, 4));
+        graph.put(2, Arrays.asList(0, 5, 6));
+        // Output: [0, 1, 2, 3, 4, 5, 6]
+        System.out.println(bfs.bfs(graph, 0));
+    }
+}
+
+[cpp]
+#include <iostream>
+#include <queue>
+#include <unordered_set>
+#include <unordered_map>
+#include <vector>
+
+std::vector<int> bfs(std::unordered_map<int, std::vector<int>>& graph, int start) {
+    std::unordered_set<int> visited;
+    std::queue<int> q;
+    std::vector<int> result;
+    
+    visited.insert(start);
+    q.push(start);
+    
+    while (!q.empty()) {
+        int vertex = q.front();
+        q.pop();
+        result.push_back(vertex);
+        
+        for (int neighbor : graph[vertex]) {
+            if (visited.find(neighbor) == visited.end()) {
+                visited.insert(neighbor);
+                q.push(neighbor);
+            }
+        }
+    }
+    
+    return result;
+}
+
+int main() {
+    std::unordered_map<int, std::vector<int>> graph;
+    graph[0] = {1, 2};
+    graph[1] = {0, 3, 4};
+    graph[2] = {0, 5, 6};
+    
+    auto result = bfs(graph, 0);
+    // Output: 0 1 2 3 4 5 6
+    for (int v : result) std::cout << v << " ";
+    return 0;
+}
+```
+
+---
+
+## Shortest Path (Unweighted Graph)
+
+BFS naturally finds the shortest path in unweighted graphs.
+
+```multi
+[javascript]
+function shortestPath(graph, start, end) {
+    if (start === end) return [start];
+    
+    const visited = new Set([start]);
+    const queue = [[start, [start]]];  // [vertex, path]
+    
+    while (queue.length > 0) {
+        const [vertex, path] = queue.shift();
+        
+        for (const neighbor of graph[vertex] || []) {
+            if (neighbor === end) {
+                return [...path, neighbor];
+            }
+            
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                queue.push([neighbor, [...path, neighbor]]);
+            }
+        }
+    }
+    
+    return [];  // No path found
+}
+
+// Optimized version using parent pointers
+function shortestPathOptimized(graph, start, end) {
+    if (start === end) return [start];
+    
+    const visited = new Set([start]);
+    const queue = [start];
+    const parent = { [start]: null };
+    
+    while (queue.length > 0) {
+        const vertex = queue.shift();
+        
+        for (const neighbor of graph[vertex] || []) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                parent[neighbor] = vertex;
+                queue.push(neighbor);
+                
+                if (neighbor === end) {
+                    // Reconstruct path
+                    const path = [];
+                    let current = end;
+                    while (current !== null) {
+                        path.unshift(current);
+                        current = parent[current];
+                    }
+                    return path;
+                }
+            }
+        }
+    }
+    
+    return [];
+}
+
+[python]
+from collections import deque
+
+def shortest_path(graph, start, end):
+    """
+    Find shortest path from start to end.
+    Returns path as list of vertices, or empty list if no path.
+    """
+    if start == end:
+        return [start]
+    
+    visited = {start}
+    queue = deque([(start, [start])])  # (vertex, path)
+    
+    while queue:
+        vertex, path = queue.popleft()
+        
+        for neighbor in graph.get(vertex, []):
+            if neighbor == end:
+                return path + [neighbor]
+            
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+    
+    return []  # No path found
+
+# Optimized version using parent pointers
+def shortest_path_optimized(graph, start, end):
+    """Memory-efficient version using parent tracking."""
+    if start == end:
+        return [start]
+    
+    visited = {start}
+    queue = deque([start])
+    parent = {start: None}
+    
+    while queue:
+        vertex = queue.popleft()
+        
+        for neighbor in graph.get(vertex, []):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                parent[neighbor] = vertex
+                queue.append(neighbor)
+                
+                if neighbor == end:
+                    # Reconstruct path
+                    path = []
+                    current = end
+                    while current is not None:
+                        path.append(current)
+                        current = parent[current]
+                    return path[::-1]
+    
+    return []
+
+[java]
+import java.util.*;
+
+public List<Integer> shortestPath(Map<Integer, List<Integer>> graph, int start, int end) {
+    if (start == end) return Arrays.asList(start);
+    
+    Set<Integer> visited = new HashSet<>();
+    Queue<int[]> queue = new LinkedList<>();  // {vertex, parent}
+    Map<Integer, Integer> parent = new HashMap<>();
+    
+    visited.add(start);
+    queue.offer(new int[]{start});
+    parent.put(start, -1);
+    
+    while (!queue.isEmpty()) {
+        int vertex = queue.poll()[0];
+        
+        for (int neighbor : graph.getOrDefault(vertex, List.of())) {
+            if (!visited.contains(neighbor)) {
+                visited.add(neighbor);
+                parent.put(neighbor, vertex);
+                queue.offer(new int[]{neighbor});
+                
+                if (neighbor == end) {
+                    // Reconstruct path
+                    List<Integer> path = new ArrayList<>();
+                    int current = end;
+                    while (current != -1) {
+                        path.add(0, current);
+                        current = parent.get(current);
+                    }
+                    return path;
+                }
+            }
+        }
+    }
+    
+    return new ArrayList<>();  // No path found
+}
+
+[cpp]
+#include <queue>
+#include <unordered_set>
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+
+std::vector<int> shortestPath(
+    std::unordered_map<int, std::vector<int>>& graph, 
+    int start, int end
+) {
+    if (start == end) return {start};
+    
+    std::unordered_set<int> visited;
+    std::queue<int> q;
+    std::unordered_map<int, int> parent;
+    
+    visited.insert(start);
+    q.push(start);
+    parent[start] = -1;
+    
+    while (!q.empty()) {
+        int vertex = q.front();
+        q.pop();
+        
+        for (int neighbor : graph[vertex]) {
+            if (visited.find(neighbor) == visited.end()) {
+                visited.insert(neighbor);
+                parent[neighbor] = vertex;
+                q.push(neighbor);
+                
+                if (neighbor == end) {
+                    // Reconstruct path
+                    std::vector<int> path;
+                    int current = end;
+                    while (current != -1) {
+                        path.push_back(current);
+                        current = parent[current];
+                    }
+                    std::reverse(path.begin(), path.end());
+                    return path;
+                }
+            }
+        }
+    }
+    
+    return {};  // No path found
+}
+```
+
+---
+
+## Level Order Traversal
+
+Process nodes level by level - useful for trees and when you need level information.
+
+```multi
+[javascript]
+function bfsWithLevels(graph, start) {
+    const visited = new Set([start]);
+    const queue = [[start, 0]];  // [vertex, level]
+    const levels = { [start]: 0 };
+    const order = [];
+    
+    while (queue.length > 0) {
+        const [vertex, level] = queue.shift();
+        order.push(vertex);
+        
+        for (const neighbor of graph[vertex] || []) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                levels[neighbor] = level + 1;
+                queue.push([neighbor, level + 1]);
+            }
+        }
+    }
+    
+    return { order, levels };
+}
+
+// For trees: Level Order Traversal
+function levelOrderTree(root) {
+    if (!root) return [];
+    
+    const result = [];
+    const queue = [root];
+    
+    while (queue.length > 0) {
+        const levelSize = queue.length;
+        const currentLevel = [];
+        
+        for (let i = 0; i < levelSize; i++) {
+            const node = queue.shift();
+            currentLevel.push(node.val);
+            
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+        
+        result.push(currentLevel);
+    }
+    
+    return result;
+}
+
+[python]
+from collections import deque
+
+def bfs_with_levels(graph, start):
+    """
+    BFS that tracks levels/distance from start.
+    Returns: (order, level_map)
+    """
+    visited = {start}
+    queue = deque([(start, 0)])  # (vertex, level)
+    levels = {start: 0}
+    order = []
+    
+    while queue:
+        vertex, level = queue.popleft()
+        order.append(vertex)
+        
+        for neighbor in graph.get(vertex, []):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                levels[neighbor] = level + 1
+                queue.append((neighbor, level + 1))
+    
+    return order, levels
+
+# For trees: Level Order Traversal
+def level_order_tree(root):
+    """Level order traversal for binary tree."""
+    if not root:
+        return []
+    
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        level_size = len(queue)
+        current_level = []
+        
+        for _ in range(level_size):
+            node = queue.popleft()
+            current_level.append(node.val)
+            
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        result.append(current_level)
+    
+    return result
+
+[java]
+import java.util.*;
+
+public Map.Entry<List<Integer>, Map<Integer, Integer>> bfsWithLevels(
+    Map<Integer, List<Integer>> graph, int start
+) {
+    Set<Integer> visited = new HashSet<>();
+    Queue<int[]> queue = new LinkedList<>();  // {vertex, level}
+    Map<Integer, Integer> levels = new HashMap<>();
+    List<Integer> order = new ArrayList<>();
+    
+    visited.add(start);
+    queue.offer(new int[]{start, 0});
+    levels.put(start, 0);
+    
+    while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        int vertex = curr[0], level = curr[1];
+        order.add(vertex);
+        
+        for (int neighbor : graph.getOrDefault(vertex, List.of())) {
+            if (!visited.contains(neighbor)) {
+                visited.add(neighbor);
+                levels.put(neighbor, level + 1);
+                queue.offer(new int[]{neighbor, level + 1});
+            }
+        }
+    }
+    
+    return Map.entry(order, levels);
+}
+
+// For trees: Level Order Traversal
+public List<List<Integer>> levelOrderTree(TreeNode root) {
+    List<List<Integer>> result = new ArrayList<>();
+    if (root == null) return result;
+    
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+    
+    while (!queue.isEmpty()) {
+        int levelSize = queue.size();
+        List<Integer> currentLevel = new ArrayList<>();
+        
+        for (int i = 0; i < levelSize; i++) {
+            TreeNode node = queue.poll();
+            currentLevel.add(node.val);
+            
+            if (node.left != null) queue.offer(node.left);
+            if (node.right != null) queue.offer(node.right);
+        }
+        
+        result.add(currentLevel);
+    }
+    
+    return result;
+}
+
+[cpp]
+#include <queue>
+#include <unordered_set>
+#include <unordered_map>
+#include <vector>
+
+std::pair<std::vector<int>, std::unordered_map<int, int>> bfsWithLevels(
+    std::unordered_map<int, std::vector<int>>& graph, 
+    int start
+) {
+    std::unordered_set<int> visited;
+    std::queue<std::pair<int, int>> q;  // {vertex, level}
+    std::unordered_map<int, int> levels;
+    std::vector<int> order;
+    
+    visited.insert(start);
+    q.push({start, 0});
+    levels[start] = 0;
+    
+    while (!q.empty()) {
+        auto [vertex, level] = q.front();
+        q.pop();
+        order.push_back(vertex);
+        
+        for (int neighbor : graph[vertex]) {
+            if (visited.find(neighbor) == visited.end()) {
+                visited.insert(neighbor);
+                levels[neighbor] = level + 1;
+                q.push({neighbor, level + 1});
+            }
+        }
+    }
+    
+    return {order, levels};
+}
+
+// For trees: Level Order Traversal
+std::vector<std::vector<int>> levelOrderTree(TreeNode* root) {
+    std::vector<std::vector<int>> result;
+    if (!root) return result;
+    
+    std::queue<TreeNode*> q;
+    q.push(root);
+    
+    while (!q.empty()) {
+        int levelSize = q.size();
+        std::vector<int> currentLevel;
+        
+        for (int i = 0; i < levelSize; i++) {
+            TreeNode* node = q.front();
+            q.pop();
+            currentLevel.push_back(node->val);
+            
+            if (node->left) q.push(node->left);
+            if (node->right) q.push(node->right);
+        }
+        
+        result.push_back(currentLevel);
+    }
+    
+    return result;
+}
+```
+
+---
+
+## BFS on Matrix
+
+```multi
+[javascript]
+function bfsMatrix(grid, start, end) {
+    const rows = grid.length;
+    const cols = grid[0].length;
+    const [sr, sc] = start;
+    const [er, ec] = end;
+    
+    if (grid[sr][sc] === 1 || grid[er][ec] === 1) {
+        return -1;  // Blocked
+    }
+    
+    const visited = new Set([`${sr},${sc}`]);
+    const queue = [[sr, sc, 0]];  // [row, col, distance]
+    const directions = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+    
+    while (queue.length > 0) {
+        const [r, c, dist] = queue.shift();
+        
+        if (r === er && c === ec) {
+            return dist;
+        }
+        
+        for (const [dr, dc] of directions) {
+            const nr = r + dr;
+            const nc = c + dc;
+            const key = `${nr},${nc}`;
+            
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                if (!visited.has(key) && grid[nr][nc] === 0) {
+                    visited.add(key);
+                    queue.push([nr, nc, dist + 1]);
+                }
+            }
+        }
+    }
+    
+    return -1;  // No path found
+}
+
+[python]
+from collections import deque
+
+def bfs_matrix(grid, start, end):
+    """
+    BFS on 2D grid.
+    grid[r][c] = 0 means passable, 1 means blocked.
+    """
+    rows, cols = len(grid), len(grid[0])
+    sr, sc = start
+    er, ec = end
+    
+    if grid[sr][sc] == 1 or grid[er][ec] == 1:
+        return -1
+    
+    visited = {(sr, sc)}
+    queue = deque([(sr, sc, 0)])  # (row, col, distance)
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    
+    while queue:
+        r, c, dist = queue.popleft()
+        
+        if (r, c) == (er, ec):
+            return dist
+        
+        for dr, dc in directions:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < rows and 0 <= nc < cols:
+                if (nr, nc) not in visited and grid[nr][nc] == 0:
+                    visited.add((nr, nc))
+                    queue.append((nr, nc, dist + 1))
+    
+    return -1  # No path found
+
+[java]
+import java.util.*;
+
+public int bfsMatrix(int[][] grid, int[] start, int[] end) {
+    int rows = grid.length, cols = grid[0].length;
+    int sr = start[0], sc = start[1];
+    int er = end[0], ec = end[1];
+    
+    if (grid[sr][sc] == 1 || grid[er][ec] == 1) {
+        return -1;
+    }
+    
+    Set<String> visited = new HashSet<>();
+    Queue<int[]> queue = new LinkedList<>();
+    int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    
+    visited.add(sr + "," + sc);
+    queue.offer(new int[]{sr, sc, 0});
+    
+    while (!queue.isEmpty()) {
+        int[] curr = queue.poll();
+        int r = curr[0], c = curr[1], dist = curr[2];
+        
+        if (r == er && c == ec) {
+            return dist;
+        }
+        
+        for (int[] dir : directions) {
+            int nr = r + dir[0], nc = c + dir[1];
+            String key = nr + "," + nc;
+            
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                if (!visited.contains(key) && grid[nr][nc] == 0) {
+                    visited.add(key);
+                    queue.offer(new int[]{nr, nc, dist + 1});
+                }
+            }
+        }
+    }
+    
+    return -1;
+}
+
+[cpp]
+#include <queue>
+#include <set>
+#include <vector>
+
+int bfsMatrix(
+    std::vector<std::vector<int>>& grid, 
+    std::pair<int, int> start, 
+    std::pair<int, int> end
+) {
+    int rows = grid.size(), cols = grid[0].size();
+    auto [sr, sc] = start;
+    auto [er, ec] = end;
+    
+    if (grid[sr][sc] == 1 || grid[er][ec] == 1) {
+        return -1;
+    }
+    
+    std::set<std::pair<int, int>> visited;
+    std::queue<std::tuple<int, int, int>> q;
+    int directions[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    
+    visited.insert({sr, sc});
+    q.push({sr, sc, 0});
+    
+    while (!q.empty()) {
+        auto [r, c, dist] = q.front();
+        q.pop();
+        
+        if (r == er && c == ec) {
+            return dist;
+        }
+        
+        for (auto& dir : directions) {
+            int nr = r + dir[0], nc = c + dir[1];
+            
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                if (visited.find({nr, nc}) == visited.end() && grid[nr][nc] == 0) {
+                    visited.insert({nr, nc});
+                    q.push({nr, nc, dist + 1});
+                }
+            }
+        }
+    }
+    
+    return -1;
+}
+```
+
+---
+
+## Time & Space Complexity
+
+| Aspect | Complexity | Notes |
+|--------|------------|-------|
+| Time | **O(V + E)** | Each vertex and edge visited once |
+| Space | **O(V)** | Queue + visited set |
+
+For matrix/grid: O(rows × cols)
+
+---
+
+## BFS vs DFS
+
+| Feature | BFS | DFS |
+|---------|-----|-----|
+| Data Structure | Queue | Stack/Recursion |
+| Traversal | Level by level | Deep then backtrack |
+| Shortest Path | ✅ Unweighted graphs | ❌ Not guaranteed |
+| Space | O(width of graph) | O(height of graph) |
+| Best for | Shortest path, levels | Cycles, topological sort |
+
+---
+
+## Key Takeaways
+
+1. **Use BFS for shortest path** in unweighted graphs
+2. **Mark visited BEFORE enqueueing** to avoid duplicates
+3. **Track levels** when distance matters
+4. **Multi-source BFS** for problems with multiple starting points
+5. **0-1 BFS** with deque for edge weights 0 or 1

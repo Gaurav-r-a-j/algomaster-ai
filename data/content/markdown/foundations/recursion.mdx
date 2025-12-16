@@ -1,0 +1,551 @@
+# Recursion
+
+**Recursion** is a technique where a function calls itself to solve a problem by breaking it into smaller subproblems of the same type.
+
+## Visual Metaphor
+
+```
+factorial(4)
+    └── 4 × factorial(3)
+             └── 3 × factorial(2)
+                      └── 2 × factorial(1)
+                               └── 1  ← Base Case!
+                      └── 2 × 1 = 2
+             └── 3 × 2 = 6
+    └── 4 × 6 = 24 ← Final Answer!
+```
+
+---
+
+## Real-World Analogies
+
+| Analogy | Description |
+|---------|-------------|
+| **Russian Dolls** | Open a doll → find smaller doll → repeat until tiniest |
+| **Mirrors** | Two facing mirrors create infinite reflections |
+| **Fractal Trees** | Each branch splits into smaller branches like the trunk |
+| **File Systems** | Folders contain files and other folders |
+
+---
+
+## Two Essential Parts
+
+### 1. Base Case (Stopping Condition)
+
+The condition where recursion stops. Without it → infinite loop → stack overflow!
+
+### 2. Recursive Case
+
+The function calls itself with a **smaller/simpler input**.
+
+---
+
+## How Recursion Works: The Call Stack
+
+```
+Call Stack:
+┌──────────────────┐
+│ factorial(1) → 1 │  ← Top (Current)
+├──────────────────┤
+│ factorial(2)     │
+├──────────────────┤
+│ factorial(3)     │
+├──────────────────┤
+│ factorial(4)     │  ← Bottom (Original call)
+└──────────────────┘
+
+1. Each call pushes onto stack
+2. Base case returns value
+3. Stack unwinds, combining results
+```
+
+---
+
+## Classic Examples
+
+### Factorial
+
+```multi
+[javascript]
+function factorial(n) {
+    // Base case
+    if (n <= 1) {
+        return 1;
+    }
+    // Recursive case
+    return n * factorial(n - 1);
+}
+
+// Trace: factorial(5)
+// = 5 * factorial(4)
+// = 5 * 4 * factorial(3)
+// = 5 * 4 * 3 * factorial(2)
+// = 5 * 4 * 3 * 2 * factorial(1)
+// = 5 * 4 * 3 * 2 * 1
+// = 120
+
+[python]
+def factorial(n):
+    """n! = n × (n-1) × (n-2) × ... × 1"""
+    # Base case
+    if n <= 1:
+        return 1
+    # Recursive case
+    return n * factorial(n - 1)
+
+# Trace: factorial(5)
+# = 5 * factorial(4)
+# = 5 * 4 * factorial(3)
+# = 5 * 4 * 3 * factorial(2)
+# = 5 * 4 * 3 * 2 * factorial(1)
+# = 5 * 4 * 3 * 2 * 1
+# = 120
+
+[java]
+public int factorial(int n) {
+    // Base case
+    if (n <= 1) {
+        return 1;
+    }
+    // Recursive case
+    return n * factorial(n - 1);
+}
+
+[cpp]
+int factorial(int n) {
+    // Base case
+    if (n <= 1) {
+        return 1;
+    }
+    // Recursive case
+    return n * factorial(n - 1);
+}
+```
+
+### Fibonacci
+
+```multi
+[javascript]
+function fibonacci(n) {
+    // Base cases
+    if (n <= 1) {
+        return n;
+    }
+    // Recursive case (two branches!)
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// F(5) = F(4) + F(3)
+//      = (F(3) + F(2)) + (F(2) + F(1))
+//      = 5
+
+[python]
+def fibonacci(n):
+    """F(n) = F(n-1) + F(n-2)"""
+    # Base cases
+    if n <= 1:
+        return n
+    # Recursive case (two branches!)
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# F(5) = F(4) + F(3)
+#      = (F(3) + F(2)) + (F(2) + F(1))
+#      = 5
+
+[java]
+public int fibonacci(int n) {
+    // Base cases
+    if (n <= 1) {
+        return n;
+    }
+    // Recursive case
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+[cpp]
+int fibonacci(int n) {
+    // Base cases
+    if (n <= 1) {
+        return n;
+    }
+    // Recursive case
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+```
+
+### Sum of Array
+
+```multi
+[javascript]
+function arraySum(arr) {
+    // Base case: empty array
+    if (arr.length === 0) {
+        return 0;
+    }
+    // Recursive case
+    return arr[0] + arraySum(arr.slice(1));
+}
+
+// arraySum([1, 2, 3, 4])
+// = 1 + arraySum([2, 3, 4])
+// = 1 + 2 + arraySum([3, 4])
+// = 1 + 2 + 3 + arraySum([4])
+// = 1 + 2 + 3 + 4 + arraySum([])
+// = 10
+
+[python]
+def array_sum(arr):
+    """Sum all elements recursively"""
+    # Base case: empty array
+    if len(arr) == 0:
+        return 0
+    # Recursive case
+    return arr[0] + array_sum(arr[1:])
+
+# array_sum([1, 2, 3, 4])
+# = 1 + array_sum([2, 3, 4])
+# = 1 + 2 + array_sum([3, 4])
+# = 1 + 2 + 3 + array_sum([4])
+# = 1 + 2 + 3 + 4 + array_sum([])
+# = 10
+
+[java]
+public int arraySum(int[] arr, int index) {
+    // Base case
+    if (index >= arr.length) {
+        return 0;
+    }
+    // Recursive case
+    return arr[index] + arraySum(arr, index + 1);
+}
+
+[cpp]
+int arraySum(vector<int>& arr, int index = 0) {
+    // Base case
+    if (index >= arr.size()) {
+        return 0;
+    }
+    // Recursive case
+    return arr[index] + arraySum(arr, index + 1);
+}
+```
+
+### Binary Search (Recursive)
+
+```multi
+[javascript]
+function binarySearch(arr, target, left, right) {
+    // Base case: not found
+    if (left > right) {
+        return -1;
+    }
+    
+    const mid = Math.floor((left + right) / 2);
+    
+    // Base case: found
+    if (arr[mid] === target) {
+        return mid;
+    }
+    
+    // Recursive cases
+    if (arr[mid] > target) {
+        return binarySearch(arr, target, left, mid - 1);
+    } else {
+        return binarySearch(arr, target, mid + 1, right);
+    }
+}
+
+[python]
+def binary_search(arr, target, left, right):
+    """Search sorted array - O(log n)"""
+    # Base case: not found
+    if left > right:
+        return -1
+    
+    mid = (left + right) // 2
+    
+    # Base case: found
+    if arr[mid] == target:
+        return mid
+    
+    # Recursive cases
+    if arr[mid] > target:
+        return binary_search(arr, target, left, mid - 1)
+    else:
+        return binary_search(arr, target, mid + 1, right)
+
+[java]
+public int binarySearch(int[] arr, int target, int left, int right) {
+    // Base case: not found
+    if (left > right) {
+        return -1;
+    }
+    
+    int mid = (left + right) / 2;
+    
+    // Base case: found
+    if (arr[mid] == target) {
+        return mid;
+    }
+    
+    // Recursive cases
+    if (arr[mid] > target) {
+        return binarySearch(arr, target, left, mid - 1);
+    } else {
+        return binarySearch(arr, target, mid + 1, right);
+    }
+}
+
+[cpp]
+int binarySearch(vector<int>& arr, int target, int left, int right) {
+    // Base case: not found
+    if (left > right) {
+        return -1;
+    }
+    
+    int mid = (left + right) / 2;
+    
+    // Base case: found
+    if (arr[mid] == target) {
+        return mid;
+    }
+    
+    // Recursive cases
+    if (arr[mid] > target) {
+        return binarySearch(arr, target, left, mid - 1);
+    } else {
+        return binarySearch(arr, target, mid + 1, right);
+    }
+}
+```
+
+---
+
+## Recursion vs Iteration
+
+| Aspect | Recursion | Iteration |
+|--------|-----------|-----------|
+| Code | Often cleaner, more intuitive | Can be verbose |
+| Memory | Uses call stack (O(n) space) | Usually O(1) space |
+| Speed | Function call overhead | Generally faster |
+| Risk | Stack overflow | Infinite loops |
+| Best for | Trees, graphs, divide & conquer | Simple loops |
+
+### Same Problem, Two Ways
+
+```multi
+[javascript]
+// Recursive
+function sumRecursive(n) {
+    if (n <= 0) return 0;
+    return n + sumRecursive(n - 1);
+}
+
+// Iterative
+function sumIterative(n) {
+    let total = 0;
+    for (let i = 1; i <= n; i++) {
+        total += i;
+    }
+    return total;
+}
+
+[python]
+# Recursive
+def sum_recursive(n):
+    if n <= 0:
+        return 0
+    return n + sum_recursive(n - 1)
+
+# Iterative
+def sum_iterative(n):
+    total = 0
+    for i in range(1, n + 1):
+        total += i
+    return total
+
+[java]
+// Recursive
+public int sumRecursive(int n) {
+    if (n <= 0) return 0;
+    return n + sumRecursive(n - 1);
+}
+
+// Iterative
+public int sumIterative(int n) {
+    int total = 0;
+    for (int i = 1; i <= n; i++) {
+        total += i;
+    }
+    return total;
+}
+
+[cpp]
+// Recursive
+int sumRecursive(int n) {
+    if (n <= 0) return 0;
+    return n + sumRecursive(n - 1);
+}
+
+// Iterative
+int sumIterative(int n) {
+    int total = 0;
+    for (int i = 1; i <= n; i++) {
+        total += i;
+    }
+    return total;
+}
+```
+
+---
+
+## Types of Recursion
+
+### 1. Direct Recursion
+Function calls itself directly.
+
+### 2. Indirect Recursion
+Functions call each other (A calls B, B calls A).
+
+### 3. Tail Recursion
+Recursive call is the last operation (can be optimized by compiler).
+
+```multi
+[javascript]
+function factorialTail(n, accumulator = 1) {
+    if (n <= 1) return accumulator;
+    return factorialTail(n - 1, n * accumulator);  // Tail call
+}
+
+[python]
+def factorial_tail(n, accumulator=1):
+    if n <= 1:
+        return accumulator
+    return factorial_tail(n - 1, n * accumulator)  # Tail call
+
+[java]
+public int factorialTail(int n, int accumulator) {
+    if (n <= 1) return accumulator;
+    return factorialTail(n - 1, n * accumulator);  // Tail call
+}
+
+[cpp]
+int factorialTail(int n, int accumulator = 1) {
+    if (n <= 1) return accumulator;
+    return factorialTail(n - 1, n * accumulator);  // Tail call
+}
+```
+
+---
+
+## Optimization: Memoization
+
+Cache results to avoid redundant calculations.
+
+```multi
+[javascript]
+// Without memoization: O(2^n)
+function fibSlow(n) {
+    if (n <= 1) return n;
+    return fibSlow(n - 1) + fibSlow(n - 2);
+}
+
+// With memoization: O(n)
+function fibMemo(n, memo = {}) {
+    if (n in memo) return memo[n];
+    if (n <= 1) return n;
+    memo[n] = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);
+    return memo[n];
+}
+
+[python]
+# Without memoization: O(2^n)
+def fib_slow(n):
+    if n <= 1:
+        return n
+    return fib_slow(n - 1) + fib_slow(n - 2)
+
+# With memoization: O(n)
+def fib_memo(n, memo={}):
+    if n in memo:
+        return memo[n]
+    if n <= 1:
+        return n
+    memo[n] = fib_memo(n - 1, memo) + fib_memo(n - 2, memo)
+    return memo[n]
+
+# Using Python's built-in
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fib_cached(n):
+    if n <= 1:
+        return n
+    return fib_cached(n - 1) + fib_cached(n - 2)
+
+[java]
+// With memoization using HashMap
+public int fibMemo(int n, Map<Integer, Integer> memo) {
+    if (memo.containsKey(n)) return memo.get(n);
+    if (n <= 1) return n;
+    
+    int result = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);
+    memo.put(n, result);
+    return result;
+}
+
+[cpp]
+// With memoization
+unordered_map<int, int> memo;
+
+int fibMemo(int n) {
+    if (memo.count(n)) return memo[n];
+    if (n <= 1) return n;
+    
+    memo[n] = fibMemo(n - 1) + fibMemo(n - 2);
+    return memo[n];
+}
+```
+
+---
+
+## Common Pitfalls
+
+### 1. Missing Base Case
+Leads to infinite recursion and stack overflow.
+
+### 2. Not Approaching Base Case
+Recursive call doesn't make progress toward stopping.
+
+### 3. Stack Overflow
+Very deep recursion exhausts the call stack.
+
+---
+
+## When to Use Recursion
+
+### ✅ Good Use Cases
+
+- **Tree traversal** (preorder, inorder, postorder)
+- **Graph traversal** (DFS)
+- **Divide and conquer** (merge sort, quick sort)
+- **Backtracking** (N-Queens, Sudoku)
+- **Dynamic programming** (with memoization)
+
+### ❌ Avoid When
+
+- Simple iteration suffices
+- Performance is critical
+- Deep recursion possible (use iteration)
+
+---
+
+## Key Takeaways
+
+1. **Every recursion needs a base case** to stop
+2. **Each call must move toward the base case**
+3. **Think of the problem in terms of itself** (F(n) = n × F(n-1))
+4. **Trace through small examples** to understand
+5. **Use memoization** for overlapping subproblems
+6. **Consider iteration** for simple cases or performance
+7. **Watch for stack overflow** with deep recursion

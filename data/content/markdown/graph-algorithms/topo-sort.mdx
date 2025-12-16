@@ -1,0 +1,720 @@
+# Topological Sort
+
+**Topological sorting** orders vertices of a Directed Acyclic Graph (DAG) such that for every directed edge (u → v), vertex u comes before v in the ordering.
+
+## Visual Example
+
+```
+Prerequisites:        Topological Order:
+  A → B → D           A → B → D
+  ↓   ↓               ↓   ↓
+  C → E               C → E
+  
+  A must come before B, C
+  B must come before D, E
+  C must come before E
+  
+Valid orderings: [A, B, C, D, E] or [A, C, B, E, D] or [A, B, C, E, D]
+```
+
+---
+
+## Applications
+
+| Application | Example |
+|-------------|---------|
+| Build Systems | Compile source files in dependency order |
+| Package Managers | Install dependencies first |
+| Course Scheduling | Complete prerequisites first |
+| Task Scheduling | Order tasks by dependencies |
+| Spreadsheet Cells | Evaluate cells in formula order |
+
+---
+
+## Kahn's Algorithm (BFS-based)
+
+Uses **in-degree** (number of incoming edges) to determine order.
+
+### Algorithm Steps
+
+1. Calculate in-degree for all vertices
+2. Add all vertices with in-degree 0 to queue
+3. While queue is not empty:
+   - Remove vertex, add to result
+   - Reduce in-degree of neighbors
+   - Add neighbors with in-degree 0 to queue
+4. If result has all vertices → valid order, else cycle exists
+
+### Implementation
+
+```multi
+[javascript]
+function topologicalSortKahn(graph, n) {
+    const inDegree = new Array(n).fill(0);
+    
+    // Calculate in-degrees
+    for (let u = 0; u < n; u++) {
+        for (const v of graph[u] || []) {
+            inDegree[v]++;
+        }
+    }
+    
+    // Start with vertices having no dependencies
+    const queue = [];
+    for (let v = 0; v < n; v++) {
+        if (inDegree[v] === 0) {
+            queue.push(v);
+        }
+    }
+    
+    const result = [];
+    
+    while (queue.length > 0) {
+        const node = queue.shift();
+        result.push(node);
+        
+        for (const neighbor of graph[node] || []) {
+            inDegree[neighbor]--;
+            if (inDegree[neighbor] === 0) {
+                queue.push(neighbor);
+            }
+        }
+    }
+    
+    // Check for cycle
+    return result.length === n ? result : [];
+}
+
+// Usage
+const graph = {
+    0: [1, 2],
+    1: [3, 4],
+    2: [4],
+    3: [],
+    4: []
+};
+console.log(topologicalSortKahn(graph, 5));  // [0, 1, 2, 3, 4]
+
+[python]
+from collections import deque
+
+def topological_sort_kahn(graph, n):
+    """
+    Kahn's Algorithm - BFS approach.
+    Returns empty list if cycle exists.
+    Time: O(V + E), Space: O(V)
+    """
+    # Calculate in-degrees
+    in_degree = [0] * n
+    for u in range(n):
+        for v in graph.get(u, []):
+            in_degree[v] += 1
+    
+    # Start with vertices having no dependencies
+    queue = deque([v for v in range(n) if in_degree[v] == 0])
+    result = []
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        
+        for neighbor in graph.get(node, []):
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+    
+    # Check for cycle
+    if len(result) != n:
+        return []  # Cycle detected
+    
+    return result
+
+# Usage
+graph = {
+    0: [1, 2],
+    1: [3, 4],
+    2: [4],
+    3: [],
+    4: []
+}
+print(topological_sort_kahn(graph, 5))  # [0, 1, 2, 3, 4]
+
+[java]
+import java.util.*;
+
+public class TopologicalSort {
+    public List<Integer> topologicalSortKahn(Map<Integer, List<Integer>> graph, int n) {
+        int[] inDegree = new int[n];
+        
+        // Calculate in-degrees
+        for (int u = 0; u < n; u++) {
+            for (int v : graph.getOrDefault(u, List.of())) {
+                inDegree[v]++;
+            }
+        }
+        
+        // Start with vertices having no dependencies
+        Queue<Integer> queue = new LinkedList<>();
+        for (int v = 0; v < n; v++) {
+            if (inDegree[v] == 0) {
+                queue.offer(v);
+            }
+        }
+        
+        List<Integer> result = new ArrayList<>();
+        
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            result.add(node);
+            
+            for (int neighbor : graph.getOrDefault(node, List.of())) {
+                inDegree[neighbor]--;
+                if (inDegree[neighbor] == 0) {
+                    queue.offer(neighbor);
+                }
+            }
+        }
+        
+        // Check for cycle
+        return result.size() == n ? result : new ArrayList<>();
+    }
+}
+
+[cpp]
+#include <vector>
+#include <queue>
+#include <unordered_map>
+
+std::vector<int> topologicalSortKahn(
+    std::unordered_map<int, std::vector<int>>& graph, 
+    int n
+) {
+    std::vector<int> inDegree(n, 0);
+    
+    // Calculate in-degrees
+    for (int u = 0; u < n; u++) {
+        for (int v : graph[u]) {
+            inDegree[v]++;
+        }
+    }
+    
+    // Start with vertices having no dependencies
+    std::queue<int> q;
+    for (int v = 0; v < n; v++) {
+        if (inDegree[v] == 0) {
+            q.push(v);
+        }
+    }
+    
+    std::vector<int> result;
+    
+    while (!q.empty()) {
+        int node = q.front();
+        q.pop();
+        result.push_back(node);
+        
+        for (int neighbor : graph[node]) {
+            inDegree[neighbor]--;
+            if (inDegree[neighbor] == 0) {
+                q.push(neighbor);
+            }
+        }
+    }
+    
+    // Check for cycle
+    return result.size() == n ? result : std::vector<int>{};
+}
+```
+
+---
+
+## DFS-based Approach
+
+Uses **post-order** traversal - nodes that finish first go last in order.
+
+### Implementation
+
+```multi
+[javascript]
+function topologicalSortDFS(graph, n) {
+    const visited = new Set();
+    const stack = [];
+    
+    function dfs(node) {
+        visited.add(node);
+        
+        for (const neighbor of graph[node] || []) {
+            if (!visited.has(neighbor)) {
+                dfs(neighbor);
+            }
+        }
+        
+        stack.push(node);  // Post-order
+    }
+    
+    for (let v = 0; v < n; v++) {
+        if (!visited.has(v)) {
+            dfs(v);
+        }
+    }
+    
+    return stack.reverse();  // Reverse for correct order
+}
+
+// With cycle detection
+function topologicalSortDFSSafe(graph, n) {
+    const WHITE = 0, GRAY = 1, BLACK = 2;
+    const color = new Array(n).fill(WHITE);
+    const stack = [];
+    let hasCycle = false;
+    
+    function dfs(node) {
+        color[node] = GRAY;
+        
+        for (const neighbor of graph[node] || []) {
+            if (color[neighbor] === GRAY) {  // Back edge = cycle
+                hasCycle = true;
+                return;
+            }
+            if (color[neighbor] === WHITE) {
+                dfs(neighbor);
+                if (hasCycle) return;
+            }
+        }
+        
+        color[node] = BLACK;
+        stack.push(node);
+    }
+    
+    for (let v = 0; v < n; v++) {
+        if (color[v] === WHITE) {
+            dfs(v);
+            if (hasCycle) return [];
+        }
+    }
+    
+    return stack.reverse();
+}
+
+[python]
+def topological_sort_dfs(graph, n):
+    """
+    DFS-based topological sort.
+    Time: O(V + E), Space: O(V)
+    """
+    visited = set()
+    stack = []
+    
+    def dfs(node):
+        visited.add(node)
+        
+        for neighbor in graph.get(node, []):
+            if neighbor not in visited:
+                dfs(neighbor)
+        
+        stack.append(node)  # Post-order
+    
+    for v in range(n):
+        if v not in visited:
+            dfs(v)
+    
+    return stack[::-1]  # Reverse for correct order
+
+# With cycle detection
+def topological_sort_dfs_safe(graph, n):
+    """DFS topological sort with cycle detection."""
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color = [WHITE] * n
+    stack = []
+    has_cycle = False
+    
+    def dfs(node):
+        nonlocal has_cycle
+        color[node] = GRAY
+        
+        for neighbor in graph.get(node, []):
+            if color[neighbor] == GRAY:  # Back edge = cycle
+                has_cycle = True
+                return
+            if color[neighbor] == WHITE:
+                dfs(neighbor)
+                if has_cycle:
+                    return
+        
+        color[node] = BLACK
+        stack.append(node)
+    
+    for v in range(n):
+        if color[v] == WHITE:
+            dfs(v)
+            if has_cycle:
+                return []
+    
+    return stack[::-1]
+
+[java]
+import java.util.*;
+
+public class TopologicalSortDFS {
+    public List<Integer> topologicalSortDFS(Map<Integer, List<Integer>> graph, int n) {
+        Set<Integer> visited = new HashSet<>();
+        Stack<Integer> stack = new Stack<>();
+        
+        for (int v = 0; v < n; v++) {
+            if (!visited.contains(v)) {
+                dfs(v, graph, visited, stack);
+            }
+        }
+        
+        List<Integer> result = new ArrayList<>();
+        while (!stack.isEmpty()) {
+            result.add(stack.pop());
+        }
+        return result;
+    }
+    
+    private void dfs(int node, Map<Integer, List<Integer>> graph, 
+                     Set<Integer> visited, Stack<Integer> stack) {
+        visited.add(node);
+        
+        for (int neighbor : graph.getOrDefault(node, List.of())) {
+            if (!visited.contains(neighbor)) {
+                dfs(neighbor, graph, visited, stack);
+            }
+        }
+        
+        stack.push(node);  // Post-order
+    }
+}
+
+[cpp]
+#include <vector>
+#include <stack>
+#include <unordered_set>
+#include <unordered_map>
+#include <algorithm>
+
+std::vector<int> topologicalSortDFS(
+    std::unordered_map<int, std::vector<int>>& graph, 
+    int n
+) {
+    std::unordered_set<int> visited;
+    std::vector<int> result;
+    
+    std::function<void(int)> dfs = [&](int node) {
+        visited.insert(node);
+        
+        for (int neighbor : graph[node]) {
+            if (visited.find(neighbor) == visited.end()) {
+                dfs(neighbor);
+            }
+        }
+        
+        result.push_back(node);  // Post-order
+    };
+    
+    for (int v = 0; v < n; v++) {
+        if (visited.find(v) == visited.end()) {
+            dfs(v);
+        }
+    }
+    
+    std::reverse(result.begin(), result.end());
+    return result;
+}
+```
+
+---
+
+## Common Problems
+
+### 1. Course Schedule (Cycle Detection)
+
+```multi
+[javascript]
+function canFinish(numCourses, prerequisites) {
+    const graph = {};
+    for (let i = 0; i < numCourses; i++) graph[i] = [];
+    
+    for (const [course, prereq] of prerequisites) {
+        graph[prereq].push(course);
+    }
+    
+    const result = topologicalSortKahn(graph, numCourses);
+    return result.length === numCourses;
+}
+
+[python]
+def can_finish(num_courses, prerequisites):
+    """
+    Determine if all courses can be finished.
+    Returns False if there's a cycle.
+    """
+    graph = {i: [] for i in range(num_courses)}
+    for course, prereq in prerequisites:
+        graph[prereq].append(course)
+    
+    result = topological_sort_kahn(graph, num_courses)
+    return len(result) == num_courses
+
+[java]
+public boolean canFinish(int numCourses, int[][] prerequisites) {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    for (int i = 0; i < numCourses; i++) graph.put(i, new ArrayList<>());
+    
+    for (int[] p : prerequisites) {
+        graph.get(p[1]).add(p[0]);
+    }
+    
+    return topologicalSortKahn(graph, numCourses).size() == numCourses;
+}
+
+[cpp]
+bool canFinish(int numCourses, std::vector<std::vector<int>>& prerequisites) {
+    std::unordered_map<int, std::vector<int>> graph;
+    for (int i = 0; i < numCourses; i++) graph[i] = {};
+    
+    for (auto& p : prerequisites) {
+        graph[p[1]].push_back(p[0]);
+    }
+    
+    return topologicalSortKahn(graph, numCourses).size() == numCourses;
+}
+```
+
+### 2. Course Schedule II (Get Order)
+
+```multi
+[javascript]
+function findOrder(numCourses, prerequisites) {
+    const graph = {};
+    for (let i = 0; i < numCourses; i++) graph[i] = [];
+    
+    for (const [course, prereq] of prerequisites) {
+        graph[prereq].push(course);
+    }
+    
+    return topologicalSortKahn(graph, numCourses);
+}
+
+[python]
+def find_order(num_courses, prerequisites):
+    """
+    Return valid course ordering.
+    Returns empty list if impossible.
+    """
+    graph = {i: [] for i in range(num_courses)}
+    for course, prereq in prerequisites:
+        graph[prereq].append(course)
+    
+    return topological_sort_kahn(graph, num_courses)
+
+[java]
+public int[] findOrder(int numCourses, int[][] prerequisites) {
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    for (int i = 0; i < numCourses; i++) graph.put(i, new ArrayList<>());
+    
+    for (int[] p : prerequisites) {
+        graph.get(p[1]).add(p[0]);
+    }
+    
+    List<Integer> order = topologicalSortKahn(graph, numCourses);
+    return order.stream().mapToInt(i -> i).toArray();
+}
+
+[cpp]
+std::vector<int> findOrder(int numCourses, std::vector<std::vector<int>>& prerequisites) {
+    std::unordered_map<int, std::vector<int>> graph;
+    for (int i = 0; i < numCourses; i++) graph[i] = {};
+    
+    for (auto& p : prerequisites) {
+        graph[p[1]].push_back(p[0]);
+    }
+    
+    return topologicalSortKahn(graph, numCourses);
+}
+```
+
+---
+
+## Lexicographically Smallest Order
+
+Use min-heap instead of queue in Kahn's:
+
+```multi
+[javascript]
+function topoSortLexSmallest(graph, n) {
+    const inDegree = new Array(n).fill(0);
+    
+    for (let u = 0; u < n; u++) {
+        for (const v of graph[u] || []) {
+            inDegree[v]++;
+        }
+    }
+    
+    // Use sorted array as min-heap simulation
+    const available = [];
+    for (let v = 0; v < n; v++) {
+        if (inDegree[v] === 0) {
+            available.push(v);
+        }
+    }
+    available.sort((a, b) => a - b);
+    
+    const result = [];
+    
+    while (available.length > 0) {
+        const node = available.shift();  // Get smallest
+        result.push(node);
+        
+        for (const neighbor of graph[node] || []) {
+            inDegree[neighbor]--;
+            if (inDegree[neighbor] === 0) {
+                // Insert in sorted position
+                const idx = available.findIndex(x => x > neighbor);
+                if (idx === -1) available.push(neighbor);
+                else available.splice(idx, 0, neighbor);
+            }
+        }
+    }
+    
+    return result.length === n ? result : [];
+}
+
+[python]
+import heapq
+
+def topo_sort_lex_smallest(graph, n):
+    """Get lexicographically smallest topological order."""
+    in_degree = [0] * n
+    for u in range(n):
+        for v in graph.get(u, []):
+            in_degree[v] += 1
+    
+    min_heap = [v for v in range(n) if in_degree[v] == 0]
+    heapq.heapify(min_heap)
+    
+    result = []
+    
+    while min_heap:
+        node = heapq.heappop(min_heap)
+        result.append(node)
+        
+        for neighbor in graph.get(node, []):
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                heapq.heappush(min_heap, neighbor)
+    
+    return result if len(result) == n else []
+
+[java]
+import java.util.*;
+
+public List<Integer> topoSortLexSmallest(Map<Integer, List<Integer>> graph, int n) {
+    int[] inDegree = new int[n];
+    
+    for (int u = 0; u < n; u++) {
+        for (int v : graph.getOrDefault(u, List.of())) {
+            inDegree[v]++;
+        }
+    }
+    
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    for (int v = 0; v < n; v++) {
+        if (inDegree[v] == 0) {
+            minHeap.offer(v);
+        }
+    }
+    
+    List<Integer> result = new ArrayList<>();
+    
+    while (!minHeap.isEmpty()) {
+        int node = minHeap.poll();
+        result.add(node);
+        
+        for (int neighbor : graph.getOrDefault(node, List.of())) {
+            inDegree[neighbor]--;
+            if (inDegree[neighbor] == 0) {
+                minHeap.offer(neighbor);
+            }
+        }
+    }
+    
+    return result.size() == n ? result : new ArrayList<>();
+}
+
+[cpp]
+#include <queue>
+#include <vector>
+#include <unordered_map>
+
+std::vector<int> topoSortLexSmallest(
+    std::unordered_map<int, std::vector<int>>& graph, 
+    int n
+) {
+    std::vector<int> inDegree(n, 0);
+    
+    for (int u = 0; u < n; u++) {
+        for (int v : graph[u]) {
+            inDegree[v]++;
+        }
+    }
+    
+    std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
+    for (int v = 0; v < n; v++) {
+        if (inDegree[v] == 0) {
+            minHeap.push(v);
+        }
+    }
+    
+    std::vector<int> result;
+    
+    while (!minHeap.empty()) {
+        int node = minHeap.top();
+        minHeap.pop();
+        result.push_back(node);
+        
+        for (int neighbor : graph[node]) {
+            inDegree[neighbor]--;
+            if (inDegree[neighbor] == 0) {
+                minHeap.push(neighbor);
+            }
+        }
+    }
+    
+    return result.size() == n ? result : std::vector<int>{};
+}
+```
+
+---
+
+## Kahn's vs DFS
+
+| Aspect | Kahn's (BFS) | DFS |
+|--------|--------------|-----|
+| Approach | In-degree tracking | Post-order |
+| Cycle Detection | Built-in (count check) | Needs color tracking |
+| Lexicographic Order | Easy (use min-heap) | Harder |
+| Space | O(V) for in-degree array | O(V) for recursion stack |
+| Implementation | Iterative | Usually recursive |
+
+---
+
+## Time & Space Complexity
+
+| Algorithm | Time | Space |
+|-----------|------|-------|
+| Kahn's | O(V + E) | O(V) |
+| DFS-based | O(V + E) | O(V) |
+| All orderings | O(V! × V) | O(V!) |
+
+---
+
+## Key Takeaways
+
+1. **DAG required** - topological sort only works on acyclic directed graphs
+2. **Cycle detection** - if you can't order all vertices, there's a cycle
+3. **Multiple valid orderings** - unless strict constraints exist
+4. **Kahn's for iterative**, DFS for recursive implementation
+5. **Longest path in DAG** - use topo sort + DP
+6. **Lexicographic order** - use min-heap in Kahn's algorithm

@@ -1,0 +1,415 @@
+# Fenwick Tree (Binary Indexed Tree)
+
+A Fenwick Tree is a data structure that efficiently supports prefix sum queries and point updates. It's simpler and more memory-efficient than a Segment Tree.
+
+## When to Use
+
+- Prefix sum queries
+- Point updates
+- Cumulative frequency tables
+- When you need O(log n) for both operations
+
+## Key Insight
+
+Uses binary representation to store partial sums. Each index stores the sum of a range determined by the lowest set bit.
+
+```
+Index:     1    2    3    4    5    6    7    8
+Binary:  001  010  011  100  101  110  111 1000
+Range:   [1]  [1-2] [3] [1-4] [5] [5-6] [7] [1-8]
+
+Parent of i: i + (i & -i)  [update path]
+Child of i:  i - (i & -i)  [query path]
+```
+
+## Implementation
+
+```multi
+[javascript]
+class FenwickTree {
+    constructor(n) {
+        this.n = n;
+        this.tree = new Array(n + 1).fill(0);  // 1-indexed
+    }
+    
+    update(i, delta) {
+        /** Add delta to index i (1-indexed) */
+        while (i <= this.n) {
+            this.tree[i] += delta;
+            i += i & (-i);  // Add lowest set bit (move to parent)
+        }
+    }
+    
+    prefixSum(i) {
+        /** Sum from 1 to i (inclusive) */
+        let total = 0;
+        while (i > 0) {
+            total += this.tree[i];
+            i -= i & (-i);  // Remove lowest set bit (move to child)
+        }
+        return total;
+    }
+    
+    rangeSum(l, r) {
+        /** Sum from l to r (inclusive, 1-indexed) */
+        return this.prefixSum(r) - this.prefixSum(l - 1);
+    }
+}
+
+// Usage
+const ft = new FenwickTree(10);
+ft.update(1, 5);   // Add 5 to index 1
+ft.update(3, 3);   // Add 3 to index 3
+ft.update(5, 7);   // Add 7 to index 5
+console.log(ft.prefixSum(3));   // 8 (5 + 3)
+console.log(ft.rangeSum(2, 5)); // 10 (3 + 7)
+
+[python]
+class FenwickTree:
+    def __init__(self, n):
+        self.n = n
+        self.tree = [0] * (n + 1)  # 1-indexed
+    
+    def update(self, i, delta):
+        """Add delta to index i (1-indexed)"""
+        while i <= self.n:
+            self.tree[i] += delta
+            i += i & (-i)  # Add lowest set bit (move to parent)
+    
+    def prefix_sum(self, i):
+        """Sum from 1 to i (inclusive)"""
+        total = 0
+        while i > 0:
+            total += self.tree[i]
+            i -= i & (-i)  # Remove lowest set bit (move to child)
+        return total
+    
+    def range_sum(self, l, r):
+        """Sum from l to r (inclusive, 1-indexed)"""
+        return self.prefix_sum(r) - self.prefix_sum(l - 1)
+
+# Usage
+ft = FenwickTree(10)
+ft.update(1, 5)   # Add 5 to index 1
+ft.update(3, 3)   # Add 3 to index 3
+ft.update(5, 7)   # Add 7 to index 5
+print(ft.prefix_sum(3))   # 8 (5 + 3)
+print(ft.range_sum(2, 5)) # 10 (3 + 7)
+
+[java]
+class FenwickTree {
+    private int n;
+    private int[] tree;
+    
+    public FenwickTree(int n) {
+        this.n = n;
+        this.tree = new int[n + 1];  // 1-indexed
+    }
+    
+    public void update(int i, int delta) {
+        /** Add delta to index i (1-indexed) */
+        while (i <= n) {
+            tree[i] += delta;
+            i += i & (-i);  // Add lowest set bit
+        }
+    }
+    
+    public int prefixSum(int i) {
+        /** Sum from 1 to i (inclusive) */
+        int total = 0;
+        while (i > 0) {
+            total += tree[i];
+            i -= i & (-i);  // Remove lowest set bit
+        }
+        return total;
+    }
+    
+    public int rangeSum(int l, int r) {
+        /** Sum from l to r (inclusive, 1-indexed) */
+        return prefixSum(r) - prefixSum(l - 1);
+    }
+}
+
+[cpp]
+class FenwickTree {
+private:
+    int n;
+    vector<int> tree;
+    
+public:
+    FenwickTree(int n) : n(n), tree(n + 1, 0) {}
+    
+    void update(int i, int delta) {
+        /** Add delta to index i (1-indexed) */
+        while (i <= n) {
+            tree[i] += delta;
+            i += i & (-i);  // Add lowest set bit
+        }
+    }
+    
+    int prefixSum(int i) {
+        /** Sum from 1 to i (inclusive) */
+        int total = 0;
+        while (i > 0) {
+            total += tree[i];
+            i -= i & (-i);  // Remove lowest set bit
+        }
+        return total;
+    }
+    
+    int rangeSum(int l, int r) {
+        /** Sum from l to r (inclusive, 1-indexed) */
+        return prefixSum(r) - prefixSum(l - 1);
+    }
+};
+```
+
+## Building from Array
+
+```multi
+[javascript]
+function buildFenwickTree(arr) {
+    const n = arr.length;
+    const tree = new Array(n + 1).fill(0);
+    
+    for (let i = 1; i <= n; i++) {
+        tree[i] += arr[i - 1];
+        const j = i + (i & (-i));
+        if (j <= n) {
+            tree[j] += tree[i];
+        }
+    }
+    
+    return tree;
+}
+
+[python]
+def build_fenwick_tree(arr):
+    """Build Fenwick tree in O(n) time."""
+    n = len(arr)
+    tree = [0] * (n + 1)
+    
+    for i in range(1, n + 1):
+        tree[i] += arr[i - 1]
+        j = i + (i & (-i))
+        if j <= n:
+            tree[j] += tree[i]
+    
+    return tree
+
+[java]
+public int[] buildFenwickTree(int[] arr) {
+    int n = arr.length;
+    int[] tree = new int[n + 1];
+    
+    for (int i = 1; i <= n; i++) {
+        tree[i] += arr[i - 1];
+        int j = i + (i & (-i));
+        if (j <= n) {
+            tree[j] += tree[i];
+        }
+    }
+    
+    return tree;
+}
+
+[cpp]
+vector<int> buildFenwickTree(vector<int>& arr) {
+    int n = arr.size();
+    vector<int> tree(n + 1, 0);
+    
+    for (int i = 1; i <= n; i++) {
+        tree[i] += arr[i - 1];
+        int j = i + (i & (-i));
+        if (j <= n) {
+            tree[j] += tree[i];
+        }
+    }
+    
+    return tree;
+}
+```
+
+## Point Query from Range Updates
+
+For range updates with point queries, use two Fenwick trees or a different approach:
+
+```multi
+[javascript]
+class FenwickTreeRangeUpdate {
+    constructor(n) {
+        this.n = n;
+        this.tree1 = new Array(n + 1).fill(0);
+        this.tree2 = new Array(n + 1).fill(0);
+    }
+    
+    _update(tree, i, delta) {
+        while (i <= this.n) {
+            tree[i] += delta;
+            i += i & (-i);
+        }
+    }
+    
+    _query(tree, i) {
+        let sum = 0;
+        while (i > 0) {
+            sum += tree[i];
+            i -= i & (-i);
+        }
+        return sum;
+    }
+    
+    rangeUpdate(l, r, delta) {
+        this._update(this.tree1, l, delta);
+        this._update(this.tree1, r + 1, -delta);
+        this._update(this.tree2, l, delta * (l - 1));
+        this._update(this.tree2, r + 1, -delta * r);
+    }
+    
+    prefixSum(i) {
+        return this._query(this.tree1, i) * i - this._query(this.tree2, i);
+    }
+}
+
+[python]
+class FenwickTreeRangeUpdate:
+    """Supports range updates and prefix queries."""
+    def __init__(self, n):
+        self.n = n
+        self.tree1 = [0] * (n + 1)
+        self.tree2 = [0] * (n + 1)
+    
+    def _update(self, tree, i, delta):
+        while i <= self.n:
+            tree[i] += delta
+            i += i & (-i)
+    
+    def _query(self, tree, i):
+        total = 0
+        while i > 0:
+            total += tree[i]
+            i -= i & (-i)
+        return total
+    
+    def range_update(self, l, r, delta):
+        self._update(self.tree1, l, delta)
+        self._update(self.tree1, r + 1, -delta)
+        self._update(self.tree2, l, delta * (l - 1))
+        self._update(self.tree2, r + 1, -delta * r)
+    
+    def prefix_sum(self, i):
+        return self._query(self.tree1, i) * i - self._query(self.tree2, i)
+
+[java]
+class FenwickTreeRangeUpdate {
+    private int n;
+    private long[] tree1, tree2;
+    
+    public FenwickTreeRangeUpdate(int n) {
+        this.n = n;
+        tree1 = new long[n + 1];
+        tree2 = new long[n + 1];
+    }
+    
+    private void update(long[] tree, int i, long delta) {
+        while (i <= n) {
+            tree[i] += delta;
+            i += i & (-i);
+        }
+    }
+    
+    private long query(long[] tree, int i) {
+        long sum = 0;
+        while (i > 0) {
+            sum += tree[i];
+            i -= i & (-i);
+        }
+        return sum;
+    }
+    
+    public void rangeUpdate(int l, int r, long delta) {
+        update(tree1, l, delta);
+        update(tree1, r + 1, -delta);
+        update(tree2, l, delta * (l - 1));
+        update(tree2, r + 1, -delta * r);
+    }
+    
+    public long prefixSum(int i) {
+        return query(tree1, i) * i - query(tree2, i);
+    }
+}
+
+[cpp]
+class FenwickTreeRangeUpdate {
+    int n;
+    vector<long long> tree1, tree2;
+    
+    void update(vector<long long>& tree, int i, long long delta) {
+        while (i <= n) {
+            tree[i] += delta;
+            i += i & (-i);
+        }
+    }
+    
+    long long query(vector<long long>& tree, int i) {
+        long long sum = 0;
+        while (i > 0) {
+            sum += tree[i];
+            i -= i & (-i);
+        }
+        return sum;
+    }
+    
+public:
+    FenwickTreeRangeUpdate(int n) : n(n), tree1(n + 1), tree2(n + 1) {}
+    
+    void rangeUpdate(int l, int r, long long delta) {
+        update(tree1, l, delta);
+        update(tree1, r + 1, -delta);
+        update(tree2, l, delta * (l - 1));
+        update(tree2, r + 1, -delta * r);
+    }
+    
+    long long prefixSum(int i) {
+        return query(tree1, i) * i - query(tree2, i);
+    }
+};
+```
+
+## Time & Space Complexity
+
+| Operation | Time |
+| --------- | -------- |
+| Build | O(n) |
+| Update | O(log n) |
+| Query | O(log n) |
+
+**Space:** O(n)
+
+## Fenwick Tree vs Segment Tree
+
+| Feature | Fenwick Tree | Segment Tree |
+| --------------- | ------------ | -------------------------- |
+| Space | O(n) | O(4n) |
+| Code complexity | Simpler | More complex |
+| Range updates | Hard | Easy with lazy propagation |
+| Flexibility | Limited | More versatile |
+| Cache efficiency | Better | Worse |
+
+## Applications
+
+| Application | Description |
+|-------------|-------------|
+| **Prefix Sums** | Cumulative sum queries |
+| **Inversion Count** | Count inversions in array |
+| **Range Updates** | With modifications |
+| **2D BIT** | Rectangle sum queries |
+| **Competitive Programming** | Fast range queries |
+
+## Key Takeaways
+
+1. **1-indexed** - tree[0] is unused
+2. **i & (-i)** gets the lowest set bit
+3. **Update path**: add lowest bit
+4. **Query path**: subtract lowest bit
+5. **Simpler than Segment Tree** but less flexible
