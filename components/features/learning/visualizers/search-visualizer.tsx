@@ -138,7 +138,11 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       description: "Ready to search",
     } as VisualizationStep)
 
-  const renderControls = (isPanelOpen: boolean, togglePanel: () => void) => (
+  const renderControls = (
+    isPanelOpen: boolean,
+    togglePanel: () => void,
+    headerDescription?: React.ReactNode
+  ) => (
     <div className="flex w-full flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
         {/* Left Side: Toggle + Target Input */}
@@ -187,6 +191,19 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
               aria-label="Search target"
             />
           </div>
+
+          {/* Status Text (Inline) */}
+          {headerDescription && (
+            <>
+              <Separator orientation="vertical" className="hidden h-6 sm:block" />
+              <div className="hidden min-w-0 max-w-[300px] items-center gap-2 overflow-hidden sm:flex">
+                <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary animate-pulse" />
+                <span className="truncate text-sm font-medium text-primary">
+                  {headerDescription}
+                </span>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Playback Controls Group */}
@@ -277,6 +294,16 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
           </div>
         </div>
       </div>
+
+      {/* Mobile Status (if hidden above) */}
+      {headerDescription && (
+        <div className="flex w-full items-center gap-2 rounded-md border border-primary/10 bg-primary/5 px-3 py-2 sm:hidden">
+          <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary animate-pulse" />
+          <span className="text-sm font-medium text-primary">
+            {headerDescription}
+          </span>
+        </div>
+      )}
 
       {/* Timeline and Speed Controls Row */}
       {steps.length > 1 && (
@@ -408,7 +435,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
                           ? "rgb(16 185 129)"
                           : isActive
                             ? "rgb(245 158 11)"
-                            : "hsl(var(--border))",
+                            : "hsl(var(--primary) / 0.2)",
                         backgroundColor: isFound
                           ? "rgb(16 185 129 / 0.12)"
                           : isActive
@@ -422,7 +449,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
                         boxShadow:
                           isFound || isActive
                             ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
-                            : "none",
+                            : "0 2px 5px -1px rgb(0 0 0 / 0.05)",
                       }}
                       transition={transitions.smooth}
                       className="flex h-14 w-14 items-center justify-center rounded-xl border-2 text-lg font-bold"

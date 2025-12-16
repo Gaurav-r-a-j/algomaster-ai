@@ -89,6 +89,7 @@ export function DataStructureVisualizer({
       icon={<Squares2X2Icon className="h-5 w-5" />}
       controls={controls}
       description={description}
+      headerDescription={currentData.description}
     >
       <Card className="flex-1 overflow-hidden border-none shadow-none">
         <CardContent className="p-0">{renderVisualization()}</CardContent>

@@ -16,6 +16,7 @@ import { staggerItem, transitions } from "@/lib/animations"
 import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 import {
   Tooltip,
   TooltipContent,
@@ -112,6 +113,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
 
   const handlePlay = () => {
     setIsPlaying(true)
+    setIsPlaying(true)
   }
 
   const handlePause = () => {
@@ -198,7 +200,11 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
       description: "Ready to sort",
     } as VisualizationStep)
 
-  const renderControls = (isPanelOpen: boolean, togglePanel: () => void) => (
+  const renderControls = (
+    isPanelOpen: boolean,
+    togglePanel: () => void,
+    headerDescription?: React.ReactNode
+  ) => (
     <VisualizerControls
       isPlaying={isPlaying}
       currentStep={currentStep}
@@ -217,47 +223,56 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
       onArraySizeChange={handleArraySizeChange}
       showArraySizeControl={true}
       extraControlsLeft={
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={togglePanel}
-              className="h-9 w-9 shrink-0"
-              aria-label={isPanelOpen ? "Collapse sidebar" : "Expand sidebar"}
-            >
-              <IconWrapper
-                icon={isPanelOpen ? ChevronLeftIcon : ChevronRightIcon}
-                size={18}
-                className="text-muted-foreground"
-              />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">
-            {isPanelOpen ? "Hide Info" : "Show Info"}
-          </TooltipContent>
-        </Tooltip>
+        <div className="flex items-center gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={togglePanel}
+                className="h-9 w-9 shrink-0"
+                aria-label={isPanelOpen ? "Collapse sidebar" : "Expand sidebar"}
+              >
+                <IconWrapper
+                  icon={isPanelOpen ? ChevronLeftIcon : ChevronRightIcon}
+                  size={18}
+                  className="text-muted-foreground"
+                />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              {isPanelOpen ? "Hide Info" : "Show Info"}
+            </TooltipContent>
+          </Tooltip>
+
+          {headerDescription && (
+            <>
+              <Separator orientation="vertical" className="h-6" />
+              <div className="flex min-w-0 max-w-[200px] items-center gap-2 overflow-hidden px-1 lg:max-w-[400px]">
+                <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary animate-pulse" />
+                <span className="truncate text-sm font-medium text-primary">
+                  {headerDescription}
+                </span>
+              </div>
+            </>
+          )}
+        </div>
       }
     />
   )
 
   const description = (
-    <>
-      <div className="text-muted-foreground mb-2 flex flex-wrap items-center gap-3 text-xs">
-        <span className="border-border/60 inline-flex items-center gap-1 rounded-full border px-2 py-1">
-          <span className="bg-primary h-2 w-2 rounded-full" /> Unsorted
-        </span>
-        <span className="border-border/60 inline-flex items-center gap-1 rounded-full border px-2 py-1">
-          <span className="h-2 w-2 rounded-full bg-amber-500" /> Active
-        </span>
-        <span className="border-border/60 inline-flex items-center gap-1 rounded-full border px-2 py-1">
-          <span className="h-2 w-2 rounded-full bg-emerald-500" /> Sorted
-        </span>
-      </div>
-      <p className="text-foreground text-sm font-medium">
-        {currentData.description}
-      </p>
-    </>
+    <div className="text-muted-foreground flex flex-wrap items-center gap-3 text-xs">
+      <span className="border-border/60 inline-flex items-center gap-1 rounded-full border px-2 py-1">
+        <span className="bg-primary h-2 w-2 rounded-full" /> Unsorted
+      </span>
+      <span className="border-border/60 inline-flex items-center gap-1 rounded-full border px-2 py-1">
+        <span className="h-2 w-2 rounded-full bg-amber-500" /> Active
+      </span>
+      <span className="border-border/60 inline-flex items-center gap-1 rounded-full border px-2 py-1">
+        <span className="h-2 w-2 rounded-full bg-emerald-500" /> Sorted
+      </span>
+    </div>
   )
 
   return (
@@ -265,9 +280,10 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
       title="Sorting Visualization"
       icon={<ChartBarIcon className="text-primary h-5 w-5" />}
       renderControls={renderControls}
+      headerDescription={currentData.description}
       description={description}
       hideTitle
-      hideDescription
+      hideDescription={false}
     >
       <motion.div className="flex flex-col gap-4 p-6">
         <div className="flex flex-wrap items-center gap-2">
