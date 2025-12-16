@@ -129,14 +129,6 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
     />
   )
 
-  const description = (
-    <div className="space-y-2">
-      <p className="text-foreground text-sm font-medium">
-        {currentData.description}
-      </p>
-    </div>
-  )
-
   return (
     <VisualizerLayout
       title={`${topic.title} Visualizer`}
@@ -144,7 +136,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
         <IconWrapper icon={ArrowUp01Icon} size={20} className="text-primary" />
       }
       controls={controls}
-      description={description}
+      headerDescription={currentData.description}
     >
       <Card className="flex-1 overflow-hidden">
         <CardContent className="p-4">

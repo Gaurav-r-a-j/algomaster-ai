@@ -81,7 +81,7 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
             x2={`${edge.x2}%`}
             y2={`${edge.y2}px`}
             stroke="currentColor"
-            strokeOpacity="0.2"
+            strokeOpacity="0.4"
             strokeWidth="2.5"
             strokeLinecap="round"
           />

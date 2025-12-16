@@ -435,7 +435,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
                           ? "rgb(16 185 129)"
                           : isActive
                             ? "rgb(245 158 11)"
-                            : "hsl(var(--primary) / 0.2)",
+                            : "hsl(var(--primary) / 0.5)",
                         backgroundColor: isFound
                           ? "rgb(16 185 129 / 0.12)"
                           : isActive
@@ -449,7 +449,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
                         boxShadow:
                           isFound || isActive
                             ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
-                            : "0 2px 5px -1px rgb(0 0 0 / 0.05)",
+                            : "0 2px 8px -1px rgb(0 0 0 / 0.08)",
                       }}
                       transition={transitions.smooth}
                       className="flex h-14 w-14 items-center justify-center rounded-xl border-2 text-lg font-bold"

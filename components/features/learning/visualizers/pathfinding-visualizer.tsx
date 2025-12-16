@@ -120,32 +120,27 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
   )
 
   const description = (
-    <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-4 text-xs">
-        <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-green-600 shadow-sm"></div>
-          <span className="text-muted-foreground">Start</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="bg-destructive h-3 w-3 rounded shadow-sm"></div>
-          <span className="text-muted-foreground">End</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="bg-foreground h-3 w-3 rounded"></div>
-          <span className="text-muted-foreground">Wall</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="bg-muted/50 border-border h-3 w-3 rounded border"></div>
-          <span className="text-muted-foreground">Visited</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded bg-yellow-500 shadow-sm"></div>
-          <span className="text-muted-foreground">Path</span>
-        </div>
+    <div className="flex flex-wrap items-center gap-4 text-xs">
+      <div className="flex items-center gap-1.5">
+        <div className="h-3 w-3 rounded bg-green-600 shadow-sm"></div>
+        <span className="text-muted-foreground">Start</span>
       </div>
-      <p className="text-foreground text-sm font-medium">
-        {currentData.description}
-      </p>
+      <div className="flex items-center gap-1.5">
+        <div className="bg-destructive h-3 w-3 rounded shadow-sm"></div>
+        <span className="text-muted-foreground">End</span>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <div className="bg-foreground h-3 w-3 rounded"></div>
+        <span className="text-muted-foreground">Wall</span>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <div className="bg-primary/20 border-primary/20 h-3 w-3 rounded border"></div>
+        <span className="text-muted-foreground">Visited</span>
+      </div>
+      <div className="flex items-center gap-1.5">
+        <div className="h-3 w-3 rounded bg-yellow-500 shadow-sm"></div>
+        <span className="text-muted-foreground">Path</span>
+      </div>
     </div>
   )
 
@@ -155,6 +150,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
       icon={<IconWrapper icon={CodeIcon} size={20} className="text-primary" />}
       controls={controls}
       description={description}
+      headerDescription={currentData.description}
     >
       <motion.div className="mx-auto grid w-full max-w-[400px] grid-cols-5 gap-2">
         {currentData.array.map((val, idx) => {
@@ -165,7 +161,9 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
           const isPath = pathSet.has(idx)
           const isActive = currentData.activeIndices.includes(idx)
 
-          let bgColor = "hsl(var(--muted))"
+          let bgColor = "hsl(var(--muted) / 0.3)"
+          let borderColor = "transparent"
+
           if (isWall) {
             bgColor = "hsl(var(--foreground))"
           } else if (isPath) {
@@ -177,7 +175,8 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
           } else if (isEnd) {
             bgColor = "hsl(var(--destructive))"
           } else if (isVisited) {
-            bgColor = "hsl(var(--muted) / 0.5)"
+            bgColor = "hsl(var(--primary) / 0.15)"
+            borderColor = "hsl(var(--primary) / 0.2)"
           }
 
           return (
@@ -187,13 +186,14 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
               layout
               animate={{
                 backgroundColor: bgColor,
+                borderColor: borderColor,
                 scale: isActive ? 1.15 : 1,
                 boxShadow: isActive
                   ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
                   : "none",
               }}
               transition={transitions.spring}
-              className="border-border aspect-square rounded border"
+              className="aspect-square rounded border"
             />
           )
         })}

@@ -109,20 +109,15 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
   )
 
   const description = (
-    <div className="space-y-2">
-      <div className="flex flex-wrap items-center gap-4 text-xs">
-        <div className="flex items-center gap-1.5">
-          <div className="h-3 w-3 rounded-full bg-amber-400"></div>
-          <span className="text-muted-foreground">Active / Swapping</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="bg-background border-border h-3 w-3 rounded-full border"></div>
-          <span className="text-muted-foreground">Heap Node</span>
-        </div>
+    <div className="flex flex-wrap items-center gap-4 text-xs">
+      <div className="flex items-center gap-1.5">
+        <div className="h-3 w-3 rounded-full bg-amber-400"></div>
+        <span className="text-muted-foreground">Active / Swapping</span>
       </div>
-      <p className="text-foreground text-sm font-medium">
-        {currentData.description}
-      </p>
+      <div className="flex items-center gap-1.5">
+        <div className="bg-background border-border h-3 w-3 rounded-full border"></div>
+        <span className="text-muted-foreground">Heap Node</span>
+      </div>
     </div>
   )
 
@@ -134,6 +129,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
       }
       controls={controls}
       description={description}
+      headerDescription={currentData.description}
     >
       <motion.div
         initial="initial"
