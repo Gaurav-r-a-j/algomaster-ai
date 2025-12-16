@@ -6,7 +6,7 @@ export const segmentTree: Topic = {
   description: "Efficient data structure for range queries and updates.",
   category: AlgorithmType.RANGE_QUERY,
   complexity: { time: "O(log n)", space: "O(n)" },
-  visualizerType: VisualizerType.NONE,
+  visualizerType: VisualizerType.BINARY_TREE,
   module: "8. Advanced Techniques",
   order: 33,
   difficulty: "Hard",

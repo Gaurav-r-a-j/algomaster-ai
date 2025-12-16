@@ -6,7 +6,7 @@ export const fenwickTree: Topic = {
   description: "Binary Indexed Tree for efficient prefix sum queries.",
   category: AlgorithmType.RANGE_QUERY,
   complexity: { time: "O(log n)", space: "O(n)" },
-  visualizerType: VisualizerType.NONE,
+  visualizerType: VisualizerType.BINARY_TREE,
   module: "8. Advanced Techniques",
   order: 34,
   difficulty: "Hard",

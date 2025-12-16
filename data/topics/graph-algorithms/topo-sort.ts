@@ -7,7 +7,7 @@ export const topoSort: Topic = {
     "Linear ordering of vertices in a DAG such that for every edge (u, v), u comes before v.",
   category: AlgorithmType.GRAPH,
   complexity: { time: "O(V + E)", space: "O(V)" },
-  visualizerType: VisualizerType.NONE,
+  visualizerType: VisualizerType.GRAPH,
   module: "5. Graph Algorithms",
   order: 23,
   difficulty: "Medium",

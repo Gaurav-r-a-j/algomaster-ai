@@ -46,7 +46,8 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
   const generateData = useCallback(() => {
     const newSteps = generateHeapSteps()
     setSteps(newSteps)
-    setCurrentStep(0)
+    // Start from step 1 to show initial heap with first element (skip empty heap)
+    setCurrentStep(newSteps.length > 1 ? 1 : 0)
     setIsPlaying(false)
   }, [])
 

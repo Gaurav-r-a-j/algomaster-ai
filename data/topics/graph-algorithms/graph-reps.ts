@@ -7,7 +7,7 @@ export const graphReps: Topic = {
     "Different ways to represent graphs: adjacency list, adjacency matrix, and edge list.",
   category: AlgorithmType.GRAPH,
   complexity: { time: "O(V + E)", space: "O(V + E)" },
-  visualizerType: VisualizerType.NONE,
+  visualizerType: VisualizerType.GRAPH,
   module: "5. Graph Algorithms",
   order: 20,
   difficulty: "Easy",

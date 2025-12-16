@@ -6,7 +6,7 @@ export const bellmanFord: Topic = {
   description: "Coming soon...",
   category: AlgorithmType.GRAPH,
   complexity: { time: "O(V log V)", space: "O(V)" },
-  visualizerType: VisualizerType.NONE,
+  visualizerType: VisualizerType.GRAPH,
   module: "6. Advanced Graphs",
   order: 25,
   difficulty: "Hard",

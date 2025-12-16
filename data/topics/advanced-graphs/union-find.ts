@@ -6,7 +6,7 @@ export const unionFind: Topic = {
   description: "Coming soon...",
   category: AlgorithmType.GRAPH,
   complexity: { time: "O(V log V)", space: "O(V)" },
-  visualizerType: VisualizerType.NONE,
+  visualizerType: VisualizerType.GRAPH,
   module: "6. Advanced Graphs",
   order: 27,
   difficulty: "Medium",

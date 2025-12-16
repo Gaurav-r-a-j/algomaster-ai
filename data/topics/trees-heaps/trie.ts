@@ -7,7 +7,7 @@ export const trie: Topic = {
     "Tree-like data structure for efficient string storage and prefix matching.",
   category: AlgorithmType.DATA_STRUCTURE,
   complexity: { time: "O(m)", space: "O(ALPHABET_SIZE * N * M)" },
-  visualizerType: VisualizerType.NONE,
+  visualizerType: VisualizerType.TRIE,
   module: "4. Trees & Heaps",
   order: 19,
   difficulty: "Medium",

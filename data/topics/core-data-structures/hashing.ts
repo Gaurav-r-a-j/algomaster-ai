@@ -6,7 +6,7 @@ export const hashing: Topic = {
   description: "Efficient data storage and retrieval using hash functions.",
   category: AlgorithmType.DATA_STRUCTURE,
   complexity: { time: "O(1)", space: "O(n)" },
-  visualizerType: VisualizerType.NONE,
+  visualizerType: VisualizerType.HASH_TABLE,
   module: "2. Core Data Structures",
   order: 8,
   difficulty: "Medium",

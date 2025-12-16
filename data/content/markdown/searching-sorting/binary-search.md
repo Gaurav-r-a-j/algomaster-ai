@@ -1,116 +1,400 @@
 # Binary Search
 
-Binary Search is an efficient algorithm for finding an item in a **sorted** array. It works by repeatedly dividing the search interval in half.
+Binary Search is a highly efficient algorithm for finding an element in a **sorted** array by repeatedly dividing the search space in half.
+
+## Key Concept
+
+Instead of checking every element (linear search), binary search:
+1. Looks at the **middle element**
+2. Eliminates **half the remaining elements**
+3. Repeats until found or search space is empty
+
+**Result:** O(log n) time complexity - dramatically faster for large datasets!
+
+```
+Array of 1,000,000 elements:
+├── Linear Search: Up to 1,000,000 comparisons
+└── Binary Search: At most 20 comparisons (log₂ 1,000,000 ≈ 20)
+```
+
+---
 
 ## How It Works
 
-1. Compare target with the middle element
-2. If target matches, return the index
-3. If target is smaller, search the left half
-4. If target is larger, search the right half
-5. Repeat until found or interval is empty
+```
+Array: [1, 3, 5, 7, 9, 11, 13, 15]
+Target: 9
+
+Step 1: mid = 7, target > 7 → search right half
+        [1, 3, 5, 7, 9, 11, 13, 15]
+                   ↑
+                  mid
+        
+Step 2: mid = 11, target < 11 → search left half
+        [9, 11, 13, 15]
+            ↑
+           mid
+
+Step 3: mid = 9, target == 9 → FOUND at index 4
+        [9]
+         ↑
+```
+
+---
 
 ## Implementation
 
+### Python
+
 ```python
 def binary_search(arr, target):
+    """
+    Search for target in sorted array.
+    Returns index if found, -1 otherwise.
+    Time: O(log n), Space: O(1)
+    """
     left, right = 0, len(arr) - 1
-
+    
     while left <= right:
-        mid = (left + right) // 2
-
+        mid = left + (right - left) // 2  # Avoids overflow
+        
         if arr[mid] == target:
             return mid
         elif arr[mid] < target:
-            left = mid + 1  # Search right half
+            left = mid + 1   # Search right half
         else:
             right = mid - 1  # Search left half
-
+    
     return -1  # Not found
 
 # Example
 arr = [1, 3, 5, 7, 9, 11, 13, 15]
-index = binary_search(arr, 7)  # Returns 3
+print(binary_search(arr, 9))   # Output: 4
+print(binary_search(arr, 6))   # Output: -1
+
+# Using Python's bisect module
+import bisect
+
+arr = [1, 3, 5, 7, 9, 11]
+idx = bisect.bisect_left(arr, 7)   # 3 (leftmost position)
+idx = bisect.bisect_right(arr, 7)  # 4 (rightmost position)
+bisect.insort(arr, 8)              # Insert maintaining order
 ```
 
-## Time Complexity
+### JavaScript
 
-- **Best Case:** O(1) - Target is at the middle
-- **Average Case:** O(log n)
-- **Worst Case:** O(log n) - Target is at the end or not present
+```javascript
+function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
 
-## Space Complexity
+// Example
+const arr = [1, 3, 5, 7, 9, 11, 13, 15];
+console.log(binarySearch(arr, 9));  // 4
+console.log(binarySearch(arr, 6));  // -1
 
-- **Iterative:** O(1)
-- **Recursive:** O(log n) due to call stack
+// Recursive version
+function binarySearchRecursive(arr, target, left = 0, right = arr.length - 1) {
+    if (left > right) return -1;
+    
+    const mid = Math.floor((left + right) / 2);
+    
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) {
+        return binarySearchRecursive(arr, target, mid + 1, right);
+    }
+    return binarySearchRecursive(arr, target, left, mid - 1);
+}
+```
 
-## Requirements
+### Java
 
-- **Array must be sorted** - This is critical!
-- Works on arrays, not linked lists (no random access)
+```java
+public class BinarySearch {
+    
+    public static int binarySearch(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;  // Prevents overflow
+            
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return -1;
+    }
+    
+    public static void main(String[] args) {
+        int[] arr = {1, 3, 5, 7, 9, 11, 13, 15};
+        System.out.println(binarySearch(arr, 9));  // 4
+        
+        // Using Arrays.binarySearch
+        int idx = java.util.Arrays.binarySearch(arr, 9);  // 4
+    }
+}
+```
+
+### C++
+
+```cpp
+#include <vector>
+#include <algorithm>
+
+int binarySearch(const std::vector<int>& arr, int target) {
+    int left = 0;
+    int right = arr.size() - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
+
+// Using STL
+#include <algorithm>
+
+std::vector<int> arr = {1, 3, 5, 7, 9, 11};
+bool found = std::binary_search(arr.begin(), arr.end(), 7);  // true
+
+// Get iterator to element
+auto it = std::lower_bound(arr.begin(), arr.end(), 7);  // First >= 7
+auto it2 = std::upper_bound(arr.begin(), arr.end(), 7); // First > 7
+```
+
+---
 
 ## Common Variations
 
-### Find First Occurrence
+### 1. Find First Occurrence
 
 ```python
-def binary_search_first(arr, target):
+def find_first(arr, target):
+    """Find first occurrence of target (for duplicates)"""
     left, right = 0, len(arr) - 1
     result = -1
-
+    
     while left <= right:
         mid = (left + right) // 2
+        
         if arr[mid] == target:
             result = mid
-            right = mid - 1  # Continue searching left
+            right = mid - 1  # Keep searching left
         elif arr[mid] < target:
             left = mid + 1
         else:
             right = mid - 1
-
+    
     return result
+
+# [1, 2, 2, 2, 3] → find_first(arr, 2) = 1
 ```
 
-### Find Insertion Position
+### 2. Find Last Occurrence
+
+```python
+def find_last(arr, target):
+    """Find last occurrence of target"""
+    left, right = 0, len(arr) - 1
+    result = -1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if arr[mid] == target:
+            result = mid
+            left = mid + 1  # Keep searching right
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return result
+
+# [1, 2, 2, 2, 3] → find_last(arr, 2) = 3
+```
+
+### 3. Find Insertion Position
 
 ```python
 def search_insert(nums, target):
+    """Find index where target should be inserted"""
     left, right = 0, len(nums) - 1
-
+    
     while left <= right:
         mid = (left + right) // 2
+        
         if nums[mid] == target:
             return mid
         elif nums[mid] < target:
             left = mid + 1
         else:
             right = mid - 1
-
+    
     return left  # Insertion position
+
+# [1, 3, 5, 6], target=5 → 2
+# [1, 3, 5, 6], target=2 → 1
+# [1, 3, 5, 6], target=7 → 4
 ```
 
-## When to Use
+### 4. Search in Rotated Sorted Array
 
-- Sorted arrays
-- Need O(log n) performance
-- Searching in large datasets
-- Finding boundaries or ranges
+```python
+def search_rotated(nums, target):
+    """Search in a rotated sorted array"""
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if nums[mid] == target:
+            return mid
+        
+        # Left half is sorted
+        if nums[left] <= nums[mid]:
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        # Right half is sorted
+        else:
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+    
+    return -1
 
-## Advantages
+# [4, 5, 6, 7, 0, 1, 2], target=0 → 4
+```
 
-- Very fast: O(log n) time
-- Efficient for large datasets
-- Can be adapted for various problems
+### 5. Find Peak Element
 
-## Disadvantages
+```python
+def find_peak(nums):
+    """Find a peak element (greater than neighbors)"""
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = (left + right) // 2
+        
+        if nums[mid] > nums[mid + 1]:
+            right = mid  # Peak is on left (including mid)
+        else:
+            left = mid + 1  # Peak is on right
+    
+    return left
 
-- Requires sorted data
-- More complex than linear search
-- Not suitable for linked lists
+# [1, 2, 3, 1] → 2 (index of peak element 3)
+```
 
-## Real-World Applications
+### 6. Find Minimum in Rotated Array
 
-- Dictionary lookups
-- Database indexing
-- Finding elements in sorted collections
-- Range queries
+```python
+def find_min(nums):
+    """Find minimum in rotated sorted array"""
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = (left + right) // 2
+        
+        if nums[mid] > nums[right]:
+            left = mid + 1  # Min is on right
+        else:
+            right = mid  # Min is on left (including mid)
+    
+    return nums[left]
+
+# [3, 4, 5, 1, 2] → 1
+```
+
+---
+
+## Time & Space Complexity
+
+| Scenario | Time | Space (Iterative) | Space (Recursive) |
+|----------|------|-------------------|-------------------|
+| Best Case | O(1) | O(1) | O(1) |
+| Average Case | O(log n) | O(1) | O(log n) |
+| Worst Case | O(log n) | O(1) | O(log n) |
+
+---
+
+## Common Mistakes to Avoid
+
+### 1. Integer Overflow (in some languages)
+
+```python
+# Wrong: mid = (left + right) // 2  # Can overflow in Java/C++
+# Correct:
+mid = left + (right - left) // 2
+```
+
+### 2. Off-by-One Errors
+
+```python
+# Common mistake: using < instead of <=
+while left < right:   # Wrong for some cases
+while left <= right:  # Correct
+```
+
+### 3. Forgetting Array Must Be Sorted
+
+```python
+# Binary search ONLY works on sorted arrays!
+arr = [5, 2, 8, 1, 9]  # Not sorted - binary search won't work
+arr.sort()              # Sort first!
+```
+
+---
+
+## When to Use Binary Search
+
+| Use Case | Example |
+|----------|---------|
+| Searching sorted array | Find element in database index |
+| Finding boundaries | First/last occurrence of value |
+| Optimization problems | Minimize/maximize with monotonic property |
+| Range queries | Count elements in range |
+| Square root, nth root | Numerical computation |
+
+---
+
+## Key Takeaways
+
+1. **Only works on sorted data** - sort first if needed
+2. **O(log n) is powerful** - handles billions of elements efficiently
+3. **Watch for edge cases** - empty array, single element, duplicates
+4. **Use `left + (right - left) // 2`** to prevent overflow
+5. **Master the variations** - they appear frequently in interviews

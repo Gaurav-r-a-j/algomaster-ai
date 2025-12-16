@@ -31,6 +31,9 @@ function renderVisualizer(topic: Topic) {
     case VisualizerType.LINKED_LIST:
     case VisualizerType.BINARY_TREE:
     case VisualizerType.AVL_TREE:
+    case VisualizerType.TRIE:
+    case VisualizerType.HASH_TABLE:
+    case VisualizerType.GRAPH:
       return <DataStructureVisualizer topic={topic} />
     case VisualizerType.PATHFINDING:
       return <PathfindingVisualizer topic={topic} />
