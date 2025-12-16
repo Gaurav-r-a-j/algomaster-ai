@@ -12,16 +12,7 @@ export function GraphRenderer({ currentData }: GraphRendererProps) {
   const activeNodeId = (currentData.auxiliary as any)?.activeNode
 
   return (
-    <div className="relative h-[500px] w-full overflow-hidden rounded-xl border bg-slate-50/50 shadow-inner dark:bg-slate-900/50">
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, currentColor 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-        }}
-      ></div>
-
+    <div className="relative h-[400px] w-full overflow-hidden p-6 sm:h-[500px]">
       <svg className="pointer-events-none absolute inset-0 h-full w-full">
         <defs>
           <marker
@@ -54,7 +45,7 @@ export function GraphRenderer({ currentData }: GraphRendererProps) {
               y2={`${n2.y}%`}
               className="text-muted-foreground"
               stroke="currentColor"
-              strokeOpacity="0.4"
+              strokeOpacity="0.3"
               strokeWidth="2"
               markerEnd="url(#arrowhead)"
             />
@@ -70,7 +61,7 @@ export function GraphRenderer({ currentData }: GraphRendererProps) {
             animate={{
               backgroundColor: isActive
                 ? "hsl(var(--primary))"
-                : "hsl(var(--card))",
+                : "hsl(var(--background))",
               borderColor: isActive
                 ? "hsl(var(--primary))"
                 : "hsl(var(--border))",
@@ -79,12 +70,12 @@ export function GraphRenderer({ currentData }: GraphRendererProps) {
                 : "hsl(var(--foreground))",
               scale: isActive ? 1.25 : 1,
               boxShadow: isActive
-                ? "0 0 20px hsl(var(--primary)/0.3)"
-                : "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                ? "0 10px 25px -5px hsl(var(--primary) / 0.4)"
+                : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
             }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{ left: `${node.x}%`, top: `${node.y}%` }}
-            className="absolute flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 cursor-default items-center justify-center rounded-full border-2 text-lg font-bold"
+            className="absolute flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 cursor-default items-center justify-center rounded-full border-2 text-base font-bold backdrop-blur-sm sm:h-14 sm:w-14 sm:text-lg"
           >
             {node.id}
           </motion.div>

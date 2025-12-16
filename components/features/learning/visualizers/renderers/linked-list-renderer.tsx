@@ -9,7 +9,7 @@ interface LinkedListRendererProps {
 
 export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
   return (
-    <div className="w-full overflow-x-auto p-8">
+    <div className="w-full overflow-x-auto p-6 sm:p-8">
       <motion.div className="flex min-w-fit items-center justify-start gap-1">
         <AnimatePresence>
           {currentData.array.map((val, idx) => {
@@ -28,7 +28,7 @@ export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
                       scale: isActive ? 1.15 : 1,
                       backgroundColor: isActive
                         ? "hsl(var(--primary))"
-                        : "hsl(var(--card))",
+                        : "hsl(var(--background))",
                       borderColor: isActive
                         ? "hsl(var(--primary))"
                         : "hsl(var(--border))",
@@ -36,29 +36,29 @@ export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
                         ? "hsl(var(--primary-foreground))"
                         : "hsl(var(--foreground))",
                       boxShadow: isActive
-                        ? "0 4px 12px hsl(var(--primary)/0.3)"
-                        : "0 1px 2px rgb(0 0 0 / 0.05)",
+                        ? "0 10px 25px -5px hsl(var(--primary) / 0.4)"
+                        : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
                     }}
                     transition={transitions.spring}
-                    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-xl border-2 text-lg font-bold transition-shadow"
+                    className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl border-2 text-base font-bold backdrop-blur-sm transition-shadow sm:h-14 sm:w-14 sm:text-lg"
                   >
                     {val}
                     {/* Pointer dot */}
-                    <div className="absolute top-1/2 -right-1 h-2 w-2 -translate-y-1/2 rounded-full border border-inherit bg-inherit"></div>
+                    <div className="absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full border border-inherit bg-inherit"></div>
                   </motion.div>
-                  <div className="text-muted-foreground mt-2 font-mono text-xs font-medium">
+                  <div className="mt-2 font-mono text-xs font-medium text-muted-foreground">
                     {idx === 0 ? "HEAD" : `#${idx}`}
                   </div>
                 </div>
 
                 {idx < currentData.array.length - 1 && (
-                  <div className="bg-border relative mx-1 h-0.5 w-12">
-                    <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2">
+                  <div className="relative mx-1 h-0.5 w-10 bg-border/60 sm:w-12">
+                    <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2">
                       <svg
                         width="10"
                         height="10"
                         viewBox="0 0 10 10"
-                        className="text-border rotate-[-90deg] fill-current"
+                        className="rotate-[-90deg] fill-current text-border/60"
                       >
                         <path d="M5 10L0 0h10L5 10z" />
                       </svg>
@@ -70,8 +70,8 @@ export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
           })}
         </AnimatePresence>
         <div className="ml-2 flex items-center gap-3 opacity-60">
-          <div className="bg-border h-0.5 w-8"></div>
-          <div className="border-border bg-muted/50 text-muted-foreground flex h-10 w-16 items-center justify-center rounded border border-dashed font-mono text-xs">
+          <div className="h-0.5 w-6 bg-border/60 sm:w-8"></div>
+          <div className="flex h-9 w-14 items-center justify-center rounded-xl border border-dashed border-border/60 bg-muted/30 font-mono text-xs text-muted-foreground backdrop-blur-sm sm:h-10 sm:w-16">
             NULL
           </div>
         </div>

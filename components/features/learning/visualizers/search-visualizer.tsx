@@ -20,7 +20,6 @@ import {
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Slider } from "@/components/ui/slider"
@@ -101,9 +100,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
   }, [isPlaying, steps.length, playbackSpeed])
 
   const handlePreviousStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
-    }
+    setCurrentStep((prev) => (prev > 0 ? prev - 1 : prev))
   }
 
   const handleStepChange = (step: number) => {
@@ -112,9 +109,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
   }
 
   const handleNextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1)
-    }
+    setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev))
   }
 
   const handlePlay = () => {
@@ -146,7 +141,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
     <div className="flex w-full flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
         {/* Left Side: Toggle + Target Input */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {/* Sidebar Toggle */}
           <Tooltip>
             <TooltipTrigger asChild>
@@ -168,7 +163,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
             </TooltipContent>
           </Tooltip>
 
-          <Separator orientation="vertical" className="h-6" />
+          <Separator orientation="vertical" className="hidden h-6 sm:block" />
 
           {/* Target Input Group */}
           <div className="bg-muted/40 border-border/40 flex items-center gap-3 rounded-lg border p-1.5">
@@ -177,14 +172,14 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
               size={14}
               className="text-muted-foreground ml-2"
             />
-            <label className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
+            <label className="text-muted-foreground hidden text-xs font-bold tracking-wider uppercase sm:block">
               Target
             </label>
             <Input
               type="number"
               value={target}
               onChange={(e) => setTarget(Number(e.target.value))}
-              className="bg-background border-border/50 h-8 w-[80px] text-sm"
+              className="bg-background border-border/50 h-8 w-[70px] text-sm sm:w-[80px]"
               min={Math.min(...array)}
               max={Math.max(...array)}
               disabled={isPlaying}
@@ -207,7 +202,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
         </div>
 
         {/* Playback Controls Group */}
-        <div className="flex items-center gap-1">
+        <div className="flex flex-wrap items-center gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -286,7 +281,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
             </Tooltip>
           </div>
 
-          <div className="bg-muted border-border/40 flex items-center rounded-md border px-3 py-1.5">
+          <div className="bg-muted border-border/40 hidden items-center rounded-md border px-3 py-1.5 sm:flex">
             <span className="text-muted-foreground font-mono text-xs font-semibold">
               Step {currentStep + 1} <span className="text-border mx-1">/</span>{" "}
               {steps.length || 1}
@@ -409,62 +404,56 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       hideDescription={true}
       showInfoPanel={true}
     >
-      <div className="flex min-h-0 flex-1 items-center justify-center p-6">
-        <Card className="border-border/50 bg-card w-full border">
-          <CardContent className="p-8">
-            <div className="flex min-h-[400px] flex-wrap items-center justify-center gap-6">
-              {currentData.array.map((value, idx) => {
-                const isActive = currentData.activeIndices.includes(idx)
-                const isFound = currentData.sortedIndices.includes(idx)
+      <div className="flex min-h-[300px] flex-wrap items-center justify-center gap-4 p-6 sm:gap-6">
+        {currentData.array.map((value, idx) => {
+          const isActive = currentData.activeIndices.includes(idx)
+          const isFound = currentData.sortedIndices.includes(idx)
 
-                return (
-                  <motion.div
-                    key={`${idx}-${value}`}
-                    variants={staggerItem}
-                    layout
-                    animate={{
-                      scale: isActive ? 1.15 : 1,
-                      zIndex: isActive ? 10 : 1,
-                    }}
-                    transition={transitions.spring}
-                    className="flex flex-col items-center gap-2"
-                  >
-                    <motion.div
-                      animate={{
-                        borderColor: isFound
-                          ? "rgb(16 185 129)"
-                          : isActive
-                            ? "rgb(245 158 11)"
-                            : "hsl(var(--primary) / 0.5)",
-                        backgroundColor: isFound
-                          ? "rgb(16 185 129 / 0.12)"
-                          : isActive
-                            ? "rgb(245 158 11 / 0.12)"
-                            : "hsl(var(--card))",
-                        color: isFound
-                          ? "rgb(5 150 105)"
-                          : isActive
-                            ? "rgb(180 83 9)"
-                            : "hsl(var(--foreground))",
-                        boxShadow:
-                          isFound || isActive
-                            ? "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
-                            : "0 2px 8px -1px rgb(0 0 0 / 0.08)",
-                      }}
-                      transition={transitions.smooth}
-                      className="flex h-14 w-14 items-center justify-center rounded-xl border-2 text-lg font-bold"
-                    >
-                      {value}
-                    </motion.div>
-                    <span className="text-muted-foreground font-mono text-xs font-semibold">
-                      [{idx}]
-                    </span>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </CardContent>
-        </Card>
+          return (
+            <motion.div
+              key={`${idx}-${value}`}
+              variants={staggerItem}
+              layout
+              animate={{
+                scale: isActive ? 1.15 : 1,
+                zIndex: isActive ? 10 : 1,
+              }}
+              transition={transitions.spring}
+              className="flex flex-col items-center gap-2"
+            >
+              <motion.div
+                animate={{
+                  borderColor: isFound
+                    ? "rgb(16 185 129)"
+                    : isActive
+                      ? "rgb(245 158 11)"
+                      : "hsl(var(--border))",
+                  backgroundColor: isFound
+                    ? "rgb(16 185 129 / 0.15)"
+                    : isActive
+                      ? "rgb(245 158 11 / 0.15)"
+                      : "hsl(var(--background))",
+                  color: isFound
+                    ? "rgb(5 150 105)"
+                    : isActive
+                      ? "rgb(180 83 9)"
+                      : "hsl(var(--foreground))",
+                  boxShadow:
+                    isFound || isActive
+                      ? "0 10px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
+                      : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
+                }}
+                transition={transitions.smooth}
+                className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 text-base font-bold backdrop-blur-sm sm:h-16 sm:w-16 sm:text-xl"
+              >
+                {value}
+              </motion.div>
+              <span className="font-mono text-xs font-semibold text-muted-foreground">
+                [{idx}]
+              </span>
+            </motion.div>
+          )
+        })}
       </div>
     </VisualizerLayout>
   )

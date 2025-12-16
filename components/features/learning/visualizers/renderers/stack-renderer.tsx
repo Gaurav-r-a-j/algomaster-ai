@@ -8,9 +8,9 @@ interface StackRendererProps {
 
 export function StackRenderer({ currentData }: StackRendererProps) {
   return (
-    <div className="flex w-full flex-col items-center justify-center p-8">
-      <div className="relative flex min-h-[300px] w-40 flex-col justify-end rounded-t-lg border-x-4 border-b-4 border-slate-300 bg-slate-50/50 p-4 shadow-inner dark:border-slate-700 dark:bg-slate-900/50">
-        <div className="text-muted-foreground absolute top-1/2 -left-12 -translate-y-1/2 rotate-180 py-2 text-xs font-bold tracking-widest uppercase [writing-mode:vertical-lr]">
+    <div className="flex w-full flex-col items-center justify-center p-6 sm:p-8">
+      <div className="relative flex min-h-[220px] w-24 flex-col justify-end rounded-t-2xl border-x-2 border-b-2 border-border/60 bg-background/50 p-3 shadow-lg backdrop-blur-sm sm:min-h-[280px] sm:w-32 sm:p-4">
+        <div className="absolute top-1/2 -left-8 -translate-y-1/2 rotate-180 py-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground [writing-mode:vertical-lr] sm:-left-12 sm:text-xs">
           Stack Memory
         </div>
         <AnimatePresence mode="popLayout">
@@ -19,7 +19,7 @@ export function StackRenderer({ currentData }: StackRendererProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-muted-foreground absolute inset-0 flex items-center justify-center text-sm italic"
+              className="absolute inset-0 flex items-center justify-center text-xs italic text-muted-foreground sm:text-sm"
             >
               Empty
             </motion.div>
@@ -32,7 +32,7 @@ export function StackRenderer({ currentData }: StackRendererProps) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="mb-2 flex h-12 w-full items-center justify-center rounded-md bg-gradient-to-br from-indigo-500 to-indigo-600 font-bold text-white shadow-md ring-1 ring-white/20"
+                className="mb-2 flex h-10 w-full items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 font-bold text-white shadow-lg ring-1 ring-white/20 sm:h-12"
               >
                 {val}
               </motion.div>
@@ -40,7 +40,7 @@ export function StackRenderer({ currentData }: StackRendererProps) {
           )}
         </AnimatePresence>
       </div>
-      <div className="text-muted-foreground mt-4 text-center text-sm">
+      <div className="mt-4 rounded-full border border-border/50 bg-background/80 px-4 py-1.5 text-center text-xs font-medium text-muted-foreground backdrop-blur-sm sm:text-sm">
         LIFO: Last In, First Out
       </div>
     </div>

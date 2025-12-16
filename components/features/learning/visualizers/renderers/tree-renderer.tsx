@@ -61,17 +61,7 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
   const treeData = renderTreeNodes(root || null, highlightNodeId || null)
 
   return (
-    <div className="relative h-[500px] w-full overflow-hidden rounded-xl border bg-slate-50/50 shadow-inner dark:bg-slate-900/50">
-      {/* Simple Dot Pattern Background */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, currentColor 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-        }}
-      ></div>
-
+    <div className="relative h-[400px] w-full overflow-hidden p-6 sm:h-[500px]">
       <svg className="pointer-events-none absolute inset-0 h-full w-full">
         {treeData.edges.map((edge) => (
           <line
@@ -81,7 +71,7 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
             x2={`${edge.x2}%`}
             y2={`${edge.y2}px`}
             stroke="currentColor"
-            strokeOpacity="0.4"
+            strokeOpacity="0.3"
             strokeWidth="2.5"
             strokeLinecap="round"
           />
@@ -100,7 +90,7 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
                 opacity: 1,
                 backgroundColor: isHighlighed
                   ? "hsl(var(--primary))"
-                  : "hsl(var(--card))",
+                  : "hsl(var(--background))",
                 borderColor: isHighlighed
                   ? "hsl(var(--primary))"
                   : "hsl(var(--border))",
@@ -111,11 +101,11 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
                 top: `${node.y}px`,
                 zIndex: isHighlighed ? 20 : 10,
                 boxShadow: isHighlighed
-                  ? "0 0 20px hsl(var(--primary)/0.4)"
-                  : "0 2px 4px rgb(0 0 0 / 0.1)",
+                  ? "0 10px 25px -5px hsl(var(--primary) / 0.4)"
+                  : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
               }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="absolute flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border-2 text-sm font-bold"
+              className="absolute flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border-2 text-sm font-bold backdrop-blur-sm sm:h-12 sm:w-12"
             >
               {node.val}
             </motion.div>
@@ -124,7 +114,7 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
       </AnimatePresence>
       {treeData.nodes.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-muted-foreground/50 flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-2 text-muted-foreground/50">
             <Squares2X2Icon className="h-10 w-10" />
             <span className="text-sm font-medium">Empty Tree</span>
           </div>

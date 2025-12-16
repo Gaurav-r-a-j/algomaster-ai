@@ -4,7 +4,7 @@ import type { ReactNode } from "react"
 import { useRef, useState } from "react"
 import type { ImperativePanelHandle } from "react-resizable-panels"
 
-import { ChevronRightIcon } from "@/lib/icons"
+import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,6 +12,13 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
+import { Separator } from "@/components/ui/separator"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 interface VisualizerLayoutProps {
   title: ReactNode
@@ -61,6 +68,30 @@ export function VisualizerLayout({
     }
   }
 
+  // Generate the toggle button for non-renderControls scenarios
+  const ToggleButton = () => (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={toggleInfoPanel}
+          className="h-9 w-9 shrink-0"
+          aria-label={isInfoPanelOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          <IconWrapper
+            icon={isInfoPanelOpen ? ChevronLeftIcon : ChevronRightIcon}
+            size={18}
+            className="text-muted-foreground"
+          />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side="right">
+        {isInfoPanelOpen ? "Hide Info" : "Show Info"}
+      </TooltipContent>
+    </Tooltip>
+  )
+
   return (
     <div className="bg-background h-full w-full overflow-hidden">
       <ResizablePanelGroup direction="horizontal" className="h-full w-full">
@@ -78,6 +109,7 @@ export function VisualizerLayout({
               onExpand={() => setIsInfoPanelOpen(true)}
               className={cn(
                 "border-border/50 bg-muted/20 flex min-h-0 flex-col border-r transition-all duration-300 ease-in-out",
+                "hidden md:flex",
                 !isInfoPanelOpen && "min-w-0 border-none"
               )}
             >
@@ -88,12 +120,21 @@ export function VisualizerLayout({
                   <div className="p-6">
                     {!hideTitle && (
                       <div className="mb-6">
-                        <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
-                        {headerBadges && <div className="mt-2 flex gap-2">{headerBadges}</div>}
+                        <div className="flex items-center gap-3">
+                          {icon}
+                          <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+                            {title}
+                          </h2>
+                        </div>
+                        {headerBadges && (
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {headerBadges}
+                          </div>
+                        )}
                       </div>
                     )}
                     {description && (
-                      <div className="prose dark:prose-invert max-w-none text-muted-foreground">
+                      <div className="prose dark:prose-invert max-w-none text-sm text-muted-foreground">
                         {description}
                       </div>
                     )}
@@ -102,7 +143,10 @@ export function VisualizerLayout({
               </div>
             </ResizablePanel>
 
-            <ResizableHandle withHandle className="bg-border/50 hover:bg-primary/50 transition-colors" />
+            <ResizableHandle
+              withHandle
+              className="bg-border/50 hover:bg-primary/50 hidden h-full w-1.5 transition-colors md:block"
+            />
           </>
         )}
 
@@ -113,67 +157,83 @@ export function VisualizerLayout({
           className="flex h-full flex-col bg-background"
         >
           <div className="flex h-full flex-col">
-            {/* Header Section - Consolidated & Premium */}
+            {/* Header Section */}
             <div className="border-border/50 bg-background/95 sticky top-0 z-10 w-full shrink-0 border-b backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <div className="flex flex-col gap-4 p-4">
-                {/* Top Bar: Controls & Toggles & Status Mix */}
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex min-w-0 flex-1 items-center gap-3">
-                    {/* Generic Toggle (if not using renderControls or complex controls) */}
-                    {!renderControls && !isInfoPanelOpen && showInfoPanel && (
-                      <Button variant="ghost" size="icon" onClick={toggleInfoPanel} className="shrink-0">
-                        <ChevronRightIcon className="h-4 w-4" />
-                      </Button>
-                    )}
+              <div className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4">
+                {/* Controls Row */}
+                <div className="flex flex-wrap items-center gap-3">
+                  {renderControls ? (
+                    renderControls(
+                      isInfoPanelOpen,
+                      toggleInfoPanel,
+                      headerDescription
+                    )
+                  ) : (
+                    <>
+                      {/* Toggle Button + Controls */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        {showInfoPanel && <ToggleButton />}
 
-                    {/* The Controls Area & Status Integration */}
-                    <div className="flex min-w-0 flex-1 items-center gap-6">
-                      {renderControls ? (
-                        // Pass headerDescription to renderControls for Custom Layout
-                        renderControls(isInfoPanelOpen, toggleInfoPanel, headerDescription)
-                      ) : (
-                        // Default Layout: Controls Left, Status Right (or Stacked if tight)
+                        {showInfoPanel && controls && (
+                          <Separator
+                            orientation="vertical"
+                            className="hidden h-6 sm:block"
+                          />
+                        )}
+
+                        {controls && (
+                          <div className="flex-none">{controls}</div>
+                        )}
+                      </div>
+
+                      {/* Header Description */}
+                      {headerDescription && (
                         <>
-                          <div className="flex-none">
-                            {controls}
+                          <Separator
+                            orientation="vertical"
+                            className="hidden h-6 sm:block"
+                          />
+                          <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
+                            <div className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-primary" />
+                            <span className="truncate text-sm font-medium text-primary">
+                              {headerDescription}
+                            </span>
                           </div>
-                          {headerDescription && (
-                            <div className="hidden h-6 w-px bg-border/60 sm:block" />
-                          )}
-                          {headerDescription && (
-                            <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
-                              <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary animate-pulse" />
-                              <span className="truncate text-sm font-medium text-muted-foreground">
-                                {headerDescription}
-                              </span>
-                            </div>
-                          )}
                         </>
                       )}
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
+
+                {/* Mobile Header Description (if hidden above) */}
+                {!renderControls && headerDescription && (
+                  <div className="flex w-full items-center gap-2 rounded-md border border-primary/10 bg-primary/5 px-3 py-2 sm:hidden">
+                    <div className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-primary" />
+                    <span className="text-sm font-medium text-primary">
+                      {headerDescription}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Visualization Area */}
             <div className="relative min-h-0 flex-1 overflow-hidden bg-dot-pattern">
-              <div className="absolute inset-0 flex items-center justify-center p-6 overflow-auto">
+              <div className="absolute inset-0 flex items-center justify-center overflow-auto p-4 sm:p-6">
                 <div className="mx-auto flex min-h-min w-full max-w-[1920px] flex-col items-center justify-center">
                   {children}
                 </div>
               </div>
             </div>
 
-            {/* Bottom Description (Optional, ONLY if explicit and NOT in header) */}
-            {!hideDescription && description && infoPanel && (
-              <div className="border-border/40 bg-background/95 w-full shrink-0 border-t px-6 py-4">
+            {/* Bottom Description (Optional) */}
+            {!hideDescription && description && (
+              <div className="border-border/40 bg-background/95 w-full shrink-0 border-t px-4 py-3 sm:px-6 sm:py-4">
                 <div className="mx-auto w-full max-w-[1920px] text-sm text-muted-foreground">
                   {description}
                 </div>
               </div>
             )}
-
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>

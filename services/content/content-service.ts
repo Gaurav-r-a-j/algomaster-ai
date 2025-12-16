@@ -21,10 +21,13 @@ import queueContent from "@/data/content/markdown/core-data-structures/queue.md"
 import stackContent from "@/data/content/markdown/core-data-structures/stack.md"
 // Import all markdown files - bundled at build time
 // Foundations
+import algorithmsPseudocodeContent from "@/data/content/markdown/foundations/algorithms-pseudocode.md"
 import bigOContent from "@/data/content/markdown/foundations/big-o.md"
+import flowchartsContent from "@/data/content/markdown/foundations/flowcharts.md"
 import loopsContent from "@/data/content/markdown/foundations/loops.md"
 import recursionContent from "@/data/content/markdown/foundations/recursion.md"
 import variablesDatatypesContent from "@/data/content/markdown/foundations/variables-datatypes.md"
+import whatIsProgrammingContent from "@/data/content/markdown/foundations/what-is-programming.md"
 // Graph Algorithms
 import bfsContent from "@/data/content/markdown/graph-algorithms/bfs.md"
 import dfsContent from "@/data/content/markdown/graph-algorithms/dfs.md"
@@ -49,10 +52,13 @@ import type { Topic } from "@/types/curriculum"
 // Content map - topic ID to markdown content
 const contentMap: Record<string, string> = {
   // Foundations
-  "big-o": bigOContent,
+  "what-is-programming": whatIsProgrammingContent,
+  flowcharts: flowchartsContent,
+  "algorithms-pseudocode": algorithmsPseudocodeContent,
+  "variables-datatypes": variablesDatatypesContent,
   loops: loopsContent,
   recursion: recursionContent,
-  "variables-datatypes": variablesDatatypesContent,
+  "big-o": bigOContent,
 
   // Core Data Structures
   "arrays-strings": arraysStringsContent,
