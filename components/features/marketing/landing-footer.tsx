@@ -43,13 +43,12 @@ export function LandingFooter() {
         <div className="space-y-6 md:col-span-4">
           <div className="flex items-center gap-3 text-white">
             <span className="text-lg font-bold tracking-tight">
-              DSA Platform
+              AlgoMaster<span className="text-primary ml-1">AI</span>
             </span>
           </div>
           <p className="max-w-sm text-sm leading-relaxed text-neutral-400">
-            Professional, AI-powered DSA learning platform for the modern
-            developer. Master data structures and algorithms with interactive
-            visualizations and practice problems.
+            Master Data Structures and Algorithms with AI-powered learning,
+            interactive visualizations, and comprehensive practice problems.
           </p>
           <div className="flex gap-4 pt-2">
             <a
@@ -149,7 +148,7 @@ export function LandingFooter() {
 
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-neutral-800 pt-8 text-xs font-medium text-neutral-500 md:flex-row">
         <div>
-          &copy; {new Date().getFullYear()} DSA Platform. All rights reserved.
+          &copy; {new Date().getFullYear()} AlgoMaster AI. All rights reserved.
         </div>
         <div className="flex gap-6">
           <span>Made with Next.js & TypeScript</span>

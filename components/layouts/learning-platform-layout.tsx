@@ -213,8 +213,10 @@ export function LearningPlatformLayout({
 
       </Sidebar>
 
-      <SidebarInset className="h-svh overflow-hidden">
-        <main className="flex-1 overflow-y-auto">{children}</main>
+      <SidebarInset className="relative h-svh overflow-hidden">
+        {/* Subtle gradient background */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/[0.02] via-transparent to-primary/[0.02]" />
+        <main className="relative flex-1 overflow-y-auto">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   )

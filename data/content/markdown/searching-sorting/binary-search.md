@@ -44,46 +44,8 @@ Step 3: mid = 9, target == 9 → FOUND at index 4
 
 ## Implementation
 
-### Python
-
-```python
-def binary_search(arr, target):
-    """
-    Search for target in sorted array.
-    Returns index if found, -1 otherwise.
-    Time: O(log n), Space: O(1)
-    """
-    left, right = 0, len(arr) - 1
-    
-    while left <= right:
-        mid = left + (right - left) // 2  # Avoids overflow
-        
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            left = mid + 1   # Search right half
-        else:
-            right = mid - 1  # Search left half
-    
-    return -1  # Not found
-
-# Example
-arr = [1, 3, 5, 7, 9, 11, 13, 15]
-print(binary_search(arr, 9))   # Output: 4
-print(binary_search(arr, 6))   # Output: -1
-
-# Using Python's bisect module
-import bisect
-
-arr = [1, 3, 5, 7, 9, 11]
-idx = bisect.bisect_left(arr, 7)   # 3 (leftmost position)
-idx = bisect.bisect_right(arr, 7)  # 4 (rightmost position)
-bisect.insort(arr, 8)              # Insert maintaining order
-```
-
-### JavaScript
-
-```javascript
+```multi
+---javascript
 function binarySearch(arr, target) {
     let left = 0;
     let right = arr.length - 1;
@@ -107,62 +69,51 @@ function binarySearch(arr, target) {
 const arr = [1, 3, 5, 7, 9, 11, 13, 15];
 console.log(binarySearch(arr, 9));  // 4
 console.log(binarySearch(arr, 6));  // -1
-
-// Recursive version
-function binarySearchRecursive(arr, target, left = 0, right = arr.length - 1) {
-    if (left > right) return -1;
+---python
+def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
     
-    const mid = Math.floor((left + right) / 2);
-    
-    if (arr[mid] === target) return mid;
-    if (arr[mid] < target) {
-        return binarySearchRecursive(arr, target, mid + 1, right);
-    }
-    return binarySearchRecursive(arr, target, left, mid - 1);
-}
-```
-
-### Java
-
-```java
-public class BinarySearch {
-    
-    public static int binarySearch(int[] arr, int target) {
-        int left = 0;
-        int right = arr.length - 1;
+    while left <= right:
+        mid = (left + right) // 2
         
-        while (left <= right) {
-            int mid = left + (right - left) / 2;  // Prevents overflow
-            
-            if (arr[mid] == target) {
-                return mid;
-            } else if (arr[mid] < target) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return -1
+
+# Example
+arr = [1, 3, 5, 7, 9, 11, 13, 15]
+print(binary_search(arr, 9))  # 4
+print(binary_search(arr, 6))  # -1
+---java
+public static int binarySearch(int[] arr, int target) {
+    int left = 0;
+    int right = arr.length - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
         }
-        
-        return -1;
     }
     
-    public static void main(String[] args) {
-        int[] arr = {1, 3, 5, 7, 9, 11, 13, 15};
-        System.out.println(binarySearch(arr, 9));  // 4
-        
-        // Using Arrays.binarySearch
-        int idx = java.util.Arrays.binarySearch(arr, 9);  // 4
-    }
+    return -1;
 }
-```
 
-### C++
-
-```cpp
-#include <vector>
-#include <algorithm>
-
-int binarySearch(const std::vector<int>& arr, int target) {
+// Example
+int[] arr = {1, 3, 5, 7, 9, 11, 13, 15};
+System.out.println(binarySearch(arr, 9));  // 4
+---cpp
+int binarySearch(vector<int>& arr, int target) {
     int left = 0;
     int right = arr.size() - 1;
     
@@ -181,15 +132,9 @@ int binarySearch(const std::vector<int>& arr, int target) {
     return -1;
 }
 
-// Using STL
-#include <algorithm>
-
-std::vector<int> arr = {1, 3, 5, 7, 9, 11};
-bool found = std::binary_search(arr.begin(), arr.end(), 7);  // true
-
-// Get iterator to element
-auto it = std::lower_bound(arr.begin(), arr.end(), 7);  // First >= 7
-auto it2 = std::upper_bound(arr.begin(), arr.end(), 7); // First > 7
+// Example
+vector<int> arr = {1, 3, 5, 7, 9, 11, 13, 15};
+cout << binarySearch(arr, 9);  // 4
 ```
 
 ---

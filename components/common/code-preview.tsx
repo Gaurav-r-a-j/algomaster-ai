@@ -9,11 +9,35 @@ import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
+import { CopyButton } from "./copy-button"
+
+// Language display names
+const LANGUAGE_NAMES: Record<string, string> = {
+  js: "JavaScript",
+  javascript: "JavaScript",
+  ts: "TypeScript",
+  typescript: "TypeScript",
+  tsx: "TypeScript",
+  jsx: "JavaScript",
+  py: "Python",
+  python: "Python",
+  java: "Java",
+  cpp: "C++",
+  c: "C",
+  go: "Go",
+  rust: "Rust",
+  sql: "SQL",
+  bash: "Bash",
+  shell: "Shell",
+  json: "JSON",
+}
+
 interface CodePreviewProps {
   code: string
   language?: string
   preview?: React.ReactNode
   className?: string
+  title?: string
 }
 
 // CodePreview - Component to show code with preview/run option
@@ -23,10 +47,13 @@ export function CodePreview({
   language = "tsx",
   preview,
   className,
+  title,
 }: CodePreviewProps) {
   const [activeTab, setActiveTab] = React.useState<"preview" | "code">(
     preview ? "preview" : "code"
   )
+
+  const displayName = LANGUAGE_NAMES[language] || language
 
   return (
     <motion.div
@@ -35,7 +62,7 @@ export function CodePreview({
       variants={fadeIn}
       transition={transitions.smooth}
       className={cn(
-        "border-border/50 my-4 overflow-hidden rounded-lg border shadow-sm",
+        "border-border/50 group my-4 overflow-hidden rounded-lg border shadow-sm",
         className
       )}
     >
@@ -44,18 +71,32 @@ export function CodePreview({
         onValueChange={(v) => setActiveTab(v as "preview" | "code")}
       >
         <div className="border-border/50 bg-muted/50 flex items-center justify-between border-b px-4 py-2">
-          <TabsList className="h-8">
-            {preview && (
-              <TabsTrigger value="preview" className="text-xs">
-                <IconWrapper icon={PlayIcon} size={14} className="mr-1.5" />
-                Preview
+          <div className="flex items-center gap-3">
+            <TabsList className="h-8">
+              {preview && (
+                <TabsTrigger value="preview" className="text-xs">
+                  <IconWrapper icon={PlayIcon} size={14} className="mr-1.5" />
+                  Preview
+                </TabsTrigger>
+              )}
+              <TabsTrigger value="code" className="text-xs">
+                <IconWrapper icon={FileIcon} size={14} className="mr-1.5" />
+                Code
               </TabsTrigger>
+            </TabsList>
+            {title && (
+              <span className="text-xs font-medium text-muted-foreground">
+                {title}
+              </span>
             )}
-            <TabsTrigger value="code" className="text-xs">
-              <IconWrapper icon={FileIcon} size={14} className="mr-1.5" />
-              Code
-            </TabsTrigger>
-          </TabsList>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">{displayName}</span>
+            <CopyButton
+              value={code}
+              className="opacity-0 group-hover:opacity-100 transition-opacity"
+            />
+          </div>
         </div>
 
         {preview && (
@@ -71,7 +112,7 @@ export function CodePreview({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={transitions.smooth}
-            className="bg-muted m-0 overflow-x-auto p-4 font-mono text-sm"
+            className="bg-[#0d1117] m-0 overflow-x-auto p-4 font-mono text-sm"
           >
             <code className={`language-${language}`}>{code}</code>
           </motion.pre>

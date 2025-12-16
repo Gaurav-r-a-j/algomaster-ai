@@ -37,7 +37,7 @@ export function LearningPlatformHeader({
           href={ROUTES.HOME}
           className="text-foreground hover:text-primary flex items-center gap-2 text-xl font-bold tracking-tight transition-colors"
         >
-          DSA Platform
+          AlgoMaster<span className="text-primary ml-1">AI</span>
         </Link>
 
         {/* Progress Bar */}

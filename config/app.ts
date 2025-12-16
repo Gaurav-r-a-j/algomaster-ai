@@ -2,12 +2,12 @@ import { env } from "./common/env"
 
 // Application configuration - centralized app settings
 export const APP_CONFIG = {
-  name: "DSA Learning Platform",
-  shortName: "DSA Platform",
+  name: "AlgoMaster AI",
+  shortName: "AlgoMaster",
   description:
-    "An interactive Data Structures and Algorithms learning platform with visualizations, AI-powered tutoring, and comprehensive curriculum.",
+    "Master Data Structures and Algorithms with interactive visualizations, AI-powered tutoring, and a comprehensive learning curriculum.",
   url: env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-  author: "DSA Platform Team",
+  author: "AlgoMaster Team",
   keywords: [
     "data structures",
     "algorithms",
@@ -17,8 +17,10 @@ export const APP_CONFIG = {
     "education",
     "coding",
     "computer science",
+    "AI tutor",
+    "visualizations",
   ],
-  twitter: "@dsaplatform",
+  twitter: "@algomasterai",
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
     yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,

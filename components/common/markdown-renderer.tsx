@@ -10,7 +10,11 @@ import remarkGfm from "remark-gfm"
 
 import "highlight.js/styles/github-dark.css"
 
+import { cn } from "@/lib/utils"
+
+import { CodeBlock, SimpleCodeBlock } from "./code-block"
 import { CodePreview } from "./code-preview"
+import { CopyButton } from "./copy-button"
 import { getPreviewComponent } from "./preview-registry"
 
 interface MarkdownRendererProps {
@@ -18,35 +22,158 @@ interface MarkdownRendererProps {
   className?: string
 }
 
-// MarkdownRenderer - Component to render markdown content with syntax highlighting
-// Uses remark-gfm for GitHub flavored markdown
-// Uses rehype-highlight for syntax highlighting (client-compatible)
-// Uses rehype-slug and rehype-autolink-headings for heading links
-// Example: <MarkdownRenderer content={markdownContent} />
-export function MarkdownRenderer({
-  content,
-  className,
-}: MarkdownRendererProps) {
+// Parse multi-language code block
+// Format: ```multi\n---javascript\ncode\n---python\ncode\n```
+function parseMultiLangCode(code: string): Record<string, string> | null {
+  // Split by language markers (---languagename)
+  const regex = /---(\w+)\s*\n([\s\S]*?)(?=---\w+|$)/g
+  const result: Record<string, string> = {}
+  
+  let match
+  while ((match = regex.exec(code)) !== null) {
+    const lang = match[1].toLowerCase()
+    const content = match[2].trim()
+    if (lang && content) {
+      result[lang] = content
+    }
+  }
+  
+  return Object.keys(result).length > 0 ? result : null
+}
+
+// Language display names
+const LANGUAGE_NAMES: Record<string, string> = {
+  js: "JavaScript",
+  javascript: "JavaScript",
+  ts: "TypeScript",
+  typescript: "TypeScript",
+  tsx: "TypeScript",
+  jsx: "JavaScript",
+  py: "Python",
+  python: "Python",
+  java: "Java",
+  cpp: "C++",
+  c: "C",
+  cs: "C#",
+  csharp: "C#",
+  go: "Go",
+  rust: "Rust",
+  rb: "Ruby",
+  ruby: "Ruby",
+  php: "PHP",
+  swift: "Swift",
+  kotlin: "Kotlin",
+  sql: "SQL",
+  bash: "Bash",
+  sh: "Shell",
+  shell: "Shell",
+  json: "JSON",
+  yaml: "YAML",
+  yml: "YAML",
+  html: "HTML",
+  css: "CSS",
+  scss: "SCSS",
+  md: "Markdown",
+  markdown: "Markdown",
+}
+
+// Languages that should show copy button (actual programming languages)
+const COPYABLE_LANGUAGES = new Set([
+  "js", "javascript", "ts", "typescript", "tsx", "jsx",
+  "py", "python", "java", "cpp", "c", "cs", "csharp",
+  "go", "rust", "rb", "ruby", "php", "swift", "kotlin",
+  "sql", "bash", "sh", "shell", "json", "yaml", "yml",
+  "html", "css", "scss"
+])
+
+// Check if code is likely ASCII art/diagram (not actual code)
+function isAsciiDiagram(code: string): boolean {
+  const lines = code.split('\n')
+  // Check for common ASCII art patterns
+  const hasBoxChars = /[┌┐└┘├┤┬┴┼─│╱╲▭▱◇⬭⬡→↓↑←]/.test(code)
+  const hasArrows = /[→↓↑←↗↘↙↖]/.test(code)
+  const hasBorders = /[─│┌┐└┘]/.test(code)
+  const hasAsciiArt = /[╱╲▭▱◇]/.test(code)
+  
+  // If it has lots of special characters, it's likely a diagram
+  if (hasBoxChars || hasArrows || hasBorders || hasAsciiArt) {
+    return true
+  }
+  
+  // Check if most lines are short and have lots of spaces (formatting)
+  const formattedLines = lines.filter(l => l.includes('  ') && l.length < 60)
+  if (formattedLines.length > lines.length * 0.5) {
+    return true
+  }
+  
+  return false
+}
+
+// Split markdown into segments - regular content and multi-lang code blocks
+interface ContentSegment {
+  type: "markdown" | "multilang"
+  content: string
+  code?: Record<string, string>
+}
+
+function splitContent(markdown: string): ContentSegment[] {
+  const segments: ContentSegment[] = []
+  const regex = /```multi\s*\n([\s\S]*?)```/g
+  let lastIndex = 0
+  let match
+  
+  while ((match = regex.exec(markdown)) !== null) {
+    // Add markdown before this match
+    if (match.index > lastIndex) {
+      segments.push({
+        type: "markdown",
+        content: markdown.slice(lastIndex, match.index)
+      })
+    }
+    
+    // Parse and add the multi-lang block
+    const parsed = parseMultiLangCode(match[1])
+    if (parsed) {
+      segments.push({
+        type: "multilang",
+        content: "",
+        code: parsed
+      })
+    }
+    
+    lastIndex = match.index + match[0].length
+  }
+  
+  // Add remaining markdown
+  if (lastIndex < markdown.length) {
+    segments.push({
+      type: "markdown",
+      content: markdown.slice(lastIndex)
+    })
+  }
+  
+  return segments
+}
+
+// Single markdown section renderer
+function MarkdownSection({ content }: { content: string }) {
   return (
-    <div
-      className={`prose prose-slate dark:prose-invert w-full max-w-none ${className || ""}`}
-    >
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        rehypePlugins={[
-          rehypeSlug,
-          [
-            rehypeAutolinkHeadings,
-            {
-              behavior: "wrap",
-              properties: {
-                className: ["anchor"],
-              },
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      rehypePlugins={[
+        rehypeSlug,
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: "wrap",
+            properties: {
+              className: ["anchor"],
             },
-          ],
-          rehypeHighlight,
-        ]}
-        components={{
+          },
+        ],
+        rehypeHighlight,
+      ]}
+      components={{
           h1: ({ ...props }: any) => (
             <h1
               className="text-foreground border-border mt-0 mb-6 scroll-mt-24 border-b pb-4 text-3xl font-bold tracking-tight md:text-4xl"
@@ -113,22 +240,31 @@ export function MarkdownRenderer({
             <hr className="border-border my-8" {...props} />
           ),
           table: ({ ...props }: any) => (
-            <div className="my-4 overflow-x-auto">
+            <div className="my-6 overflow-x-auto rounded-lg border border-border">
               <table
-                className="border-border min-w-full border-collapse rounded-lg border"
+                className="min-w-full border-collapse text-sm"
                 {...props}
               />
             </div>
           ),
+          thead: ({ ...props }: any) => (
+            <thead className="bg-muted/50" {...props} />
+          ),
           th: ({ ...props }: any) => (
             <th
-              className="border-border bg-muted text-foreground border p-3 text-left font-semibold"
+              className="border-border bg-muted text-foreground border-b px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
               {...props}
             />
           ),
           td: ({ ...props }: any) => (
             <td
-              className="border-border text-foreground/90 border p-3"
+              className="border-border text-foreground/90 border-b px-4 py-3"
+              {...props}
+            />
+          ),
+          tr: ({ ...props }: any) => (
+            <tr
+              className="hover:bg-muted/30 transition-colors"
               {...props}
             />
           ),
@@ -139,76 +275,86 @@ export function MarkdownRenderer({
             <em className="text-foreground/90 italic" {...props} />
           ),
           pre: ({ children, ...props }: any) => {
-            // Check if this is a code block with preview
             const codeElement = React.Children.toArray(children).find(
               (child: any) => child?.type === "code"
             ) as any
 
-            if (codeElement?.props?.className) {
-              const className = codeElement.props.className
-              const languageMatch = className.match(
-                /language-([^:]+)(:preview)?/
-              )
-
-              if (languageMatch && languageMatch[2] === ":preview") {
-                // This is a preview code block
-                const language = languageMatch[1]
-                const code = String(codeElement.props.children || "").trim()
-
-                // Try to render a preview from the code
-                let preview: React.ReactNode = null
-
-                // Simple JSX parser for common patterns
-                if (language === "tsx" || language === "jsx") {
-                  // Try to extract component usage and render it
-                  const jsxMatch = code.match(/<(\w+)([^>]*)>([\s\S]*?)<\/\1>/)
-                  if (jsxMatch) {
-                    const componentName = jsxMatch[1]
-                    const Component = getPreviewComponent(componentName)
-
-                    if (Component) {
-                      // Parse props (simple implementation)
-                      const propsString = jsxMatch[2]
-                      const componentProps: Record<string, any> = {}
-
-                      // Extract props like variant="default" or size="lg"
-                      const propMatches = propsString.matchAll(
-                        /(\w+)=["']([^"']+)["']/g
-                      )
-                      for (const match of propMatches) {
-                        componentProps[match[1]] = match[2]
-                      }
-
-                      // Extract children
-                      const childrenText = jsxMatch[3]?.trim()
-                      if (childrenText) {
-                        componentProps.children = childrenText
-                      }
-
-                      preview = <Component {...componentProps} />
-                    }
-                  }
-                }
-
-                return (
-                  <CodePreview
-                    code={code}
-                    language={language}
-                    preview={preview || undefined}
-                    className="my-4"
-                  />
-                )
+            const code = String(codeElement?.props?.children || "").trim()
+            const className = codeElement?.props?.className || ""
+            const languageMatch = className.match(/language-([^:\s]+)(:preview)?/)
+            
+            const language = languageMatch?.[1] || ""
+            const isPreview = languageMatch?.[2] === ":preview"
+            const displayName = LANGUAGE_NAMES[language] || language.toUpperCase()
+            
+            // Check for multi-language code block
+            if (language === "multi") {
+              const multiCode = parseMultiLangCode(code)
+              if (multiCode) {
+                return <CodeBlock code={multiCode} defaultLanguage="javascript" />
               }
             }
+            
+            // Check if this is actual code or ASCII diagram
+            const isDiagram = isAsciiDiagram(code) || language === "text" || language === ""
+            const shouldShowCopy = !isDiagram && COPYABLE_LANGUAGES.has(language)
 
-            // Regular code block
+            if (isPreview && language) {
+              // Preview code block
+              let preview: React.ReactNode = null
+
+              if (language === "tsx" || language === "jsx") {
+                const jsxMatch = code.match(/<(\w+)([^>]*)>([\s\S]*?)<\/\1>/)
+                if (jsxMatch) {
+                  const componentName = jsxMatch[1]
+                  const Component = getPreviewComponent(componentName)
+
+                  if (Component) {
+                    const propsString = jsxMatch[2]
+                    const componentProps: Record<string, any> = {}
+
+                    const propMatches = propsString.matchAll(
+                      /(\w+)=["']([^"']+)["']/g
+                    )
+                    for (const match of propMatches) {
+                      componentProps[match[1]] = match[2]
+                    }
+
+                    const childrenText = jsxMatch[3]?.trim()
+                    if (childrenText) {
+                      componentProps.children = childrenText
+                    }
+
+                    preview = <Component {...componentProps} />
+                  }
+                }
+              }
+
+              return (
+                <CodePreview
+                  code={code}
+                  language={language}
+                  preview={preview || undefined}
+                  className="my-4"
+                />
+              )
+            }
+
+            // Regular code block with language - use SimpleCodeBlock for consistent VS Code-like styling
+            if (shouldShowCopy) {
+              return <SimpleCodeBlock code={code} language={language} />
+            }
+
+            // ASCII diagram / visual - no copy button, simpler style
             return (
-              <pre
-                className="bg-muted border-border my-4 overflow-x-auto rounded-lg border p-4 font-mono text-sm"
-                {...props}
-              >
-                {children}
-              </pre>
+              <div className="my-4 overflow-hidden rounded-lg border border-border bg-muted/30">
+                <pre
+                  className="m-0 overflow-x-auto p-4 font-mono text-sm"
+                  {...props}
+                >
+                  {children}
+                </pre>
+              </div>
             )
           },
           code: ({ className, children, ...props }: any) => {
@@ -233,6 +379,35 @@ export function MarkdownRenderer({
       >
         {content}
       </ReactMarkdown>
+  )
+}
+
+export function MarkdownRenderer({
+  content,
+  className,
+}: MarkdownRendererProps) {
+  // Split content into segments
+  const segments = React.useMemo(() => splitContent(content), [content])
+
+  return (
+    <div
+      className={cn(
+        "prose prose-slate dark:prose-invert w-full max-w-none",
+        className
+      )}
+    >
+      {segments.map((segment, index) => {
+        if (segment.type === "multilang" && segment.code) {
+          return (
+            <CodeBlock 
+              key={index} 
+              code={segment.code} 
+              defaultLanguage="javascript" 
+            />
+          )
+        }
+        return <MarkdownSection key={index} content={segment.content} />
+      })}
     </div>
   )
 }

@@ -17,6 +17,8 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronUpIcon,
+  ClipboardIcon,
+  ClipboardDocumentCheckIcon,
   CodeBracketIcon,
   Cog6ToothIcon,
   ComputerDesktopIcon,
@@ -221,6 +223,8 @@ export {
   ChevronDownIcon,
   ChartBarIcon as ChartBarIcon,
   Squares2X2Icon as LayersIcon,
+  ClipboardIcon as CopyIcon,
+  ClipboardDocumentCheckIcon as CopiedIcon,
 }
 
 // Type exports for icon usage
