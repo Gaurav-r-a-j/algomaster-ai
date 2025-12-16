@@ -20,7 +20,6 @@ import { Separator } from "@/components/ui/separator"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -212,16 +211,6 @@ export function LearningPlatformLayout({
           </ScrollArea>
         </SidebarContent>
 
-        <SidebarFooter className="border-border border-t">
-          <div className="px-2 py-4">
-            <SidebarMenuButton asChild>
-              <Link href={ROUTES.HOME}>
-                <IconWrapper icon={Home01Icon} size={16} />
-                <span>Back to Home</span>
-              </Link>
-            </SidebarMenuButton>
-          </div>
-        </SidebarFooter>
       </Sidebar>
 
       <SidebarInset className="h-svh overflow-hidden">
