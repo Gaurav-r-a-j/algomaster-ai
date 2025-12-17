@@ -60,76 +60,75 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
     topic.youtubeLink.en && topic.youtubeLink.hi
 
   return (
-    <aside className="sticky top-16 h-[calc(100vh-4rem)] w-80 shrink-0 overflow-hidden border-l border-border/50 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
-      <div className="h-full overflow-y-auto px-5 py-8 space-y-6 custom-scrollbar">
+    <aside className="sticky top-16 h-[calc(100vh-4rem)] w-80 shrink-0 overflow-hidden border-l border-border/50 bg-gradient-to-b from-background to-muted/20 backdrop-blur-sm">
+      <div className="h-full overflow-y-auto px-6 py-10 space-y-8 custom-scrollbar">
         {/* Topic Details Section */}
-        <div className="space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            Topic Details
-          </h3>
+        <div className="space-y-5">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="h-1 w-8 bg-primary rounded-full" />
+            <h3 className="text-xs font-bold uppercase tracking-widest text-foreground">
+              Topic Details
+            </h3>
+          </div>
           
-          <div className="space-y-4">
+          <div className="space-y-5">
             {/* Difficulty */}
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground mb-2.5 uppercase tracking-wide">
-                Difficulty
-              </p>
-              <Badge
-                variant={getDifficultyVariant()}
-                className="w-full justify-center py-2 text-sm font-semibold"
-              >
-                {topic.difficulty || "Medium"}
-              </Badge>
-            </div>
+            <Card className="border-border/60 bg-gradient-to-br from-background to-muted/30 shadow-sm">
+              <CardContent className="p-4">
+                <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                  Difficulty
+                </p>
+                <Badge
+                  variant={getDifficultyVariant()}
+                  className="w-full justify-center py-2.5 text-sm font-bold shadow-sm"
+                >
+                  {topic.difficulty || "Medium"}
+                </Badge>
+              </CardContent>
+            </Card>
 
             {/* Complexity */}
             {(topic.complexity?.time && topic.complexity.time !== "N/A") || 
              (topic.complexity?.space && topic.complexity.space !== "N/A") ? (
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
-                  Complexity
-                </p>
-                <div className="space-y-3">
-                  {topic.complexity?.time && topic.complexity.time !== "N/A" && (
-                    <Card className="border-border/60 transition-colors hover:border-primary/30">
-                      <CardContent className="p-4">
-                        <div className="flex items-start gap-3.5">
-                          <div className="mt-0.5 shrink-0 rounded-lg bg-primary/10 p-2">
-                            <ClockIcon className="h-4 w-4 text-primary" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-muted-foreground mb-1.5 uppercase tracking-wide">
-                              Time
-                            </p>
-                            <p className="text-base font-mono font-bold text-foreground">
-                              {topic.complexity.time}
-                            </p>
-                          </div>
+              <Card className="border-border/60 bg-gradient-to-br from-background to-muted/30 shadow-sm">
+                <CardContent className="p-4">
+                  <p className="text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wide">
+                    Complexity
+                  </p>
+                  <div className="space-y-3">
+                    {topic.complexity?.time && topic.complexity.time !== "N/A" && (
+                      <div className="flex items-center gap-3.5 rounded-lg bg-primary/5 p-3 border border-primary/10">
+                        <div className="shrink-0 rounded-lg bg-primary/15 p-2.5 shadow-sm">
+                          <ClockIcon className="h-4 w-4 text-primary" />
                         </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                  {topic.complexity?.space && topic.complexity.space !== "N/A" && (
-                    <Card className="border-border/60 transition-colors hover:border-primary/30">
-                      <CardContent className="p-4">
-                        <div className="flex items-start gap-3.5">
-                          <div className="mt-0.5 shrink-0 rounded-lg bg-primary/10 p-2">
-                            <CpuChipIcon className="h-4 w-4 text-primary" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-muted-foreground mb-1.5 uppercase tracking-wide">
-                              Space
-                            </p>
-                            <p className="text-base font-mono font-bold text-foreground">
-                              {topic.complexity.space}
-                            </p>
-                          </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
+                            Time
+                          </p>
+                          <p className="text-base font-mono font-bold text-foreground">
+                            {topic.complexity.time}
+                          </p>
                         </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              </div>
+                      </div>
+                    )}
+                    {topic.complexity?.space && topic.complexity.space !== "N/A" && (
+                      <div className="flex items-center gap-3.5 rounded-lg bg-primary/5 p-3 border border-primary/10">
+                        <div className="shrink-0 rounded-lg bg-primary/15 p-2.5 shadow-sm">
+                          <CpuChipIcon className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
+                            Space
+                          </p>
+                          <p className="text-base font-mono font-bold text-foreground">
+                            {topic.complexity.space}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             ) : null}
           </div>
         </div>
@@ -137,24 +136,27 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
         {/* YouTube Video Section */}
         {videoId && (
           <>
-            <Separator className="my-6" />
-            <div className="space-y-3">
+            <Separator className="my-8" />
+            <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Learn More
-                </h3>
+                <div className="flex items-center gap-2">
+                  <div className="h-1 w-8 bg-primary rounded-full" />
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-foreground">
+                    Learn More
+                  </h3>
+                </div>
                 {hasMultipleLanguages && (
                   <Tabs value={videoLanguage} onValueChange={(v) => setVideoLanguage(v as "en" | "hi")} className="w-auto">
-                    <TabsList className="h-7">
-                      <TabsTrigger value="en" className="text-[10px] px-2 py-1">EN</TabsTrigger>
-                      <TabsTrigger value="hi" className="text-[10px] px-2 py-1">HI</TabsTrigger>
+                    <TabsList className="h-7 bg-muted/50">
+                      <TabsTrigger value="en" className="text-[10px] px-2.5 py-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">EN</TabsTrigger>
+                      <TabsTrigger value="hi" className="text-[10px] px-2.5 py-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">HI</TabsTrigger>
                     </TabsList>
                   </Tabs>
                 )}
               </div>
-              <Card className="overflow-hidden border-border/60">
+              <Card className="overflow-hidden border-border/60 shadow-md hover:shadow-lg transition-shadow">
                 <CardContent className="p-0">
-                  <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
                     <LiteYouTubeEmbed
                       id={videoId}
                       title={`${topic.title} Tutorial`}
@@ -168,71 +170,88 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
         )}
 
         {/* Navigation Section */}
-        <Separator className="my-6" />
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            Navigation
-          </h3>
+        <Separator className="my-8" />
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="h-1 w-8 bg-primary rounded-full" />
+            <h3 className="text-xs font-bold uppercase tracking-widest text-foreground">
+              Navigation
+            </h3>
+          </div>
           
           <div className="space-y-3">
             {prevTopic && (
-              <Button
-                variant="outline"
-                className="w-full justify-start group h-auto py-4 transition-all hover:border-primary/50 hover:bg-primary/5"
-                asChild
-              >
-                <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
-                  <div className="mr-3 shrink-0 rounded-lg bg-muted p-2 transition-transform group-hover:-translate-x-1">
-                    <IconWrapper 
-                      icon={ArrowLeft01Icon} 
-                      size={16} 
-                      className="text-foreground" 
-                    />
-                  </div>
-                  <div className="flex-1 text-left min-w-0">
-                    <p className="text-xs font-medium text-muted-foreground mb-1 uppercase tracking-wide">
-                      Previous
-                    </p>
-                    <p className="text-sm font-bold truncate text-foreground leading-tight">
-                      {prevTopic.title}
-                    </p>
-                  </div>
-                </Link>
-              </Button>
+              <Card className="border-border/60 hover:border-primary/50 transition-all hover:shadow-md cursor-pointer group">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start h-auto p-0 hover:bg-transparent"
+                  asChild
+                >
+                  <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
+                    <CardContent className="p-4 w-full">
+                      <div className="flex items-center gap-3.5">
+                        <div className="shrink-0 rounded-lg bg-muted/60 group-hover:bg-primary/10 p-2.5 transition-colors group-hover:-translate-x-1 transition-transform">
+                          <IconWrapper 
+                            icon={ArrowLeft01Icon} 
+                            size={16} 
+                            className="text-muted-foreground group-hover:text-primary transition-colors" 
+                          />
+                        </div>
+                        <div className="flex-1 text-left min-w-0">
+                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
+                            Previous
+                          </p>
+                          <p className="text-sm font-bold truncate text-foreground leading-tight group-hover:text-primary transition-colors">
+                            {prevTopic.title}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Link>
+                </Button>
+              </Card>
             )}
 
             {nextTopic && (
-              <Button
-                variant="default"
-                className="w-full justify-start group h-auto py-4 transition-all hover:scale-[1.01]"
-                asChild
-              >
-                <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
-                  <div className="flex-1 text-left min-w-0">
-                    <p className="text-xs font-medium text-primary-foreground/80 mb-1 uppercase tracking-wide">
-                      Next
-                    </p>
-                    <p className="text-sm font-bold truncate text-primary-foreground leading-tight">
-                      {nextTopic.title}
-                    </p>
-                  </div>
-                  <div className="ml-3 shrink-0 rounded-lg bg-primary-foreground/20 p-2 transition-transform group-hover:translate-x-1">
-                    <IconWrapper 
-                      icon={ArrowRight01Icon} 
-                      size={16} 
-                      className="text-primary-foreground" 
-                    />
-                  </div>
-                </Link>
-              </Button>
+              <Card className="border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/15 transition-all hover:shadow-lg cursor-pointer group">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start h-auto p-0 hover:bg-transparent"
+                  asChild
+                >
+                  <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
+                    <CardContent className="p-4 w-full">
+                      <div className="flex items-center gap-3.5">
+                        <div className="flex-1 text-left min-w-0">
+                          <p className="text-xs font-semibold text-primary/80 mb-1 uppercase tracking-wide">
+                            Next
+                          </p>
+                          <p className="text-sm font-bold truncate text-primary leading-tight">
+                            {nextTopic.title}
+                          </p>
+                        </div>
+                        <div className="shrink-0 rounded-lg bg-primary/20 group-hover:bg-primary/30 p-2.5 transition-colors group-hover:translate-x-1 transition-transform">
+                          <IconWrapper 
+                            icon={ArrowRight01Icon} 
+                            size={16} 
+                            className="text-primary" 
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Link>
+                </Button>
+              </Card>
             )}
 
             {!prevTopic && !nextTopic && (
-              <div className="rounded-lg border border-dashed border-border/50 bg-muted/30 p-6 text-center">
-                <p className="text-xs font-medium text-muted-foreground">
-                  No navigation available
-                </p>
-              </div>
+              <Card className="border-dashed border-border/50 bg-muted/20">
+                <CardContent className="p-6 text-center">
+                  <p className="text-xs font-medium text-muted-foreground">
+                    No navigation available
+                  </p>
+                </CardContent>
+              </Card>
             )}
           </div>
         </div>

@@ -40,4 +40,8 @@ export const stack: Topic = {
     },
   ],
   quiz: stackQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=I37kGX-nZEI", // Stack Data Structure
+    hi: "https://www.youtube.com/watch?v=JvuaAgDar1c" // Stack Hindi
+  }
 }

@@ -40,4 +40,8 @@ export const arraysStrings: Topic = {
     },
   ],
   quiz: arraysStringsQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=QJNwK2uJyGs", // Arrays & Strings Tutorial
+    hi: "https://www.youtube.com/watch?v=z9bZufPHFLU" // Arrays in Hindi
+  }
 }

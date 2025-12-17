@@ -35,4 +35,8 @@ export const queue: Topic = {
     },
   ],
   quiz: queueQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=wjI1WNcIntg", // Queue Data Structure
+    hi: "https://www.youtube.com/watch?v=Yrz3iaznJLw" // Queue Hindi
+  }
 }

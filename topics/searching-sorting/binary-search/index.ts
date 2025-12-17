@@ -40,4 +40,9 @@ export const binarySearch: Topic = {
       difficulty: "Medium",
     },
   ],
+  quiz: binarySearchQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=P3YID7liBug", // Binary Search Explained
+    hi: "https://www.youtube.com/watch?v=uEUXGcc2VXM" // Binary Search Hindi
+  }
 }

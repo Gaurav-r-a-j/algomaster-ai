@@ -13,5 +13,9 @@ export const flowcharts: Topic = {
   difficulty: "Easy",
   content: "", // Content loaded dynamically
   quiz: flowchartsQuiz,
-  practiceLinks: []
+  practiceLinks: [],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=SWRDqTx8dgc", // Flowchart Tutorial
+    hi: "https://www.youtube.com/watch?v=Kk6mRlq0x9E" // Flowchart in Hindi
+  }
 }

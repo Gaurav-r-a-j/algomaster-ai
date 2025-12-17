@@ -40,4 +40,8 @@ export const linkedList: Topic = {
     },
   ],
   quiz: linkedListQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=WwfhLC16bis", // Linked Lists Explained
+    hi: "https://www.youtube.com/watch?v=ofc7s8zffjQ" // Linked List Hindi
+  }
 }

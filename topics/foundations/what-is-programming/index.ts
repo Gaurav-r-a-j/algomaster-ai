@@ -13,5 +13,9 @@ export const whatIsProgramming: Topic = {
   difficulty: "Easy",
   content: "", // Content loaded dynamically
   quiz: whatIsProgrammingQuiz,
-  practiceLinks: []
+  practiceLinks: [],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=zOjov-2OZ0E", // Programming with Mosh
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // CodeWithHarry Hindi
+  }
 }
