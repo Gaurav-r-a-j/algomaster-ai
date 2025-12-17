@@ -296,10 +296,15 @@ function MarkdownSection({ content }: { content: string }) {
               }
             }
             
+            // Check for pseudocode
+            const isPseudocode = language === "pseudocode" || language === "pseudo" || 
+              (code.toLowerCase().includes("start") && code.toLowerCase().includes("end") && 
+               (code.toLowerCase().includes("while") || code.toLowerCase().includes("if")))
+            
             // Check for visual diagram types
             const isVisualDiagram = language === "diagram" || language === "visual"
             const isDiagram = isAsciiDiagram(code) || language === "text" || language === "" || isVisualDiagram
-            const shouldShowCopy = !isDiagram && COPYABLE_LANGUAGES.has(language)
+            const shouldShowCopy = !isDiagram && !isPseudocode && COPYABLE_LANGUAGES.has(language)
             
             // Render visual diagrams
             if (isVisualDiagram) {
@@ -361,6 +366,23 @@ function MarkdownSection({ content }: { content: string }) {
                   preview={preview || undefined}
                   className="my-4"
                 />
+              )
+            }
+
+            // Pseudocode - special styling
+            if (isPseudocode) {
+              return (
+                <div className="my-6 overflow-hidden rounded-lg border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10">
+                  <div className="border-b border-primary/20 bg-primary/10 px-4 py-2">
+                    <span className="text-primary text-xs font-semibold uppercase tracking-wider">Pseudocode</span>
+                  </div>
+                  <pre
+                    className="m-0 overflow-x-auto p-6 font-mono text-sm leading-relaxed text-foreground"
+                    {...props}
+                  >
+                    {children}
+                  </pre>
+                </div>
               )
             }
 

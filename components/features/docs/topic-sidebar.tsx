@@ -1,8 +1,10 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
+import LiteYouTubeEmbed from "react-lite-youtube-embed"
+import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css"
 import { ROUTES } from "@/constants/routes"
-import { ExternalLinkIcon } from "lucide-react"
 import { ClockIcon, CpuChipIcon } from "@heroicons/react/24/outline"
 import { ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/icons"
 import { IconWrapper } from "@/components/common/icon-wrapper"
@@ -11,6 +13,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Topic } from "@/types/curriculum"
 import { generateTopicSlug } from "@/utils/common/slug"
 
@@ -20,12 +23,41 @@ interface TopicSidebarProps {
   nextTopic: Topic | null
 }
 
+// Extract YouTube video ID from URL
+function getYouTubeId(url: string): string | null {
+  if (!url) return null
+  const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)
+  return match ? match[1] : null
+}
+
+// Get YouTube link based on language preference
+function getYouTubeLink(topic: Topic, language: "en" | "hi" = "en"): string | null {
+  if (!topic.youtubeLink) return null
+  
+  if (typeof topic.youtubeLink === "string") {
+    return topic.youtubeLink
+  }
+  
+  if (typeof topic.youtubeLink === "object") {
+    return topic.youtubeLink[language] || topic.youtubeLink.en || null
+  }
+  
+  return null
+}
+
 export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps) {
+  const [videoLanguage, setVideoLanguage] = useState<"en" | "hi">("en")
+  
   const getDifficultyVariant = () => {
     if (topic.difficulty === "Easy") return "default"
     if (topic.difficulty === "Hard") return "destructive"
     return "secondary"
   }
+
+  const youtubeLink = getYouTubeLink(topic, videoLanguage)
+  const videoId = youtubeLink ? getYouTubeId(youtubeLink) : null
+  const hasMultipleLanguages = typeof topic.youtubeLink === "object" && 
+    topic.youtubeLink.en && topic.youtubeLink.hi
 
   return (
     <aside className="sticky top-16 h-[calc(100vh-4rem)] w-80 shrink-0 overflow-hidden border-l border-border/50 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
@@ -102,39 +134,35 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
           </div>
         </div>
 
-        {/* YouTube Link Section */}
-        {topic.youtubeLink && (
+        {/* YouTube Video Section */}
+        {videoId && (
           <>
             <Separator className="my-6" />
             <div className="space-y-3">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Learn More
-              </h3>
-              <Button
-                variant="outline"
-                className="w-full justify-between group h-auto py-3.5 border-2 transition-all hover:border-primary/50 hover:bg-primary/5"
-                asChild
-              >
-                <Link
-                  href={topic.youtubeLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="flex items-center gap-3">
-                    <div className="rounded-lg bg-red-500/10 p-2">
-                      <svg
-                        className="h-5 w-5 text-red-500 shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                      </svg>
-                    </div>
-                    <span className="font-semibold text-sm">Watch Tutorial</span>
-                  </span>
-                  <ExternalLinkIcon className="h-4 w-4 opacity-60 group-hover:opacity-100 transition-opacity shrink-0" />
-                </Link>
-              </Button>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  Learn More
+                </h3>
+                {hasMultipleLanguages && (
+                  <Tabs value={videoLanguage} onValueChange={(v) => setVideoLanguage(v as "en" | "hi")} className="w-auto">
+                    <TabsList className="h-7">
+                      <TabsTrigger value="en" className="text-[10px] px-2 py-1">EN</TabsTrigger>
+                      <TabsTrigger value="hi" className="text-[10px] px-2 py-1">HI</TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                )}
+              </div>
+              <Card className="overflow-hidden border-border/60">
+                <CardContent className="p-0">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                    <LiteYouTubeEmbed
+                      id={videoId}
+                      title={`${topic.title} Tutorial`}
+                      wrapperClass="yt-lite"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </>
         )}

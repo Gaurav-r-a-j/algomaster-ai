@@ -88,7 +88,7 @@ export function LearnView({ topic }: LearnViewProps) {
           animate="animate"
           variants={slideUpWithDelay(0.1)}
         >
-          <div className="px-4 py-8 md:px-6 md:py-10 lg:px-8 lg:py-12">
+          <div className="px-4 pt-4 pb-8 md:px-6 md:pt-6 md:pb-10 lg:px-8 lg:pt-8 lg:pb-12">
             {displayContent && displayContent.trim() ? (
               <MarkdownRenderer
                 content={displayContent}

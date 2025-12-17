@@ -67,7 +67,7 @@ export interface Topic {
   quiz?: QuizQuestion[]
   practiceProblems?: PracticeProblem[]
   tags?: string[] // Search tags for fuzzy matching
-  youtubeLink?: string // Optional YouTube tutorial link
+  youtubeLink?: string | { en?: string; hi?: string } // Optional YouTube tutorial link(s) - can be string or language-specific object
 }
 
 export interface PracticeProblem {

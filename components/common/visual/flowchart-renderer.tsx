@@ -57,24 +57,45 @@ export function FlowchartRenderer({
   className,
 }: FlowchartRendererProps) {
   return (
-    <div className={`my-6 h-[400px] rounded-lg border border-border bg-background ${className || ""}`}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        fitView
-        className="bg-background"
-        nodeTypes={nodeTypes}
-        defaultEdgeOptions={{
-          type: "smoothstep",
-          markerEnd: {
-            type: MarkerType.ArrowClosed,
-          },
-        }}
-      >
-        <Background />
-        <Controls />
-        <MiniMap />
-      </ReactFlow>
+    <div className={`my-6 h-[500px] rounded-lg border-2 border-primary/20 bg-gradient-to-br from-background to-muted/30 shadow-lg ${className || ""}`}>
+      <div className="border-b border-primary/20 bg-primary/10 px-4 py-2">
+        <span className="text-primary text-xs font-semibold uppercase tracking-wider">Flowchart</span>
+      </div>
+      <div className="h-[calc(100%-40px)]">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          fitView
+          className="bg-transparent"
+          nodeTypes={nodeTypes}
+          defaultEdgeOptions={{
+            type: "smoothstep",
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+            },
+            style: {
+              strokeWidth: 2,
+              stroke: "hsl(var(--primary))",
+            },
+          }}
+          nodesDraggable={true}
+          nodesConnectable={false}
+          elementsSelectable={true}
+        >
+          <Background variant="dots" gap={12} size={1} />
+          <Controls 
+            showInteractive={false}
+            className="bg-background/80 border border-border rounded-lg shadow-md"
+          />
+          <MiniMap 
+            className="bg-background/80 border border-border rounded-lg"
+            nodeColor={(node) => {
+              if (node.type === "diamond") return "hsl(var(--primary))"
+              return "hsl(var(--muted-foreground))"
+            }}
+          />
+        </ReactFlow>
+      </div>
     </div>
   )
 }
