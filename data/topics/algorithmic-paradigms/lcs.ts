@@ -11,6 +11,6 @@ export const lcs: Topic = {
   module: "7. Algorithmic Paradigms",
   order: 31,
   difficulty: "Hard",
-  content: "# Longest Common Subsequence\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: lcsQuiz,
 }

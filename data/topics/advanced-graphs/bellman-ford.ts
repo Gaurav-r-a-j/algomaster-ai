@@ -11,6 +11,6 @@ export const bellmanFord: Topic = {
   module: "6. Advanced Graphs",
   order: 25,
   difficulty: "Hard",
-  content: "# bellman ford\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: bellmanFordQuiz,
 }

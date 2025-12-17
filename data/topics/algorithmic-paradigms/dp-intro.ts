@@ -12,6 +12,6 @@ export const dpIntro: Topic = {
   module: "7. Algorithmic Paradigms",
   order: 29,
   difficulty: "Medium",
-  content: "# Dynamic Programming\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: dpIntroQuiz,
 }

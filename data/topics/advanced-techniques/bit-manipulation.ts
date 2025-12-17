@@ -11,6 +11,6 @@ export const bitManipulation: Topic = {
   module: "8. Advanced Techniques",
   order: 35,
   difficulty: "Medium",
-  content: "# Bit Manipulation\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: bitManipulationQuiz,
 }

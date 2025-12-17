@@ -11,6 +11,6 @@ export const fenwickTree: Topic = {
   module: "8. Advanced Techniques",
   order: 34,
   difficulty: "Hard",
-  content: "# Fenwick Tree\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: fenwickTreeQuiz,
 }

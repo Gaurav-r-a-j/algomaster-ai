@@ -11,6 +11,6 @@ export const knapsack: Topic = {
   module: "7. Algorithmic Paradigms",
   order: 30,
   difficulty: "Hard",
-  content: "# Knapsack Problem\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: knapsackQuiz,
 }

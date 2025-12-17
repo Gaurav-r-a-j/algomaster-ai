@@ -11,6 +11,6 @@ export const segmentTree: Topic = {
   module: "8. Advanced Techniques",
   order: 33,
   difficulty: "Hard",
-  content: "# Segment Tree\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: segmentTreeQuiz,
 }

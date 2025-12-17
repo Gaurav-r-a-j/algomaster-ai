@@ -11,6 +11,6 @@ export const unionFind: Topic = {
   module: "6. Advanced Graphs",
   order: 27,
   difficulty: "Medium",
-  content: "# union find\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: unionFindQuiz,
 }

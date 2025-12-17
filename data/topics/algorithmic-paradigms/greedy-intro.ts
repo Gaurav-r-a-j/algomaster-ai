@@ -11,6 +11,6 @@ export const greedyIntro: Topic = {
   module: "7. Algorithmic Paradigms",
   order: 28,
   difficulty: "Medium",
-  content: "# Greedy Algorithms\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: greedyIntroQuiz,
 }

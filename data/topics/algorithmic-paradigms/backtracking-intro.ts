@@ -12,6 +12,6 @@ export const backtrackingIntro: Topic = {
   module: "7. Algorithmic Paradigms",
   order: 32,
   difficulty: "Medium",
-  content: "# Backtracking\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: backtrackingIntroQuiz,
 }

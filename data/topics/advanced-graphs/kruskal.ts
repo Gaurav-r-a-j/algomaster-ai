@@ -11,6 +11,6 @@ export const kruskal: Topic = {
   module: "6. Advanced Graphs",
   order: 26,
   difficulty: "Hard",
-  content: "# kruskal\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: kruskalQuiz,
 }

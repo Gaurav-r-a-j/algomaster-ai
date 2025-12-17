@@ -11,6 +11,6 @@ export const dijkstra: Topic = {
   module: "6. Advanced Graphs",
   order: 24,
   difficulty: "Hard",
-  content: "# dijkstra\n\nComing soon...",
+  content: "", // Content loaded from external .mdx file
   quiz: dijkstraQuiz,
 }
