@@ -31,4 +31,8 @@ export const bubbleSort: Topic = {
       difficulty: "Easy",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=xli_FI7CuzA", // Bubble Sort
+    hi: "https://www.youtube.com/watch?v=o4bAoo_gFBU" // Bubble Sort Hindi
+  }
 }

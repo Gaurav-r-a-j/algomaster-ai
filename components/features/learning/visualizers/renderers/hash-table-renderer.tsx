@@ -7,10 +7,31 @@ interface HashTableRendererProps {
 }
 
 export function HashTableRenderer({ currentData }: HashTableRendererProps) {
+  if (!currentData || !currentData.auxiliary) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-8">
+        <p className="text-muted-foreground text-center text-sm">
+          No data to visualize. Click Reset to generate visualization.
+        </p>
+      </div>
+    )
+  }
+
   const auxiliary = (currentData.auxiliary || {}) as HashTableAuxiliary
   const buckets = auxiliary.buckets || []
+
+  if (buckets.length === 0) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-8">
+        <p className="text-muted-foreground text-center text-sm">
+          No hash table data available. Click Reset to generate visualization.
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 p-6 sm:p-8">
+    <div className="mx-auto flex h-full w-full max-w-3xl flex-col gap-3 p-6 sm:p-8">
       {buckets.map((bucket, idx) => {
         const isTargetBucket = auxiliary.currentBucket === idx
         return (

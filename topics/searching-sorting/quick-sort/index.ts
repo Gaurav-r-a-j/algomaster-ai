@@ -36,4 +36,8 @@ export const quickSort: Topic = {
       difficulty: "Medium",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=Hoixgm4-P4M", // Quick Sort
+    hi: "https://www.youtube.com/watch?v=PgBzjlCcFvc" // Quick Sort Hindi
+  }
 }

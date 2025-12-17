@@ -41,4 +41,8 @@ export const bst: Topic = {
       difficulty: "Easy",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=gcULXE7ViZw", // BST Explained
+    hi: "https://www.youtube.com/watch?v=5E3MeajU9XQ" // BST Hindi
+  }
 }

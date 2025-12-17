@@ -13,4 +13,8 @@ export const knapsack: Topic = {
   difficulty: "Hard",
   content: "", // Content loaded from external .mdx file
   quiz: knapsackQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=nLmhmB6NzcM", // Knapsack Problem
+    hi: "https://www.youtube.com/watch?v=kvyShbFVaY8" // Knapsack Hindi
+  }
 }

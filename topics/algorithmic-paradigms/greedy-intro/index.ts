@@ -13,4 +13,8 @@ export const greedyIntro: Topic = {
   difficulty: "Medium",
   content: "", // Content loaded from external .mdx file
   quiz: greedyIntroQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=HzeK7g8cD0Y", // Greedy Algorithms
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Greedy Hindi
+  }
 }

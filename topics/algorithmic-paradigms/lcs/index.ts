@@ -13,4 +13,8 @@ export const lcs: Topic = {
   difficulty: "Hard",
   content: "", // Content loaded from external .mdx file
   quiz: lcsQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=NnD96abizww", // LCS Problem
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // LCS Hindi
+  }
 }

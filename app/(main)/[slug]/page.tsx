@@ -15,7 +15,7 @@ import { motion } from "motion/react"
 
 import { VisualizerType } from "@/types/curriculum"
 import { fadeIn, slideDown, transitions } from "@/lib/animations"
-import { BookOpenIcon, CodeIcon, PlayIcon, ShareIcon, UserIcon, CheckmarkCircleIcon } from "@/lib/icons"
+import { BookOpenIcon, CodeIcon, PlayIcon, ShareIcon, UserIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
 import {
   useModuleBySlug,
@@ -42,7 +42,6 @@ import { PageHeader } from "@/components/common/page-header"
 import { Section } from "@/components/common/section"
 import { LearnView } from "@/components/features/learning/views/learn-view"
 import { PracticeView } from "@/components/features/learning/views/practice-view"
-import { TestView } from "@/components/features/learning/views/test-view"
 import { TopicCard } from "@/components/features/learning/components/topic-card"
 import { VisualizeView } from "@/components/features/learning/views/visualize-view"
 import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
@@ -286,10 +285,10 @@ export default function SlugPage({ params }: SlugPageProps) {
                 </div>
 
                 {/* Tabs */}
-                <TabsList className="grid h-9 shrink-0 grid-cols-4">
+                <TabsList className="grid h-9 shrink-0 grid-cols-3">
                   <TabsTrigger
                     value="learn"
-                    className="flex items-center gap-1.5 px-2.5 text-xs"
+                    className="flex items-center gap-1.5 px-3 text-xs"
                   >
                     <IconWrapper icon={BookOpenIcon} size={14} />
                     <span className="hidden sm:inline">Learn</span>
@@ -297,7 +296,7 @@ export default function SlugPage({ params }: SlugPageProps) {
                   <TabsTrigger
                     value="visualize"
                     disabled={topic.visualizerType === VisualizerType.NONE}
-                    className="flex items-center gap-1.5 px-2.5 text-xs"
+                    className="flex items-center gap-1.5 px-3 text-xs"
                     title={
                       topic.visualizerType === VisualizerType.NONE
                         ? "No visualizer available"
@@ -309,17 +308,10 @@ export default function SlugPage({ params }: SlugPageProps) {
                   </TabsTrigger>
                   <TabsTrigger
                     value="code"
-                    className="flex items-center gap-1.5 px-2.5 text-xs"
+                    className="flex items-center gap-1.5 px-3 text-xs"
                   >
                     <IconWrapper icon={CodeIcon} size={14} />
                     <span className="hidden sm:inline">Practice</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="test"
-                    className="flex items-center gap-1.5 px-2.5 text-xs"
-                  >
-                    <IconWrapper icon={CheckmarkCircleIcon} size={14} />
-                    <span className="hidden sm:inline">Test</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -389,19 +381,6 @@ export default function SlugPage({ params }: SlugPageProps) {
             </motion.div>
           </TabsContent>
 
-          {/* Test Tab - Knowledge Check */}
-          <TabsContent value="test" className="mt-0">
-            <motion.div
-              key="test"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={transitions.smooth}
-              className="h-full w-full overflow-y-auto"
-            >
-              <TestView topic={topic} />
-            </motion.div>
-          </TabsContent>
         </motion.div>
       </Tabs>
     </div>

@@ -36,4 +36,8 @@ export const mergeSort: Topic = {
       difficulty: "Medium",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=4VqmGXwpLqc", // Merge Sort
+    hi: "https://www.youtube.com/watch?v=jlHkDBEumP0" // Merge Sort Hindi
+  }
 }

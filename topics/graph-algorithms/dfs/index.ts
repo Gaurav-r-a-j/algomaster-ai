@@ -41,4 +41,8 @@ export const dfs: Topic = {
       difficulty: "Medium",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=7fujbpJ0LB4", // DFS Algorithm
+    hi: "https://www.youtube.com/watch?v=vf-cxgUXcMk" // DFS Hindi
+  }
 }

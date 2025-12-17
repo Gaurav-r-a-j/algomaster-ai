@@ -26,4 +26,8 @@ export const selectionSort: Topic = {
       difficulty: "Easy",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=g-PGLbMth_g", // Selection Sort
+    hi: "https://www.youtube.com/watch?v=xWBP4lzkoyM" // Selection Sort Hindi
+  }
 }

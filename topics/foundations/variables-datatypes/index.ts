@@ -14,4 +14,8 @@ export const variablesDatatypes: Topic = {
   content: "", // Content loaded dynamically from data/content/markdown/variables-datatypes.md
   quiz: variablesDatatypesQuiz,
   practiceLinks: [],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=8yjkWGRlUmc", // Variables & Data Types
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Variables Hindi
+  }
 }

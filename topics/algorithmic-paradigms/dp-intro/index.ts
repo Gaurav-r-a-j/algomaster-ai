@@ -14,4 +14,8 @@ export const dpIntro: Topic = {
   difficulty: "Medium",
   content: "", // Content loaded from external .mdx file
   quiz: dpIntroQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=oBt53YbR9Kk", // Dynamic Programming
+    hi: "https://www.youtube.com/watch?v=nqowUJzG-iM" // DP Hindi
+  }
 }

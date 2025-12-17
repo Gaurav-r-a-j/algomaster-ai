@@ -30,4 +30,8 @@ export const bigO: Topic = {
       difficulty: "Easy",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=Mo4vesaut8g", // Big O Notation
+    hi: "https://www.youtube.com/watch?v=Z0bH0cMY0E8" // Big O Hindi
+  }
 }

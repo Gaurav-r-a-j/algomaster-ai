@@ -14,4 +14,8 @@ export const backtrackingIntro: Topic = {
   difficulty: "Medium",
   content: "", // Content loaded from external .mdx file
   quiz: backtrackingIntroQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=A80YzvNwqXA", // Backtracking
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Backtracking Hindi
+  }
 }

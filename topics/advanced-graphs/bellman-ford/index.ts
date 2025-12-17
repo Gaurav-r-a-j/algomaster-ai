@@ -13,4 +13,8 @@ export const bellmanFord: Topic = {
   difficulty: "Hard",
   content: "", // Content loaded from external .mdx file
   quiz: bellmanFordQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=obWXjtg0L64", // Bellman-Ford
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Bellman-Ford Hindi
+  }
 }

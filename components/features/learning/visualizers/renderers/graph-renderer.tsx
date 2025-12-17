@@ -19,13 +19,33 @@ interface GraphEdge {
 }
 
 export function GraphRenderer({ currentData }: GraphRendererProps) {
+  if (!currentData || !currentData.auxiliary) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-8">
+        <p className="text-muted-foreground text-center text-sm">
+          No data to visualize. Click Reset to generate visualization.
+        </p>
+      </div>
+    )
+  }
+
   const auxiliary = (currentData.auxiliary || {}) as GraphAuxiliary
   const graphNodes: GraphNode[] = auxiliary.nodes || []
   const graphEdges: GraphEdge[] = auxiliary.edges || []
   const activeNodeId = auxiliary.activeNode
 
+  if (graphNodes.length === 0) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-8">
+        <p className="text-muted-foreground text-center text-sm">
+          No graph data available. Click Reset to generate visualization.
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="relative h-[450px] w-full overflow-hidden p-6 sm:h-[550px]">
+    <div className="relative h-full w-full overflow-hidden p-6 sm:h-[550px]">
       <svg className="pointer-events-none absolute inset-0 h-full w-full">
         <defs>
           <marker

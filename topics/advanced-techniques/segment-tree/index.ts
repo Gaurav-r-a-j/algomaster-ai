@@ -13,4 +13,8 @@ export const segmentTree: Topic = {
   difficulty: "Hard",
   content: "", // Content loaded from external .mdx file
   quiz: segmentTreeQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=2bSS8rtFym4", // Segment Tree
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Segment Tree Hindi
+  }
 }

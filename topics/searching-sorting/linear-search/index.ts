@@ -30,4 +30,8 @@ export const linearSearch: Topic = {
       difficulty: "Easy",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=CX2CYIJLwfg", // Linear Search
+    hi: "https://www.youtube.com/watch?v=wN0x9eZLix4" // Linear Search Hindi
+  }
 }

@@ -13,5 +13,9 @@ export const algorithmsPseudocode: Topic = {
   difficulty: "Easy",
   content: "", // Content loaded dynamically
   quiz: algorithmsPseudocodeQuiz,
-  practiceLinks: []
+  practiceLinks: [],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=6h2b-O0DMCo", // Algorithms & Pseudocode
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Pseudocode Hindi
+  }
 }

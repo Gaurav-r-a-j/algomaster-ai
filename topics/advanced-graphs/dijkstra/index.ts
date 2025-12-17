@@ -13,4 +13,8 @@ export const dijkstra: Topic = {
   difficulty: "Hard",
   content: "", // Content loaded from external .mdx file
   quiz: dijkstraQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=XB4MIexjvY0", // Dijkstra's Algorithm
+    hi: "https://www.youtube.com/watch?v=smHnz2RHJBY" // Dijkstra Hindi
+  }
 }

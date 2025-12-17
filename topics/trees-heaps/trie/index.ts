@@ -36,4 +36,8 @@ export const trie: Topic = {
       difficulty: "Medium",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=AXjmTQ8LEoI", // Trie Data Structure
+    hi: "https://www.youtube.com/watch?v=dBGUmUQhjaM" // Trie Hindi
+  }
 }

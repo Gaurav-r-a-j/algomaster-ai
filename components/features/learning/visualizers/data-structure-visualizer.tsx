@@ -331,7 +331,7 @@ export function DataStructureVisualizer({
       hideDescription={true}
       showInfoPanel={true}
     >
-      <div className="flex w-full flex-1 items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center">
         {renderVisualization()}
       </div>
     </VisualizerLayout>

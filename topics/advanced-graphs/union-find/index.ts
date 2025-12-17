@@ -13,4 +13,8 @@ export const unionFind: Topic = {
   difficulty: "Medium",
   content: "", // Content loaded from external .mdx file
   quiz: unionFindQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=0jNmHPfA_yE", // Union-Find
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Union-Find Hindi
+  }
 }

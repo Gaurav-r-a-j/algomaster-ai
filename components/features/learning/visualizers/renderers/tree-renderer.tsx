@@ -56,10 +56,30 @@ interface TreeRendererProps {
 }
 
 export function TreeRenderer({ currentData }: TreeRendererProps) {
+  if (!currentData || !currentData.auxiliary) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-8">
+        <p className="text-muted-foreground text-center text-sm">
+          No data to visualize. Click Reset to generate visualization.
+        </p>
+      </div>
+    )
+  }
+
   const { root, highlightNodeId } = (currentData.auxiliary as {
     root?: TreeNodeType
     highlightNodeId?: string
   }) || { root: null }
+
+  if (!root) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-8">
+        <p className="text-muted-foreground text-center text-sm">
+          No tree data available. Click Reset to generate visualization.
+        </p>
+      </div>
+    )
+  }
 
   const treeData = renderTreeNodes(root || null, highlightNodeId || null)
 

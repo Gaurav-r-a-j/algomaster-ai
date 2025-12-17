@@ -8,8 +8,19 @@ interface LinkedListRendererProps {
 }
 
 export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
+  // Ensure we have data
+  if (!currentData || !currentData.array || currentData.array.length === 0) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-8">
+        <p className="text-muted-foreground text-center text-sm">
+          No data to visualize. Click Reset to generate visualization.
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="w-full overflow-x-auto p-6 sm:p-8">
+    <div className="flex h-full w-full items-center justify-center overflow-x-auto p-6 sm:p-8">
       <motion.div className="flex min-w-fit items-center justify-start gap-1">
         <AnimatePresence>
           {currentData.array.map((val, idx) => {

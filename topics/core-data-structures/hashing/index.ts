@@ -40,4 +40,8 @@ export const hashing: Topic = {
     },
   ],
   quiz: hashingQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=2BldESGZKC8", // Hashing Explained
+    hi: "https://www.youtube.com/watch?v=W5q0xgxmRd8" // Hashing Hindi
+  }
 }

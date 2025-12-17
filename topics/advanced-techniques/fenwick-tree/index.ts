@@ -13,4 +13,8 @@ export const fenwickTree: Topic = {
   difficulty: "Hard",
   content: "", // Content loaded from external .mdx file
   quiz: fenwickTreeQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=kPaJfAUwViY", // Fenwick Tree
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Fenwick Tree Hindi
+  }
 }

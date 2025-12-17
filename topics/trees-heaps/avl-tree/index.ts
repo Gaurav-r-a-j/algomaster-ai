@@ -26,4 +26,8 @@ export const avlTree: Topic = {
       difficulty: "Medium",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=rbg7Qf8GkQ4", // AVL Tree
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // AVL Tree Hindi
+  }
 }

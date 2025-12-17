@@ -36,4 +36,8 @@ export const topoSort: Topic = {
       difficulty: "Hard",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=eL-KzMXSXXI", // Topological Sort
+    hi: "https://www.youtube.com/watch?v=73sneFXuTEg" // Topological Sort Hindi
+  }
 }

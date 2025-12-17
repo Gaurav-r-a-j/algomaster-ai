@@ -218,9 +218,9 @@ export function VisualizerLayout({
             </div>
 
             {/* Visualization Area */}
-            <div className="relative min-h-0 flex-1 overflow-hidden bg-dot-pattern">
-              <div className="absolute inset-0 flex items-center justify-center overflow-auto p-6 sm:p-8">
-                <div className="mx-auto flex min-h-min w-full max-w-[1920px] flex-col items-center justify-center">
+            <div className="relative min-h-0 flex-1 overflow-auto bg-dot-pattern">
+              <div className="flex h-full w-full items-center justify-center p-6 sm:p-8">
+                <div className="mx-auto flex h-full w-full max-w-[1920px] flex-col items-center justify-center">
                   {children}
                 </div>
               </div>

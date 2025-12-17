@@ -13,4 +13,8 @@ export const kruskal: Topic = {
   difficulty: "Hard",
   content: "", // Content loaded from external .mdx file
   quiz: kruskalQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=4ZlRH0eK-qQ", // Kruskal's Algorithm
+    hi: "https://www.youtube.com/watch?v=1KRmCzBl_mQ" // Kruskal Hindi
+  }
 }

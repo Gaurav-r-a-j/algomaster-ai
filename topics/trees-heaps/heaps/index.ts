@@ -41,4 +41,8 @@ export const heaps: Topic = {
       difficulty: "Hard",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=t0Cq6tVNRBA", // Heaps Explained
+    hi: "https://www.youtube.com/watch?v=KzXpfxRzVQM" // Heaps Hindi
+  }
 }

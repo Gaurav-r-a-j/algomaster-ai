@@ -13,4 +13,8 @@ export const bitManipulation: Topic = {
   difficulty: "Medium",
   content: "", // Content loaded from external .mdx file
   quiz: bitManipulationQuiz,
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=NLKQEOgBAnw", // Bit Manipulation
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Bit Manipulation Hindi
+  }
 }

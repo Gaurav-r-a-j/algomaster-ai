@@ -31,4 +31,8 @@ export const insertionSort: Topic = {
       difficulty: "Easy",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=OGzPmgsI-pQ", // Insertion Sort
+    hi: "https://www.youtube.com/watch?v=K0zTIF3rm9s" // Insertion Sort Hindi
+  }
 }

@@ -35,4 +35,8 @@ export const recursion: Topic = {
       difficulty: "Easy",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=IJDJ0kBc2LM", // Recursion Explained
+    hi: "https://www.youtube.com/watch?v=6wDD7gR2C8A" // Recursion Hindi
+  }
 }

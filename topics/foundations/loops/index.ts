@@ -30,4 +30,8 @@ export const loops: Topic = {
       difficulty: "Easy",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=6iF8Xb7Z3wQ", // Loops Tutorial
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Loops Hindi
+  }
 }

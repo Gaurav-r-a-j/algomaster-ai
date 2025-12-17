@@ -1,7 +1,9 @@
 "use client"
 
+import { useState } from "react"
 import { useProgress } from "@/context/progress-context"
 import { motion } from "motion/react"
+import { getDefaultQuiz } from "@/data/default-quiz"
 
 import type { Topic } from "@/types/curriculum"
 import { fadeIn, slideUpWithDelay, transitions } from "@/lib/animations"
@@ -11,6 +13,7 @@ import { useTopicContent } from "@/hooks/curriculum"
 import { CodePreview } from "@/components/common/code/code-preview"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { MarkdownRenderer } from "@/components/common/markdown-renderer"
+import { QuizSection } from "@/components/features/learning/quiz"
 
 interface LearnViewProps {
   topic: Topic
@@ -21,7 +24,11 @@ export function LearnView({ topic }: LearnViewProps) {
   const content = topicContent?.markdown || topic.content
   const codeExamples = topicContent?.codeExamples || []
 
+  const [useAIQuestions, setUseAIQuestions] = useState(false)
   const { isCompleted } = useProgress()
+
+  // Get quiz questions for this topic
+  const quizQuestions = topic.quiz || getDefaultQuiz(topic)
 
   if (loading) {
     return (
@@ -146,6 +153,23 @@ export function LearnView({ topic }: LearnViewProps) {
           </motion.div>
         )}
 
+        {/* Quiz Section */}
+        <motion.div
+          initial="initial"
+          animate="animate"
+          variants={slideUpWithDelay(0.3)}
+        >
+          <div className="px-4 py-8 md:px-6 md:py-10 lg:px-8 lg:py-12 border-t border-border/50">
+            <QuizSection
+              topicId={topic.id}
+              questions={quizQuestions}
+              useAIQuestions={useAIQuestions}
+              onToggleAIQuestions={setUseAIQuestions}
+              hasAIQuestions={true}
+              topicTitle={topic.title}
+            />
+          </div>
+        </motion.div>
       </div>
     </motion.div>
   )

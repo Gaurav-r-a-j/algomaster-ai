@@ -7,8 +7,18 @@ interface StackRendererProps {
 }
 
 export function StackRenderer({ currentData }: StackRendererProps) {
+  if (!currentData || !currentData.array) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-8">
+        <p className="text-muted-foreground text-center text-sm">
+          No data to visualize. Click Reset to generate visualization.
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex w-full flex-col items-center justify-center p-6 sm:p-8">
+    <div className="flex h-full w-full flex-col items-center justify-center p-6 sm:p-8">
       <div className="relative flex min-h-[220px] w-24 flex-col justify-end rounded-t-2xl border-x-2 border-b-2 border-border/60 bg-background/50 p-3 shadow-lg backdrop-blur-sm sm:min-h-[280px] sm:w-32 sm:p-4">
         <div className="absolute top-1/2 -left-8 -translate-y-1/2 rotate-180 py-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground [writing-mode:vertical-lr] sm:-left-12 sm:text-xs">
           Stack Memory

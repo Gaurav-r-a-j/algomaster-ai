@@ -26,4 +26,8 @@ export const graphReps: Topic = {
       difficulty: "Medium",
     },
   ],
+  youtubeLink: {
+    en: "https://www.youtube.com/watch?v=5hPfm_uqXmw", // Graph Representations
+    hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Graph Reps Hindi
+  }
 }
