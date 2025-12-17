@@ -1,9 +1,12 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "motion/react"
+import type { QuizQuestion } from "@/types/curriculum"
 import { SparklesIcon } from "@/lib/icons"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Sheet,
   SheetContent,
@@ -13,12 +16,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { IconWrapper } from "@/components/common/icon-wrapper"
+import { QuizQuestionCard } from "./quiz-question-card"
 
 interface QuizAISheetProps {
   topicTitle?: string
   isGenerating: boolean
   onGenerate: () => void
   trigger: React.ReactNode
+  aiQuestions?: QuizQuestion[]
+  onQuestionSelect?: (questionId: number, optionIdx: number) => void
+  selectedAnswers?: Record<number, number>
 }
 
 export function QuizAISheet({
@@ -26,11 +33,18 @@ export function QuizAISheet({
   isGenerating,
   onGenerate,
   trigger,
+  aiQuestions = [],
+  onQuestionSelect,
+  selectedAnswers = {},
 }: QuizAISheetProps) {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const hasQuestions = aiQuestions.length > 0
+  const currentQuestion = hasQuestions ? aiQuestions[currentQuestionIndex] : null
+
   return (
     <Sheet>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-md">
+      <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <IconWrapper
@@ -41,9 +55,12 @@ export function QuizAISheet({
             AI Question Generation
           </SheetTitle>
           <SheetDescription>
-            Generate custom quiz questions based on {topicTitle} using AI.
+            {hasQuestions
+              ? `AI-generated questions for ${topicTitle}`
+              : `Generate custom quiz questions based on ${topicTitle} using AI.`}
           </SheetDescription>
         </SheetHeader>
+
         <div className="mt-6 space-y-4">
           {isGenerating ? (
             <Alert>
@@ -61,6 +78,63 @@ export function QuizAISheet({
                 Generating AI questions...
               </AlertDescription>
             </Alert>
+          ) : hasQuestions ? (
+            <>
+              {/* Show AI Questions in Sheet */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Question {currentQuestionIndex + 1} of {aiQuestions.length}
+                  </p>
+                </div>
+
+                {currentQuestion && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">AI-Generated Question</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <QuizQuestionCard
+                        question={currentQuestion}
+                        questionIndex={currentQuestionIndex}
+                        selectedAnswer={selectedAnswers[currentQuestion.id]}
+                        correctAnswer={currentQuestion.correctAnswer}
+                        showResults={false}
+                        onSelect={(optIdx) => {
+                          if (onQuestionSelect) {
+                            onQuestionSelect(currentQuestion.id, optIdx)
+                          }
+                        }}
+                      />
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Navigation */}
+                <div className="flex items-center justify-between gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setCurrentQuestionIndex((prev) => Math.max(0, prev - 1))}
+                    disabled={currentQuestionIndex === 0}
+                    className="flex-1"
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      setCurrentQuestionIndex((prev) =>
+                        Math.min(aiQuestions.length - 1, prev + 1)
+                      )
+                    }
+                    disabled={currentQuestionIndex === aiQuestions.length - 1}
+                    className="flex-1"
+                  >
+                    Next
+                  </Button>
+                </div>
+              </div>
+            </>
           ) : (
             <>
               <p className="text-sm text-muted-foreground">

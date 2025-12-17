@@ -104,7 +104,7 @@ export function QuizSection({
         },
       ]
       setAiQuestions(generated)
-      setShowAISheet(false)
+      // Keep sheet open and switch to AI questions
       if (onToggleAIQuestions) {
         onToggleAIQuestions(true)
       }
@@ -166,6 +166,9 @@ export function QuizSection({
                     topicTitle={topicTitle}
                     isGenerating={isGeneratingAI}
                     onGenerate={generateAIQuestions}
+                    aiQuestions={aiQuestions}
+                    onQuestionSelect={handleSelect}
+                    selectedAnswers={selectedAnswers}
                     trigger={
                       <Button variant="outline" size="sm" className="mt-3 gap-2">
                         <IconWrapper
