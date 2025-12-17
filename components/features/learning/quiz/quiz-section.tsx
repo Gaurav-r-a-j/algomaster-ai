@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { useState, useMemo, useCallback } from "react"
 import { useProgress } from "@/context/progress-context"
 import { motion } from "motion/react"

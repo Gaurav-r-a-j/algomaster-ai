@@ -30,8 +30,8 @@ import { LinkedListRenderer } from "./renderers/linked-list-renderer"
 import { QueueRenderer } from "./renderers/queue-renderer"
 import { StackRenderer } from "./renderers/stack-renderer"
 import { TreeRenderer } from "./renderers/tree-renderer"
-import { VisualizerInfoPanel } from "./visualizer-info-panel"
-import { VisualizerLayout } from "./visualizer-layout"
+import { VisualizerInfoPanel } from "./shared/visualizer-info-panel"
+import { VisualizerLayout } from "./shared/visualizer-layout"
 
 interface DataStructureVisualizerProps {
   topic: Topic

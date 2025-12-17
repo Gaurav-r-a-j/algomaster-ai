@@ -1,6 +1,6 @@
 "use client"
 
-import { EmptyState } from "@/components/common/empty-state"
+import { EmptyState } from "@/components/common/ui"
 
 export function EmptyStateExample() {
   return (

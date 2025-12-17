@@ -38,7 +38,7 @@ import {
   PageHeader,
   SuccessMessage,
 } from "@/components/common"
-import { CodePreview } from "@/components/common/code-preview"
+import { CodePreview } from "@/components/common/code"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import {
   Form,

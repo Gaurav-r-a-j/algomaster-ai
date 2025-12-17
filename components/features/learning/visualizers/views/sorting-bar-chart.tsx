@@ -145,7 +145,7 @@ export function SortingBarChart({
       .attr("opacity", (_, i) => (activeIndices.includes(i) ? 1 : 0.8))
 
     // Animate labels
-    g.selectAll(".value-label")
+    g.selectAll<SVGTextElement, number>(".value-label")
       .transition()
       .duration(300)
       .attr("y", (d) => yScale(d) - 5)

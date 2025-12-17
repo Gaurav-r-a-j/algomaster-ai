@@ -59,6 +59,10 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
     reset()
   }, [generateSteps, setSteps, reset])
 
+  const handleReset = () => {
+    updateSteps()
+  }
+
   useEffect(() => {
     updateSteps()
   }, [updateSteps, topic.id])
@@ -131,7 +135,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={generateData}
+                onClick={handleReset}
                 disabled={steps.length === 0 || isPlaying}
                 className="h-9 w-9"
                 aria-label="Reset"
@@ -163,7 +167,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
               <TooltipTrigger asChild>
                 <Button
                   size="default"
-                  onClick={() => setIsPlaying(!isPlaying)}
+                  onClick={isPlaying ? handlePause : handlePlay}
                   disabled={steps.length === 0}
                   className="min-w-[90px] px-4 font-semibold"
                   aria-label={isPlaying ? "Pause" : "Play"}

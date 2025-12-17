@@ -5,7 +5,7 @@ import { cn } from "@/utils/common/class-names"
 import { Controller, useFormContext } from "react-hook-form"
 
 import { Label } from "@/components/ui/label"
-import { ErrorMessage } from "@/components/common/error-message"
+import { ErrorMessage } from "@/components/common/ui"
 
 export interface FormFieldProps {
   name: string

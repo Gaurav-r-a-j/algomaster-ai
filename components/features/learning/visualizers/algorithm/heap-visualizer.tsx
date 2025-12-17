@@ -65,6 +65,10 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
     }
   }, [generateSteps, setSteps, reset, handleStepChange])
 
+  const handleReset = () => {
+    updateSteps()
+  }
+
   useEffect(() => {
     updateSteps()
   }, [updateSteps])
@@ -139,7 +143,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={generateData}
+                onClick={handleReset}
                 disabled={steps.length === 0 || isPlaying}
                 className="h-9 w-9"
                 aria-label="Reset"
@@ -171,7 +175,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
               <TooltipTrigger asChild>
                 <Button
                   size="default"
-                  onClick={() => setIsPlaying(!isPlaying)}
+                  onClick={isPlaying ? handlePause : handlePlay}
                   disabled={steps.length === 0}
                   className="min-w-[90px] bg-amber-500 px-4 font-semibold text-white hover:bg-amber-600"
                   aria-label={isPlaying ? "Pause" : "Play"}

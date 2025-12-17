@@ -3,8 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { cn } from "@/lib/utils"
-import { CodeBlock, SimpleCodeBlock } from "@/components/common/code-block"
-import { CopyButton } from "@/components/common/copy-button"
+import { CodeBlock, SimpleCodeBlock, CopyButton } from "@/components/common/code"
 
 // MDX Component types
 type MDXComponents = Record<string, React.ComponentType<any>>

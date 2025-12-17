@@ -62,6 +62,10 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
     reset()
   }, [generateSteps, setSteps, reset])
 
+  const handleReset = () => {
+    updateSteps()
+  }
+
   useEffect(() => {
     updateSteps()
   }, [updateSteps, topic.id])
@@ -145,7 +149,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={generateData}
+                onClick={handleReset}
                 disabled={steps.length === 0 || isPlaying}
                 className="h-9 w-9"
                 aria-label="Reset"
@@ -177,7 +181,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
               <TooltipTrigger asChild>
                 <Button
                   size="default"
-                  onClick={() => setIsPlaying(!isPlaying)}
+                  onClick={isPlaying ? handlePause : handlePlay}
                   disabled={steps.length === 0}
                   className="min-w-[90px] px-4 font-semibold"
                   aria-label={isPlaying ? "Pause" : "Play"}
@@ -338,9 +342,9 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
           <div className="flex min-h-[200px] items-center justify-center overflow-auto p-6">
             {is2D ? (
               <DPTableView
-                dpTable={dpTable}
-                activeRow={row}
-                activeCol={col}
+                dpTable={dpTable as number[][]}
+                activeRow={row ?? 0}
+                activeCol={col ?? 0}
               />
             ) : (
               <DPArrayView

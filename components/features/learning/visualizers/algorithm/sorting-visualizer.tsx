@@ -91,15 +91,6 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     generateArray()
   }, [topic.id, arraySize, generateArray])
 
-  const currentData =
-    steps[currentStep] ||
-    ({
-      array: array,
-      activeIndices: [],
-      sortedIndices: [],
-      description: "Ready to sort",
-    } as VisualizationStep)
-
   const renderControls = (
     isPanelOpen: boolean,
     togglePanel: () => void,

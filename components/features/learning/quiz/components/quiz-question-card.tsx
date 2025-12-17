@@ -4,6 +4,8 @@ import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
 import type { QuizQuestion } from "@/types/curriculum"
 import { hoverScaleSmall, tapScale } from "@/lib/animations"
+import { IconWrapper } from "@/components/common/icon-wrapper"
+import { CheckmarkCircleIcon } from "@/lib/icons"
 
 interface QuizQuestionCardProps {
   question: QuizQuestion
@@ -62,7 +64,7 @@ export function QuizQuestionCard({
                 return (
                   <motion.div
                     key={optIdx}
-                    variants={hoverScaleSmall}
+                    variants={hoverScaleSmall as any}
                     whileHover={!showResults ? "hover" : undefined}
                     whileTap={!showResults ? "tap" : undefined}
                   >

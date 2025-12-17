@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 function fixEmDashes() {
-  const markdownDir = path.join(__dirname, '..', 'data', 'content', 'markdown');
+  const markdownDir = path.join(__dirname, '..', 'topics');
   
   function processFile(filePath) {
     let content = fs.readFileSync(filePath, 'utf8');
