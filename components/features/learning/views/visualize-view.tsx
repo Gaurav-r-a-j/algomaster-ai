@@ -16,7 +16,7 @@ import {
   PathfindingVisualizer,
   SearchVisualizer,
   SortingVisualizer,
-} from "./visualizers"
+} from "../visualizers"
 
 interface VisualizeViewProps {
   topic: Topic
