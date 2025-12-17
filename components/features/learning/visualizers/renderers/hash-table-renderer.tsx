@@ -1,18 +1,18 @@
 import { AnimatePresence, motion } from "motion/react"
 
-import type { VisualizationStep } from "@/types/curriculum"
+import type { HashTableAuxiliary, VisualizationStep } from "@/types/curriculum"
 
 interface HashTableRendererProps {
   currentData: VisualizationStep
 }
 
 export function HashTableRenderer({ currentData }: HashTableRendererProps) {
-  const buckets = (currentData.auxiliary as any)?.buckets || []
+  const auxiliary = (currentData.auxiliary || {}) as HashTableAuxiliary
+  const buckets = auxiliary.buckets || []
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 p-6 sm:p-8">
-      {buckets.map((bucket: number[], idx: number) => {
-        const isTargetBucket =
-          (currentData.auxiliary as any)?.currentBucket === idx
+      {buckets.map((bucket, idx) => {
+        const isTargetBucket = auxiliary.currentBucket === idx
         return (
           <div key={idx} className="flex items-center gap-3 sm:gap-4">
             {/* Index Bucket */}

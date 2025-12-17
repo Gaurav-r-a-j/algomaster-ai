@@ -191,14 +191,14 @@ export function QuizSection({
           </CardHeader>
           <CardContent className="p-8">
             {/* Progress Bar */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-muted-foreground">Progress</span>
-                <span className="text-sm font-medium">
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-medium text-muted-foreground">Progress</span>
+                <span className="text-sm font-semibold text-foreground">
                   {currentStep + 1} / {displayQuestions.length}
                 </span>
               </div>
-              <Progress value={progress} className="h-2" />
+              <Progress value={progress} className="h-2.5" />
             </div>
 
             {showResults && score !== null ? (

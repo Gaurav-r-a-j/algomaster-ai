@@ -5,11 +5,11 @@ import { useVisualizerState } from "@/hooks/visualizers/use-visualizer-state"
 import { useHeapSteps } from "@/hooks/visualizers/use-heap-steps"
 import { motion } from "motion/react"
 
-import type { Topic, VisualizationStep } from "@/types/curriculum"
+import type { HeapAuxiliary, Topic, VisualizationStep } from "@/types/curriculum"
 import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
   LayersIcon,
   PauseIcon,
   PlayIcon,
@@ -73,7 +73,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
     updateSteps()
   }, [updateSteps])
 
-  const auxiliary = currentData.auxiliary as { heap?: number[] }
+  const auxiliary = (currentData.auxiliary || {}) as HeapAuxiliary
   const heap = auxiliary?.heap || []
 
   const getDifficultyColor = (difficulty?: string) => {
@@ -109,7 +109,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                 aria-label={isPanelOpen ? "Collapse sidebar" : "Expand sidebar"}
               >
                 <IconWrapper
-                  icon={isPanelOpen ? ChevronLeftIcon : ChevronRightIcon}
+                  icon={isPanelOpen ? ArrowLeftIcon : ArrowRightIcon}
                   size={18}
                 />
               </Button>
@@ -165,7 +165,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                   className="h-9 w-9"
                   aria-label="Previous step"
                 >
-                  <IconWrapper icon={ChevronLeftIcon} size={16} />
+                  <IconWrapper icon={ArrowLeftIcon} size={16} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Previous</TooltipContent>
@@ -207,7 +207,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
                   className="h-9 w-9"
                   aria-label="Next step"
                 >
-                  <IconWrapper icon={ChevronRightIcon} size={16} />
+                  <IconWrapper icon={ArrowRightIcon} size={16} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Next</TooltipContent>

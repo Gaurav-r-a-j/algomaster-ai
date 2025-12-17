@@ -24,24 +24,24 @@ export function QuizResults({
   ).length
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Alert
         className={cn(
-          "mb-6",
+          "mb-8",
           score >= 70
             ? "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/20"
             : "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20"
         )}
       >
-        <AlertDescription className="flex items-center justify-between">
-          <div>
-            <span className="font-semibold text-lg">Score: {score}%</span>
-            <p className="text-sm mt-1">
+        <AlertDescription className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <span className="font-semibold text-xl">Score: {score}%</span>
+            <p className="text-sm text-muted-foreground">
               {score >= 70 ? "🎉 Great job! " : "💪 Keep practicing! "}
               You got {correctCount} out of {questions.length} questions correct.
             </p>
           </div>
-          <Button variant="outline" size="sm" onClick={onRetake}>
+          <Button variant="outline" size="sm" onClick={onRetake} className="shrink-0">
             Retake Quiz
           </Button>
         </AlertDescription>
@@ -59,27 +59,27 @@ export function QuizResults({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: qIdx * 0.1 }}
               className={cn(
-                "rounded-lg border p-6 space-y-4",
+                "rounded-xl border p-6 space-y-5",
                 isCorrect
                   ? "border-emerald-200 bg-emerald-50/50 dark:border-emerald-800 dark:bg-emerald-900/10"
                   : "border-red-200 bg-red-50/50 dark:border-red-800 dark:bg-red-900/10"
               )}
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="flex items-start gap-3 flex-1">
+                <div className="flex items-start gap-4 flex-1">
                   <div
                     className={cn(
-                      "shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm",
+                      "shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-semibold text-base",
                       isCorrect ? "bg-emerald-500 text-white" : "bg-red-500 text-white"
                     )}
                   >
                     {isCorrect ? "✓" : "✗"}
                   </div>
-                  <div className="flex-1">
-                    <p className="text-foreground font-semibold mb-4">
+                  <div className="flex-1 space-y-4">
+                    <p className="text-foreground font-semibold text-base leading-relaxed">
                       Question {qIdx + 1}: {question.question}
                     </p>
-                    <div className="space-y-2">
+                    <div className="space-y-2.5">
                       {question.options.map((opt, optIdx) => {
                         const isCorrectOption = optIdx === question.correctAnswer
                         const isUserAnswer = userAnswer === optIdx
@@ -98,23 +98,23 @@ export function QuizResults({
                         }
 
                         return (
-                          <div key={optIdx} className={cn(optionClass)}>
+                          <div key={optIdx} className={cn(optionClass, "p-3.5")}>
                             <div className="flex items-center gap-3">
-                              <span className="shrink-0 w-6 h-6 rounded-full border-2 border-current flex items-center justify-center text-xs font-semibold">
+                              <span className="shrink-0 w-7 h-7 rounded-full border-2 border-current flex items-center justify-center text-xs font-semibold">
                                 {String.fromCharCode(65 + optIdx)}
                               </span>
-                              <span>{opt}</span>
+                              <span className="text-sm leading-relaxed">{opt}</span>
                             </div>
                           </div>
                         )
                       })}
                     </div>
                     {question.explanation && (
-                      <div className="mt-4 p-4 rounded-lg bg-muted/50 border border-border">
-                        <p className="text-sm font-medium text-foreground mb-1">
+                      <div className="mt-5 p-4 rounded-lg bg-muted/50 border border-border">
+                        <p className="text-sm font-semibold text-foreground mb-2">
                           Explanation:
                         </p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground leading-relaxed">
                           {question.explanation}
                         </p>
                       </div>

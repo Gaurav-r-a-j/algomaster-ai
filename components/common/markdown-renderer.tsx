@@ -416,18 +416,19 @@ export function MarkdownRenderer({
   return (
     <div
       className={cn(
-        "prose prose-slate dark:prose-invert w-full max-w-none",
+        "prose prose-slate dark:prose-invert w-full max-w-none prose-headings:scroll-mt-24",
         className
       )}
     >
       {segments.map((segment, index) => {
         if (segment.type === "multilang" && segment.code) {
           return (
-            <CodeBlock 
-              key={index} 
-              code={segment.code} 
-              defaultLanguage="javascript" 
-            />
+            <div key={index} className="my-6">
+              <CodeBlock 
+                code={segment.code} 
+                defaultLanguage="javascript" 
+              />
+            </div>
           )
         }
         return <MarkdownSection key={index} content={segment.content} />

@@ -30,16 +30,16 @@ export function QuizQuestionCard({
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-foreground mb-6 text-lg font-semibold">
+        <p className="text-foreground mb-6 text-lg font-semibold leading-relaxed">
           {question.question}
         </p>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {question.options.map((opt, optIdx) => {
                 const isCorrectOption = optIdx === correctAnswer
                 const isUserAnswer = selectedAnswer === optIdx
 
                 let optionClass =
-                  "p-3 rounded-lg border text-sm transition-all cursor-pointer "
+                  "p-3.5 rounded-lg border text-sm transition-all cursor-pointer "
 
                 if (showResults) {
                   if (isCorrectOption) {
@@ -64,7 +64,7 @@ export function QuizQuestionCard({
                 return (
                   <motion.div
                     key={optIdx}
-                    variants={hoverScaleSmall as any}
+                    variants={hoverScaleSmall}
                     whileHover={!showResults ? "hover" : undefined}
                     whileTap={!showResults ? "tap" : undefined}
                   >
@@ -73,16 +73,16 @@ export function QuizQuestionCard({
                       disabled={showResults}
                       className={cn(optionClass, "w-full text-left")}
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="shrink-0 w-6 h-6 rounded-full border-2 border-current flex items-center justify-center text-xs font-semibold">
+                      <div className="flex items-center gap-3.5">
+                        <span className="shrink-0 w-7 h-7 rounded-full border-2 border-current flex items-center justify-center text-xs font-semibold">
                           {String.fromCharCode(65 + optIdx)}
                         </span>
-                        <span>{opt}</span>
+                        <span className="leading-relaxed">{opt}</span>
                         {showResults && isCorrectOption && (
                           <IconWrapper
                             icon={CheckmarkCircleIcon}
-                            size={16}
-                            className="ml-auto text-emerald-600 dark:text-emerald-400"
+                            size={18}
+                            className="ml-auto text-emerald-600 dark:text-emerald-400 shrink-0"
                           />
                         )}
                       </div>

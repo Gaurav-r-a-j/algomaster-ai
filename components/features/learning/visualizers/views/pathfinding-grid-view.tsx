@@ -3,7 +3,7 @@
 import { motion } from "motion/react"
 import { GridCell } from "@/components/common/visual/grid-cell"
 import { staggerItem } from "@/lib/animations"
-import type { VisualizationStep } from "@/types/curriculum"
+import type { PathfindingAuxiliary, VisualizationStep } from "@/types/curriculum"
 
 interface PathfindingGridViewProps {
   currentData: VisualizationStep
@@ -12,12 +12,9 @@ interface PathfindingGridViewProps {
 export function PathfindingGridView({
   currentData,
 }: PathfindingGridViewProps) {
-  const visitedSet = new Set(
-    (currentData.auxiliary as { visited?: number[] })?.visited || []
-  )
-  const pathSet = new Set(
-    (currentData.auxiliary as { path?: number[] })?.path || []
-  )
+  const auxiliary = (currentData.auxiliary || {}) as PathfindingAuxiliary
+  const visitedSet = new Set(auxiliary.visited || [])
+  const pathSet = new Set(auxiliary.path || [])
 
   return (
     <motion.div className="mx-auto grid w-full max-w-[350px] grid-cols-5 gap-1.5 p-6 sm:max-w-[400px] sm:gap-2">

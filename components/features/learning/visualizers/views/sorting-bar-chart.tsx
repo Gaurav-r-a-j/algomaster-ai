@@ -146,6 +146,7 @@ export function SortingBarChart({
 
     // Animate labels
     g.selectAll<SVGTextElement, number>(".value-label")
+      .data(data)
       .transition()
       .duration(300)
       .attr("y", (d) => yScale(d) - 5)

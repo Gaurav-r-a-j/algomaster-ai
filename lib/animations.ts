@@ -107,8 +107,14 @@ export const hoverScale = {
 }
 
 export const hoverScaleSmall = {
-  scale: 1.02,
-  transition: transitions.quick,
+  hover: {
+    scale: 1.02,
+    transition: transitions.quick,
+  },
+  tap: {
+    scale: 0.98,
+    transition: transitions.quick,
+  },
 }
 
 // Tap animations

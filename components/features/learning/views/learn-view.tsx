@@ -112,21 +112,21 @@ export function LearnView({ topic }: LearnViewProps) {
       className="w-full max-w-4xl mx-auto"
     >
       {/* Main Content - Full Width */}
-      <div className="min-w-0 space-y-6 lg:space-y-8">
+      <div className="min-w-0 space-y-8 lg:space-y-10">
         {/* Markdown Content */}
         <motion.div
           initial="initial"
           animate="animate"
           variants={slideUpWithDelay(0.1)}
         >
-          <div className="px-4 py-6 md:px-6 md:py-8 lg:px-8">
+          <div className="px-4 py-8 md:px-6 md:py-10 lg:px-8 lg:py-12">
             {displayContent && displayContent.trim() ? (
               <MarkdownRenderer
                 content={displayContent}
                 className="prose prose-slate dark:prose-invert prose-headings:font-bold prose-headings:text-foreground prose-p:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:text-primary prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted max-w-none"
               />
             ) : (
-              <div className="text-muted-foreground py-12 text-center">
+              <div className="text-muted-foreground py-16 text-center">
                 <p>Content is being prepared. Please check back soon.</p>
               </div>
             )}
@@ -140,20 +140,20 @@ export function LearnView({ topic }: LearnViewProps) {
             animate="animate"
             variants={slideUpWithDelay(0.2)}
           >
-            <div className="px-4 py-6 md:px-6 md:py-8 lg:px-8">
-              <div className="mb-6 pb-4">
-                <h3 className="flex items-center gap-2 text-lg font-bold">
-                  <div className="bg-primary/10 rounded-md p-1.5">
+            <div className="px-4 py-8 md:px-6 md:py-10 lg:px-8 lg:py-12 border-t border-border/50">
+              <div className="mb-8">
+                <h3 className="flex items-center gap-3 text-xl font-bold text-foreground">
+                  <div className="bg-primary/10 rounded-lg p-2">
                     <IconWrapper
                       icon={PlayIcon}
-                      size={16}
+                      size={18}
                       className="text-primary"
                     />
                   </div>
                   Code Examples
                 </h3>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {codeExamples.map((example, idx) => (
                   <motion.div
                     key={example.id}
@@ -161,15 +161,15 @@ export function LearnView({ topic }: LearnViewProps) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: idx * 0.1 }}
                     className={cn(
-                      "space-y-3",
-                      idx > 0 && "border-border/50 border-t pt-6"
+                      "space-y-4",
+                      idx > 0 && "border-border/50 border-t pt-8"
                     )}
                   >
-                    <h4 className="text-foreground flex items-center gap-2 text-base font-semibold">
+                    <h4 className="text-foreground flex items-center gap-3 text-lg font-semibold">
                       <motion.span
                         whileHover={{ scale: 1.1, rotate: 360 }}
                         transition={{ duration: 0.3 }}
-                        className="bg-primary/10 text-primary flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold"
+                        className="bg-primary/10 text-primary flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold shrink-0"
                       >
                         {idx + 1}
                       </motion.span>
@@ -181,7 +181,7 @@ export function LearnView({ topic }: LearnViewProps) {
                       preview={null}
                     />
                     {example.explanation && (
-                      <p className="text-muted-foreground text-sm leading-relaxed">
+                      <p className="text-muted-foreground text-sm leading-relaxed pl-9">
                         {example.explanation}
                       </p>
                     )}
@@ -198,7 +198,7 @@ export function LearnView({ topic }: LearnViewProps) {
           animate="animate"
           variants={slideUpWithDelay(0.3)}
         >
-          <div className="px-4 py-6 md:px-6 md:py-8 lg:px-8">
+          <div className="px-4 py-8 md:px-6 md:py-10 lg:px-8 lg:py-12 border-t border-border/50">
             <QuizSection
               topicId={topic.id}
               questions={quizQuestions}
@@ -216,20 +216,22 @@ export function LearnView({ topic }: LearnViewProps) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ ...transitions.smooth, delay: 0.3 }}
-        className="mt-8 flex items-center justify-between border-t border-border/50 pt-6"
+        className="mt-12 px-4 md:px-6 lg:px-8 flex items-center justify-between border-t border-border/50 pt-8"
       >
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <IconWrapper icon={ClockIcon} size={14} />
-            <span>Time: <code className="font-mono">{topic.complexity.time}</code></span>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
+            <IconWrapper icon={ClockIcon} size={16} className="text-muted-foreground/70" />
+            <span className="font-medium">Time:</span>
+            <code className="font-mono text-foreground">{topic.complexity.time}</code>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <IconWrapper icon={LayersIcon} size={14} />
-            <span>Space: <code className="font-mono">{topic.complexity.space}</code></span>
+          <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
+            <IconWrapper icon={LayersIcon} size={16} className="text-muted-foreground/70" />
+            <span className="font-medium">Space:</span>
+            <code className="font-mono text-foreground">{topic.complexity.space}</code>
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Button
             variant="outline"
             size="sm"

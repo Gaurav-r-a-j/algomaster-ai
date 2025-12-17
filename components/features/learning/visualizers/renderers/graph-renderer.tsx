@@ -1,16 +1,28 @@
 import { motion } from "motion/react"
 
-import type { VisualizationStep } from "@/types/curriculum"
+import type { GraphAuxiliary, VisualizationStep } from "@/types/curriculum"
 import { transitions } from "@/lib/animations"
 
 interface GraphRendererProps {
   currentData: VisualizationStep
 }
 
+interface GraphNode {
+  id: string | number
+  x: number
+  y: number
+}
+
+interface GraphEdge {
+  from: string | number
+  to: string | number
+}
+
 export function GraphRenderer({ currentData }: GraphRendererProps) {
-  const graphNodes = (currentData.auxiliary as any)?.nodes || []
-  const graphEdges = (currentData.auxiliary as any)?.edges || []
-  const activeNodeId = (currentData.auxiliary as any)?.activeNode
+  const auxiliary = (currentData.auxiliary || {}) as GraphAuxiliary
+  const graphNodes: GraphNode[] = auxiliary.nodes || []
+  const graphEdges: GraphEdge[] = auxiliary.edges || []
+  const activeNodeId = auxiliary.activeNode
 
   return (
     <div className="relative h-[450px] w-full overflow-hidden p-6 sm:h-[550px]">
@@ -31,9 +43,9 @@ export function GraphRenderer({ currentData }: GraphRendererProps) {
             />
           </marker>
         </defs>
-        {graphEdges.map((edge: any, i: number) => {
-          const n1 = graphNodes.find((n: any) => n.id === edge.from)
-          const n2 = graphNodes.find((n: any) => n.id === edge.to)
+        {graphEdges.map((edge, i) => {
+          const n1 = graphNodes.find((n) => n.id === edge.from)
+          const n2 = graphNodes.find((n) => n.id === edge.to)
           if (!n1 || !n2) return null
           return (
             <motion.line
@@ -54,7 +66,7 @@ export function GraphRenderer({ currentData }: GraphRendererProps) {
           )
         })}
       </svg>
-      {graphNodes.map((node: any) => {
+      {graphNodes.map((node) => {
         const isActive = activeNodeId === node.id
         return (
           <motion.div

@@ -85,10 +85,47 @@ export interface ChatMessage {
   timestamp: number
 }
 
+// Auxiliary data types for different visualizers
+export interface GraphAuxiliary {
+  nodes?: Array<{ id: string | number; x: number; y: number }>
+  edges?: Array<{ from: string | number; to: string | number }>
+  activeNode?: string | number
+}
+
+export interface HashTableAuxiliary {
+  buckets?: number[][]
+  currentBucket?: number
+}
+
+export interface DPAuxiliary {
+  dp?: (number | null)[]
+  dpTable?: (number | null)[][]
+  row?: number
+  col?: number
+}
+
+export interface HeapAuxiliary {
+  heap?: number[]
+}
+
+export interface PathfindingAuxiliary {
+  visited?: number[]
+  path?: number[]
+  grid?: number[][]
+}
+
+export type VisualizationAuxiliary =
+  | GraphAuxiliary
+  | HashTableAuxiliary
+  | DPAuxiliary
+  | HeapAuxiliary
+  | PathfindingAuxiliary
+  | Record<string, unknown>
+
 export interface VisualizationStep {
   array: number[]
   activeIndices: number[]
   sortedIndices: number[]
   description: string
-  auxiliary?: unknown
+  auxiliary?: VisualizationAuxiliary
 }

@@ -5,12 +5,12 @@ import { useVisualizerState } from "@/hooks/visualizers/use-visualizer-state"
 import { useDPSteps } from "@/hooks/visualizers/use-dp-steps"
 import { motion } from "motion/react"
 
-import type { Topic, VisualizationStep } from "@/types/curriculum"
+import type { DPAuxiliary, Topic, VisualizationStep } from "@/types/curriculum"
 import { transitions } from "@/lib/animations"
 import {
   ArrowUp01Icon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
   PauseIcon,
   PlayIcon,
   RefreshCwIcon,
@@ -71,12 +71,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
   }, [updateSteps, topic.id])
 
   // Detect mode: 2D Table vs 1D Array
-  const auxiliary = currentData.auxiliary as {
-    dp?: (number | null)[]
-    dpTable?: (number | null)[][]
-    row?: number
-    col?: number
-  }
+  const auxiliary = (currentData.auxiliary || {}) as DPAuxiliary
   const is2D = !!auxiliary.dpTable
   const dp = auxiliary.dp || []
   const dpTable = auxiliary.dpTable || []
@@ -115,7 +110,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
                 aria-label={isPanelOpen ? "Collapse sidebar" : "Expand sidebar"}
               >
                 <IconWrapper
-                  icon={isPanelOpen ? ChevronLeftIcon : ChevronRightIcon}
+                icon={isPanelOpen ? ArrowLeftIcon : ArrowRightIcon}
                   size={18}
                 />
               </Button>
@@ -171,7 +166,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
                   className="h-9 w-9"
                   aria-label="Previous step"
                 >
-                  <IconWrapper icon={ChevronLeftIcon} size={16} />
+                  <IconWrapper icon={ArrowLeftIcon} size={16} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Previous</TooltipContent>
@@ -213,7 +208,7 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
                   className="h-9 w-9"
                   aria-label="Next step"
                 >
-                  <IconWrapper icon={ChevronRightIcon} size={16} />
+                  <IconWrapper icon={ArrowRightIcon} size={16} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Next</TooltipContent>
