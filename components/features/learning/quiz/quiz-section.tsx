@@ -45,7 +45,7 @@ export function QuizSection({
   const { markAsCompleted, isCompleted } = useProgress()
   const [isGeneratingAI, setIsGeneratingAI] = useState(false)
   const [aiQuestions, setAiQuestions] = useState<QuizQuestion[]>([])
-  const [showAISheet, setShowAISheet] = useState(false)
+  const [isAISheetOpen, setIsAISheetOpen] = useState(false)
 
   const displayQuestions = useMemo(() => {
     if (useAIQuestions && aiQuestions.length > 0) {
@@ -169,6 +169,8 @@ export function QuizSection({
                     aiQuestions={aiQuestions}
                     onQuestionSelect={handleSelect}
                     selectedAnswers={selectedAnswers}
+                    open={isAISheetOpen}
+                    onOpenChange={setIsAISheetOpen}
                     trigger={
                       <Button variant="outline" size="sm" className="mt-3 gap-2">
                         <IconWrapper

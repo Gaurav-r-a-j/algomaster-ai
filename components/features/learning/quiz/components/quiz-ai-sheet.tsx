@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { motion } from "motion/react"
 import type { QuizQuestion } from "@/types/curriculum"
 import { SparklesIcon } from "@/lib/icons"
@@ -26,6 +26,8 @@ interface QuizAISheetProps {
   aiQuestions?: QuizQuestion[]
   onQuestionSelect?: (questionId: number, optionIdx: number) => void
   selectedAnswers?: Record<number, number>
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
 export function QuizAISheet({
@@ -36,13 +38,22 @@ export function QuizAISheet({
   aiQuestions = [],
   onQuestionSelect,
   selectedAnswers = {},
+  open,
+  onOpenChange,
 }: QuizAISheetProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const hasQuestions = aiQuestions.length > 0
   const currentQuestion = hasQuestions ? aiQuestions[currentQuestionIndex] : null
 
+  // Reset question index when questions change
+  React.useEffect(() => {
+    if (hasQuestions) {
+      setCurrentQuestionIndex(0)
+    }
+  }, [hasQuestions])
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
         <SheetHeader>
