@@ -40,7 +40,7 @@ export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
                         : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
                     }}
                     transition={transitions.spring}
-                    className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl border-2 text-base font-bold backdrop-blur-sm transition-shadow sm:h-14 sm:w-14 sm:text-lg"
+                    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border-2 text-lg font-bold backdrop-blur-sm transition-shadow sm:h-16 sm:w-16 sm:text-xl"
                   >
                     {val}
                     {/* Pointer dot */}
@@ -58,7 +58,7 @@ export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
                         width="10"
                         height="10"
                         viewBox="0 0 10 10"
-                        className="rotate-[-90deg] fill-current text-border/60"
+                        className="-rotate-90 fill-current text-border/60"
                       >
                         <path d="M5 10L0 0h10L5 10z" />
                       </svg>

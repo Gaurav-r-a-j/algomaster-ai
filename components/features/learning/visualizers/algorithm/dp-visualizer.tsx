@@ -1,15 +1,12 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
-import {
-  generateDPSteps,
-  generateKnapsackSteps,
-  generateLCSSteps,
-} from "@/utils/algorithm-logic"
+import { useCallback, useEffect } from "react"
+import { useVisualizerState } from "@/hooks/visualizers/use-visualizer-state"
+import { useDPSteps } from "@/hooks/visualizers/use-dp-steps"
 import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
-import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
+import { transitions } from "@/lib/animations"
 import {
   ArrowUp01Icon,
   ChevronLeftIcon,
@@ -30,8 +27,10 @@ import {
 } from "@/components/ui/tooltip"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
-import { VisualizerInfoPanel } from "./visualizer-info-panel"
-import { VisualizerLayout } from "./visualizer-layout"
+import { VisualizerInfoPanel } from "../shared/visualizer-info-panel"
+import { VisualizerLayout } from "../shared/visualizer-layout"
+import { DPArrayView } from "../views/dp-array-view"
+import { DPTableView } from "../views/dp-table-view"
 
 interface DPVisualizerProps {
   topic: Topic
@@ -40,76 +39,32 @@ interface DPVisualizerProps {
 const DEFAULT_SPEED_MS = 800
 
 export function DPVisualizer({ topic }: DPVisualizerProps) {
-  const [steps, setSteps] = useState<VisualizationStep[]>([])
-  const [currentStep, setCurrentStep] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
-  const timerRef = useRef<number | null>(null)
+  const { generateSteps } = useDPSteps(topic.id)
+  const {
+    steps,
+    currentStep,
+    isPlaying,
+    playbackSpeed,
+    currentData,
+    setSteps,
+    setPlaybackSpeed,
+    handlePlay,
+    handlePause,
+    handlePreviousStep,
+    handleNextStep,
+    handleStepChange,
+    reset,
+  } = useVisualizerState({ defaultSpeed: DEFAULT_SPEED_MS })
 
-  const generateData = useCallback(() => {
-    let newSteps: VisualizationStep[] = []
-    if (topic.id === "knapsack") {
-      newSteps = generateKnapsackSteps()
-    } else if (topic.id === "lcs") {
-      newSteps = generateLCSSteps()
-    } else {
-      newSteps = generateDPSteps()
-    }
+  const updateSteps = useCallback(() => {
+    const newSteps = generateSteps()
     setSteps(newSteps)
-    setCurrentStep(0)
-    setIsPlaying(false)
-  }, [topic.id])
+    reset()
+  }, [generateSteps, setSteps, reset])
 
   useEffect(() => {
-    // eslint-disable-next-line
-    generateData()
-  }, [generateData, topic.id])
-
-  useEffect(() => {
-    if (isPlaying && steps.length > 0) {
-      timerRef.current = window.setInterval(() => {
-        setCurrentStep((prev) => {
-          if (prev >= steps.length - 1) {
-            setIsPlaying(false)
-            return prev
-          }
-          return prev + 1
-        })
-      }, playbackSpeed)
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current)
-      timerRef.current = null
-    }
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-        timerRef.current = null
-      }
-    }
-  }, [isPlaying, steps.length, playbackSpeed])
-
-  const handlePreviousStep = () => {
-    setCurrentStep((prev) => (prev > 0 ? prev - 1 : prev))
-  }
-
-  const handleStepChange = (step: number) => {
-    setIsPlaying(false)
-    setCurrentStep(step)
-  }
-
-  const handleNextStep = () => {
-    setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev))
-  }
-
-  const currentData =
-    steps[currentStep] ||
-    ({
-      array: [],
-      activeIndices: [],
-      sortedIndices: [],
-      description: "Ready",
-      auxiliary: { dp: [] },
-    } as VisualizationStep)
+    updateSteps()
+  }, [updateSteps, topic.id])
 
   // Detect mode: 2D Table vs 1D Array
   const auxiliary = currentData.auxiliary as {
@@ -380,101 +335,20 @@ export function DPVisualizer({ topic }: DPVisualizerProps) {
       hideDescription={false}
       showInfoPanel={true}
     >
-          <motion.div
-            initial="initial"
-            animate="animate"
-            variants={staggerContainer}
-        className="flex min-h-[200px] items-center justify-center overflow-auto p-6"
-          >
+          <div className="flex min-h-[200px] items-center justify-center overflow-auto p-6">
             {is2D ? (
-          <div className="flex flex-col gap-1.5 sm:gap-2">
-                {dpTable.map((rowArr, rowIndex) => (
-              <div key={rowIndex} className="flex gap-1.5 sm:gap-2">
-                    {rowArr.map((val, colIndex) => {
-                      const isActive = rowIndex === row && colIndex === col
-                      return (
-                        <motion.div
-                          key={`${rowIndex}-${colIndex}`}
-                          animate={{
-                            scale: isActive ? 1.1 : 1,
-                            backgroundColor: isActive
-                              ? "hsl(var(--primary))"
-                          : "hsl(var(--background))",
-                            borderColor: isActive
-                              ? "hsl(var(--primary))"
-                              : "hsl(var(--border))",
-                            color: isActive
-                              ? "hsl(var(--primary-foreground))"
-                              : "hsl(var(--foreground))",
-                        boxShadow: isActive
-                          ? "0 8px 20px -4px rgb(0 0 0 / 0.2)"
-                          : "0 2px 8px -2px rgb(0 0 0 / 0.1)",
-                          }}
-                      className="flex h-9 w-9 items-center justify-center rounded-xl border-2 text-xs font-bold backdrop-blur-sm sm:h-11 sm:w-11 sm:text-sm"
-                        >
-                          {val}
-                        </motion.div>
-                      )
-                    })}
-                  </div>
-                ))}
-              </div>
+              <DPTableView
+                dpTable={dpTable}
+                activeRow={row}
+                activeCol={col}
+              />
             ) : (
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-                {dp.map((val: number | null, idx: number) => {
-                  const isActive = currentData.activeIndices.includes(idx)
-                  const isCalculated = val !== null
-                  const isDependency =
-                    currentData.activeIndices.length > 1 &&
-                    currentData.activeIndices.slice(1).includes(idx)
-                  return (
-                    <motion.div
-                      key={idx}
-                      variants={staggerItem}
-                      className="flex flex-col items-center"
-                    >
-                      <motion.div
-                        animate={{
-                          scale: isActive ? 1.15 : 1,
-                          backgroundColor: isActive
-                            ? "hsl(var(--primary))"
-                            : isDependency
-                              ? "hsl(var(--secondary))"
-                              : isCalculated
-                            ? "hsl(var(--background))"
-                            : "hsl(var(--muted) / 0.5)",
-                          borderColor: isActive
-                            ? "hsl(var(--primary))"
-                            : isDependency
-                              ? "hsl(var(--secondary))"
-                              : isCalculated
-                                ? "hsl(var(--border))"
-                            : "hsl(var(--border) / 0.5)",
-                          color: isActive
-                            ? "hsl(var(--primary-foreground))"
-                            : isDependency
-                              ? "hsl(var(--secondary-foreground))"
-                              : isCalculated
-                                ? "hsl(var(--foreground))"
-                                : "hsl(var(--muted-foreground))",
-                      boxShadow: isActive
-                        ? "0 10px 25px -5px rgb(0 0 0 / 0.2)"
-                        : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
-                        }}
-                        transition={transitions.spring}
-                    className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 text-sm font-bold backdrop-blur-sm sm:h-16 sm:w-16 sm:text-xl"
-                      >
-                        {val !== null ? val : "?"}
-                      </motion.div>
-                  <span className="mt-2 font-mono text-xs font-medium text-muted-foreground">
-                        F({idx})
-                      </span>
-                    </motion.div>
-                  )
-                })}
-              </div>
+              <DPArrayView
+                dp={dp}
+                activeIndices={currentData.activeIndices}
+              />
             )}
-          </motion.div>
+          </div>
     </VisualizerLayout>
   )
 }

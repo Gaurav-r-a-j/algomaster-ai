@@ -39,10 +39,10 @@ import { Container } from "@/components/common/container"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { PageHeader } from "@/components/common/page-header"
 import { Section } from "@/components/common/section"
-import { LearnView } from "@/components/features/learning/learn-view"
-import { PracticeView } from "@/components/features/learning/practice-view"
-import { TopicCard } from "@/components/features/learning/topic-card"
-import { VisualizeView } from "@/components/features/learning/visualize-view"
+import { LearnView } from "@/components/features/learning/views/learn-view"
+import { PracticeView } from "@/components/features/learning/views/practice-view"
+import { TopicCard } from "@/components/features/learning/components/topic-card"
+import { VisualizeView } from "@/components/features/learning/views/visualize-view"
 
 interface SlugPageProps {
   params: Promise<{ slug: string }>

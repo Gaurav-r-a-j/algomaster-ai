@@ -1,10 +1,8 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
-import {
-  generateBinarySearchSteps,
-  generateLinearSearchSteps,
-} from "@/utils/algorithm-logic"
+import { useCallback, useEffect, useState } from "react"
+import { useVisualizerState } from "@/hooks/visualizers/use-visualizer-state"
+import { useSearchSteps } from "@/hooks/visualizers/use-search-steps"
 import { motion } from "motion/react"
 
 import type { Topic, VisualizationStep } from "@/types/curriculum"
@@ -30,8 +28,9 @@ import {
 } from "@/components/ui/tooltip"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
-import { VisualizerInfoPanel } from "./visualizer-info-panel"
-import { VisualizerLayout } from "./visualizer-layout"
+import { VisualizerInfoPanel } from "../shared/visualizer-info-panel"
+import { VisualizerLayout } from "../shared/visualizer-layout"
+import { SearchNumbersView } from "../views/search-numbers-view"
 
 const DEFAULT_SPEED_MS = 800
 
@@ -44,94 +43,37 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
     Array.from({ length: 8 }, (_, i) => (i + 1) * 5).sort((a, b) => a - b)
   )
   const [target, setTarget] = useState<number>(25)
-  const [steps, setSteps] = useState<VisualizationStep[]>([])
-  const [currentStep, setCurrentStep] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
-  const timerRef = useRef<number | null>(null)
 
-  const generateSteps = useCallback(() => {
-    let newSteps: VisualizationStep[] = []
-    if (topic.id === "binary-search") {
-      newSteps = generateBinarySearchSteps(array, target)
-    } else if (topic.id === "linear-search") {
-      newSteps = generateLinearSearchSteps(array, target)
-    } else {
-      newSteps = [
-        {
-          array: array,
-          activeIndices: [],
-          sortedIndices: [],
-          description: "Visualization not implemented.",
-        },
-      ]
-    }
+  const { generateSteps } = useSearchSteps(topic.id)
+  const {
+    steps,
+    currentStep,
+    isPlaying,
+    playbackSpeed,
+    currentData,
+    setSteps,
+    setPlaybackSpeed,
+    handlePlay,
+    handlePause,
+    handlePreviousStep,
+    handleNextStep,
+    handleStepChange,
+    reset,
+  } = useVisualizerState({ defaultSpeed: DEFAULT_SPEED_MS })
+
+  const updateSteps = useCallback(() => {
+    const newSteps = generateSteps(array, target)
     setSteps(newSteps)
-    setCurrentStep(0)
-    setIsPlaying(false)
-  }, [topic.id, array, target])
+    reset()
+  }, [array, target, generateSteps, setSteps, reset])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    generateSteps()
-  }, [generateSteps, topic.id, target])
-
-  useEffect(() => {
-    if (isPlaying && steps.length > 0) {
-      timerRef.current = window.setInterval(() => {
-        setCurrentStep((prev) => {
-          if (prev >= steps.length - 1) {
-            setIsPlaying(false)
-            return prev
-          }
-          return prev + 1
-        })
-      }, playbackSpeed)
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current)
-      timerRef.current = null
-    }
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-        timerRef.current = null
-      }
-    }
-  }, [isPlaying, steps.length, playbackSpeed])
-
-  const handlePreviousStep = () => {
-    setCurrentStep((prev) => (prev > 0 ? prev - 1 : prev))
-  }
-
-  const handleStepChange = (step: number) => {
-    setIsPlaying(false)
-    setCurrentStep(step)
-  }
-
-  const handleNextStep = () => {
-    setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev))
-  }
-
-  const handlePlay = () => {
-    setIsPlaying(true)
-  }
-
-  const handlePause = () => {
-    setIsPlaying(false)
-  }
+    updateSteps()
+  }, [updateSteps, topic.id, target])
 
   const handleReset = () => {
-    generateSteps()
+    updateSteps()
   }
-
-  const currentData =
-    steps[currentStep] ||
-    ({
-      array: array,
-      activeIndices: [],
-      sortedIndices: [],
-      description: "Ready to search",
-    } as VisualizationStep)
 
   const renderControls = (
     isPanelOpen: boolean,
@@ -404,57 +346,7 @@ export function SearchVisualizer({ topic }: SearchVisualizerProps) {
       hideDescription={true}
       showInfoPanel={true}
     >
-      <div className="flex min-h-[300px] flex-wrap items-center justify-center gap-4 p-6 sm:gap-6">
-        {currentData.array.map((value, idx) => {
-          const isActive = currentData.activeIndices.includes(idx)
-          const isFound = currentData.sortedIndices.includes(idx)
-
-          return (
-            <motion.div
-              key={`${idx}-${value}`}
-              variants={staggerItem}
-              layout
-              animate={{
-                scale: isActive ? 1.15 : 1,
-                zIndex: isActive ? 10 : 1,
-              }}
-              transition={transitions.spring}
-              className="flex flex-col items-center gap-2"
-            >
-              <motion.div
-                animate={{
-                  borderColor: isFound
-                    ? "rgb(16 185 129)"
-                    : isActive
-                      ? "rgb(245 158 11)"
-                      : "hsl(var(--border))",
-                  backgroundColor: isFound
-                    ? "rgb(16 185 129 / 0.15)"
-                    : isActive
-                      ? "rgb(245 158 11 / 0.15)"
-                      : "hsl(var(--background))",
-                  color: isFound
-                    ? "rgb(5 150 105)"
-                    : isActive
-                      ? "rgb(180 83 9)"
-                      : "hsl(var(--foreground))",
-                  boxShadow:
-                    isFound || isActive
-                      ? "0 10px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
-                      : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
-                }}
-                transition={transitions.smooth}
-                className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 text-base font-bold backdrop-blur-sm sm:h-16 sm:w-16 sm:text-xl"
-              >
-                {value}
-              </motion.div>
-              <span className="font-mono text-xs font-semibold text-muted-foreground">
-                [{idx}]
-              </span>
-            </motion.div>
-          )
-        })}
-      </div>
+      <SearchNumbersView currentData={currentData} />
     </VisualizerLayout>
   )
 }

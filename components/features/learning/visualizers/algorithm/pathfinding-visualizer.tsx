@@ -1,15 +1,10 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
-import {
-  generateBFSSteps,
-  generateDFSSteps,
-  generateDijkstraSteps,
-} from "@/utils/algorithm-logic"
-import { motion } from "motion/react"
-
+import { useCallback, useEffect } from "react"
+import { useVisualizerState } from "@/hooks/visualizers/use-visualizer-state"
+import { usePathfindingSteps } from "@/hooks/visualizers/use-pathfinding-steps"
 import type { Topic, VisualizationStep } from "@/types/curriculum"
-import { staggerItem, transitions } from "@/lib/animations"
+import { transitions } from "@/lib/animations"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -30,8 +25,9 @@ import {
 } from "@/components/ui/tooltip"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
-import { VisualizerInfoPanel } from "./visualizer-info-panel"
-import { VisualizerLayout } from "./visualizer-layout"
+import { VisualizerInfoPanel } from "../shared/visualizer-info-panel"
+import { VisualizerLayout } from "../shared/visualizer-layout"
+import { PathfindingGridView } from "../views/pathfinding-grid-view"
 
 interface PathfindingVisualizerProps {
   topic: Topic
@@ -40,79 +36,33 @@ interface PathfindingVisualizerProps {
 const DEFAULT_SPEED_MS = 300
 
 export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
-  const [steps, setSteps] = useState<VisualizationStep[]>([])
-  const [currentStep, setCurrentStep] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [playbackSpeed, setPlaybackSpeed] = useState(DEFAULT_SPEED_MS)
-  const timerRef = useRef<number | null>(null)
+  const { generateSteps } = usePathfindingSteps(topic.id)
+  const {
+    steps,
+    currentStep,
+    isPlaying,
+    playbackSpeed,
+    currentData,
+    setSteps,
+    setPlaybackSpeed,
+    handlePlay,
+    handlePause,
+    handlePreviousStep,
+    handleNextStep,
+    handleStepChange,
+    reset,
+  } = useVisualizerState({ defaultSpeed: DEFAULT_SPEED_MS })
 
-  const generateData = useCallback(() => {
-    let newSteps: VisualizationStep[] = []
-    if (topic.id === "dfs") {
-      newSteps = generateDFSSteps()
-    } else if (topic.id === "dijkstra") {
-      newSteps = generateDijkstraSteps()
-    } else {
-      newSteps = generateBFSSteps()
-    }
+  const updateSteps = useCallback(() => {
+    const newSteps = generateSteps()
     setSteps(newSteps)
-    setCurrentStep(0)
-    setIsPlaying(false)
-  }, [topic.id])
+    reset()
+  }, [generateSteps, setSteps, reset])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    generateData()
-  }, [generateData])
+    updateSteps()
+  }, [updateSteps, topic.id])
 
-  useEffect(() => {
-    if (isPlaying) {
-      timerRef.current = window.setInterval(() => {
-        setCurrentStep((prev) => {
-          if (prev >= steps.length - 1) {
-            setIsPlaying(false)
-            return prev
-          }
-          return prev + 1
-        })
-      }, playbackSpeed)
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current)
-    }
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-      }
-    }
-  }, [isPlaying, steps.length, playbackSpeed])
-
-  const handlePreviousStep = () => {
-    setCurrentStep((prev) => (prev > 0 ? prev - 1 : prev))
-  }
-
-  const handleStepChange = (step: number) => {
-    setIsPlaying(false)
-    setCurrentStep(step)
-  }
-
-  const handleNextStep = () => {
-    setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev))
-  }
-
-  const currentData =
-    steps[currentStep] ||
-    ({
-      array: Array(25).fill(0),
-      activeIndices: [],
-      sortedIndices: [],
-      description: "Ready",
-      auxiliary: { visited: [], path: [] },
-    } as VisualizationStep)
-
-  const auxiliary =
-    (currentData.auxiliary as { visited?: number[]; path?: number[] }) || {}
-  const visitedSet = new Set(auxiliary.visited || [])
-  const pathSet = new Set(auxiliary.path || [])
 
   const getDifficultyColor = (difficulty?: string) => {
     switch (difficulty?.toLowerCase()) {
@@ -377,57 +327,7 @@ export function PathfindingVisualizer({ topic }: PathfindingVisualizerProps) {
       hideDescription={false}
       showInfoPanel={true}
     >
-      <motion.div className="mx-auto grid w-full max-w-[350px] grid-cols-5 gap-1.5 p-6 sm:max-w-[400px] sm:gap-2">
-        {currentData.array.map((val, idx) => {
-          const isStart = val === 2
-          const isEnd = val === 3
-          const isWall = val === 1
-          const isVisited = visitedSet.has(idx)
-          const isPath = pathSet.has(idx)
-          const isActive = currentData.activeIndices.includes(idx)
-
-          let bgColor = "hsl(var(--muted) / 0.4)"
-          let borderColor = "hsl(var(--border) / 0.5)"
-
-          if (isWall) {
-            bgColor = "hsl(var(--foreground))"
-            borderColor = "hsl(var(--foreground))"
-          } else if (isPath) {
-            bgColor = "rgb(234 179 8)"
-            borderColor = "rgb(202 138 4)"
-          } else if (isActive) {
-            bgColor = "hsl(var(--primary))"
-            borderColor = "hsl(var(--primary))"
-          } else if (isStart) {
-            bgColor = "rgb(22 163 74)"
-            borderColor = "rgb(21 128 61)"
-          } else if (isEnd) {
-            bgColor = "hsl(var(--destructive))"
-            borderColor = "hsl(var(--destructive))"
-          } else if (isVisited) {
-            bgColor = "hsl(var(--primary) / 0.2)"
-            borderColor = "hsl(var(--primary) / 0.3)"
-          }
-
-          return (
-            <motion.div
-              key={idx}
-              variants={staggerItem}
-              layout
-              animate={{
-                backgroundColor: bgColor,
-                borderColor: borderColor,
-                scale: isActive ? 1.1 : 1,
-                boxShadow: isActive
-                  ? "0 8px 20px -4px rgb(0 0 0 / 0.2)"
-                  : "0 2px 8px -2px rgb(0 0 0 / 0.1)",
-              }}
-              transition={transitions.spring}
-              className="aspect-square rounded-lg border backdrop-blur-sm"
-            />
-          )
-        })}
-      </motion.div>
+      <PathfindingGridView currentData={currentData} />
     </VisualizerLayout>
   )
 }

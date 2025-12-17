@@ -42,7 +42,7 @@ export function QueueRenderer({ currentData }: QueueRendererProps) {
                     transition: { duration: 0.2 },
                   }}
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 font-bold text-white shadow-lg ring-1 ring-white/20 sm:h-14 sm:w-14"
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-emerald-500 to-emerald-600 text-base font-bold text-white shadow-lg ring-1 ring-white/20 sm:h-16 sm:w-16 sm:text-lg"
                 >
                   {val}
                 </motion.div>

@@ -9,12 +9,14 @@ import { HelpCircleIcon } from "@/lib/icons"
 import { Card } from "@/components/ui/card"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
-import { DataStructureVisualizer } from "./visualizers/data-structure-visualizer"
-import { DPVisualizer } from "./visualizers/dp-visualizer"
-import { HeapVisualizer } from "./visualizers/heap-visualizer"
-import { PathfindingVisualizer } from "./visualizers/pathfinding-visualizer"
-import { SearchVisualizer } from "./visualizers/search-visualizer"
-import { SortingVisualizer } from "./visualizers/sorting-visualizer"
+import {
+  DataStructureVisualizer,
+  DPVisualizer,
+  HeapVisualizer,
+  PathfindingVisualizer,
+  SearchVisualizer,
+  SortingVisualizer,
+} from "./visualizers"
 
 interface VisualizeViewProps {
   topic: Topic

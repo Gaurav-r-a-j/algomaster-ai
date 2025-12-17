@@ -24,7 +24,7 @@ export default function DocsLayout({
             <span>Documentation</span>
           </div>
         </header>
-        <div className="mx-auto w-full max-w-4xl flex-1 p-4 md:p-8">
+        <div className="flex-1 w-full overflow-x-hidden relative">
           {children}
         </div>
       </SidebarInset>

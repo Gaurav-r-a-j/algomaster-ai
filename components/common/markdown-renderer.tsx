@@ -12,11 +12,11 @@ import "highlight.js/styles/github-dark.css"
 
 import { cn } from "@/lib/utils"
 
-import { CodeBlock, SimpleCodeBlock } from "./code-block"
-import { CodePreview } from "./code-preview"
-import { CopyButton } from "./copy-button"
+import { CodeBlock, SimpleCodeBlock } from "./code/code-block"
+import { CodePreview } from "./code/code-preview"
+import { CopyButton } from "./code/copy-button"
 import { getPreviewComponent } from "./preview-registry"
-import { VisualDiagram } from "./visual-diagram"
+import { VisualDiagram } from "./visual/visual-diagram"
 
 interface MarkdownRendererProps {
   content: string

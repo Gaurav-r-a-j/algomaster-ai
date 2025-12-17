@@ -50,7 +50,7 @@ export function HashTableRenderer({ currentData }: HashTableRendererProps) {
                     initial={{ opacity: 0, scale: 0.5, x: -20 }}
                     animate={{ opacity: 1, scale: 1, x: 0 }}
                     transition={{ type: "spring" }}
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-border bg-background font-bold shadow-lg backdrop-blur-sm sm:h-12 sm:w-12"
+                    className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-border bg-background text-base font-bold shadow-lg backdrop-blur-sm sm:h-14 sm:w-14 sm:text-lg"
                   >
                     {val}
                   </motion.div>

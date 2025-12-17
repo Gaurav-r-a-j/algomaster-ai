@@ -9,20 +9,12 @@ import "highlight.js/styles/github-dark.css"
 
 import { getTopicBySlug, TOPICS } from "@/data/curriculum"
 import { generateTopicSlug } from "@/utils/common/slug"
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ClockIcon,
-  CpuChipIcon,
-} from "@heroicons/react/24/outline"
-
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodePlayground } from "@/components/features/learning/code-editor/code-playground"
 import { DataStructureVisualizer } from "@/components/features/learning/visualizers/data-structure-visualizer"
+import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
 
 // Force dynamic rendering if we want to ensure fresh data,
 // though static generation (generateStaticParams) is better for docs.
@@ -56,136 +48,80 @@ export default async function DocsArticlePage({
     currentIndex < TOPICS.length - 1 ? TOPICS[currentIndex + 1] : null
 
   return (
-    <div className="space-y-8 pb-20">
-      {/* Header Section */}
-      <div className="space-y-4">
-        <div className="text-muted-foreground flex items-center gap-2 text-sm">
-          <Link href="/docs" className="hover:text-primary transition-colors">
-            Docs
-          </Link>
-          <span>/</span>
-          <span className="text-foreground font-medium">{topic.module}</span>
-        </div>
+    <div className="flex w-full h-full">
+      <div className="flex-1 min-w-0 overflow-y-auto">
+        <div className="max-w-4xl px-6 py-8">
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="text-muted-foreground flex items-center gap-2 text-sm">
+                <Link href="/docs" className="hover:text-primary transition-colors">
+                  Docs
+                </Link>
+                <span>/</span>
+                <span className="text-foreground font-medium">{topic.module}</span>
+              </div>
 
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-          {topic.title}
-        </h1>
+              <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+                {topic.title}
+              </h1>
 
-        <p className="text-muted-foreground max-w-2xl text-xl leading-relaxed">
-          {topic.description}
-        </p>
+              <p className="text-muted-foreground max-w-2xl text-xl leading-relaxed">
+                {topic.description}
+              </p>
+            </div>
 
-        <div className="flex flex-wrap items-center gap-4 pt-2">
-          <Badge
-            variant={topic.difficulty === "Hard" ? "destructive" : "secondary"}
-            className="px-3 py-1 text-sm"
-          >
-            {topic.difficulty || "Medium"}
-          </Badge>
+            <Separator />
 
-          <div className="text-muted-foreground bg-muted/40 border-border flex items-center gap-2 rounded-md border px-3 py-1 text-sm">
-            <ClockIcon className="h-4 w-4" />
-            <span className="font-mono">
-              Time: {topic.complexity?.time || "N/A"}
-            </span>
-          </div>
+            <Tabs defaultValue="explanation" className="w-full">
+              <TabsList className="grid w-full grid-cols-3 lg:w-[600px]">
+                <TabsTrigger value="explanation">Explanation</TabsTrigger>
+                <TabsTrigger value="visualizer">Visualizer</TabsTrigger>
+                <TabsTrigger value="code">Code Interpreter</TabsTrigger>
+              </TabsList>
 
-          <div className="text-muted-foreground bg-muted/40 border-border flex items-center gap-2 rounded-md border px-3 py-1 text-sm">
-            <CpuChipIcon className="h-4 w-4" />
-            <span className="font-mono">
-              Space: {topic.complexity?.space || "N/A"}
-            </span>
+              <TabsContent value="explanation" className="mt-6">
+                <div className="min-w-0 space-y-6">
+                  <Card className="border-none bg-transparent shadow-none">
+                    <CardContent className="prose prose-slate dark:prose-invert prose-headings:scroll-m-20 prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:border-b prose-h2:pb-2 prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:leading-7 prose-p:mb-6 prose-code:font-mono prose-code:text-sm prose-code:bg-muted prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:rounded prose-pre:p-0 prose-pre:bg-transparent prose-pre:border-none max-w-none p-0">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeHighlight, rehypeSlug]}
+                        components={{
+                          pre: ({ node: _node, ...props }) => (
+                            <div className="bg-muted/50 relative my-6 rounded-lg border p-4">
+                              <pre
+                                {...props}
+                                className="overflow-x-auto bg-transparent p-0"
+                              />
+                            </div>
+                          ),
+                        }}
+                      >
+                        {topic.content}
+                      </ReactMarkdown>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="visualizer" className="mt-6">
+                <div className="min-h-[500px]">
+                  <DataStructureVisualizer topic={topic} />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="code" className="mt-6">
+                <CodePlayground topic={topic} />
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>
-
-      <Separator />
-
-      {/* Main Content Tabs */}
-      <Tabs defaultValue="explanation" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 lg:w-[600px]">
-          <TabsTrigger value="explanation">Explanation</TabsTrigger>
-          <TabsTrigger value="visualizer">Visualizer</TabsTrigger>
-          <TabsTrigger value="code">Code Interpreter</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="explanation" className="mt-6">
-          {/* Main Article Content - Full Width */}
-          <div className="min-w-0 space-y-6">
-            <Card className="border-none bg-transparent shadow-none">
-              <CardContent className="prose prose-slate dark:prose-invert prose-headings:scroll-m-20 prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:border-b prose-h2:pb-2 prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:leading-7 prose-p:mb-6 prose-code:font-mono prose-code:text-sm prose-code:bg-muted prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:rounded prose-pre:p-0 prose-pre:bg-transparent prose-pre:border-none max-w-none p-0">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeHighlight, rehypeSlug]}
-                  components={{
-                    pre: ({ node: _node, ...props }) => (
-                      <div className="bg-muted/50 relative my-6 rounded-lg border p-4">
-                        <pre
-                          {...props}
-                          className="overflow-x-auto bg-transparent p-0"
-                        />
-                      </div>
-                    ),
-                  }}
-                >
-                  {topic.content}
-                </ReactMarkdown>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="visualizer" className="mt-6">
-          <div className="min-h-[500px]">
-            <DataStructureVisualizer topic={topic} />
-          </div>
-        </TabsContent>
-
-        <TabsContent value="code" className="mt-6">
-          <CodePlayground topic={topic} />
-        </TabsContent>
-      </Tabs>
-
-      <Separator className="my-10" />
-
-      {/* Footer Navigation */}
-      <div className="flex items-center justify-between">
-        {prevTopic ? (
-          <Button
-            variant="outline"
-            size="lg"
-            className="group flex h-auto flex-col items-start gap-1 px-6 py-4"
-            asChild
-          >
-            <Link href={`/docs/${generateTopicSlug(prevTopic.title)}`}>
-              <span className="text-muted-foreground group-hover:text-primary flex items-center gap-1 text-xs transition-colors">
-                <ChevronLeftIcon className="h-3 w-3" /> Previous
-              </span>
-              <span className="text-base font-semibold">{prevTopic.title}</span>
-            </Link>
-          </Button>
-        ) : (
-          <div />
-        )}
-
-        {nextTopic ? (
-          <Button
-            variant="outline"
-            size="lg"
-            className="group flex h-auto flex-col items-end gap-1 px-6 py-4"
-            asChild
-          >
-            <Link href={`/docs/${generateTopicSlug(nextTopic.title)}`}>
-              <span className="text-muted-foreground group-hover:text-primary flex items-center gap-1 text-xs transition-colors">
-                Next <ChevronRightIcon className="h-3 w-3" />
-              </span>
-              <span className="text-base font-semibold">{nextTopic.title}</span>
-            </Link>
-          </Button>
-        ) : (
-          <div />
-        )}
-      </div>
+      <TopicSidebar
+        topic={topic}
+        prevTopic={prevTopic}
+        nextTopic={nextTopic}
+      />
     </div>
   )
 }

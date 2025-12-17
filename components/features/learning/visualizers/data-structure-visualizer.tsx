@@ -296,8 +296,26 @@ export function DataStructureVisualizer({
         return <HashTableRenderer currentData={currentData} />
       case VisualizerType.GRAPH:
         return <GraphRenderer currentData={currentData} />
+      case VisualizerType.NONE:
+        return (
+          <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-border/50 bg-muted/20 p-12">
+            <Squares2X2Icon className="h-12 w-12 text-muted-foreground/50" />
+            <p className="text-center text-sm text-muted-foreground">
+              Visualizer not available for this topic.
+              <br />
+              <span className="text-xs">Check the explanation tab for detailed content.</span>
+            </p>
+          </div>
+        )
       default:
-        return null
+        return (
+          <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-border/50 bg-muted/20 p-12">
+            <Squares2X2Icon className="h-12 w-12 text-muted-foreground/50" />
+            <p className="text-center text-sm text-muted-foreground">
+              Visualizer not available for this topic.
+            </p>
+          </div>
+        )
     }
   }
 

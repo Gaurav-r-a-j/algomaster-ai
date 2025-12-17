@@ -8,7 +8,7 @@ import {
   generateQueueSteps,
   generateStackSteps,
   generateTrieSteps,
-} from "@/utils/algorithm-logic"
+} from "@/utils/algorithms/algorithm-logic"
 
 import { VisualizationStep, VisualizerType } from "@/types/curriculum"
 

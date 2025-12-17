@@ -1,8 +1,11 @@
-import { TreeNode as TreeNodeType } from "@/utils/algorithm-logic"
+import { TreeNode as TreeNodeType } from "@/utils/algorithms/algorithm-logic"
 import { Squares2X2Icon } from "@heroicons/react/24/outline"
 import { AnimatePresence, motion } from "motion/react"
+import { useEffect, useRef } from "react"
+import * as d3 from "d3"
 
 import type { VisualizationStep } from "@/types/curriculum"
+import { transitions } from "@/lib/animations"
 
 // Tree Rendering Helper
 const renderTreeNodes = (
@@ -61,19 +64,22 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
   const treeData = renderTreeNodes(root || null, highlightNodeId || null)
 
   return (
-    <div className="relative h-[400px] w-full overflow-hidden p-6 sm:h-[500px]">
+    <div className="relative h-[450px] w-full overflow-hidden p-6 sm:h-[550px]">
       <svg className="pointer-events-none absolute inset-0 h-full w-full">
         {treeData.edges.map((edge) => (
-          <line
+          <motion.line
             key={edge.id}
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.4 }}
+            transition={transitions.spring}
             x1={`${edge.x1}%`}
             y1={`${edge.y1}px`}
             x2={`${edge.x2}%`}
             y2={`${edge.y2}px`}
             stroke="currentColor"
-            strokeOpacity="0.3"
-            strokeWidth="2.5"
+            strokeWidth="3"
             strokeLinecap="round"
+            className="text-muted-foreground"
           />
         ))}
       </svg>
@@ -86,7 +92,7 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
               layoutId={node.id}
               initial={{ scale: 0, opacity: 0 }}
               animate={{
-                scale: isHighlighed ? 1.2 : 1,
+                scale: isHighlighed ? 1.25 : 1,
                 opacity: 1,
                 backgroundColor: isHighlighed
                   ? "hsl(var(--primary))"
@@ -101,11 +107,11 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
                 top: `${node.y}px`,
                 zIndex: isHighlighed ? 20 : 10,
                 boxShadow: isHighlighed
-                  ? "0 10px 25px -5px hsl(var(--primary) / 0.4)"
+                  ? "0 10px 25px -5px hsl(var(--primary) / 0.5)"
                   : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
               }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="absolute flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border-2 text-sm font-bold backdrop-blur-sm sm:h-12 sm:w-12"
+              transition={transitions.spring}
+              className="absolute flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border-2 text-lg font-bold backdrop-blur-sm shadow-lg sm:h-18 sm:w-18 sm:text-xl md:h-20 md:w-20 md:text-2xl"
             >
               {node.val}
             </motion.div>

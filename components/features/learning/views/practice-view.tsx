@@ -21,7 +21,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import { CodePlayground } from "@/components/features/learning/code-editor/code-playground"
-import { InstructionsPanel } from "@/components/features/learning/instructions-panel"
+import { InstructionsPanel } from "@/components/features/learning/layout/instructions-panel"
 
 interface PracticeViewProps {
   topic: Topic

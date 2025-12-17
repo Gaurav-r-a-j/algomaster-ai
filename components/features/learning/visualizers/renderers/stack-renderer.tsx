@@ -32,7 +32,7 @@ export function StackRenderer({ currentData }: StackRendererProps) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="mb-2 flex h-10 w-full items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 font-bold text-white shadow-lg ring-1 ring-white/20 sm:h-12"
+                className="mb-2 flex h-12 w-full items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-indigo-600 text-base font-bold text-white shadow-lg ring-1 ring-white/20 sm:h-14 sm:text-lg"
               >
                 {val}
               </motion.div>

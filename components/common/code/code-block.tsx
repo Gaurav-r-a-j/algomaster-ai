@@ -59,7 +59,16 @@ export function CodeBlock({
   defaultLanguage = "javascript",
   className 
 }: CodeBlockProps) {
-  const availableLanguages = Object.keys(code).filter(lang => code[lang])
+  // Only allow valid programming languages, filter out invalid keys like "left", "right", etc.
+  const VALID_LANGUAGES = new Set([
+    "javascript", "js", "python", "py", "java", "cpp", "c++", 
+    "typescript", "ts", "go", "c", "cs", "csharp", "rust", 
+    "rb", "ruby", "php", "swift", "kotlin", "sql", "bash", 
+    "sh", "shell", "json", "yaml", "yml", "html", "css", "scss"
+  ])
+  
+  const availableLanguages = Object.keys(code)
+    .filter(lang => code[lang] && VALID_LANGUAGES.has(lang.toLowerCase()))
   
   // Compute initial language
   const getInitialLanguage = () => {
@@ -122,7 +131,7 @@ export function CodeBlock({
               <DropdownMenuContent 
                 align="start" 
                 sideOffset={8}
-                className="z-[100] min-w-[160px] overflow-hidden rounded-xl border border-white/10 bg-[#1c2128] p-1.5 shadow-2xl"
+                className="z-50 min-w-[160px] overflow-hidden rounded-xl border border-white/10 bg-[#1c2128] p-1.5 shadow-2xl"
               >
                 {availableLanguages.map((lang) => {
                   const config = LANGUAGES[lang] || { label: lang, color: "#888" }
