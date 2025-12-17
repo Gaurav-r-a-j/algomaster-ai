@@ -153,23 +153,6 @@ export function LearnView({ topic }: LearnViewProps) {
           </motion.div>
         )}
 
-        {/* Quiz Section */}
-        <motion.div
-          initial="initial"
-          animate="animate"
-          variants={slideUpWithDelay(0.3)}
-        >
-          <div className="px-4 py-8 md:px-6 md:py-10 lg:px-8 lg:py-12 border-t border-border/50">
-            <QuizSection
-              topicId={topic.id}
-              questions={quizQuestions}
-              useAIQuestions={useAIQuestions}
-              onToggleAIQuestions={setUseAIQuestions}
-              hasAIQuestions={true}
-              topicTitle={topic.title}
-            />
-          </div>
-        </motion.div>
       </div>
     </motion.div>
   )

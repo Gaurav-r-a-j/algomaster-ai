@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "motion/react"
 
 import type { VisualizationStep } from "@/types/curriculum"
+import { cn } from "@/lib/utils"
 
 interface StackRendererProps {
   currentData: VisualizationStep
@@ -34,19 +35,33 @@ export function StackRenderer({ currentData }: StackRendererProps) {
               Empty
             </motion.div>
           ) : (
-            currentData.array.map((val, idx) => (
-              <motion.div
-                key={`${idx}-${val}`}
-                layout
-                initial={{ opacity: 0, y: -50, scale: 0.8 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="mb-2 flex h-12 w-full items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-indigo-600 text-base font-bold text-white shadow-lg ring-1 ring-white/20 sm:h-14 sm:text-lg"
-              >
-                {val}
-              </motion.div>
-            ))
+            currentData.array.map((val, idx) => {
+              const isActive = currentData.activeIndices.includes(idx)
+              const isTop = idx === currentData.array.length - 1
+              return (
+                <motion.div
+                  key={`${idx}-${val}`}
+                  layout
+                  initial={{ opacity: 0, y: -50, scale: 0.8 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: isActive || isTop ? 1.05 : 1,
+                    backgroundColor: isActive
+                      ? "hsl(var(--primary))"
+                      : "hsl(var(--primary) / 0.8)",
+                  }}
+                  exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  className={cn(
+                    "mb-2 flex h-12 w-full items-center justify-center rounded-xl text-base font-bold text-white shadow-lg ring-1 ring-white/20 sm:h-14 sm:text-lg",
+                    isActive && "ring-2 ring-primary-foreground/50 shadow-xl"
+                  )}
+                >
+                  {val}
+                </motion.div>
+              )
+            })
           )}
         </AnimatePresence>
       </div>

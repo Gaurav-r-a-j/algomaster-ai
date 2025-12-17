@@ -36,23 +36,23 @@ export function NumberBox({
   const getColors = () => {
     if (isFound) {
       return {
-        borderColor: "rgb(16 185 129)",
-        backgroundColor: "rgb(16 185 129 / 0.2)",
-        color: "rgb(5 150 105)",
+        borderColor: "hsl(var(--primary))",
+        backgroundColor: "hsl(var(--primary))",
+        color: "hsl(var(--primary-foreground))",
       }
     }
     if (isActive) {
       return {
-        borderColor: "rgb(245 158 11)",
-        backgroundColor: "rgb(245 158 11 / 0.2)",
-        color: "rgb(180 83 9)",
+        borderColor: "hsl(var(--primary))",
+        backgroundColor: "hsl(var(--primary))",
+        color: "hsl(var(--primary-foreground))",
       }
     }
     if (isSorted) {
       return {
-        borderColor: "rgb(16 185 129)",
-        backgroundColor: "rgb(16 185 129 / 0.2)",
-        color: "rgb(5 150 105)",
+        borderColor: "hsl(var(--primary) / 0.5)",
+        backgroundColor: "hsl(var(--primary) / 0.1)",
+        color: "hsl(var(--primary))",
       }
     }
     return {

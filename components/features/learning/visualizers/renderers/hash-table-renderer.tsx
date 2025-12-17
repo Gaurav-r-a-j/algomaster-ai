@@ -31,7 +31,7 @@ export function HashTableRenderer({ currentData }: HashTableRendererProps) {
   }
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-3xl flex-col gap-3 p-6 sm:p-8">
+    <div className="mx-auto flex h-full w-full max-w-3xl flex-col items-center justify-center gap-3 p-6 sm:p-8">
       {buckets.map((bucket, idx) => {
         const isTargetBucket = auxiliary.currentBucket === idx
         return (
@@ -65,17 +65,36 @@ export function HashTableRenderer({ currentData }: HashTableRendererProps) {
             {/* Chain */}
             <div className="flex flex-1 flex-wrap gap-2">
               <AnimatePresence mode="popLayout">
-                {bucket.map((val, bIdx) => (
-                  <motion.div
-                    key={`${idx}-${bIdx}-${val}`}
-                    initial={{ opacity: 0, scale: 0.5, x: -20 }}
-                    animate={{ opacity: 1, scale: 1, x: 0 }}
-                    transition={{ type: "spring" }}
-                    className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-border bg-background text-base font-bold shadow-lg backdrop-blur-sm sm:h-14 sm:w-14 sm:text-lg"
-                  >
-                    {val}
-                  </motion.div>
-                ))}
+                {bucket.map((val, bIdx) => {
+                  const isActive = isTargetBucket && bIdx === bucket.length - 1
+                  return (
+                    <motion.div
+                      key={`${idx}-${bIdx}-${val}`}
+                      initial={{ opacity: 0, scale: 0.5, x: -20 }}
+                      animate={{
+                        opacity: 1,
+                        scale: isActive ? 1.1 : 1,
+                        x: 0,
+                        backgroundColor: isActive
+                          ? "hsl(var(--primary))"
+                          : "hsl(var(--background))",
+                        borderColor: isActive
+                          ? "hsl(var(--primary))"
+                          : "hsl(var(--border))",
+                        color: isActive
+                          ? "hsl(var(--primary-foreground))"
+                          : "hsl(var(--foreground))",
+                        boxShadow: isActive
+                          ? "0 8px 20px -4px hsl(var(--primary) / 0.4)"
+                          : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
+                      }}
+                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                      className="flex h-12 w-12 items-center justify-center rounded-xl border-2 text-base font-bold shadow-lg backdrop-blur-sm sm:h-14 sm:w-14 sm:text-lg"
+                    >
+                      {val}
+                    </motion.div>
+                  )
+                })}
               </AnimatePresence>
               {bucket.length === 0 && (
                 <span className="self-center px-2 text-xs italic text-muted-foreground">

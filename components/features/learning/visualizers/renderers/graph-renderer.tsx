@@ -45,7 +45,7 @@ export function GraphRenderer({ currentData }: GraphRendererProps) {
   }
 
   return (
-    <div className="relative h-full w-full overflow-hidden p-6 sm:h-[550px]">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden p-6 sm:h-[550px]">
       <svg className="pointer-events-none absolute inset-0 h-full w-full">
         <defs>
           <marker

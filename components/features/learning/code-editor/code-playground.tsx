@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import { javascriptExecutor } from "@/services/code-execution/javascript-executor"
 import { pythonExecutor } from "@/services/code-execution/python-executor"
+import { cppExecutor } from "@/services/code-execution/cpp-executor"
+import { javaExecutor } from "@/services/code-execution/java-executor"
 import { ArrowPathIcon, PlayIcon } from "@heroicons/react/24/solid"
 import Editor, { OnMount } from "@monaco-editor/react"
 
@@ -85,12 +87,14 @@ export function CodePlayground({
         result = await javascriptExecutor.execute(currentCode)
       } else if (language === "python") {
         result = await pythonExecutor.execute(currentCode)
+      } else if (language === "cpp") {
+        result = await cppExecutor.execute(currentCode)
+      } else if (language === "java") {
+        result = await javaExecutor.execute(currentCode)
       } else {
-        // Mocking for C++/Java as they require complex backends
-        await new Promise((resolve) => setTimeout(resolve, 800))
         result = {
-          output: `[System] ${LANGUAGES.find((l) => l.value === language)?.label} runtime requires backend connection.\n[System] (Simulation) Executing...\nHello World from ${language}!`,
-          status: "success" as const,
+          output: `Unsupported language: ${language}`,
+          status: "error" as const,
         }
       }
 

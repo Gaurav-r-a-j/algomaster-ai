@@ -2,35 +2,11 @@
 // This service handles code execution using Web Workers or API endpoints
 import { JavascriptExecutor } from "./javascript-executor"
 import { PythonExecutor } from "./python-executor"
+import { CppExecutor } from "./cpp-executor"
+import { JavaExecutor } from "./java-executor"
 import { CodeExecutor, ExecutionResult, SupportedLanguage } from "./types"
 
 export type { CodeExecutor, ExecutionResult, SupportedLanguage }
-
-// C++ execution placeholder (would need backend API)
-class CppExecutor implements CodeExecutor {
-  async execute(_code: string): Promise<ExecutionResult> {
-    return {
-      output:
-        "C++ execution requires a backend service. This is a placeholder.",
-      error: null,
-      status: "error",
-      executionTime: 0,
-    }
-  }
-}
-
-// Java execution placeholder (would need backend API)
-class JavaExecutor implements CodeExecutor {
-  async execute(_code: string): Promise<ExecutionResult> {
-    return {
-      output:
-        "Java execution requires a backend service. This is a placeholder.",
-      error: null,
-      status: "error",
-      executionTime: 0,
-    }
-  }
-}
 
 // Factory function to get executor
 export function getCodeExecutor(language: SupportedLanguage): CodeExecutor {
@@ -47,6 +23,12 @@ export function getCodeExecutor(language: SupportedLanguage): CodeExecutor {
       return new JavascriptExecutor()
   }
 }
+
+// Export executors for direct use
+export { javascriptExecutor } from "./javascript-executor"
+export { pythonExecutor } from "./python-executor"
+export { cppExecutor } from "./cpp-executor"
+export { javaExecutor } from "./java-executor"
 
 // Main execution function
 export async function executeCode(

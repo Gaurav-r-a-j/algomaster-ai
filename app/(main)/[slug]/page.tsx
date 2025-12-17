@@ -15,7 +15,7 @@ import { motion } from "motion/react"
 
 import { VisualizerType } from "@/types/curriculum"
 import { fadeIn, slideDown, transitions } from "@/lib/animations"
-import { BookOpenIcon, CodeIcon, PlayIcon, ShareIcon, UserIcon } from "@/lib/icons"
+import { BookOpenIcon, CheckmarkCircleIcon, CodeIcon, PlayIcon, ShareIcon, UserIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
 import {
   useModuleBySlug,
@@ -40,10 +40,8 @@ import { Container } from "@/components/common/container"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { PageHeader } from "@/components/common/page-header"
 import { Section } from "@/components/common/section"
-import { LearnView } from "@/components/features/learning/views/learn-view"
-import { PracticeView } from "@/components/features/learning/views/practice-view"
+import { LearnView, PracticeView, VisualizeView, TestView } from "@/components/features/learning/views"
 import { TopicCard } from "@/components/features/learning/components/topic-card"
-import { VisualizeView } from "@/components/features/learning/views/visualize-view"
 import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
 
 interface SlugPageProps {
@@ -285,7 +283,7 @@ export default function SlugPage({ params }: SlugPageProps) {
                 </div>
 
                 {/* Tabs */}
-                <TabsList className="grid h-9 shrink-0 grid-cols-3">
+                <TabsList className="grid h-9 shrink-0 grid-cols-4">
                   <TabsTrigger
                     value="learn"
                     className="flex items-center gap-1.5 px-3 text-xs"
@@ -312,6 +310,13 @@ export default function SlugPage({ params }: SlugPageProps) {
                   >
                     <IconWrapper icon={CodeIcon} size={14} />
                     <span className="hidden sm:inline">Practice</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="quiz"
+                    className="flex items-center gap-1.5 px-3 text-xs"
+                  >
+                    <IconWrapper icon={CheckmarkCircleIcon} size={14} />
+                    <span className="hidden sm:inline">Quiz</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -378,6 +383,20 @@ export default function SlugPage({ params }: SlugPageProps) {
               className="h-full w-full"
             >
               <PracticeView topic={topic} />
+            </motion.div>
+          </TabsContent>
+
+          {/* Quiz Tab - Knowledge Check */}
+          <TabsContent value="quiz" className="mt-0">
+            <motion.div
+              key="quiz"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={transitions.smooth}
+              className="h-full w-full"
+            >
+              <TestView topic={topic} />
             </motion.div>
           </TabsContent>
 

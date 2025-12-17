@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "motion/react"
 
 import type { VisualizationStep } from "@/types/curriculum"
+import { cn } from "@/lib/utils"
 
 interface QueueRendererProps {
   currentData: VisualizationStep
@@ -39,24 +40,41 @@ export function QueueRenderer({ currentData }: QueueRendererProps) {
                 Queue is empty
               </motion.div>
             ) : (
-              currentData.array.map((val, idx) => (
-                <motion.div
-                  key={`${idx}-${val}`}
-                  layout
-                  initial={{ opacity: 0, x: 50, scale: 0.8 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{
-                    opacity: 0,
-                    x: -50,
-                    scale: 0.8,
-                    transition: { duration: 0.2 },
-                  }}
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-emerald-500 to-emerald-600 text-base font-bold text-white shadow-lg ring-1 ring-white/20 sm:h-16 sm:w-16 sm:text-lg"
-                >
-                  {val}
-                </motion.div>
-              ))
+              currentData.array.map((val, idx) => {
+                const isActive = currentData.activeIndices.includes(idx)
+                const isFront = idx === 0
+                const isBack = idx === currentData.array.length - 1
+                return (
+                  <motion.div
+                    key={`${idx}-${val}`}
+                    layout
+                    initial={{ opacity: 0, x: 50, scale: 0.8 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      scale: isActive ? 1.1 : 1,
+                      backgroundColor: isActive
+                        ? "hsl(var(--primary))"
+                        : isFront || isBack
+                          ? "hsl(var(--primary) / 0.9)"
+                          : "hsl(var(--primary) / 0.7)",
+                    }}
+                    exit={{
+                      opacity: 0,
+                      x: -50,
+                      scale: 0.8,
+                      transition: { duration: 0.2 },
+                    }}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className={cn(
+                      "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-base font-bold text-white shadow-lg ring-1 ring-white/20 sm:h-16 sm:w-16 sm:text-lg",
+                      isActive && "ring-2 ring-primary-foreground/50 shadow-xl z-10"
+                    )}
+                  >
+                    {val}
+                  </motion.div>
+                )
+              })
             )}
           </AnimatePresence>
         </div>

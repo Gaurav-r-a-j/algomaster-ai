@@ -1,4 +1,8 @@
-import { AnimatePresence, motion } from "motion/react"
+"use client"
+
+import { useEffect, useRef } from "react"
+import * as d3 from "d3"
+import { motion } from "motion/react"
 
 import type { VisualizationStep } from "@/types/curriculum"
 import { transitions } from "@/lib/animations"
@@ -8,6 +12,9 @@ interface LinkedListRendererProps {
 }
 
 export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
+  const svgRef = useRef<SVGSVGElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
   // Ensure we have data
   if (!currentData || !currentData.array || currentData.array.length === 0) {
     return (
@@ -19,74 +26,174 @@ export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
     )
   }
 
-  return (
-    <div className="flex h-full w-full items-center justify-center overflow-x-auto p-6 sm:p-8">
-      <motion.div className="flex min-w-fit items-center justify-start gap-1">
-        <AnimatePresence>
-          {currentData.array.map((val, idx) => {
-            const isActive = currentData.activeIndices.includes(idx)
-            return (
-              <motion.div
-                key={idx}
-                layout
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="group flex items-center"
-              >
-                <div className="relative flex flex-col items-center">
-                  <motion.div
-                    animate={{
-                      scale: isActive ? 1.15 : 1,
-                      backgroundColor: isActive
-                        ? "hsl(var(--primary))"
-                        : "hsl(var(--background))",
-                      borderColor: isActive
-                        ? "hsl(var(--primary))"
-                        : "hsl(var(--border))",
-                      color: isActive
-                        ? "hsl(var(--primary-foreground))"
-                        : "hsl(var(--foreground))",
-                      boxShadow: isActive
-                        ? "0 10px 25px -5px hsl(var(--primary) / 0.4)"
-                        : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
-                    }}
-                    transition={transitions.spring}
-                    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border-2 text-lg font-bold backdrop-blur-sm transition-shadow sm:h-16 sm:w-16 sm:text-xl"
-                  >
-                    {val}
-                    {/* Pointer dot */}
-                    <div className="absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full border border-inherit bg-inherit"></div>
-                  </motion.div>
-                  <div className="mt-2 font-mono text-xs font-medium text-muted-foreground">
-                    {idx === 0 ? "HEAD" : `#${idx}`}
-                  </div>
-                </div>
+  useEffect(() => {
+    if (!svgRef.current || !containerRef.current) return
 
-                {idx < currentData.array.length - 1 && (
-                  <div className="relative mx-1 h-0.5 w-10 bg-border/60 sm:w-12">
-                    <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2">
-                      <svg
-                        width="10"
-                        height="10"
-                        viewBox="0 0 10 10"
-                        className="-rotate-90 fill-current text-border/60"
-                      >
-                        <path d="M5 10L0 0h10L5 10z" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            )
-          })}
-        </AnimatePresence>
-        <div className="ml-2 flex items-center gap-3 opacity-60">
-          <div className="h-0.5 w-6 bg-border/60 sm:w-8"></div>
-          <div className="flex h-9 w-14 items-center justify-center rounded-xl border border-dashed border-border/60 bg-muted/30 font-mono text-xs text-muted-foreground backdrop-blur-sm sm:h-10 sm:w-16">
-            NULL
-          </div>
-        </div>
-      </motion.div>
+    const svg = d3.select(svgRef.current)
+    svg.selectAll("*").remove() // Clear previous render
+
+    const containerWidth = containerRef.current.clientWidth || 800
+    const height = 200
+    const nodeRadius = 32
+    const nodeSpacing = 140
+    const padding = 50
+    const startX = padding
+    const centerY = height / 2
+
+    // Calculate total width needed
+    const totalWidth = Math.max(
+      containerWidth,
+      startX + currentData.array.length * nodeSpacing + padding + 60
+    )
+
+    svg.attr("width", totalWidth).attr("height", height)
+
+    // Create container group
+    const container = svg.append("g").attr("transform", `translate(0, ${centerY})`)
+
+    // Add glow filter for active nodes
+    const defs = svg.append("defs")
+    const glowFilter = defs.append("filter").attr("id", "glow")
+    glowFilter.append("feGaussianBlur").attr("stdDeviation", "5").attr("result", "coloredBlur")
+    const feMerge = glowFilter.append("feMerge")
+    feMerge.append("feMergeNode").attr("in", "coloredBlur")
+    feMerge.append("feMergeNode").attr("in", "SourceGraphic")
+
+    // Draw nodes and connections
+    currentData.array.forEach((val, idx) => {
+      const x = startX + idx * nodeSpacing
+      const isActive = currentData.activeIndices.includes(idx)
+
+      // Draw connection line (except for first node)
+      if (idx > 0) {
+        const prevX = startX + (idx - 1) * nodeSpacing
+        const prevIsActive = currentData.activeIndices.includes(idx - 1)
+        const lineIsActive = isActive || prevIsActive
+
+        const line = container
+          .append("line")
+          .attr("x1", prevX + nodeRadius)
+          .attr("y1", 0)
+          .attr("x2", x - nodeRadius)
+          .attr("y2", 0)
+          .attr("stroke", lineIsActive ? "hsl(var(--primary))" : "hsl(var(--border))")
+          .attr("stroke-width", lineIsActive ? 3 : 2.5)
+          .attr("opacity", lineIsActive ? 0.9 : 0.5)
+
+        // Draw arrow
+        const arrow = container
+          .append("path")
+          .attr(
+            "d",
+            `M ${x - nodeRadius - 8} 0 L ${x - nodeRadius - 20} -6 L ${x - nodeRadius - 20} 6 Z`
+          )
+          .attr("fill", lineIsActive ? "hsl(var(--primary))" : "hsl(var(--border))")
+          .attr("opacity", lineIsActive ? 1 : 0.5)
+      }
+
+      // Draw node circle
+      const nodeGroup = container.append("g").attr("transform", `translate(${x}, 0)`)
+
+      const circle = nodeGroup
+        .append("circle")
+        .attr("r", isActive ? nodeRadius * 1.2 : nodeRadius)
+        .attr("fill", isActive ? "hsl(var(--primary))" : "hsl(var(--background))")
+        .attr("stroke", isActive ? "hsl(var(--primary))" : "hsl(var(--border))")
+        .attr("stroke-width", isActive ? 4 : 2)
+        .attr("opacity", 1)
+        .attr("filter", isActive ? "url(#glow)" : "none")
+
+      // Animate circle on state change
+      circle
+        .transition()
+        .duration(300)
+        .ease(d3.easeCubicOut)
+        .attr("r", isActive ? nodeRadius * 1.2 : nodeRadius)
+        .attr("stroke-width", isActive ? 4 : 2)
+        .attr("fill", isActive ? "hsl(var(--primary))" : "hsl(var(--background))")
+        .attr("stroke", isActive ? "hsl(var(--primary))" : "hsl(var(--border))")
+
+      // Draw value text
+      const text = nodeGroup
+        .append("text")
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("fill", isActive ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))")
+        .attr("font-size", "20")
+        .attr("font-weight", "bold")
+        .attr("font-family", "system-ui, -apple-system, sans-serif")
+        .text(val)
+
+      // Animate text color on state change
+      text
+        .transition()
+        .duration(300)
+        .attr("fill", isActive ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))")
+
+      // Draw label (HEAD or index)
+      nodeGroup
+        .append("text")
+        .attr("text-anchor", "middle")
+        .attr("y", nodeRadius + 25)
+        .attr("fill", "hsl(var(--muted-foreground))")
+        .attr("font-size", "11")
+        .attr("font-family", "monospace")
+        .attr("font-weight", "600")
+        .text(idx === 0 ? "HEAD" : `#${idx}`)
+    })
+
+    // Draw NULL at the end
+    const nullX = startX + currentData.array.length * nodeSpacing
+    container
+      .append("line")
+      .attr("x1", startX + (currentData.array.length - 1) * nodeSpacing + nodeRadius)
+      .attr("y1", 0)
+      .attr("x2", nullX - 25)
+      .attr("y2", 0)
+      .attr("stroke", "hsl(var(--border))")
+      .attr("stroke-width", 2)
+      .attr("stroke-dasharray", "6,6")
+      .attr("opacity", 0.4)
+
+    container
+      .append("rect")
+      .attr("x", nullX - 25)
+      .attr("y", -18)
+      .attr("width", 50)
+      .attr("height", 36)
+      .attr("rx", 10)
+      .attr("fill", "hsl(var(--muted))")
+      .attr("stroke", "hsl(var(--border))")
+      .attr("stroke-width", 1.5)
+      .attr("stroke-dasharray", "4,4")
+      .attr("opacity", 0.7)
+
+    container
+      .append("text")
+      .attr("x", nullX)
+      .attr("y", 0)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .attr("fill", "hsl(var(--muted-foreground))")
+      .attr("font-size", "13")
+      .attr("font-family", "monospace")
+      .attr("font-weight", "bold")
+      .text("NULL")
+  }, [currentData])
+
+  return (
+    <div
+      ref={containerRef}
+      className="flex h-full w-full items-center justify-center overflow-x-auto p-6 sm:p-8"
+    >
+      <motion.svg
+        ref={svgRef}
+        className="w-full"
+        style={{ minHeight: "200px", height: "200px" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={transitions.smooth}
+      />
     </div>
   )
 }

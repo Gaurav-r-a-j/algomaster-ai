@@ -84,7 +84,7 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
   const treeData = renderTreeNodes(root || null, highlightNodeId || null)
 
   return (
-    <div className="relative h-[450px] w-full overflow-hidden p-6 sm:h-[550px]">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden p-6 sm:h-[550px]">
       <svg className="pointer-events-none absolute inset-0 h-full w-full">
         {treeData.edges.map((edge) => (
           <motion.line

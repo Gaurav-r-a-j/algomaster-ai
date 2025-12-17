@@ -138,8 +138,8 @@ export function QuizSection({
         variants={fadeIn}
         transition={transitions.smooth}
       >
-        <Card className="border-border/50 shadow-sm">
-          <CardHeader className="border-border/50 border-b">
+        <Card className="border-border/40 shadow-sm">
+          <CardHeader className="border-border/40 border-b px-6 py-5">
             <motion.div
               variants={slideUp}
               className="flex items-start justify-between gap-4"
@@ -158,7 +158,7 @@ export function QuizSection({
                   </motion.div>
                   Knowledge Check
                 </CardTitle>
-                <p className="text-muted-foreground mt-1 text-sm">
+                <p className="text-muted-foreground mt-1.5 text-sm">
                   Question {currentStep + 1} of {displayQuestions.length}
                 </p>
                 {hasAIQuestions && onToggleAIQuestions && (
@@ -194,16 +194,16 @@ export function QuizSection({
               )}
             </motion.div>
           </CardHeader>
-          <CardContent className="p-8">
+          <CardContent className="p-6">
             {/* Progress Bar */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-3">
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-2.5">
                 <span className="text-sm font-medium text-muted-foreground">Progress</span>
                 <span className="text-sm font-semibold text-foreground">
                   {currentStep + 1} / {displayQuestions.length}
                 </span>
               </div>
-              <Progress value={progress} className="h-2.5" />
+              <Progress value={progress} className="h-2" />
             </div>
 
             {showResults && score !== null ? (

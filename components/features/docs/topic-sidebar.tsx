@@ -12,7 +12,6 @@ import { IconWrapper } from "@/components/common/icon-wrapper"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Topic } from "@/types/curriculum"
 import { generateTopicSlug } from "@/utils/common/slug"
@@ -60,27 +59,26 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
     topic.youtubeLink.en && topic.youtubeLink.hi
 
   return (
-    <aside className="sticky top-16 h-[calc(100vh-4rem)] w-80 shrink-0 overflow-hidden border-l border-border/50 bg-gradient-to-b from-background to-muted/20 backdrop-blur-sm">
-      <div className="h-full overflow-y-auto px-6 py-10 space-y-8 custom-scrollbar">
+    <aside className="sticky top-16 h-[calc(100vh-4rem)] w-80 shrink-0 overflow-hidden border-l border-border/30 bg-background/95 backdrop-blur-sm">
+      <div className="h-full overflow-y-auto px-5 py-6 space-y-6 custom-scrollbar">
         {/* Topic Details Section */}
-        <div className="space-y-5">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="h-1 w-8 bg-primary rounded-full" />
-            <h3 className="text-xs font-bold uppercase tracking-widest text-foreground">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
               Topic Details
             </h3>
           </div>
           
-          <div className="space-y-5">
+          <div className="space-y-3">
             {/* Difficulty */}
-            <Card className="border-border/60 bg-gradient-to-br from-background to-muted/30 shadow-sm">
-              <CardContent className="p-4">
-                <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+            <Card className="border-border/40 p-0 bg-background">
+              <CardContent className="p-3">
+                <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
                   Difficulty
                 </p>
                 <Badge
                   variant={getDifficultyVariant()}
-                  className="w-full justify-center py-2.5 text-sm font-bold shadow-sm"
+                  className="w-full justify-center py-2 text-sm font-bold"
                 >
                   {topic.difficulty || "Medium"}
                 </Badge>
@@ -90,37 +88,37 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
             {/* Complexity */}
             {(topic.complexity?.time && topic.complexity.time !== "N/A") || 
              (topic.complexity?.space && topic.complexity.space !== "N/A") ? (
-              <Card className="border-border/60 bg-gradient-to-br from-background to-muted/30 shadow-sm">
-                <CardContent className="p-4">
-                  <p className="text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wide">
+              <Card className="border-border/40 bg-background p-0">
+                <CardContent className="p-3">
+                  <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
                     Complexity
                   </p>
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     {topic.complexity?.time && topic.complexity.time !== "N/A" && (
-                      <div className="flex items-center gap-3.5 rounded-lg bg-primary/5 p-3 border border-primary/10">
-                        <div className="shrink-0 rounded-lg bg-primary/15 p-2.5 shadow-sm">
-                          <ClockIcon className="h-4 w-4 text-primary" />
+                      <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-2.5">
+                        <div className="shrink-0 rounded-md bg-primary/10 p-2">
+                          <ClockIcon className="h-3.5 w-3.5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
+                          <p className="text-xs font-semibold text-muted-foreground mb-0.5 uppercase tracking-wide">
                             Time
                           </p>
-                          <p className="text-base font-mono font-bold text-foreground">
+                          <p className="text-sm font-mono font-bold text-foreground">
                             {topic.complexity.time}
                           </p>
                         </div>
                       </div>
                     )}
                     {topic.complexity?.space && topic.complexity.space !== "N/A" && (
-                      <div className="flex items-center gap-3.5 rounded-lg bg-primary/5 p-3 border border-primary/10">
-                        <div className="shrink-0 rounded-lg bg-primary/15 p-2.5 shadow-sm">
-                          <CpuChipIcon className="h-4 w-4 text-primary" />
+                      <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-2.5">
+                        <div className="shrink-0 rounded-md bg-primary/10 p-2">
+                          <CpuChipIcon className="h-3.5 w-3.5 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
+                          <p className="text-xs font-semibold text-muted-foreground mb-0.5 uppercase tracking-wide">
                             Space
                           </p>
-                          <p className="text-base font-mono font-bold text-foreground">
+                          <p className="text-sm font-mono font-bold text-foreground">
                             {topic.complexity.space}
                           </p>
                         </div>
@@ -136,15 +134,11 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
         {/* YouTube Video Section */}
         {videoId && (
           <>
-            <Separator className="my-8" />
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="h-1 w-8 bg-primary rounded-full" />
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-foreground">
-                    Learn More
-                  </h3>
-                </div>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  Learn More
+                </h3>
                 {hasMultipleLanguages && (
                   <Tabs value={videoLanguage} onValueChange={(v) => setVideoLanguage(v as "en" | "hi")} className="w-auto">
                     <TabsList className="h-7 bg-muted/50">
@@ -154,7 +148,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                   </Tabs>
                 )}
               </div>
-              <Card className="overflow-hidden border-border/60 shadow-md hover:shadow-lg transition-shadow">
+              <Card className="overflow-hidden border-border/40 bg-background p-0">
                 <CardContent className="p-0">
                   <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
                     <LiteYouTubeEmbed
@@ -170,35 +164,31 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
         )}
 
         {/* Navigation Section */}
-        <Separator className="my-8" />
-        <div className="space-y-4">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="h-1 w-8 bg-primary rounded-full" />
-            <h3 className="text-xs font-bold uppercase tracking-widest text-foreground">
-              Navigation
-            </h3>
-          </div>
+        <div className="space-y-3">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+            Navigation
+          </h3>
           
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {prevTopic && (
-              <Card className="border-border/60 hover:border-primary/50 transition-all hover:shadow-md cursor-pointer group">
+              <Card className="border-border/40 hover:border-primary/40 transition-all p-0 cursor-pointer group">
                 <Button
                   variant="ghost"
                   className="w-full justify-start h-auto p-0 hover:bg-transparent"
                   asChild
                 >
                   <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
-                    <CardContent className="p-4 w-full">
-                      <div className="flex items-center gap-3.5">
-                        <div className="shrink-0 rounded-lg bg-muted/60 group-hover:bg-primary/10 p-2.5 transition-colors group-hover:-translate-x-1 transition-transform">
+                    <CardContent className="p-3 w-full">
+                      <div className="flex items-center gap-3">
+                        <div className="shrink-0 rounded-md bg-muted/50 group-hover:bg-primary/10 p-2 transition-colors">
                           <IconWrapper 
                             icon={ArrowLeft01Icon} 
-                            size={16} 
+                            size={14} 
                             className="text-muted-foreground group-hover:text-primary transition-colors" 
                           />
                         </div>
                         <div className="flex-1 text-left min-w-0">
-                          <p className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wide">
+                          <p className="text-xs font-semibold text-muted-foreground mb-0.5 uppercase tracking-wide">
                             Previous
                           </p>
                           <p className="text-sm font-bold truncate text-foreground leading-tight group-hover:text-primary transition-colors">
@@ -213,27 +203,27 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
             )}
 
             {nextTopic && (
-              <Card className="border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/15 transition-all hover:shadow-lg cursor-pointer group">
+              <Card className="border-primary/30 p-0 bg-primary/5 hover:bg-primary/10 transition-all cursor-pointer group">
                 <Button
                   variant="ghost"
                   className="w-full justify-start h-auto p-0 hover:bg-transparent"
                   asChild
                 >
                   <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
-                    <CardContent className="p-4 w-full">
-                      <div className="flex items-center gap-3.5">
+                    <CardContent className="p-3 w-full">
+                      <div className="flex items-center gap-3">
                         <div className="flex-1 text-left min-w-0">
-                          <p className="text-xs font-semibold text-primary/80 mb-1 uppercase tracking-wide">
+                          <p className="text-xs font-semibold text-primary/80 mb-0.5 uppercase tracking-wide">
                             Next
                           </p>
                           <p className="text-sm font-bold truncate text-primary leading-tight">
                             {nextTopic.title}
                           </p>
                         </div>
-                        <div className="shrink-0 rounded-lg bg-primary/20 group-hover:bg-primary/30 p-2.5 transition-colors group-hover:translate-x-1 transition-transform">
+                        <div className="shrink-0 rounded-md bg-primary/20 group-hover:bg-primary/30 p-2 transition-colors">
                           <IconWrapper 
                             icon={ArrowRight01Icon} 
-                            size={16} 
+                            size={14} 
                             className="text-primary" 
                           />
                         </div>
@@ -245,8 +235,8 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
             )}
 
             {!prevTopic && !nextTopic && (
-              <Card className="border-dashed border-border/50 bg-muted/20">
-                <CardContent className="p-6 text-center">
+              <Card className="border-dashed border-border/40 bg-muted/30">
+                <CardContent className="p-4 text-center">
                   <p className="text-xs font-medium text-muted-foreground">
                     No navigation available
                   </p>
