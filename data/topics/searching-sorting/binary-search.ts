@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { binarySearchQuiz } from "@/data/content/markdown/searching-sorting/binary-search.quiz"
 
 export const binarySearch: Topic = {
   id: "binary-search",
@@ -11,21 +12,7 @@ export const binarySearch: Topic = {
   order: 10,
   difficulty: "Easy",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What is a requirement for binary search?",
-      options: [
-        "Array must be unsorted",
-        "Array must be sorted",
-        "Array must have duplicates",
-        "Array must be small",
-      ],
-      correctAnswer: 1,
-      explanation:
-        "Binary search requires the array to be sorted to work correctly.",
-    },
-  ],
+  quiz: binarySearchQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Binary Search",

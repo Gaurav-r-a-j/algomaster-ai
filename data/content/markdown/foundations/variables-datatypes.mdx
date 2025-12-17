@@ -16,15 +16,29 @@ Imagine a **Warehouse**.
 
 ### The "Box" Metaphor in Action
 
-```javascript
-let score = 100
+```multi
+[javascript]
+let score = 100;
+console.log(score);  // 100
+
+[python]
+score = 100
+print(score)  # 100
+
+[java]
+int score = 100;
+System.out.println(score);  // 100
+
+[cpp]
+int score = 100;
+cout << score << endl;  // 100
 ```
 
 1.  **Computer**: Finds an empty space in RAM (The Warehouse).
 2.  **Computer**: Puts the number `100` in that space (The Box).
 3.  **Computer**: Slaps a sticker labeled `score` on it (The Variable).
 
-When you later say `console.log(score)`, the computer looks for the box with the `score` sticker and shows you what's inside.
+When you later access `score`, the computer looks for the box with the `score` sticker and shows you what's inside.
 
 ---
 
@@ -39,13 +53,38 @@ Primitives are simple values: `number`, `string`, `boolean` (and `null`, `undefi
 - **Analogy**: A piece of paper with a number written on it.
 - **Behavior**: When you assign a primitive to another variable, you make a **Xerox copy** of that paper.
 
-```javascript
-let a = 10
-let b = a // Copy the value 10 to a new box 'b'
-b = 20 // Change 'b' box only
+```multi
+[javascript]
+let a = 10;
+let b = a;  // Copy the value 10 to a new box 'b'
+b = 20;     // Change 'b' box only
 
-console.log(a) // 10 (Original is untouched!)
-console.log(b) // 20
+console.log(a);  // 10 (Original is untouched!)
+console.log(b);  // 20
+
+[python]
+a = 10
+b = a      # Copy the value 10 to a new box 'b'
+b = 20     # Change 'b' box only
+
+print(a)   # 10 (Original is untouched!)
+print(b)   # 20
+
+[java]
+int a = 10;
+int b = a;  // Copy the value 10 to a new box 'b'
+b = 20;     // Change 'b' box only
+
+System.out.println(a);  // 10 (Original is untouched!)
+System.out.println(b);  // 20
+
+[cpp]
+int a = 10;
+int b = a;  // Copy the value 10 to a new box 'b'
+b = 20;     // Change 'b' box only
+
+cout << a << endl;  // 10 (Original is untouched!)
+cout << b << endl;  // 20
 ```
 
 ### Reference Types (The Link)
@@ -55,13 +94,56 @@ Reference types are complex: `Objects`, `Arrays`, `Functions`.
 - **Analogy**: A remote control for a TV.
 - **Behavior**: When you assign an object to another variable, you are giving a **copy of the remote control**, not a copy of the TV!
 
-```javascript
-let player1 = { name: "Gaurav", level: 1 }
-let player2 = player1 // Copy the REMOTE CONTROL (reference), not the object
+```multi
+[javascript]
+let player1 = { name: "Gaurav", level: 1 };
+let player2 = player1;  // Copy the REMOTE CONTROL (reference), not the object
 
-player2.level = 99 // Use the second remote to change the TV
+player2.level = 99;  // Use the second remote to change the TV
 
-console.log(player1.level) // 99 (Wait, what?! Both remotes point to the SAME TV!)
+console.log(player1.level);  // 99 (Wait, what?! Both remotes point to the SAME TV!)
+
+[python]
+player1 = {"name": "Gaurav", "level": 1}
+player2 = player1  # Copy the REMOTE CONTROL (reference), not the object
+
+player2["level"] = 99  # Use the second remote to change the TV
+
+print(player1["level"])  # 99 (Wait, what?! Both remotes point to the SAME TV!)
+
+[java]
+class Player {
+    String name;
+    int level;
+    
+    Player(String name, int level) {
+        this.name = name;
+        this.level = level;
+    }
+}
+
+Player player1 = new Player("Gaurav", 1);
+Player player2 = player1;  // Copy the reference, not the object
+
+player2.level = 99;  // Use the second reference to change the object
+
+System.out.println(player1.level);  // 99 (Both references point to the SAME object!)
+
+[cpp]
+#include <string>
+using namespace std;
+
+struct Player {
+    string name;
+    int level;
+};
+
+Player* player1 = new Player{"Gaurav", 1};
+Player* player2 = player1;  // Copy the pointer, not the object
+
+player2->level = 99;  // Use the second pointer to change the object
+
+cout << player1->level << endl;  // 99 (Both pointers point to the SAME object!)
 ```
 
 > [!WARNING]

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { useProgress } from "@/context/progress-context"
 import { motion } from "motion/react"
 
@@ -14,7 +14,7 @@ import {
   tapScale,
   transitions,
 } from "@/lib/animations"
-import { CheckmarkCircleIcon } from "@/lib/icons"
+import { CheckmarkCircleIcon, SparklesIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -22,6 +22,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { IconWrapper } from "@/components/common/icon-wrapper"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 interface QuizSectionProps {
   topicId: string
@@ -29,6 +30,7 @@ interface QuizSectionProps {
   useAIQuestions?: boolean
   onToggleAIQuestions?: (useAI: boolean) => void
   hasAIQuestions?: boolean
+  topicTitle?: string
 }
 
 export function QuizSection({
@@ -37,12 +39,71 @@ export function QuizSection({
   useAIQuestions = false,
   onToggleAIQuestions,
   hasAIQuestions = false,
+  topicTitle,
 }: QuizSectionProps) {
   const { markAsCompleted, isCompleted } = useProgress()
   const [selectedAnswers, setSelectedAnswers] = useState<
     Record<number, number>
   >({})
   const [showResults, setShowResults] = useState(false)
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false)
+  const [aiQuestions, setAiQuestions] = useState<QuizQuestion[]>([])
+  
+  // Generate AI questions
+  const generateAIQuestions = async () => {
+    if (!topicTitle) return
+    setIsGeneratingAI(true)
+    try {
+      // Simulate AI generation - replace with actual API call
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      const generated: QuizQuestion[] = [
+        {
+          id: questions.length + 1,
+          question: `What is a key concept related to ${topicTitle}?`,
+          options: [
+            "Basic understanding",
+            "Core principle",
+            "Advanced technique",
+            "All of the above"
+          ],
+          correctAnswer: 3,
+          explanation: `All options represent important aspects of ${topicTitle}.`
+        },
+        {
+          id: questions.length + 2,
+          question: `When would you apply ${topicTitle} in practice?`,
+          options: [
+            "Never",
+            "In specific problem scenarios",
+            "Always",
+            "Only for beginners"
+          ],
+          correctAnswer: 1,
+          explanation: `${topicTitle} should be applied when it matches the problem requirements.`
+        }
+      ]
+      setAiQuestions(generated)
+    } catch (error) {
+      console.error("Failed to generate AI questions:", error)
+    } finally {
+      setIsGeneratingAI(false)
+    }
+  }
+  
+  const displayQuestions = useMemo(() => {
+    if (useAIQuestions && aiQuestions.length > 0) {
+      return aiQuestions
+    }
+    return questions
+  }, [useAIQuestions, aiQuestions, questions])
+  
+  const score = useMemo(() => {
+    if (!showResults) return null
+    const correct = displayQuestions.filter(
+      q => selectedAnswers[q.id] === q.correctAnswer
+    ).length
+    return Math.round((correct / displayQuestions.length) * 100)
+  }, [showResults, displayQuestions, selectedAnswers])
 
   const handleSelect = (qId: number, optionIdx: number) => {
     if (showResults) {
@@ -57,7 +118,7 @@ export function QuizSection({
   }
 
   const isAlreadyCompleted = isCompleted(topicId)
-  const allAnswered = questions.every(
+  const allAnswered = displayQuestions.every(
     (q) => selectedAnswers[q.id] !== undefined
   )
 
@@ -92,21 +153,37 @@ export function QuizSection({
                 Complete this quiz to mark the lesson as done.
               </p>
               {/* AI Questions Toggle */}
-              {hasAIQuestions && onToggleAIQuestions && (
-                <div className="mt-3 flex items-center gap-2">
-                  <Switch
-                    id="ai-questions"
-                    checked={useAIQuestions}
-                    onCheckedChange={onToggleAIQuestions}
-                  />
-                  <Label
-                    htmlFor="ai-questions"
-                    className="text-muted-foreground cursor-pointer text-xs"
-                  >
-                    Use AI-generated questions (optional)
-                  </Label>
-                </div>
-              )}
+              <div className="mt-3 flex items-center gap-3">
+                {onToggleAIQuestions && (
+                  <>
+                    <Switch
+                      id="ai-questions"
+                      checked={useAIQuestions}
+                      onCheckedChange={(checked) => {
+                        onToggleAIQuestions(checked)
+                        if (checked && aiQuestions.length === 0) {
+                          generateAIQuestions()
+                        }
+                      }}
+                      disabled={isGeneratingAI}
+                    />
+                    <Label
+                      htmlFor="ai-questions"
+                      className="text-muted-foreground cursor-pointer text-xs flex items-center gap-2"
+                    >
+                      <IconWrapper
+                        icon={SparklesIcon}
+                        size={14}
+                        className={cn(
+                          "transition-colors",
+                          useAIQuestions ? "text-yellow-500" : "text-muted-foreground"
+                        )}
+                      />
+                      {isGeneratingAI ? "Generating AI questions..." : "AI Mode (Generate custom questions)"}
+                    </Label>
+                  </>
+                )}
+              </div>
             </div>
             {isAlreadyCompleted && (
               <Badge
@@ -119,12 +196,36 @@ export function QuizSection({
           </motion.div>
         </CardHeader>
         <CardContent className="space-y-8 p-8">
+          {isGeneratingAI && (
+            <Alert>
+              <AlertDescription className="flex items-center gap-2">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                >
+                  <IconWrapper icon={SparklesIcon} size={16} className="text-yellow-500" />
+                </motion.div>
+                Generating AI questions based on {topicTitle}...
+              </AlertDescription>
+            </Alert>
+          )}
+          {showResults && score !== null && (
+            <Alert className={cn(
+              score >= 70 ? "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/20" : "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20"
+            )}>
+              <AlertDescription>
+                <span className="font-semibold">Score: {score}%</span>
+                {score >= 70 ? " Great job! " : " Keep practicing! "}
+                You got {displayQuestions.filter(q => selectedAnswers[q.id] === q.correctAnswer).length} out of {displayQuestions.length} questions correct.
+              </AlertDescription>
+            </Alert>
+          )}
           <motion.div
             variants={staggerContainer}
             initial="initial"
             animate="animate"
           >
-            {questions.map((q, idx) => {
+            {displayQuestions.map((q, idx) => {
               const isCorrect = selectedAnswers[q.id] === q.correctAnswer
               const hasAnswered = selectedAnswers[q.id] !== undefined
 
@@ -216,10 +317,11 @@ export function QuizSection({
               <motion.div whileHover={hoverScaleSmall} whileTap={tapScale}>
                 <Button
                   onClick={handleSubmit}
-                  disabled={!allAnswered}
+                  disabled={!allAnswered || isGeneratingAI}
                   className="w-full"
+                  size="lg"
                 >
-                  Submit Answers
+                  {allAnswered ? "Submit Answers" : `Answer ${displayQuestions.length - Object.keys(selectedAnswers).length} more question(s)`}
                 </Button>
               </motion.div>
             </motion.div>

@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { recursionQuiz } from "@/data/content/markdown/foundations/recursion.quiz"
 
 export const recursion: Topic = {
   id: "recursion",
@@ -11,20 +12,7 @@ export const recursion: Topic = {
   order: 5,
   difficulty: "Medium",
   content: "", // Content loaded from data/content/markdown/foundations/recursion.md
-  quiz: [
-    {
-      id: 1,
-      question: "What is the base case in recursion?",
-      options: [
-        "The recursive call",
-        "The stopping condition",
-        "The function definition",
-        "The return statement",
-      ],
-      correctAnswer: 1,
-      explanation: "The base case is the condition that stops the recursion.",
-    },
-  ],
+  quiz: recursionQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Fibonacci Number",

@@ -45,7 +45,7 @@ Step 3: mid = 9, target == 9 → FOUND at index 4
 ## Implementation
 
 ```multi
----javascript
+[javascript]
 function binarySearch(arr, target) {
     let left = 0;
     let right = arr.length - 1;
@@ -69,7 +69,7 @@ function binarySearch(arr, target) {
 const arr = [1, 3, 5, 7, 9, 11, 13, 15];
 console.log(binarySearch(arr, 9));  // 4
 console.log(binarySearch(arr, 6));  // -1
----python
+[python]
 def binary_search(arr, target):
     left, right = 0, len(arr) - 1
     
@@ -89,7 +89,7 @@ def binary_search(arr, target):
 arr = [1, 3, 5, 7, 9, 11, 13, 15]
 print(binary_search(arr, 9))  # 4
 print(binary_search(arr, 6))  # -1
----java
+[java]
 public static int binarySearch(int[] arr, int target) {
     int left = 0;
     int right = arr.length - 1;
@@ -112,7 +112,7 @@ public static int binarySearch(int[] arr, int target) {
 // Example
 int[] arr = {1, 3, 5, 7, 9, 11, 13, 15};
 System.out.println(binarySearch(arr, 9));  // 4
----cpp
+[cpp]
 int binarySearch(vector<int>& arr, int target) {
     int left = 0;
     int right = arr.size() - 1;
@@ -144,7 +144,7 @@ cout << binarySearch(arr, 9);  // 4
 ### 1. Find First Occurrence
 
 ```multi
----javascript
+[java]script
 function findFirst(arr, target) {
     let left = 0, right = arr.length - 1;
     let result = -1;
@@ -166,7 +166,7 @@ function findFirst(arr, target) {
 }
 
 // [1, 2, 2, 2, 3] → findFirst(arr, 2) = 1
----python
+[python]
 def find_first(arr, target):
     left, right = 0, len(arr) - 1
     result = -1
@@ -185,7 +185,7 @@ def find_first(arr, target):
     return result
 
 # [1, 2, 2, 2, 3] → find_first(arr, 2) = 1
----java
+[java]
 public static int findFirst(int[] arr, int target) {
     int left = 0, right = arr.length - 1;
     int result = -1;
@@ -207,7 +207,7 @@ public static int findFirst(int[] arr, int target) {
 }
 
 // [1, 2, 2, 2, 3] → findFirst(arr, 2) = 1
----cpp
+[cpp]
 int findFirst(vector<int>& arr, int target) {
     int left = 0, right = arr.size() - 1;
     int result = -1;
@@ -234,7 +234,7 @@ int findFirst(vector<int>& arr, int target) {
 ### 2. Find Last Occurrence
 
 ```multi
----javascript
+[java]script
 function findLast(arr, target) {
     let left = 0, right = arr.length - 1;
     let result = -1;
@@ -256,7 +256,7 @@ function findLast(arr, target) {
 }
 
 // [1, 2, 2, 2, 3] → findLast(arr, 2) = 3
----python
+[python]
 def find_last(arr, target):
     left, right = 0, len(arr) - 1
     result = -1
@@ -275,7 +275,7 @@ def find_last(arr, target):
     return result
 
 # [1, 2, 2, 2, 3] → find_last(arr, 2) = 3
----java
+[java]
 public static int findLast(int[] arr, int target) {
     int left = 0, right = arr.length - 1;
     int result = -1;
@@ -297,7 +297,7 @@ public static int findLast(int[] arr, int target) {
 }
 
 // [1, 2, 2, 2, 3] → findLast(arr, 2) = 3
----cpp
+[cpp]
 int findLast(vector<int>& arr, int target) {
     int left = 0, right = arr.size() - 1;
     int result = -1;
@@ -324,7 +324,7 @@ int findLast(vector<int>& arr, int target) {
 ### 3. Find Insertion Position
 
 ```multi
----javascript
+[java]script
 function searchInsert(nums, target) {
     let left = 0, right = nums.length - 1;
     
@@ -345,7 +345,7 @@ function searchInsert(nums, target) {
 
 // [1, 3, 5, 6], target=5 → 2
 // [1, 3, 5, 6], target=2 → 1
----python
+[python]
 def search_insert(nums, target):
     left, right = 0, len(nums) - 1
     
@@ -363,7 +363,7 @@ def search_insert(nums, target):
 
 # [1, 3, 5, 6], target=5 → 2
 # [1, 3, 5, 6], target=2 → 1
----java
+[java]
 public static int searchInsert(int[] nums, int target) {
     int left = 0, right = nums.length - 1;
     
@@ -384,7 +384,7 @@ public static int searchInsert(int[] nums, int target) {
 
 // [1, 3, 5, 6], target=5 → 2
 // [1, 3, 5, 6], target=2 → 1
----cpp
+[cpp]
 int searchInsert(vector<int>& nums, int target) {
     int left = 0, right = nums.size() - 1;
     
@@ -410,7 +410,7 @@ int searchInsert(vector<int>& nums, int target) {
 ### 4. Search in Rotated Sorted Array
 
 ```multi
----javascript
+[java]script
 function searchRotated(nums, target) {
     let left = 0, right = nums.length - 1;
     
@@ -441,7 +441,7 @@ function searchRotated(nums, target) {
 }
 
 // [4, 5, 6, 7, 0, 1, 2], target=0 → 4
----python
+[python]
 def search_rotated(nums, target):
     left, right = 0, len(nums) - 1
     
@@ -467,7 +467,7 @@ def search_rotated(nums, target):
     return -1
 
 # [4, 5, 6, 7, 0, 1, 2], target=0 → 4
----java
+[java]
 public static int searchRotated(int[] nums, int target) {
     int left = 0, right = nums.length - 1;
     
@@ -498,7 +498,7 @@ public static int searchRotated(int[] nums, int target) {
 }
 
 // [4, 5, 6, 7, 0, 1, 2], target=0 → 4
----cpp
+[cpp]
 int searchRotated(vector<int>& nums, int target) {
     int left = 0, right = nums.size() - 1;
     
@@ -534,7 +534,7 @@ int searchRotated(vector<int>& nums, int target) {
 ### 5. Find Peak Element
 
 ```multi
----javascript
+[java]script
 function findPeak(nums) {
     let left = 0, right = nums.length - 1;
     
@@ -552,7 +552,7 @@ function findPeak(nums) {
 }
 
 // [1, 2, 3, 1] → 2 (index of peak element 3)
----python
+[python]
 def find_peak(nums):
     left, right = 0, len(nums) - 1
     
@@ -567,7 +567,7 @@ def find_peak(nums):
     return left
 
 # [1, 2, 3, 1] → 2 (index of peak element 3)
----java
+[java]
 public static int findPeak(int[] nums) {
     int left = 0, right = nums.length - 1;
     
@@ -585,7 +585,7 @@ public static int findPeak(int[] nums) {
 }
 
 // [1, 2, 3, 1] → 2 (index of peak element 3)
----cpp
+[cpp]
 int findPeak(vector<int>& nums) {
     int left = 0, right = nums.size() - 1;
     
@@ -608,7 +608,7 @@ int findPeak(vector<int>& nums) {
 ### 6. Find Minimum in Rotated Array
 
 ```multi
----javascript
+[java]script
 function findMin(nums) {
     let left = 0, right = nums.length - 1;
     
@@ -626,7 +626,7 @@ function findMin(nums) {
 }
 
 // [3, 4, 5, 1, 2] → 1
----python
+[python]
 def find_min(nums):
     left, right = 0, len(nums) - 1
     
@@ -641,7 +641,7 @@ def find_min(nums):
     return nums[left]
 
 # [3, 4, 5, 1, 2] → 1
----java
+[java]
 public static int findMin(int[] nums) {
     int left = 0, right = nums.length - 1;
     
@@ -659,7 +659,7 @@ public static int findMin(int[] nums) {
 }
 
 // [3, 4, 5, 1, 2] → 1
----cpp
+[cpp]
 int findMin(vector<int>& nums) {
     int left = 0, right = nums.size() - 1;
     
@@ -696,19 +696,19 @@ int findMin(vector<int>& nums) {
 ### 1. Integer Overflow
 
 ```multi
----javascript
+[java]script
 // JavaScript handles big numbers, but be aware in other languages
 const mid = Math.floor((left + right) / 2);
 // Safer: const mid = left + Math.floor((right - left) / 2);
----python
+[python]
 # Python handles big integers natively
 mid = (left + right) // 2
 # Safer: mid = left + (right - left) // 2
----java
+[java]
 // WRONG: int mid = (left + right) / 2;  // Can overflow!
 // CORRECT:
 int mid = left + (right - left) / 2;
----cpp
+[cpp]
 // WRONG: int mid = (left + right) / 2;  // Can overflow!
 // CORRECT:
 int mid = left + (right - left) / 2;
@@ -717,24 +717,24 @@ int mid = left + (right - left) / 2;
 ### 2. Off-by-One Errors
 
 ```multi
----javascript
+[java]script
 // Common mistake: using < instead of <=
 // while (left < right)   // Wrong for some cases
 while (left <= right) {   // Correct
     // ...
 }
----python
+[python]
 # Common mistake: using < instead of <=
 # while left < right:   # Wrong for some cases
 while left <= right:    # Correct
     # ...
----java
+[java]
 // Common mistake: using < instead of <=
 // while (left < right)   // Wrong for some cases
 while (left <= right) {   // Correct
     // ...
 }
----cpp
+[cpp]
 // Common mistake: using < instead of <=
 // while (left < right)   // Wrong for some cases
 while (left <= right) {   // Correct

@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { avlTreeQuiz } from "@/data/content/markdown/trees-heaps/avl-tree.quiz"
 
 export const avlTree: Topic = {
   id: "avl-tree",
@@ -12,16 +13,7 @@ export const avlTree: Topic = {
   order: 18,
   difficulty: "Hard",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What is the maximum allowed balance factor in an AVL tree?",
-      options: ["0", "1", "2", "3"],
-      correctAnswer: 1,
-      explanation:
-        "AVL trees allow balance factors of -1, 0, or 1. If it becomes ±2, rotations are needed.",
-    },
-  ],
+  quiz: avlTreeQuiz,
   practiceLinks: [
     {
       title: "GeeksforGeeks: AVL Tree",

@@ -1,15 +1,16 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { kruskalQuiz } from "@/data/content/markdown/advanced-graphs/kruskal.quiz"
 
 export const kruskal: Topic = {
   id: "kruskal",
-  title: "kruskal",
-  description: "Coming soon...",
+  title: "Kruskal's Algorithm",
+  description: "Greedy algorithm to find Minimum Spanning Tree (MST) of a connected, weighted graph.",
   category: AlgorithmType.GRAPH,
-  complexity: { time: "O(V log V)", space: "O(V)" },
+  complexity: { time: "O(E log E)", space: "O(V)" },
   visualizerType: VisualizerType.GRAPH,
   module: "6. Advanced Graphs",
   order: 26,
   difficulty: "Hard",
   content: "# kruskal\n\nComing soon...",
-  quiz: [],
+  quiz: kruskalQuiz,
 }

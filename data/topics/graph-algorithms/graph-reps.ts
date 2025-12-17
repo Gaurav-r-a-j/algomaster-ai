@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { graphRepsQuiz } from "@/data/content/markdown/graph-algorithms/graph-reps.quiz"
 
 export const graphReps: Topic = {
   id: "graph-reps",
@@ -12,21 +13,7 @@ export const graphReps: Topic = {
   order: 20,
   difficulty: "Easy",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "Which representation is best for sparse graphs?",
-      options: [
-        "Adjacency Matrix",
-        "Adjacency List",
-        "Edge List",
-        "All are equal",
-      ],
-      correctAnswer: 1,
-      explanation:
-        "Adjacency list is most space-efficient for sparse graphs (few edges relative to vertices).",
-    },
-  ],
+  quiz: graphRepsQuiz,
   practiceLinks: [
     {
       title: "GeeksforGeeks: Graph Representations",

@@ -68,14 +68,51 @@ START
 END
 ```
 
-### Python Code
+```multi
+[javascript]
+const n = parseInt(prompt("Enter a number: "));
+if (n % 2 === 0) {
+    console.log("Even");
+} else {
+    console.log("Odd");
+}
 
-```python
+[python]
 n = int(input("Enter a number: "))
 if n % 2 == 0:
     print("Even")
 else:
     print("Odd")
+
+[java]
+import java.util.Scanner;
+
+public class EvenOdd {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        if (n % 2 == 0) {
+            System.out.println("Even");
+        } else {
+            System.out.println("Odd");
+        }
+    }
+}
+
+[cpp]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    if (n % 2 == 0) {
+        cout << "Even" << endl;
+    } else {
+        cout << "Odd" << endl;
+    }
+    return 0;
+}
 ```
 
 ---
@@ -114,9 +151,28 @@ else:
         └─────────────┘
 ```
 
-### Python Code
+```multi
+[javascript]
+const a = 5, b = 9, c = 3;
+let maxVal;
 
-```python
+if (a > b) {
+    if (a > c) {
+        maxVal = a;
+    } else {
+        maxVal = c;
+    }
+} else {
+    if (b > c) {
+        maxVal = b;
+    } else {
+        maxVal = c;
+    }
+}
+
+console.log(`Maximum: ${maxVal}`);
+
+[python]
 a, b, c = 5, 9, 3
 
 if a > b:
@@ -131,6 +187,46 @@ else:
         max_val = c
 
 print(f"Maximum: {max_val}")
+
+[java]
+int a = 5, b = 9, c = 3;
+int maxVal;
+
+if (a > b) {
+    if (a > c) {
+        maxVal = a;
+    } else {
+        maxVal = c;
+    }
+} else {
+    if (b > c) {
+        maxVal = b;
+    } else {
+        maxVal = c;
+    }
+}
+
+System.out.println("Maximum: " + maxVal);
+
+[cpp]
+int a = 5, b = 9, c = 3;
+int maxVal;
+
+if (a > b) {
+    if (a > c) {
+        maxVal = a;
+    } else {
+        maxVal = c;
+    }
+} else {
+    if (b > c) {
+        maxVal = b;
+    } else {
+        maxVal = c;
+    }
+}
+
+cout << "Maximum: " << maxVal << endl;
 ```
 
 ---
@@ -185,14 +281,51 @@ START
 END
 ```
 
-### Python Code
+```multi
+[javascript]
+const n = parseInt(prompt("Enter n: "));
+let total = 0;
+for (let i = 1; i <= n; i++) {
+    total += i;
+}
+console.log(`Sum: ${total}`);
 
-```python
+[python]
 n = int(input("Enter n: "))
 total = 0
 for i in range(1, n + 1):
     total += i
 print(f"Sum: {total}")
+
+[java]
+import java.util.Scanner;
+
+public class SumNumbers {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        int total = 0;
+        for (int i = 1; i <= n; i++) {
+            total += i;
+        }
+        System.out.println("Sum: " + total);
+    }
+}
+
+[cpp]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int total = 0;
+    for (int i = 1; i <= n; i++) {
+        total += i;
+    }
+    cout << "Sum: " << total << endl;
+    return 0;
+}
 ```
 
 ---

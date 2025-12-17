@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { bubbleSortQuiz } from "@/data/content/markdown/searching-sorting/bubble-sort.quiz"
 
 export const bubbleSort: Topic = {
   id: "bubble-sort",
@@ -12,16 +13,7 @@ export const bubbleSort: Topic = {
   order: 11,
   difficulty: "Easy",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What is the worst-case time complexity of Bubble Sort?",
-      options: ["O(n)", "O(n log n)", "O(n²)", "O(2^n)"],
-      correctAnswer: 2,
-      explanation:
-        "Bubble Sort has O(n²) worst-case time complexity due to nested loops.",
-    },
-  ],
+  quiz: bubbleSortQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Sort an Array",

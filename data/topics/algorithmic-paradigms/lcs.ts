@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { lcsQuiz } from "@/data/content/markdown/algorithmic-paradigms/lcs.quiz"
 
 export const lcs: Topic = {
   id: "lcs",
@@ -11,5 +12,5 @@ export const lcs: Topic = {
   order: 31,
   difficulty: "Hard",
   content: "# Longest Common Subsequence\n\nComing soon...",
-  quiz: [],
+  quiz: lcsQuiz,
 }

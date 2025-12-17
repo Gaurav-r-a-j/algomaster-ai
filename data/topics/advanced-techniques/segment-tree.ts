@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { segmentTreeQuiz } from "@/data/content/markdown/advanced-techniques/segment-tree.quiz"
 
 export const segmentTree: Topic = {
   id: "segment-tree",
@@ -11,5 +12,5 @@ export const segmentTree: Topic = {
   order: 33,
   difficulty: "Hard",
   content: "# Segment Tree\n\nComing soon...",
-  quiz: [],
+  quiz: segmentTreeQuiz,
 }

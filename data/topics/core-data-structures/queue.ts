@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { queueQuiz } from "@/data/content/markdown/core-data-structures/queue.quiz"
 
 export const queue: Topic = {
   id: "queue",
@@ -33,5 +34,5 @@ export const queue: Topic = {
       difficulty: "Medium",
     },
   ],
-  quiz: [],
+  quiz: queueQuiz,
 }

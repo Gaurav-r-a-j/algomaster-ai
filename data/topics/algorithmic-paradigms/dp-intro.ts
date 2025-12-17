@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { dpIntroQuiz } from "@/data/content/markdown/algorithmic-paradigms/dp-intro.quiz"
 
 export const dpIntro: Topic = {
   id: "dp-intro",
@@ -12,5 +13,5 @@ export const dpIntro: Topic = {
   order: 29,
   difficulty: "Medium",
   content: "# Dynamic Programming\n\nComing soon...",
-  quiz: [],
+  quiz: dpIntroQuiz,
 }

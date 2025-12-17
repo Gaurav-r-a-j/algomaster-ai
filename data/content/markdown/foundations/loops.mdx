@@ -43,8 +43,26 @@ for (i = 0; i < 3; i++)
 
 Best when you know the number of iterations.
 
-```python
-# Python - Basic for loop
+```multi
+[javascript]
+// Classic for loop
+for (let i = 0; i < 5; i++) {
+    console.log(i);  // 0, 1, 2, 3, 4
+}
+
+// For...of (iterate values)
+const fruits = ["apple", "banana", "cherry"];
+for (const fruit of fruits) {
+    console.log(fruit);
+}
+
+// For...in (iterate keys/indices)
+for (const index in fruits) {
+    console.log(`${index}: ${fruits[index]}`);
+}
+
+[python]
+# Basic for loop
 for i in range(5):
     print(i)  # 0, 1, 2, 3, 4
 
@@ -56,30 +74,29 @@ for fruit in fruits:
 # With index
 for i, fruit in enumerate(fruits):
     print(f"{i}: {fruit}")
-```
 
-```javascript
-// JavaScript - Classic for loop
-for (let i = 0; i < 5; i++) {
-    console.log(i);  // 0, 1, 2, 3, 4
+[java]
+// Classic for loop
+for (int i = 0; i < 5; i++) {
+    System.out.println(i);  // 0, 1, 2, 3, 4
 }
 
-// For...of (iterate values)
-for (const fruit of fruits) {
-    console.log(fruit);
-}
-
-// For...in (iterate keys/indices)
-for (const index in fruits) {
-    console.log(`${index}: ${fruits[index]}`);
-}
-```
-
-```java
-// Java - Enhanced for loop
+// Enhanced for loop
 int[] numbers = {1, 2, 3, 4, 5};
 for (int num : numbers) {
     System.out.println(num);
+}
+
+[cpp]
+// Classic for loop
+for (int i = 0; i < 5; i++) {
+    cout << i << endl;  // 0, 1, 2, 3, 4
+}
+
+// Range-based for loop
+vector<int> numbers = {1, 2, 3, 4, 5};
+for (int num : numbers) {
+    cout << num << endl;
 }
 ```
 
@@ -89,8 +106,23 @@ for (int num : numbers) {
 
 Best when iterations depend on a condition.
 
-```python
-# Python
+```multi
+[javascript]
+let count = 0;
+while (count < 5) {
+    console.log(count);
+    count++;
+}
+
+// Common pattern: Read until condition
+while (true) {
+    const userInput = prompt("Enter 'quit' to exit: ");
+    if (userInput === 'quit') {
+        break;
+    }
+}
+
+[python]
 count = 0
 while count < 5:
     print(count)
@@ -101,13 +133,18 @@ while True:
     user_input = input("Enter 'quit' to exit: ")
     if user_input == 'quit':
         break
-```
 
-```javascript
-// JavaScript
-let count = 0;
+[java]
+int count = 0;
 while (count < 5) {
-    console.log(count);
+    System.out.println(count);
+    count++;
+}
+
+[cpp]
+int count = 0;
+while (count < 5) {
+    cout << count << endl;
     count++;
 }
 ```
@@ -118,23 +155,36 @@ while (count < 5) {
 
 Executes at least once before checking condition.
 
-```javascript
-// JavaScript (Python doesn't have native do-while)
+```multi
+[javascript]
 let count = 0;
 do {
     console.log(count);
     count++;
 } while (count < 5);
-```
 
-```python
-# Python equivalent
+[python]
+# Python doesn't have native do-while, but equivalent:
 count = 0
 while True:
     print(count)
     count += 1
     if count >= 5:
         break
+
+[java]
+int count = 0;
+do {
+    System.out.println(count);
+    count++;
+} while (count < 5);
+
+[cpp]
+int count = 0;
+do {
+    cout << count << endl;
+    count++;
+} while (count < 5);
 ```
 
 ---
@@ -154,29 +204,107 @@ while True:
 
 ### Break - Exit Immediately
 
-```python
+```multi
+[javascript]
+for (let i = 0; i < 10; i++) {
+    if (i === 5) {
+        break;  // Exit loop when i is 5
+    }
+    console.log(i);  // Prints 0, 1, 2, 3, 4
+}
+
+[python]
 for i in range(10):
     if i == 5:
         break  # Exit loop when i is 5
     print(i)  # Prints 0, 1, 2, 3, 4
+
+[java]
+for (int i = 0; i < 10; i++) {
+    if (i == 5) {
+        break;  // Exit loop when i is 5
+    }
+    System.out.println(i);  // Prints 0, 1, 2, 3, 4
+}
+
+[cpp]
+for (int i = 0; i < 10; i++) {
+    if (i == 5) {
+        break;  // Exit loop when i is 5
+    }
+    cout << i << endl;  // Prints 0, 1, 2, 3, 4
+}
 ```
 
 ### Continue - Skip to Next Iteration
 
-```python
+```multi
+[javascript]
+for (let i = 0; i < 10; i++) {
+    if (i % 2 === 0) {
+        continue;  // Skip even numbers
+    }
+    console.log(i);  // Prints 1, 3, 5, 7, 9
+}
+
+[python]
 for i in range(10):
     if i % 2 == 0:
         continue  # Skip even numbers
     print(i)  # Prints 1, 3, 5, 7, 9
+
+[java]
+for (int i = 0; i < 10; i++) {
+    if (i % 2 == 0) {
+        continue;  // Skip even numbers
+    }
+    System.out.println(i);  // Prints 1, 3, 5, 7, 9
+}
+
+[cpp]
+for (int i = 0; i < 10; i++) {
+    if (i % 2 == 0) {
+        continue;  // Skip even numbers
+    }
+    cout << i << endl;  // Prints 1, 3, 5, 7, 9
+}
 ```
 
 ### Pass - Do Nothing (Python)
 
-```python
+```multi
+[javascript]
+// JavaScript doesn't have pass, but you can use empty block
+for (let i = 0; i < 5; i++) {
+    if (i === 3) {
+        // Placeholder, does nothing
+    }
+    console.log(i);  // Prints all: 0, 1, 2, 3, 4
+}
+
+[python]
 for i in range(5):
     if i == 3:
         pass  # Placeholder, does nothing
     print(i)  # Prints all: 0, 1, 2, 3, 4
+
+[java]
+// Java doesn't have pass, but you can use empty block
+for (int i = 0; i < 5; i++) {
+    if (i == 3) {
+        // Placeholder, does nothing
+    }
+    System.out.println(i);  // Prints all: 0, 1, 2, 3, 4
+}
+
+[cpp]
+// C++ doesn't have pass, but you can use empty block
+for (int i = 0; i < 5; i++) {
+    if (i == 3) {
+        // Placeholder, does nothing
+    }
+    cout << i << endl;  // Prints all: 0, 1, 2, 3, 4
+}
 ```
 
 ---
@@ -185,29 +313,100 @@ for i in range(5):
 
 ### Pattern 1: Accumulator
 
-```python
+```multi
+[javascript]
+// Sum all numbers
+const numbers = [1, 2, 3, 4, 5];
+let total = 0;
+for (const num of numbers) {
+    total += num;
+}
+console.log(total);  // 15
+
+[python]
 # Sum all numbers
 numbers = [1, 2, 3, 4, 5]
 total = 0
 for num in numbers:
     total += num
 print(total)  # 15
+
+[java]
+// Sum all numbers
+int[] numbers = {1, 2, 3, 4, 5};
+int total = 0;
+for (int num : numbers) {
+    total += num;
+}
+System.out.println(total);  // 15
+
+[cpp]
+// Sum all numbers
+vector<int> numbers = {1, 2, 3, 4, 5};
+int total = 0;
+for (int num : numbers) {
+    total += num;
+}
+cout << total << endl;  // 15
 ```
 
 ### Pattern 2: Finding Max/Min
 
-```python
+```multi
+[javascript]
+const numbers = [3, 1, 4, 1, 5, 9, 2, 6];
+let maxVal = numbers[0];
+for (const num of numbers) {
+    if (num > maxVal) {
+        maxVal = num;
+    }
+}
+console.log(maxVal);  // 9
+
+[python]
 numbers = [3, 1, 4, 1, 5, 9, 2, 6]
 max_val = numbers[0]
 for num in numbers:
     if num > max_val:
         max_val = num
 print(max_val)  # 9
+
+[java]
+int[] numbers = {3, 1, 4, 1, 5, 9, 2, 6};
+int maxVal = numbers[0];
+for (int num : numbers) {
+    if (num > maxVal) {
+        maxVal = num;
+    }
+}
+System.out.println(maxVal);  // 9
+
+[cpp]
+vector<int> numbers = {3, 1, 4, 1, 5, 9, 2, 6};
+int maxVal = numbers[0];
+for (int num : numbers) {
+    if (num > maxVal) {
+        maxVal = num;
+    }
+}
+cout << maxVal << endl;  // 9
 ```
 
 ### Pattern 3: Building a New Collection
 
-```python
+```multi
+[javascript]
+// Filter and transform
+const numbers = [1, 2, 3, 4, 5];
+const doubledEvens = [];
+for (const num of numbers) {
+    if (num % 2 === 0) {
+        doubledEvens.push(num * 2);
+    }
+}
+console.log(doubledEvens);  // [4, 8]
+
+[python]
 # Filter and transform
 numbers = [1, 2, 3, 4, 5]
 doubled_evens = []
@@ -215,11 +414,48 @@ for num in numbers:
     if num % 2 == 0:
         doubled_evens.append(num * 2)
 print(doubled_evens)  # [4, 8]
+
+[java]
+// Filter and transform
+int[] numbers = {1, 2, 3, 4, 5};
+List<Integer> doubledEvens = new ArrayList<>();
+for (int num : numbers) {
+    if (num % 2 == 0) {
+        doubledEvens.add(num * 2);
+    }
+}
+System.out.println(doubledEvens);  // [4, 8]
+
+[cpp]
+// Filter and transform
+vector<int> numbers = {1, 2, 3, 4, 5};
+vector<int> doubledEvens;
+for (int num : numbers) {
+    if (num % 2 == 0) {
+        doubledEvens.push_back(num * 2);
+    }
+}
+// Print: [4, 8]
 ```
 
 ### Pattern 4: Nested Loops (2D Traversal)
 
-```python
+```multi
+[javascript]
+const matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+
+for (const row of matrix) {
+    for (const element of row) {
+        process.stdout.write(element + ' ');
+    }
+    console.log();  // Newline after each row
+}
+
+[python]
 matrix = [
     [1, 2, 3],
     [4, 5, 6],
@@ -230,11 +466,58 @@ for row in matrix:
     for element in row:
         print(element, end=' ')
     print()  # Newline after each row
+
+[java]
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+for (int[] row : matrix) {
+    for (int element : row) {
+        System.out.print(element + " ");
+    }
+    System.out.println();  // Newline after each row
+}
+
+[cpp]
+vector<vector<int>> matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+for (const auto& row : matrix) {
+    for (int element : row) {
+        cout << element << " ";
+    }
+    cout << endl;  // Newline after each row
+}
 ```
 
 ### Pattern 5: Two Pointers
 
-```python
+```multi
+[javascript]
+// Find pair with target sum in sorted array
+const arr = [1, 2, 3, 4, 5, 6];
+const target = 7;
+let left = 0, right = arr.length - 1;
+
+while (left < right) {
+    const currentSum = arr[left] + arr[right];
+    if (currentSum === target) {
+        console.log(`Found: ${arr[left]} + ${arr[right]}`);
+        break;
+    } else if (currentSum < target) {
+        left++;
+    } else {
+        right--;
+    }
+}
+
+[python]
 # Find pair with target sum in sorted array
 arr = [1, 2, 3, 4, 5, 6]
 target = 7
@@ -249,11 +532,65 @@ while left < right:
         left += 1
     else:
         right -= 1
+
+[java]
+// Find pair with target sum in sorted array
+int[] arr = {1, 2, 3, 4, 5, 6};
+int target = 7;
+int left = 0, right = arr.length - 1;
+
+while (left < right) {
+    int currentSum = arr[left] + arr[right];
+    if (currentSum == target) {
+        System.out.println("Found: " + arr[left] + " + " + arr[right]);
+        break;
+    } else if (currentSum < target) {
+        left++;
+    } else {
+        right--;
+    }
+}
+
+[cpp]
+// Find pair with target sum in sorted array
+vector<int> arr = {1, 2, 3, 4, 5, 6};
+int target = 7;
+int left = 0, right = arr.size() - 1;
+
+while (left < right) {
+    int currentSum = arr[left] + arr[right];
+    if (currentSum == target) {
+        cout << "Found: " << arr[left] << " + " << arr[right] << endl;
+        break;
+    } else if (currentSum < target) {
+        left++;
+    } else {
+        right--;
+    }
+}
 ```
 
 ### Pattern 6: Sliding Window
 
-```python
+```multi
+[javascript]
+// Maximum sum of k consecutive elements
+const arr = [1, 4, 2, 10, 2, 3, 1, 0, 20];
+const k = 3;
+
+// Initial window sum
+let windowSum = arr.slice(0, k).reduce((a, b) => a + b, 0);
+let maxSum = windowSum;
+
+// Slide the window
+for (let i = k; i < arr.length; i++) {
+    windowSum = windowSum - arr[i - k] + arr[i];
+    maxSum = Math.max(maxSum, windowSum);
+}
+
+console.log(maxSum);  // 23 (10 + 2 + 3 or 1 + 0 + 20)
+
+[python]
 # Maximum sum of k consecutive elements
 arr = [1, 4, 2, 10, 2, 3, 1, 0, 20]
 k = 3
@@ -268,6 +605,46 @@ for i in range(k, len(arr)):
     max_sum = max(max_sum, window_sum)
 
 print(max_sum)  # 23 (10 + 2 + 3 or 1 + 0 + 20)
+
+[java]
+// Maximum sum of k consecutive elements
+int[] arr = {1, 4, 2, 10, 2, 3, 1, 0, 20};
+int k = 3;
+
+// Initial window sum
+int windowSum = 0;
+for (int i = 0; i < k; i++) {
+    windowSum += arr[i];
+}
+int maxSum = windowSum;
+
+// Slide the window
+for (int i = k; i < arr.length; i++) {
+    windowSum = windowSum - arr[i - k] + arr[i];
+    maxSum = Math.max(maxSum, windowSum);
+}
+
+System.out.println(maxSum);  // 23
+
+[cpp]
+// Maximum sum of k consecutive elements
+vector<int> arr = {1, 4, 2, 10, 2, 3, 1, 0, 20};
+int k = 3;
+
+// Initial window sum
+int windowSum = 0;
+for (int i = 0; i < k; i++) {
+    windowSum += arr[i];
+}
+int maxSum = windowSum;
+
+// Slide the window
+for (int i = k; i < arr.size(); i++) {
+    windowSum = windowSum - arr[i - k] + arr[i];
+    maxSum = max(maxSum, windowSum);
+}
+
+cout << maxSum << endl;  // 23
 ```
 
 ---
@@ -286,7 +663,29 @@ print(max_sum)  # 23 (10 + 2 + 3 or 1 + 0 + 20)
 
 ## Avoiding Infinite Loops
 
-```python
+```multi
+[javascript]
+// DANGER - Infinite loop!
+// while (true) {
+//     console.log("Forever...");
+// }
+
+// SAFE - Always have exit condition
+let count = 0;
+while (count < 10) {
+    console.log(count);
+    count++;  // Don't forget to update!
+}
+
+// SAFE - Use break
+while (true) {
+    const userInput = prompt("Type 'exit': ");
+    if (userInput === 'exit') {
+        break;  // Exit condition
+    }
+}
+
+[python]
 # DANGER - Infinite loop!
 # while True:
 #     print("Forever...")
@@ -302,30 +701,60 @@ while True:
     user_input = input("Type 'exit': ")
     if user_input == 'exit':
         break  # Exit condition
+
+[java]
+// DANGER - Infinite loop!
+// while (true) {
+//     System.out.println("Forever...");
+// }
+
+// SAFE - Always have exit condition
+int count = 0;
+while (count < 10) {
+    System.out.println(count);
+    count++;  // Don't forget to update!
+}
+
+// SAFE - Use break
+Scanner scanner = new Scanner(System.in);
+while (true) {
+    String userInput = scanner.nextLine();
+    if (userInput.equals("exit")) {
+        break;  // Exit condition
+    }
+}
+
+[cpp]
+// DANGER - Infinite loop!
+// while (true) {
+//     cout << "Forever..." << endl;
+// }
+
+// SAFE - Always have exit condition
+int count = 0;
+while (count < 10) {
+    cout << count << endl;
+    count++;  // Don't forget to update!
+}
+
+// SAFE - Use break
+string userInput;
+while (true) {
+    cin >> userInput;
+    if (userInput == "exit") {
+        break;  // Exit condition
+    }
+}
 ```
 
 ---
 
 ## Modern Loop Alternatives
 
-### List Comprehension (Python)
+### List Comprehension & Array Methods
 
-```python
-# Traditional loop
-squares = []
-for i in range(5):
-    squares.append(i ** 2)
-
-# List comprehension (one-liner)
-squares = [i ** 2 for i in range(5)]  # [0, 1, 4, 9, 16]
-
-# With condition
-evens = [i for i in range(10) if i % 2 == 0]  # [0, 2, 4, 6, 8]
-```
-
-### Array Methods (JavaScript)
-
-```javascript
+```multi
+[javascript]
 const numbers = [1, 2, 3, 4, 5];
 
 // map - transform each element
@@ -339,6 +768,58 @@ const sum = numbers.reduce((acc, n) => acc + n, 0);  // 15
 
 // forEach - side effects
 numbers.forEach(n => console.log(n));
+
+[python]
+# Traditional loop
+squares = []
+for i in range(5):
+    squares.append(i ** 2)
+
+# List comprehension (one-liner)
+squares = [i ** 2 for i in range(5)]  # [0, 1, 4, 9, 16]
+
+# With condition
+evens = [i for i in range(10) if i % 2 == 0]  # [0, 2, 4, 6, 8]
+
+[java]
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+
+// map - transform each element
+List<Integer> doubled = numbers.stream()
+    .map(n -> n * 2)
+    .collect(Collectors.toList());  // [2, 4, 6, 8, 10]
+
+// filter - keep matching elements
+List<Integer> evens = numbers.stream()
+    .filter(n -> n % 2 == 0)
+    .collect(Collectors.toList());  // [2, 4]
+
+// reduce - accumulate to single value
+int sum = numbers.stream()
+    .reduce(0, Integer::sum);  // 15
+
+// forEach - side effects
+numbers.forEach(n -> System.out.println(n));
+
+[cpp]
+vector<int> numbers = {1, 2, 3, 4, 5};
+
+// transform - map equivalent
+vector<int> doubled;
+transform(numbers.begin(), numbers.end(), back_inserter(doubled),
+    [](int n) { return n * 2; });  // [2, 4, 6, 8, 10]
+
+// copy_if - filter equivalent
+vector<int> evens;
+copy_if(numbers.begin(), numbers.end(), back_inserter(evens),
+    [](int n) { return n % 2 == 0; });  // [2, 4]
+
+// accumulate - reduce equivalent
+int sum = accumulate(numbers.begin(), numbers.end(), 0);  // 15
+
+// for_each - side effects
+for_each(numbers.begin(), numbers.end(),
+    [](int n) { cout << n << endl; });
 ```
 
 ---

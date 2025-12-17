@@ -13,7 +13,6 @@ import type { Topic } from "@/types/curriculum"
 import { VisualizerType } from "@/types/curriculum"
 import { fadeIn, slideUpWithDelay, transitions } from "@/lib/animations"
 import {
-  BookOpenIcon,
   CheckmarkCircleIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -25,7 +24,6 @@ import { cn } from "@/lib/utils"
 import { useTopicContent } from "@/hooks/use-curriculum"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { CodePreview } from "@/components/common/code-preview"
@@ -111,7 +109,7 @@ export function LearnView({ topic }: LearnViewProps) {
       animate="animate"
       variants={fadeIn}
       transition={transitions.smooth}
-      className="grid gap-6 lg:grid-cols-[1fr_320px] lg:gap-8 xl:grid-cols-[1fr_360px]"
+      className="w-full max-w-4xl mx-auto"
     >
       {/* Main Content - Full Width */}
       <div className="min-w-0 space-y-6 lg:space-y-8">
@@ -121,7 +119,7 @@ export function LearnView({ topic }: LearnViewProps) {
           animate="animate"
           variants={slideUpWithDelay(0.1)}
         >
-          <div className="border-border/50 border-b px-4 py-6 md:px-6 md:py-8 lg:px-8">
+          <div className="px-4 py-6 md:px-6 md:py-8 lg:px-8">
             {displayContent && displayContent.trim() ? (
               <MarkdownRenderer
                 content={displayContent}
@@ -142,8 +140,8 @@ export function LearnView({ topic }: LearnViewProps) {
             animate="animate"
             variants={slideUpWithDelay(0.2)}
           >
-            <div className="border-border/50 border-b px-4 py-6 md:px-6 md:py-8 lg:px-8">
-              <div className="border-border/50 mb-6 border-b pb-4">
+            <div className="px-4 py-6 md:px-6 md:py-8 lg:px-8">
+              <div className="mb-6 pb-4">
                 <h3 className="flex items-center gap-2 text-lg font-bold">
                   <div className="bg-primary/10 rounded-md p-1.5">
                     <IconWrapper
@@ -206,152 +204,71 @@ export function LearnView({ topic }: LearnViewProps) {
               questions={quizQuestions}
               useAIQuestions={useAIQuestions}
               onToggleAIQuestions={setUseAIQuestions}
-              hasAIQuestions={false}
+              hasAIQuestions={true}
+              topicTitle={topic.title}
             />
           </div>
         </motion.div>
       </div>
 
-      {/* Right Sidebar - Compact Design */}
+      {/* Bottom Navigation - Moved from sidebar */}
       <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ ...transitions.smooth, delay: 0.2 }}
-        className="z-10 space-y-3 py-4 pr-4 md:pr-6 lg:sticky lg:top-[76px] lg:self-start lg:pr-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...transitions.smooth, delay: 0.3 }}
+        className="mt-8 flex items-center justify-between border-t border-border/50 pt-6"
       >
-        <Card className="border-border/50 overflow-hidden shadow-sm">
-          {/* Compact Module Header */}
-          <CardHeader className="bg-muted/30 p-3">
-            <div className="flex items-center gap-3">
-              {/* Small Progress Ring */}
-              <div className="relative h-10 w-10 shrink-0">
-                <svg className="h-10 w-10 -rotate-90 transform">
-                  <circle
-                    className="text-muted stroke-current"
-                    strokeWidth="3"
-                    fill="transparent"
-                    r="16"
-                    cx="20"
-                    cy="20"
-                  />
-                  <circle
-                    className="text-primary stroke-current transition-all duration-500"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    fill="transparent"
-                    r="16"
-                    cx="20"
-                    cy="20"
-                    strokeDasharray={`${2 * Math.PI * 16}`}
-                    strokeDashoffset={`${2 * Math.PI * 16 * (1 - moduleProgress / 100)}`}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-foreground text-[10px] font-bold">
-                    {moduleProgress}%
-                  </span>
-                </div>
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-muted-foreground text-xs">
-                  {completedCount}/{moduleTopics.length} topics
-                </p>
-              </div>
-            </div>
-          </CardHeader>
-
-          {/* Topic List - Compact */}
-          <CardContent className="p-0">
-            <ScrollArea className="h-[200px]">
-              <div className="p-1.5">
-                {moduleTopics.map((t) => {
-                  const isCompletedTopic = isCompleted(t.id)
-                  const isCurrent = t.id === topic.id
-
-                  return (
-                    <Link
-                      key={t.id}
-                      href={ROUTES.TOPIC(generateTopicSlug(t.title))}
-                      className={cn(
-                        "group flex items-center gap-2 rounded-md px-2 py-1.5 text-xs transition-colors",
-                        isCurrent
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                      )}
-                    >
-                      {/* Compact Status Dot */}
-                      <span className={cn(
-                        "h-1.5 w-1.5 shrink-0 rounded-full",
-                        isCompletedTopic ? "bg-emerald-500" :
-                        isCurrent ? "bg-primary animate-pulse" : "bg-border"
-                      )} />
-                      <span className="truncate">{t.title}</span>
-                    </Link>
-                  )
-                })}
-              </div>
-            </ScrollArea>
-
-            {/* Compact Footer */}
-            <div className="border-t border-border/50 p-2 space-y-2">
-              {/* Nav Buttons */}
-              <div className="grid grid-cols-2 gap-1.5">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={!prevTopic}
-                  className="h-7 text-[11px]"
-                  asChild={!!prevTopic}
-                >
-                  {prevTopic ? (
-                    <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
-                      <IconWrapper icon={ChevronLeftIcon} size={12} className="mr-1" />
-                      Prev
-                    </Link>
-                  ) : (
-                    <span>
-                      <IconWrapper icon={ChevronLeftIcon} size={12} className="mr-1" />
-                      Prev
-                    </span>
-                  )}
-                </Button>
-                <Button
-                  variant={nextTopic ? "default" : "outline"}
-                  size="sm"
-                  disabled={!nextTopic}
-                  className="h-7 text-[11px]"
-                  asChild={!!nextTopic}
-                >
-                  {nextTopic ? (
-                    <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
-                      Next
-                      <IconWrapper icon={ChevronRightIcon} size={12} className="ml-1" />
-                    </Link>
-                  ) : (
-                    <span>
-                      Next
-                      <IconWrapper icon={ChevronRightIcon} size={12} className="ml-1" />
-                    </span>
-                  )}
-                </Button>
-              </div>
-
-              {/* Complexity - Inline */}
-              <div className="flex items-center justify-between text-[10px] text-muted-foreground bg-muted/30 rounded px-2 py-1.5">
-                <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1">
-                    <IconWrapper icon={ClockIcon} size={12} className="opacity-70" />
-                    <code className="font-mono text-foreground">{topic.complexity.time}</code>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <IconWrapper icon={LayersIcon} size={12} className="opacity-70" />
-                    <code className="font-mono text-foreground">{topic.complexity.space}</code>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <IconWrapper icon={ClockIcon} size={14} />
+            <span>Time: <code className="font-mono">{topic.complexity.time}</code></span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <IconWrapper icon={LayersIcon} size={14} />
+            <span>Space: <code className="font-mono">{topic.complexity.space}</code></span>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={!prevTopic}
+            className="h-9"
+            asChild={!!prevTopic}
+          >
+            {prevTopic ? (
+              <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
+                <IconWrapper icon={ChevronLeftIcon} size={14} className="mr-1" />
+                Previous
+              </Link>
+            ) : (
+              <span>
+                <IconWrapper icon={ChevronLeftIcon} size={14} className="mr-1" />
+                Previous
+              </span>
+            )}
+          </Button>
+          <Button
+            variant={nextTopic ? "default" : "outline"}
+            size="sm"
+            disabled={!nextTopic}
+            className="h-9"
+            asChild={!!nextTopic}
+          >
+            {nextTopic ? (
+              <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
+                Next
+                <IconWrapper icon={ChevronRightIcon} size={14} className="ml-1" />
+              </Link>
+            ) : (
+              <span>
+                Next
+                <IconWrapper icon={ChevronRightIcon} size={14} className="ml-1" />
+              </span>
+            )}
+          </Button>
+        </div>
       </motion.div>
     </motion.div>
   )

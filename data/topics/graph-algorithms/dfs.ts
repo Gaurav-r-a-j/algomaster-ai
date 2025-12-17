@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { dfsQuiz } from "@/data/content/markdown/graph-algorithms/dfs.quiz"
 
 export const dfs: Topic = {
   id: "dfs",
@@ -12,16 +13,7 @@ export const dfs: Topic = {
   order: 22,
   difficulty: "Medium",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What data structure does DFS use?",
-      options: ["Queue", "Stack", "Heap", "Array"],
-      correctAnswer: 1,
-      explanation:
-        "DFS uses a stack (either through recursion or an explicit stack) to explore nodes.",
-    },
-  ],
+  quiz: dfsQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Number of Islands",

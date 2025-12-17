@@ -79,15 +79,49 @@ START
 END
 ```
 
-### Python
+```multi
+[javascript]
+const num1 = parseInt(prompt("Enter first number: "));
+const num2 = parseInt(prompt("Enter second number: "));
 
-```python
+const sum = num1 + num2;
+
+console.log(`Sum is: ${sum}`);
+
+[python]
 num1 = int(input("Enter first number: "))
 num2 = int(input("Enter second number: "))
 
 sum = num1 + num2
 
 print(f"Sum is: {sum}")
+
+[java]
+import java.util.Scanner;
+
+public class AddNumbers {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int num1 = scanner.nextInt();
+        int num2 = scanner.nextInt();
+        
+        int sum = num1 + num2;
+        System.out.println("Sum is: " + sum);
+    }
+}
+
+[cpp]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int num1, num2;
+    cin >> num1 >> num2;
+    
+    int sum = num1 + num2;
+    cout << "Sum is: " << sum << endl;
+    return 0;
+}
 ```
 
 ---
@@ -110,9 +144,20 @@ START
 END
 ```
 
-### Python
+```multi
+[javascript]
+const a = parseInt(prompt("Enter a: "));
+const b = parseInt(prompt("Enter b: "));
 
-```python
+if (a > b) {
+    console.log(`${a} is larger`);
+} else if (b > a) {
+    console.log(`${b} is larger`);
+} else {
+    console.log("Both are equal");
+}
+
+[python]
 a = int(input("Enter a: "))
 b = int(input("Enter b: "))
 
@@ -122,6 +167,43 @@ elif b > a:
     print(f"{b} is larger")
 else:
     print("Both are equal")
+
+[java]
+import java.util.Scanner;
+
+public class MaxOfTwo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int a = scanner.nextInt();
+        int b = scanner.nextInt();
+        
+        if (a > b) {
+            System.out.println(a + " is larger");
+        } else if (b > a) {
+            System.out.println(b + " is larger");
+        } else {
+            System.out.println("Both are equal");
+        }
+    }
+}
+
+[cpp]
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    
+    if (a > b) {
+        cout << a << " is larger" << endl;
+    } else if (b > a) {
+        cout << b << " is larger" << endl;
+    } else {
+        cout << "Both are equal" << endl;
+    }
+    return 0;
+}
 ```
 
 ---
@@ -150,28 +232,75 @@ START
 END
 ```
 
-### Python (Iterative)
+```multi
+[javascript]
+// Iterative
+function factorial(n) {
+    let result = 1;
+    for (let i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
 
-```python
+// Recursive
+function factorialRecursive(n) {
+    if (n <= 1) return 1;
+    return n * factorialRecursive(n - 1);
+}
+
+console.log(factorial(5));  // 120
+console.log(factorialRecursive(5));  // 120
+
+[python]
+# Iterative
 def factorial(n):
     result = 1
     for i in range(1, n + 1):
         result *= i
     return result
 
-n = int(input("Enter n: "))
-print(f"{n}! = {factorial(n)}")
-```
-
-### Python (Recursive)
-
-```python
-def factorial(n):
+# Recursive
+def factorial_recursive(n):
     if n <= 1:
         return 1
-    return n * factorial(n - 1)
+    return n * factorial_recursive(n - 1)
 
-print(factorial(5))  # 120
+n = int(input("Enter n: "))
+print(f"{n}! = {factorial(n)}")
+print(factorial_recursive(5))  # 120
+
+[java]
+// Iterative
+public static int factorial(int n) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+// Recursive
+public static int factorialRecursive(int n) {
+    if (n <= 1) return 1;
+    return n * factorialRecursive(n - 1);
+}
+
+[cpp]
+// Iterative
+int factorial(int n) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+// Recursive
+int factorialRecursive(int n) {
+    if (n <= 1) return 1;
+    return n * factorialRecursive(n - 1);
+}
 ```
 
 ---
@@ -195,9 +324,22 @@ FUNCTION linearSearch(array, target)
 END FUNCTION
 ```
 
-### Python
+```multi
+[javascript]
+function linearSearch(arr, target) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === target) {
+            return i;
+        }
+    }
+    return -1;
+}
 
-```python
+const arr = [5, 2, 8, 1, 9];
+console.log(linearSearch(arr, 8));  // 2
+console.log(linearSearch(arr, 7));  // -1
+
+[python]
 def linear_search(arr, target):
     for i in range(len(arr)):
         if arr[i] == target:
@@ -207,6 +349,26 @@ def linear_search(arr, target):
 arr = [5, 2, 8, 1, 9]
 print(linear_search(arr, 8))  # 2
 print(linear_search(arr, 7))  # -1
+
+[java]
+public static int linearSearch(int[] arr, int target) {
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+[cpp]
+int linearSearch(vector<int>& arr, int target) {
+    for (int i = 0; i < arr.size(); i++) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
 ```
 
 ---
@@ -240,9 +402,32 @@ FUNCTION binarySearch(array, target)
 END FUNCTION
 ```
 
-### Python
+```multi
+[javascript]
+function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
 
-```python
+const arr = [1, 3, 5, 7, 9, 11, 13];
+console.log(binarySearch(arr, 7));   // 3
+console.log(binarySearch(arr, 10));  // -1
+
+[python]
 def binary_search(arr, target):
     left, right = 0, len(arr) - 1
     
@@ -261,6 +446,46 @@ def binary_search(arr, target):
 arr = [1, 3, 5, 7, 9, 11, 13]
 print(binary_search(arr, 7))   # 3
 print(binary_search(arr, 10))  # -1
+
+[java]
+public static int binarySearch(int[] arr, int target) {
+    int left = 0;
+    int right = arr.length - 1;
+    
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
+
+[cpp]
+int binarySearch(vector<int>& arr, int target) {
+    int left = 0;
+    int right = arr.size() - 1;
+    
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
 ```
 
 ---
@@ -292,9 +517,24 @@ FUNCTION bubbleSort(array)
 END FUNCTION
 ```
 
-### Python
+```multi
+[javascript]
+function bubbleSort(arr) {
+    const n = arr.length;
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            }
+        }
+    }
+    return arr;
+}
 
-```python
+console.log(bubbleSort([64, 34, 25, 12, 22, 11, 90]));
+// [11, 12, 22, 25, 34, 64, 90]
+
+[python]
 def bubble_sort(arr):
     n = len(arr)
     for i in range(n):
@@ -305,6 +545,32 @@ def bubble_sort(arr):
 
 print(bubble_sort([64, 34, 25, 12, 22, 11, 90]))
 # [11, 12, 22, 25, 34, 64, 90]
+
+[java]
+public static void bubbleSort(int[] arr) {
+    int n = arr.length;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+[cpp]
+void bubbleSort(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
 ```
 
 ---

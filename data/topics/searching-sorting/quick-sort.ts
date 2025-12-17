@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { quickSortQuiz } from "@/data/content/markdown/searching-sorting/quick-sort.quiz"
 
 export const quickSort: Topic = {
   id: "quick-sort",
@@ -12,16 +13,7 @@ export const quickSort: Topic = {
   order: 15,
   difficulty: "Medium",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What is the worst-case time complexity of Quick Sort?",
-      options: ["O(n)", "O(n log n)", "O(n²)", "O(2^n)"],
-      correctAnswer: 2,
-      explanation:
-        "Quick Sort can degrade to O(n²) with bad pivot selection, such as already sorted arrays.",
-    },
-  ],
+  quiz: quickSortQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Sort an Array",

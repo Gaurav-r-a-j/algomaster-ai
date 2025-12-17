@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { knapsackQuiz } from "@/data/content/markdown/algorithmic-paradigms/knapsack.quiz"
 
 export const knapsack: Topic = {
   id: "knapsack",
@@ -11,5 +12,5 @@ export const knapsack: Topic = {
   order: 30,
   difficulty: "Hard",
   content: "# Knapsack Problem\n\nComing soon...",
-  quiz: [],
+  quiz: knapsackQuiz,
 }

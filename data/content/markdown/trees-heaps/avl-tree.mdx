@@ -18,7 +18,22 @@ When a tree becomes unbalanced after insertion/deletion, we use rotations to reb
 
 ### Right Rotation (LL Case)
 
-```python
+```multi
+[javascript]
+function rightRotate(y) {
+    const x = y.left;
+    const T2 = x.right;
+
+    x.right = y;
+    y.left = T2;
+
+    y.height = 1 + Math.max(height(y.left), height(y.right));
+    x.height = 1 + Math.max(height(x.left), height(x.right));
+
+    return x;
+}
+
+[python]
 def right_rotate(y):
     x = y.left
     T2 = x.right
@@ -30,11 +45,54 @@ def right_rotate(y):
     x.height = 1 + max(height(x.left), height(x.right))
 
     return x
+
+[java]
+private Node rightRotate(Node y) {
+    Node x = y.left;
+    Node T2 = x.right;
+
+    x.right = y;
+    y.left = T2;
+
+    y.height = 1 + Math.max(height(y.left), height(y.right));
+    x.height = 1 + Math.max(height(x.left), height(x.right));
+
+    return x;
+}
+
+[cpp]
+Node* rightRotate(Node* y) {
+    Node* x = y->left;
+    Node* T2 = x->right;
+
+    x->right = y;
+    y->left = T2;
+
+    y->height = 1 + max(height(y->left), height(y->right));
+    x->height = 1 + max(height(x->left), height(x->right));
+
+    return x;
+}
 ```
 
 ### Left Rotation (RR Case)
 
-```python
+```multi
+[javascript]
+function leftRotate(x) {
+    const y = x.right;
+    const T2 = y.left;
+
+    y.left = x;
+    x.right = T2;
+
+    x.height = 1 + Math.max(height(x.left), height(x.right));
+    y.height = 1 + Math.max(height(y.left), height(y.right));
+
+    return y;
+}
+
+[python]
 def left_rotate(x):
     y = x.right
     T2 = y.left
@@ -46,6 +104,34 @@ def left_rotate(x):
     y.height = 1 + max(height(y.left), height(y.right))
 
     return y
+
+[java]
+private Node leftRotate(Node x) {
+    Node y = x.right;
+    Node T2 = y.left;
+
+    y.left = x;
+    x.right = T2;
+
+    x.height = 1 + Math.max(height(x.left), height(x.right));
+    y.height = 1 + Math.max(height(y.left), height(y.right));
+
+    return y;
+}
+
+[cpp]
+Node* leftRotate(Node* x) {
+    Node* y = x->right;
+    Node* T2 = y->left;
+
+    y->left = x;
+    x->right = T2;
+
+    x->height = 1 + max(height(x->left), height(x->right));
+    y->height = 1 + max(height(y->left), height(y->right));
+
+    return y;
+}
 ```
 
 ## Four Imbalance Cases

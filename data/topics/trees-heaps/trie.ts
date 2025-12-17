@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { trieQuiz } from "@/data/content/markdown/trees-heaps/trie.quiz"
 
 export const trie: Topic = {
   id: "trie",
@@ -12,16 +13,7 @@ export const trie: Topic = {
   order: 19,
   difficulty: "Medium",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What is the time complexity of searching a word in a Trie?",
-      options: ["O(1)", "O(log n)", "O(m)", "O(n)"],
-      correctAnswer: 2,
-      explanation:
-        "Searching in a Trie takes O(m) time where m is the length of the word being searched.",
-    },
-  ],
+  quiz: trieQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Implement Trie",

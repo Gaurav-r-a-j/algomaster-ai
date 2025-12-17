@@ -31,7 +31,7 @@ Pass 3:
 ## Implementation
 
 ```multi
----javascript
+[java]script
 function bubbleSort(arr) {
     const n = arr.length;
     
@@ -58,7 +58,7 @@ function bubbleSort(arr) {
 const arr = [64, 34, 25, 12, 22, 11, 90];
 console.log(bubbleSort(arr));
 // [11, 12, 22, 25, 34, 64, 90]
----python
+[python]
 def bubble_sort(arr):
     n = len(arr)
     
@@ -82,7 +82,7 @@ def bubble_sort(arr):
 arr = [64, 34, 25, 12, 22, 11, 90]
 print(bubble_sort(arr))
 # [11, 12, 22, 25, 34, 64, 90]
----java
+[java]
 public static void bubbleSort(int[] arr) {
     int n = arr.length;
     
@@ -109,7 +109,7 @@ public static void bubbleSort(int[] arr) {
 int[] arr = {64, 34, 25, 12, 22, 11, 90};
 bubbleSort(arr);
 // arr = [11, 12, 22, 25, 34, 64, 90]
----cpp
+[cpp]
 void bubbleSort(vector<int>& arr) {
     int n = arr.size();
     
@@ -169,7 +169,7 @@ Pass 5: [11, 12, 22, 25, 34, 64, 90]  ← Sorted!
 ## Recursive Implementation
 
 ```multi
----javascript
+[java]script
 function bubbleSortRecursive(arr, n = arr.length) {
     // Base case: single element or empty
     if (n <= 1) return arr;
@@ -184,7 +184,7 @@ function bubbleSortRecursive(arr, n = arr.length) {
     // Recurse for remaining elements
     return bubbleSortRecursive(arr, n - 1);
 }
----python
+[python]
 def bubble_sort_recursive(arr, n=None):
     if n is None:
         n = len(arr)
@@ -200,7 +200,7 @@ def bubble_sort_recursive(arr, n=None):
     
     # Recurse for remaining elements
     return bubble_sort_recursive(arr, n - 1)
----java
+[java]
 public static void bubbleSortRecursive(int[] arr, int n) {
     // Base case: single element or empty
     if (n <= 1) return;
@@ -217,7 +217,7 @@ public static void bubbleSortRecursive(int[] arr, int n) {
     // Recurse for remaining elements
     bubbleSortRecursive(arr, n - 1);
 }
----cpp
+[cpp]
 void bubbleSortRecursive(vector<int>& arr, int n) {
     // Base case: single element or empty
     if (n <= 1) return;

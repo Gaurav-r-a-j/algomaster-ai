@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { selectionSortQuiz } from "@/data/content/markdown/searching-sorting/selection-sort.quiz"
 
 export const selectionSort: Topic = {
   id: "selection-sort",
@@ -12,15 +13,7 @@ export const selectionSort: Topic = {
   order: 12,
   difficulty: "Easy",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "How many swaps does Selection Sort perform?",
-      options: ["O(n)", "O(n log n)", "O(n²)", "O(1)"],
-      correctAnswer: 0,
-      explanation: "Selection Sort performs exactly n-1 swaps, making it O(n).",
-    },
-  ],
+  quiz: selectionSortQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Sort an Array",

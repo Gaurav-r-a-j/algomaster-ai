@@ -37,7 +37,21 @@ Performance
 
 Same time regardless of input size.
 
-```python
+```multi
+[javascript]
+function getFirst(arr) {
+    return arr[0];  // Always instant
+}
+
+// Hash table lookup
+const myDict = {"key": "value"};
+const value = myDict["key"];  // O(1) average
+
+// Array index access
+const arr = [1, 2, 3, 4, 5];
+const element = arr[3];  // O(1)
+
+[python]
 def get_first(arr):
     return arr[0]  # Always instant
 
@@ -48,6 +62,34 @@ value = my_dict["key"]  # O(1) average
 # Array index access
 arr = [1, 2, 3, 4, 5]
 element = arr[3]  # O(1)
+
+[java]
+public static int getFirst(int[] arr) {
+    return arr[0];  // Always instant
+}
+
+// Hash table lookup
+Map<String, String> myDict = new HashMap<>();
+myDict.put("key", "value");
+String value = myDict.get("key");  // O(1) average
+
+// Array index access
+int[] arr = {1, 2, 3, 4, 5};
+int element = arr[3];  // O(1)
+
+[cpp]
+int getFirst(vector<int>& arr) {
+    return arr[0];  // Always instant
+}
+
+// Hash table lookup
+unordered_map<string, string> myDict;
+myDict["key"] = "value";
+string value = myDict["key"];  // O(1) average
+
+// Array index access
+vector<int> arr = {1, 2, 3, 4, 5};
+int element = arr[3];  // O(1)
 ```
 
 **Examples:** Array access, hash table lookup, stack push/pop
@@ -58,7 +100,28 @@ element = arr[3]  # O(1)
 
 Extremely efficient. Problem size halves each step.
 
-```python
+```multi
+[javascript]
+function binarySearch(arr, target) {
+    // Finds target in sorted array - O(log n)
+    let left = 0;
+    let right = arr.length - 1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
+
+[python]
 def binary_search(arr, target):
     """Finds target in sorted array - O(log n)"""
     left, right = 0, len(arr) - 1
@@ -73,6 +136,46 @@ def binary_search(arr, target):
             right = mid - 1
     
     return -1
+
+[java]
+public static int binarySearch(int[] arr, int target) {
+    // Finds target in sorted array - O(log n)
+    int left = 0;
+    int right = arr.length - 1;
+    
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
+
+[cpp]
+int binarySearch(vector<int>& arr, int target) {
+    // Finds target in sorted array - O(log n)
+    int left = 0;
+    int right = arr.size() - 1;
+    
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;
+}
 ```
 
 **Examples:** Binary search, balanced BST operations
@@ -90,7 +193,29 @@ def binary_search(arr, target):
 
 Time grows proportionally with input.
 
-```python
+```multi
+[javascript]
+function findMax(arr) {
+    // Scans entire array - O(n)
+    let maxVal = arr[0];
+    for (const num of arr) {  // n iterations
+        if (num > maxVal) {
+            maxVal = num;
+        }
+    }
+    return maxVal;
+}
+
+function linearSearch(arr, target) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === target) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+[python]
 def find_max(arr):
     """Scans entire array - O(n)"""
     max_val = arr[0]
@@ -104,6 +229,48 @@ def linear_search(arr, target):
         if val == target:
             return i
     return -1
+
+[java]
+public static int findMax(int[] arr) {
+    // Scans entire array - O(n)
+    int maxVal = arr[0];
+    for (int num : arr) {  // n iterations
+        if (num > maxVal) {
+            maxVal = num;
+        }
+    }
+    return maxVal;
+}
+
+public static int linearSearch(int[] arr, int target) {
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+[cpp]
+int findMax(vector<int>& arr) {
+    // Scans entire array - O(n)
+    int maxVal = arr[0];
+    for (int num : arr) {  // n iterations
+        if (num > maxVal) {
+            maxVal = num;
+        }
+    }
+    return maxVal;
+}
+
+int linearSearch(vector<int>& arr, int target) {
+    for (int i = 0; i < arr.size(); i++) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
 ```
 
 **Examples:** Linear search, array sum, finding min/max
@@ -114,7 +281,22 @@ def linear_search(arr, target):
 
 Optimal for comparison-based sorting.
 
-```python
+```multi
+[javascript]
+function mergeSort(arr) {
+    // Efficient sorting - O(n log n)
+    if (arr.length <= 1) {
+        return arr;
+    }
+    
+    const mid = Math.floor(arr.length / 2);
+    const left = mergeSort(arr.slice(0, mid));
+    const right = mergeSort(arr.slice(mid));
+    
+    return merge(left, right);
+}
+
+[python]
 def merge_sort(arr):
     """Efficient sorting - O(n log n)"""
     if len(arr) <= 1:
@@ -125,6 +307,37 @@ def merge_sort(arr):
     right = merge_sort(arr[mid:])
     
     return merge(left, right)
+
+[java]
+public static int[] mergeSort(int[] arr) {
+    // Efficient sorting - O(n log n)
+    if (arr.length <= 1) {
+        return arr;
+    }
+    
+    int mid = arr.length / 2;
+    int[] left = mergeSort(Arrays.copyOfRange(arr, 0, mid));
+    int[] right = mergeSort(Arrays.copyOfRange(arr, mid, arr.length));
+    
+    return merge(left, right);
+}
+
+[cpp]
+vector<int> mergeSort(vector<int>& arr) {
+    // Efficient sorting - O(n log n)
+    if (arr.size() <= 1) {
+        return arr;
+    }
+    
+    int mid = arr.size() / 2;
+    vector<int> left(arr.begin(), arr.begin() + mid);
+    vector<int> right(arr.begin() + mid, arr.end());
+    
+    left = mergeSort(left);
+    right = mergeSort(right);
+    
+    return merge(left, right);
+}
 ```
 
 **Examples:** Merge Sort, Quick Sort (average), Heap Sort
@@ -135,7 +348,34 @@ def merge_sort(arr):
 
 Nested loops over input.
 
-```python
+```multi
+[javascript]
+function bubbleSort(arr) {
+    // Simple but slow sorting - O(n²)
+    const n = arr.length;
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            }
+        }
+    }
+    return arr;
+}
+
+function hasDuplicatesNaive(arr) {
+    // Check every pair - O(n²)
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[i] === arr[j]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+[python]
 def bubble_sort(arr):
     """Simple but slow sorting - O(n²)"""
     n = len(arr)
@@ -152,6 +392,58 @@ def has_duplicates_naive(arr):
             if arr[i] == arr[j]:
                 return True
     return False
+
+[java]
+public static void bubbleSort(int[] arr) {
+    // Simple but slow sorting - O(n²)
+    int n = arr.length;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+public static boolean hasDuplicatesNaive(int[] arr) {
+    // Check every pair - O(n²)
+    for (int i = 0; i < arr.length; i++) {
+        for (int j = i + 1; j < arr.length; j++) {
+            if (arr[i] == arr[j]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+[cpp]
+void bubbleSort(vector<int>& arr) {
+    // Simple but slow sorting - O(n²)
+    int n = arr.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+
+bool hasDuplicatesNaive(vector<int>& arr) {
+    // Check every pair - O(n²)
+    for (int i = 0; i < arr.size(); i++) {
+        for (int j = i + 1; j < arr.size(); j++) {
+            if (arr[i] == arr[j]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 ```
 
 **Examples:** Bubble Sort, Selection Sort, nested loops
@@ -162,7 +454,22 @@ def has_duplicates_naive(arr):
 
 Doubles with each input increase. Often optimizable with DP.
 
-```python
+```multi
+[javascript]
+function fibonacciNaive(n) {
+    // Without optimization - O(2^n)
+    if (n <= 1) return n;
+    return fibonacciNaive(n - 1) + fibonacciNaive(n - 2);
+}
+
+function powerSet(s) {
+    // All subsets - O(2^n)
+    if (s.length === 0) return [[]];
+    const rest = powerSet(s.slice(1));
+    return rest.concat(rest.map(subset => [s[0], ...subset]));
+}
+
+[python]
 def fibonacci_naive(n):
     """Without optimization - O(2^n)"""
     if n <= 1:
@@ -175,6 +482,54 @@ def power_set(s):
         return [[]]
     rest = power_set(s[1:])
     return rest + [[s[0]] + subset for subset in rest]
+
+[java]
+public static int fibonacciNaive(int n) {
+    // Without optimization - O(2^n)
+    if (n <= 1) return n;
+    return fibonacciNaive(n - 1) + fibonacciNaive(n - 2);
+}
+
+public static List<List<Integer>> powerSet(List<Integer> s) {
+    // All subsets - O(2^n)
+    if (s.isEmpty()) {
+        List<List<Integer>> result = new ArrayList<>();
+        result.add(new ArrayList<>());
+        return result;
+    }
+    List<List<Integer>> rest = powerSet(s.subList(1, s.size()));
+    List<List<Integer>> result = new ArrayList<>(rest);
+    for (List<Integer> subset : rest) {
+        List<Integer> newSubset = new ArrayList<>();
+        newSubset.add(s.get(0));
+        newSubset.addAll(subset);
+        result.add(newSubset);
+    }
+    return result;
+}
+
+[cpp]
+int fibonacciNaive(int n) {
+    // Without optimization - O(2^n)
+    if (n <= 1) return n;
+    return fibonacciNaive(n - 1) + fibonacciNaive(n - 2);
+}
+
+vector<vector<int>> powerSet(vector<int>& s) {
+    // All subsets - O(2^n)
+    if (s.empty()) {
+        return {{}};
+    }
+    vector<int> restVec(s.begin() + 1, s.end());
+    vector<vector<int>> rest = powerSet(restVec);
+    vector<vector<int>> result = rest;
+    for (auto& subset : rest) {
+        vector<int> newSubset = {s[0]};
+        newSubset.insert(newSubset.end(), subset.begin(), subset.end());
+        result.push_back(newSubset);
+    }
+    return result;
+}
 ```
 
 ---
@@ -183,7 +538,22 @@ def power_set(s):
 
 Grows astronomically. Usually avoid!
 
-```python
+```multi
+[javascript]
+function permutations(arr) {
+    // All orderings - O(n!)
+    if (arr.length <= 1) return [arr];
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+        const rest = [...arr.slice(0, i), ...arr.slice(i + 1)];
+        for (const perm of permutations(rest)) {
+            result.push([arr[i], ...perm]);
+        }
+    }
+    return result;
+}
+
+[python]
 def permutations(arr):
     """All orderings - O(n!)"""
     if len(arr) <= 1:
@@ -194,6 +564,47 @@ def permutations(arr):
         for perm in permutations(rest):
             result.append([num] + perm)
     return result
+
+[java]
+public static List<List<Integer>> permutations(List<Integer> arr) {
+    // All orderings - O(n!)
+    if (arr.size() <= 1) {
+        List<List<Integer>> result = new ArrayList<>();
+        result.add(new ArrayList<>(arr));
+        return result;
+    }
+    List<List<Integer>> result = new ArrayList<>();
+    for (int i = 0; i < arr.size(); i++) {
+        List<Integer> rest = new ArrayList<>(arr);
+        rest.remove(i);
+        for (List<Integer> perm : permutations(rest)) {
+            List<Integer> newPerm = new ArrayList<>();
+            newPerm.add(arr.get(i));
+            newPerm.addAll(perm);
+            result.add(newPerm);
+        }
+    }
+    return result;
+}
+
+[cpp]
+vector<vector<int>> permutations(vector<int> arr) {
+    // All orderings - O(n!)
+    if (arr.size() <= 1) {
+        return {arr};
+    }
+    vector<vector<int>> result;
+    for (int i = 0; i < arr.size(); i++) {
+        vector<int> rest = arr;
+        rest.erase(rest.begin() + i);
+        for (auto& perm : permutations(rest)) {
+            vector<int> newPerm = {arr[i]};
+            newPerm.insert(newPerm.end(), perm.begin(), perm.end());
+            result.push_back(newPerm);
+        }
+    }
+    return result;
+}
 ```
 
 ---
@@ -217,7 +628,23 @@ Memory used by algorithm (excluding input).
 
 ### O(1) Space - Constant
 
-```python
+```multi
+[javascript]
+function sumArray(arr) {
+    // Only uses one variable
+    let total = 0;  // O(1) extra space
+    for (const num of arr) {
+        total += num;
+    }
+    return total;
+}
+
+function swap(arr, i, j) {
+    // In-place swap
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+}
+
+[python]
 def sum_array(arr):
     """Only uses one variable"""
     total = 0  # O(1) extra space
@@ -228,11 +655,62 @@ def sum_array(arr):
 def swap(arr, i, j):
     """In-place swap"""
     arr[i], arr[j] = arr[j], arr[i]
+
+[java]
+public static int sumArray(int[] arr) {
+    // Only uses one variable
+    int total = 0;  // O(1) extra space
+    for (int num : arr) {
+        total += num;
+    }
+    return total;
+}
+
+public static void swap(int[] arr, int i, int j) {
+    // In-place swap
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+[cpp]
+int sumArray(vector<int>& arr) {
+    // Only uses one variable
+    int total = 0;  // O(1) extra space
+    for (int num : arr) {
+        total += num;
+    }
+    return total;
+}
+
+void swap(vector<int>& arr, int i, int j) {
+    // In-place swap
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
 ```
 
 ### O(n) Space - Linear
 
-```python
+```multi
+[javascript]
+function reverseArray(arr) {
+    // Creates copy of same size
+    return [...arr].reverse();  // O(n) extra space
+}
+
+function fibonacciDP(n) {
+    // Stores all values
+    const dp = new Array(n + 1).fill(0);  // O(n) space
+    dp[1] = 1;
+    for (let i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+}
+
+[python]
 def reverse_array(arr):
     """Creates copy of same size"""
     return arr[::-1]  # O(n) extra space
@@ -244,11 +722,65 @@ def fibonacci_dp(n):
     for i in range(2, n + 1):
         dp[i] = dp[i-1] + dp[i-2]
     return dp[n]
+
+[java]
+public static int[] reverseArray(int[] arr) {
+    // Creates copy of same size
+    int[] reversed = new int[arr.length];  // O(n) extra space
+    for (int i = 0; i < arr.length; i++) {
+        reversed[i] = arr[arr.length - 1 - i];
+    }
+    return reversed;
+}
+
+public static int fibonacciDP(int n) {
+    // Stores all values
+    int[] dp = new int[n + 1];  // O(n) space
+    dp[1] = 1;
+    for (int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+}
+
+[cpp]
+vector<int> reverseArray(vector<int>& arr) {
+    // Creates copy of same size
+    vector<int> reversed(arr.rbegin(), arr.rend());  // O(n) extra space
+    return reversed;
+}
+
+int fibonacciDP(int n) {
+    // Stores all values
+    vector<int> dp(n + 1, 0);  // O(n) space
+    dp[1] = 1;
+    for (int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+}
 ```
 
 ### O(log n) Space - Recursion Stack
 
-```python
+```multi
+[javascript]
+function binarySearchRecursive(arr, target, left, right) {
+    // Recursion depth is O(log n)
+    if (left > right) {
+        return -1;
+    }
+    const mid = Math.floor((left + right) / 2);
+    if (arr[mid] === target) {
+        return mid;
+    } else if (arr[mid] < target) {
+        return binarySearchRecursive(arr, target, mid + 1, right);
+    } else {
+        return binarySearchRecursive(arr, target, left, mid - 1);
+    }
+}
+
+[python]
 def binary_search_recursive(arr, target, left, right):
     """Recursion depth is O(log n)"""
     if left > right:
@@ -260,6 +792,38 @@ def binary_search_recursive(arr, target, left, right):
         return binary_search_recursive(arr, target, mid + 1, right)
     else:
         return binary_search_recursive(arr, target, left, mid - 1)
+
+[java]
+public static int binarySearchRecursive(int[] arr, int target, int left, int right) {
+    // Recursion depth is O(log n)
+    if (left > right) {
+        return -1;
+    }
+    int mid = (left + right) / 2;
+    if (arr[mid] == target) {
+        return mid;
+    } else if (arr[mid] < target) {
+        return binarySearchRecursive(arr, target, mid + 1, right);
+    } else {
+        return binarySearchRecursive(arr, target, left, mid - 1);
+    }
+}
+
+[cpp]
+int binarySearchRecursive(vector<int>& arr, int target, int left, int right) {
+    // Recursion depth is O(log n)
+    if (left > right) {
+        return -1;
+    }
+    int mid = (left + right) / 2;
+    if (arr[mid] == target) {
+        return mid;
+    } else if (arr[mid] < target) {
+        return binarySearchRecursive(arr, target, mid + 1, right);
+    } else {
+        return binarySearchRecursive(arr, target, left, mid - 1);
+    }
+}
 ```
 
 ---
@@ -272,7 +836,23 @@ def binary_search_recursive(arr, target, left, right):
 | Hash Table | O(n) | O(n) | Two Sum with hash map |
 | Sort First | O(n log n) | O(1) | Two Sum with two pointers |
 
-```python
+```multi
+[javascript]
+// Trade space for time
+function twoSumFast(nums, target) {
+    // O(n) time, O(n) space
+    const seen = {};
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        if (complement in seen) {
+            return [seen[complement], i];
+        }
+        seen[nums[i]] = i;
+    }
+    return [];
+}
+
+[python]
 # Trade space for time
 def two_sum_fast(nums, target):
     """O(n) time, O(n) space"""
@@ -282,6 +862,36 @@ def two_sum_fast(nums, target):
         if complement in seen:
             return [seen[complement], i]
         seen[num] = i
+
+[java]
+// Trade space for time
+public static int[] twoSumFast(int[] nums, int target) {
+    // O(n) time, O(n) space
+    Map<Integer, Integer> seen = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+        if (seen.containsKey(complement)) {
+            return new int[]{seen.get(complement), i};
+        }
+        seen.put(nums[i], i);
+    }
+    return new int[]{};
+}
+
+[cpp]
+// Trade space for time
+vector<int> twoSumFast(vector<int>& nums, int target) {
+    // O(n) time, O(n) space
+    unordered_map<int, int> seen;
+    for (int i = 0; i < nums.size(); i++) {
+        int complement = target - nums[i];
+        if (seen.count(complement)) {
+            return {seen[complement], i};
+        }
+        seen[nums[i]] = i;
+    }
+    return {};
+}
 ```
 
 ---
@@ -306,32 +916,119 @@ O(n + log n) → O(n)
 
 ### 3. Different Inputs = Different Variables
 
-```python
+```multi
+[javascript]
+function printPairs(arr1, arr2) {
+    for (const a of arr1) {      // O(a)
+        for (const b of arr2) {  // O(b)
+            console.log(a, b);
+        }
+    }
+}
+// Total: O(a × b), NOT O(n²)
+
+[python]
 def print_pairs(arr1, arr2):
     for a in arr1:      # O(a)
         for b in arr2:  # O(b)
             print(a, b)
 # Total: O(a × b), NOT O(n²)
+
+[java]
+public static void printPairs(int[] arr1, int[] arr2) {
+    for (int a : arr1) {      // O(a)
+        for (int b : arr2) {  // O(b)
+            System.out.println(a + " " + b);
+        }
+    }
+}
+// Total: O(a × b), NOT O(n²)
+
+[cpp]
+void printPairs(vector<int>& arr1, vector<int>& arr2) {
+    for (int a : arr1) {      // O(a)
+        for (int b : arr2) {  // O(b)
+            cout << a << " " << b << endl;
+        }
+    }
+}
+// Total: O(a × b), NOT O(n²)
 ```
 
 ### 4. Nested Operations Multiply
 
-```python
+```multi
+[javascript]
+for (let i = 0; i < n; i++) {        // O(n)
+    for (let j = 0; j < m; j++) {    // O(m)
+        // ...
+    }
+}
+// Total: O(n × m)
+
+[python]
 for i in range(n):        # O(n)
     for j in range(m):    # O(m)
         # ...
 # Total: O(n × m)
+
+[java]
+for (int i = 0; i < n; i++) {        // O(n)
+    for (int j = 0; j < m; j++) {    // O(m)
+        // ...
+    }
+}
+// Total: O(n × m)
+
+[cpp]
+for (int i = 0; i < n; i++) {        // O(n)
+    for (int j = 0; j < m; j++) {    // O(m)
+        // ...
+    }
+}
+// Total: O(n × m)
 ```
 
 ### 5. Sequential Operations Add
 
-```python
+```multi
+[javascript]
+for (let i = 0; i < n; i++) {  // O(n)
+    // ...
+}
+
+for (let j = 0; j < m; j++) {  // O(m)
+    // ...
+}
+// Total: O(n + m)
+
+[python]
 for i in range(n):  # O(n)
     # ...
 
 for j in range(m):  # O(m)
     # ...
 # Total: O(n + m)
+
+[java]
+for (int i = 0; i < n; i++) {  // O(n)
+    // ...
+}
+
+for (int j = 0; j < m; j++) {  // O(m)
+    // ...
+}
+// Total: O(n + m)
+
+[cpp]
+for (int i = 0; i < n; i++) {  // O(n)
+    // ...
+}
+
+for (int j = 0; j < m; j++) {  // O(m)
+    // ...
+}
+// Total: O(n + m)
 ```
 
 ---

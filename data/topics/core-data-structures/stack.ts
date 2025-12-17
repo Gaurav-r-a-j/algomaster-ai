@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { stackQuiz } from "@/data/content/markdown/core-data-structures/stack.quiz"
 
 export const stack: Topic = {
   id: "stack",
@@ -38,5 +39,5 @@ export const stack: Topic = {
       difficulty: "Medium",
     },
   ],
-  quiz: [],
+  quiz: stackQuiz,
 }

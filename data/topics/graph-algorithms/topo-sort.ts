@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { topoSortQuiz } from "@/data/content/markdown/graph-algorithms/topo-sort.quiz"
 
 export const topoSort: Topic = {
   id: "topo-sort",
@@ -12,21 +13,7 @@ export const topoSort: Topic = {
   order: 23,
   difficulty: "Medium",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What type of graph does topological sort work on?",
-      options: [
-        "Any graph",
-        "Undirected graph",
-        "DAG (Directed Acyclic Graph)",
-        "Complete graph",
-      ],
-      correctAnswer: 2,
-      explanation:
-        "Topological sort only works on Directed Acyclic Graphs (DAGs) - graphs with no cycles.",
-    },
-  ],
+  quiz: topoSortQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Course Schedule",

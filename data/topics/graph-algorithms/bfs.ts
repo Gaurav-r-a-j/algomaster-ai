@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { bfsQuiz } from "@/data/content/markdown/graph-algorithms/bfs.quiz"
 
 export const bfs: Topic = {
   id: "bfs",
@@ -12,15 +13,7 @@ export const bfs: Topic = {
   order: 21,
   difficulty: "Medium",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What data structure does BFS use?",
-      options: ["Stack", "Queue", "Heap", "Array"],
-      correctAnswer: 1,
-      explanation: "BFS uses a queue (FIFO) to process nodes level by level.",
-    },
-  ],
+  quiz: bfsQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Binary Tree Level Order Traversal",

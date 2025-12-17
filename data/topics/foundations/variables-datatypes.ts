@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { variablesDatatypesQuiz } from "@/data/content/markdown/foundations/variables-datatypes.quiz"
 
 export const variablesDatatypes: Topic = {
   id: "variables-datatypes",
@@ -11,15 +12,6 @@ export const variablesDatatypes: Topic = {
   order: 3,
   difficulty: "Easy",
   content: "", // Content loaded dynamically from data/content/markdown/variables-datatypes.md
-  quiz: [
-    {
-      id: 1,
-      question: "Which of these is a Reference Type?",
-      options: ["String", "Number", "Boolean", "Object"],
-      correctAnswer: 3,
-      explanation:
-        "Objects (and Arrays) are Reference Types, meaning variables store a 'link' to the memory, not the value itself.",
-    },
-  ],
+  quiz: variablesDatatypesQuiz,
   practiceLinks: [],
 }

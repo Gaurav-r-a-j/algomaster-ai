@@ -44,9 +44,76 @@ Array: [50, 30, 40, 10, 20]
 
 ## Implementation
 
-### Python
+```multi
+[javascript]
+class MaxHeap {
+    constructor() {
+        this.heap = [];
+    }
+    
+    parent(i) { return Math.floor((i - 1) / 2); }
+    leftChild(i) { return 2 * i + 1; }
+    rightChild(i) { return 2 * i + 2; }
+    
+    swap(i, j) {
+        [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
+    }
+    
+    insert(val) {
+        this.heap.push(val);
+        this.bubbleUp(this.heap.length - 1);
+    }
+    
+    bubbleUp(i) {
+        while (i > 0 && this.heap[this.parent(i)] < this.heap[i]) {
+            this.swap(i, this.parent(i));
+            i = this.parent(i);
+        }
+    }
+    
+    extractMax() {
+        if (this.heap.length === 0) return null;
+        
+        const max = this.heap[0];
+        this.heap[0] = this.heap.pop();
+        
+        if (this.heap.length > 0) {
+            this.bubbleDown(0);
+        }
+        
+        return max;
+    }
+    
+    bubbleDown(i) {
+        const n = this.heap.length;
+        let largest = i;
+        const left = this.leftChild(i);
+        const right = this.rightChild(i);
+        
+        if (left < n && this.heap[left] > this.heap[largest]) {
+            largest = left;
+        }
+        if (right < n && this.heap[right] > this.heap[largest]) {
+            largest = right;
+        }
+        
+        if (largest !== i) {
+            this.swap(i, largest);
+            this.bubbleDown(largest);
+        }
+    }
+    
+    peek() { return this.heap[0]; }
+    size() { return this.heap.length; }
+}
 
-```python
+// Usage
+const heap = new MaxHeap();
+[10, 30, 20, 15, 40].forEach(v => heap.insert(v));
+console.log(heap.extractMax()); // 40
+console.log(heap.extractMax()); // 30
+
+[python]
 class MaxHeap:
     def __init__(self):
         self.heap = []
@@ -118,81 +185,8 @@ for val in [10, 30, 20, 15, 40]:
 
 print(heap.extract_max())  # 40
 print(heap.extract_max())  # 30
-```
 
-### JavaScript
-
-```javascript
-class MaxHeap {
-    constructor() {
-        this.heap = [];
-    }
-    
-    parent(i) { return Math.floor((i - 1) / 2); }
-    leftChild(i) { return 2 * i + 1; }
-    rightChild(i) { return 2 * i + 2; }
-    
-    swap(i, j) {
-        [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
-    }
-    
-    insert(val) {
-        this.heap.push(val);
-        this.bubbleUp(this.heap.length - 1);
-    }
-    
-    bubbleUp(i) {
-        while (i > 0 && this.heap[this.parent(i)] < this.heap[i]) {
-            this.swap(i, this.parent(i));
-            i = this.parent(i);
-        }
-    }
-    
-    extractMax() {
-        if (this.heap.length === 0) return null;
-        
-        const max = this.heap[0];
-        this.heap[0] = this.heap.pop();
-        
-        if (this.heap.length > 0) {
-            this.bubbleDown(0);
-        }
-        
-        return max;
-    }
-    
-    bubbleDown(i) {
-        const n = this.heap.length;
-        let largest = i;
-        const left = this.leftChild(i);
-        const right = this.rightChild(i);
-        
-        if (left < n && this.heap[left] > this.heap[largest]) {
-            largest = left;
-        }
-        if (right < n && this.heap[right] > this.heap[largest]) {
-            largest = right;
-        }
-        
-        if (largest !== i) {
-            this.swap(i, largest);
-            this.bubbleDown(largest);
-        }
-    }
-    
-    peek() { return this.heap[0]; }
-    size() { return this.heap.length; }
-}
-
-// Usage
-const heap = new MaxHeap();
-[10, 30, 20, 15, 40].forEach(v => heap.insert(v));
-console.log(heap.extractMax()); // 40
-```
-
-### Java
-
-```java
+[java]
 import java.util.ArrayList;
 
 public class MaxHeap {
@@ -261,17 +255,15 @@ public class MaxHeap {
         return heap.isEmpty() ? null : heap.get(0); 
     }
 }
-```
 
-### C++
-
-```cpp
+[cpp]
 #include <vector>
-#include <stdexcept>
+#include <algorithm>
+using namespace std;
 
 class MaxHeap {
 private:
-    std::vector<int> heap;
+    vector<int> heap;
     
     int parent(int i) { return (i - 1) / 2; }
     int leftChild(int i) { return 2 * i + 1; }
@@ -306,7 +298,7 @@ private:
             bubbleDown(largest);
         }
     }
-
+    
 public:
     void insert(int val) {
         heap.push_back(val);
@@ -314,9 +306,7 @@ public:
     }
     
     int extractMax() {
-        if (heap.empty()) {
-            throw std::runtime_error("Heap is empty");
-        }
+        if (heap.empty()) return -1;
         
         int max = heap[0];
         heap[0] = heap.back();
@@ -329,9 +319,9 @@ public:
         return max;
     }
     
-    int peek() { return heap[0]; }
-    int size() { return heap.size(); }
-    bool isEmpty() { return heap.empty(); }
+    int peek() {
+        return heap.empty() ? -1 : heap[0];
+    }
 };
 ```
 
@@ -339,39 +329,8 @@ public:
 
 ## Using Built-in Libraries
 
-### Python (heapq - Min Heap)
-
-```python
-import heapq
-
-# Create a min heap
-heap = []
-heapq.heappush(heap, 3)
-heapq.heappush(heap, 1)
-heapq.heappush(heap, 4)
-
-# Pop minimum
-min_val = heapq.heappop(heap)  # 1
-
-# Heapify an existing list
-arr = [3, 1, 4, 1, 5, 9]
-heapq.heapify(arr)  # O(n)
-
-# Get k smallest elements
-k_smallest = heapq.nsmallest(3, arr)
-
-# Get k largest elements
-k_largest = heapq.nlargest(3, arr)
-
-# For Max Heap, negate values
-max_heap = []
-heapq.heappush(max_heap, -5)  # Push -5
-max_val = -heapq.heappop(max_heap)  # Pop and negate: 5
-```
-
-### JavaScript (Custom or use libraries like `heap-js`)
-
-```javascript
+```multi
+[javascript]
 // Using a simple priority queue pattern
 class PriorityQueue {
     constructor(compareFn = (a, b) => a - b) {
@@ -398,11 +357,35 @@ pq.enqueue(5);
 pq.enqueue(2);
 pq.enqueue(8);
 console.log(pq.dequeue()); // 2
-```
 
-### Java (PriorityQueue)
+[python]
+import heapq
 
-```java
+# Create a min heap
+heap = []
+heapq.heappush(heap, 3)
+heapq.heappush(heap, 1)
+heapq.heappush(heap, 4)
+
+# Pop minimum
+min_val = heapq.heappop(heap)  # 1
+
+# Heapify an existing list
+arr = [3, 1, 4, 1, 5, 9]
+heapq.heapify(arr)  # O(n)
+
+# Get k smallest elements
+k_smallest = heapq.nsmallest(3, arr)
+
+# Get k largest elements
+k_largest = heapq.nlargest(3, arr)
+
+# For Max Heap, negate values
+max_heap = []
+heapq.heappush(max_heap, -5)  # Push -5
+max_val = -heapq.heappop(max_heap)  # Pop and negate: 5
+
+[java]
 import java.util.PriorityQueue;
 import java.util.Collections;
 
@@ -419,28 +402,25 @@ maxHeap.offer(5);
 maxHeap.offer(2);
 maxHeap.offer(8);
 System.out.println(maxHeap.poll()); // 8
-```
 
-### C++ (priority_queue)
-
-```cpp
+[cpp]
 #include <queue>
 #include <vector>
 
 // Max Heap (default)
-std::priority_queue<int> maxHeap;
+priority_queue<int> maxHeap;
 maxHeap.push(5);
 maxHeap.push(2);
 maxHeap.push(8);
-std::cout << maxHeap.top() << std::endl; // 8
+cout << maxHeap.top() << endl; // 8
 maxHeap.pop();
 
 // Min Heap
-std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
+priority_queue<int, vector<int>, greater<int>> minHeap;
 minHeap.push(5);
 minHeap.push(2);
 minHeap.push(8);
-std::cout << minHeap.top() << std::endl; // 2
+cout << minHeap.top() << endl; // 2
 ```
 
 ---
@@ -463,7 +443,25 @@ std::cout << minHeap.top() << std::endl; // 2
 
 ### 1. Kth Largest Element
 
-```python
+```multi
+[javascript]
+function findKthLargest(nums, k) {
+    // Use min heap of size k
+    const heap = nums.slice(0, k);
+    heap.sort((a, b) => a - b);
+    
+    for (let i = k; i < nums.length; i++) {
+        if (nums[i] > heap[0]) {
+            heap[0] = nums[i];
+            heap.sort((a, b) => a - b);
+        }
+    }
+    
+    return heap[0];
+}
+// Time: O(n log k), Space: O(k)
+
+[python]
 import heapq
 
 def findKthLargest(nums, k):
@@ -476,13 +474,84 @@ def findKthLargest(nums, k):
             heapq.heapreplace(heap, num)
     
     return heap[0]
-
 # Time: O(n log k), Space: O(k)
+
+[java]
+import java.util.PriorityQueue;
+
+public int findKthLargest(int[] nums, int k) {
+    // Use min heap of size k
+    PriorityQueue<Integer> heap = new PriorityQueue<>();
+    for (int i = 0; i < k; i++) {
+        heap.offer(nums[i]);
+    }
+    
+    for (int i = k; i < nums.length; i++) {
+        if (nums[i] > heap.peek()) {
+            heap.poll();
+            heap.offer(nums[i]);
+        }
+    }
+    
+    return heap.peek();
+}
+// Time: O(n log k), Space: O(k)
+
+[cpp]
+#include <queue>
+#include <vector>
+using namespace std;
+
+int findKthLargest(vector<int>& nums, int k) {
+    // Use min heap of size k
+    priority_queue<int, vector<int>, greater<int>> heap;
+    for (int i = 0; i < k; i++) {
+        heap.push(nums[i]);
+    }
+    
+    for (int i = k; i < nums.size(); i++) {
+        if (nums[i] > heap.top()) {
+            heap.pop();
+            heap.push(nums[i]);
+        }
+    }
+    
+    return heap.top();
+}
+// Time: O(n log k), Space: O(k)
 ```
 
 ### 2. Merge K Sorted Lists
 
-```python
+```multi
+[javascript]
+function mergeKLists(lists) {
+    const heap = [];
+    
+    // Add first element from each list
+    for (let i = 0; i < lists.length; i++) {
+        if (lists[i] && lists[i].length > 0) {
+            heap.push({val: lists[i][0], listIdx: i, elemIdx: 0});
+        }
+    }
+    heap.sort((a, b) => a.val - b.val);
+    
+    const result = [];
+    while (heap.length > 0) {
+        const {val, listIdx, elemIdx} = heap.shift();
+        result.push(val);
+        
+        if (elemIdx + 1 < lists[listIdx].length) {
+            const nextVal = lists[listIdx][elemIdx + 1];
+            heap.push({val: nextVal, listIdx, elemIdx: elemIdx + 1});
+            heap.sort((a, b) => a.val - b.val);
+        }
+    }
+    
+    return result;
+}
+
+[python]
 import heapq
 
 def mergeKLists(lists):
@@ -503,17 +572,135 @@ def mergeKLists(lists):
             heapq.heappush(heap, (next_val, list_idx, elem_idx + 1))
     
     return result
+
+[java]
+import java.util.*;
+
+public List<Integer> mergeKLists(List<List<Integer>> lists) {
+    PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    
+    // Add first element from each list
+    for (int i = 0; i < lists.size(); i++) {
+        if (!lists.get(i).isEmpty()) {
+            heap.offer(new int[]{lists.get(i).get(0), i, 0});
+        }
+    }
+    
+    List<Integer> result = new ArrayList<>();
+    while (!heap.isEmpty()) {
+        int[] curr = heap.poll();
+        int val = curr[0], listIdx = curr[1], elemIdx = curr[2];
+        result.add(val);
+        
+        if (elemIdx + 1 < lists.get(listIdx).size()) {
+            int nextVal = lists.get(listIdx).get(elemIdx + 1);
+            heap.offer(new int[]{nextVal, listIdx, elemIdx + 1});
+        }
+    }
+    
+    return result;
+}
+
+[cpp]
+#include <queue>
+#include <vector>
+using namespace std;
+
+vector<int> mergeKLists(vector<vector<int>>& lists) {
+    priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> heap;
+    
+    // Add first element from each list
+    for (int i = 0; i < lists.size(); i++) {
+        if (!lists[i].empty()) {
+            heap.push({lists[i][0], i, 0});
+        }
+    }
+    
+    vector<int> result;
+    while (!heap.empty()) {
+        auto curr = heap.top();
+        heap.pop();
+        int val = curr[0], listIdx = curr[1], elemIdx = curr[2];
+        result.push_back(val);
+        
+        if (elemIdx + 1 < lists[listIdx].size()) {
+            int nextVal = lists[listIdx][elemIdx + 1];
+            heap.push({nextVal, listIdx, elemIdx + 1});
+        }
+    }
+    
+    return result;
+}
 ```
 
 ### 3. Top K Frequent Elements
 
-```python
+```multi
+[javascript]
+function topKFrequent(nums, k) {
+    const count = {};
+    for (const num of nums) {
+        count[num] = (count[num] || 0) + 1;
+    }
+    
+    const entries = Object.entries(count);
+    entries.sort((a, b) => b[1] - a[1]);
+    
+    return entries.slice(0, k).map(entry => parseInt(entry[0]));
+}
+
+[python]
 import heapq
 from collections import Counter
 
 def topKFrequent(nums, k):
     count = Counter(nums)
     return heapq.nlargest(k, count.keys(), key=count.get)
+
+[java]
+import java.util.*;
+
+public int[] topKFrequent(int[] nums, int k) {
+    Map<Integer, Integer> count = new HashMap<>();
+    for (int num : nums) {
+        count.put(num, count.getOrDefault(num, 0) + 1);
+    }
+    
+    PriorityQueue<Map.Entry<Integer, Integer>> heap = 
+        new PriorityQueue<>((a, b) -> b.getValue() - a.getValue());
+    heap.addAll(count.entrySet());
+    
+    int[] result = new int[k];
+    for (int i = 0; i < k; i++) {
+        result[i] = heap.poll().getKey();
+    }
+    return result;
+}
+
+[cpp]
+#include <unordered_map>
+#include <queue>
+#include <vector>
+using namespace std;
+
+vector<int> topKFrequent(vector<int>& nums, int k) {
+    unordered_map<int, int> count;
+    for (int num : nums) {
+        count[num]++;
+    }
+    
+    priority_queue<pair<int, int>> heap;
+    for (auto& pair : count) {
+        heap.push({pair.second, pair.first});
+    }
+    
+    vector<int> result;
+    for (int i = 0; i < k; i++) {
+        result.push_back(heap.top().second);
+        heap.pop();
+    }
+    return result;
+}
 ```
 
 ---

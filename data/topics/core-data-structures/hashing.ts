@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { hashingQuiz } from "@/data/content/markdown/core-data-structures/hashing.quiz"
 
 export const hashing: Topic = {
   id: "hashing",
@@ -38,5 +39,5 @@ export const hashing: Topic = {
       difficulty: "Easy",
     },
   ],
-  quiz: [],
+  quiz: hashingQuiz,
 }

@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { algorithmsPseudocodeQuiz } from "@/data/content/markdown/foundations/algorithms-pseudocode.quiz"
 
 export const algorithmsPseudocode: Topic = {
   id: "algorithms-pseudocode",
@@ -11,19 +12,6 @@ export const algorithmsPseudocode: Topic = {
   order: 2,
   difficulty: "Easy",
   content: "", // Content loaded dynamically
-  quiz: [
-    {
-      id: 1,
-      question: "What is an algorithm?",
-      options: [
-        "A specific programming language",
-        "A step-by-step procedure to solve a problem",
-        "A hardware component",
-        "A secret code"
-      ],
-      correctAnswer: 1,
-      explanation: "An algorithm is a finite sequence of well-defined instructions to solve a class of problems."
-    }
-  ],
+  quiz: algorithmsPseudocodeQuiz,
   practiceLinks: []
 }

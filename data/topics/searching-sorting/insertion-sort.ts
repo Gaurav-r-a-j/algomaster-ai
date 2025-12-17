@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { insertionSortQuiz } from "@/data/content/markdown/searching-sorting/insertion-sort.quiz"
 
 export const insertionSort: Topic = {
   id: "insertion-sort",
@@ -12,16 +13,7 @@ export const insertionSort: Topic = {
   order: 13,
   difficulty: "Easy",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What is the best-case time complexity of Insertion Sort?",
-      options: ["O(n)", "O(n log n)", "O(n²)", "O(1)"],
-      correctAnswer: 0,
-      explanation:
-        "Insertion Sort is O(n) when the array is already sorted, making it adaptive.",
-    },
-  ],
+  quiz: insertionSortQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Sort an Array",

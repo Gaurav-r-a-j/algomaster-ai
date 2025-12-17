@@ -29,10 +29,37 @@ Human Idea → Programming Language → Computer Execution
 
 ### 1. Write Code (Source Code)
 
-```python
+```multi
+[javascript]
+// Human-readable JavaScript code
+let name = "Alice";
+console.log(`Hello, ${name}!`);
+
+[python]
 # Human-readable Python code
 name = "Alice"
 print(f"Hello, {name}!")
+
+[java]
+// Human-readable Java code
+public class Hello {
+    public static void main(String[] args) {
+        String name = "Alice";
+        System.out.println("Hello, " + name + "!");
+    }
+}
+
+[cpp]
+// Human-readable C++ code
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string name = "Alice";
+    cout << "Hello, " << name << "!" << endl;
+    return 0;
+}
 ```
 
 ### 2. Translation (Compile/Interpret)
@@ -91,10 +118,29 @@ Programming teaches you to break down complex problems into smaller, manageable 
 
 ### 2. Automation
 Automate repetitive tasks:
-```python
+```multi
+[javascript]
+// Instead of manually renaming 1000 files...
+files.forEach((file, i) => {
+    rename(file, `photo_${i}.jpg`);
+});
+
+[python]
 # Instead of manually renaming 1000 files...
 for i, file in enumerate(files):
     rename(file, f"photo_{i}.jpg")
+
+[java]
+// Instead of manually renaming 1000 files...
+for (int i = 0; i < files.length; i++) {
+    rename(files[i], "photo_" + i + ".jpg");
+}
+
+[cpp]
+// Instead of manually renaming 1000 files...
+for (int i = 0; i < files.size(); i++) {
+    rename(files[i], "photo_" + to_string(i) + ".jpg");
+}
 ```
 
 ### 3. Career Opportunities
@@ -114,31 +160,21 @@ Know how the digital world works—essential in our tech-driven society.
 
 ## Your First Program
 
-### Python
-
-```python
-print("Hello, World!")
-```
-
-### JavaScript
-
-```javascript
+```multi
+[javascript]
 console.log("Hello, World!");
-```
 
-### Java
+[python]
+print("Hello, World!")
 
-```java
+[java]
 public class Hello {
     public static void main(String[] args) {
         System.out.println("Hello, World!");
     }
 }
-```
 
-### C++
-
-```cpp
+[cpp]
 #include <iostream>
 
 int main() {

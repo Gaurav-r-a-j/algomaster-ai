@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { heapsQuiz } from "@/data/content/markdown/trees-heaps/heaps.quiz"
 
 export const heaps: Topic = {
   id: "heaps",
@@ -12,16 +13,7 @@ export const heaps: Topic = {
   order: 17,
   difficulty: "Medium",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What is the time complexity of building a heap from an array?",
-      options: ["O(n)", "O(n log n)", "O(log n)", "O(n²)"],
-      correctAnswer: 0,
-      explanation:
-        "Building a heap from an array takes O(n) time, not O(n log n) as one might expect.",
-    },
-  ],
+  quiz: heapsQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Kth Largest Element",

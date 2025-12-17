@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { bstQuiz } from "@/data/content/markdown/trees-heaps/bst.quiz"
 
 export const bst: Topic = {
   id: "bst",
@@ -12,21 +13,7 @@ export const bst: Topic = {
   order: 16,
   difficulty: "Medium",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What property must a Binary Search Tree maintain?",
-      options: [
-        "All nodes have exactly two children",
-        "Left subtree < node < Right subtree",
-        "All leaves are at the same level",
-        "Tree is always balanced",
-      ],
-      correctAnswer: 1,
-      explanation:
-        "BST maintains the property that left subtree values are less and right subtree values are greater than the node.",
-    },
-  ],
+  quiz: bstQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Validate Binary Search Tree",

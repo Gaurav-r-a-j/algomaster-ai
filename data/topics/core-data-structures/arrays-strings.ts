@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { arraysStringsQuiz } from "@/data/content/markdown/core-data-structures/arrays-strings.quiz"
 
 export const arraysStrings: Topic = {
   id: "arrays-strings",
@@ -38,5 +39,5 @@ export const arraysStrings: Topic = {
       difficulty: "Easy",
     },
   ],
-  quiz: [],
+  quiz: arraysStringsQuiz,
 }

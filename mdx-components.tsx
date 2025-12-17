@@ -19,7 +19,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h1: ({ className, ...props }: any) => (
       <h1
         className={cn(
-          "mt-0 mb-6 scroll-mt-24 border-b border-border pb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl",
+          "mt-0 mb-4 scroll-mt-24 border-b border-border pb-2 text-2xl font-bold tracking-tight text-foreground md:text-3xl",
           className
         )}
         {...props}
@@ -28,7 +28,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h2: ({ className, ...props }: any) => (
       <h2
         className={cn(
-          "mt-10 mb-4 scroll-mt-24 border-t border-border pt-6 text-2xl font-bold tracking-tight text-foreground first:mt-0 first:border-t-0 first:pt-0 md:text-3xl",
+          "mt-8 mb-3 scroll-mt-24 border-t border-border pt-4 text-xl font-bold tracking-tight text-foreground first:mt-0 first:border-t-0 first:pt-0 md:text-2xl",
           className
         )}
         {...props}
@@ -37,7 +37,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h3: ({ className, ...props }: any) => (
       <h3
         className={cn(
-          "mt-8 mb-3 scroll-mt-24 text-xl font-semibold tracking-tight text-foreground md:text-2xl",
+          "mt-6 mb-2 scroll-mt-24 text-lg font-semibold tracking-tight text-foreground md:text-xl",
           className
         )}
         {...props}
@@ -46,7 +46,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h4: ({ className, ...props }: any) => (
       <h4
         className={cn(
-          "mt-6 mb-2 scroll-mt-24 text-lg font-semibold tracking-tight text-foreground md:text-xl",
+          "mt-5 mb-2 scroll-mt-24 text-base font-semibold tracking-tight text-foreground md:text-lg",
           className
         )}
         {...props}

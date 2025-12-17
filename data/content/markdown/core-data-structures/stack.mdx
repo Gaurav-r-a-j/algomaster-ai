@@ -40,7 +40,7 @@ Push(4):        Pop():
 ## Implementation
 
 ```multi
----javascript
+[javascript]
 class Stack {
     constructor() {
         this.items = [];
@@ -88,7 +88,7 @@ console.log(stack.pop());  // 2
 const arr = [];
 arr.push(1); // push
 arr.pop();   // pop
----python
+[python]
 class Stack:
     def __init__(self):
         self.items = []
@@ -134,7 +134,7 @@ stack = []
 stack.append(1)  # push
 stack.append(2)
 stack.pop()      # pop → 2
----java
+[java]
 import java.util.Stack;
 import java.util.EmptyStackException;
 
@@ -196,7 +196,7 @@ public class ArrayStack<T> {
         data = newData;
     }
 }
----cpp
+[cpp]
 #include <stack>
 #include <vector>
 #include <stdexcept>
@@ -253,7 +253,7 @@ public:
 ### 1. Valid Parentheses
 
 ```multi
----javascript
+[java]script
 function isValid(s) {
     const stack = [];
     const pairs = { ')': '(', '}': '{', ']': '[' };
@@ -274,7 +274,7 @@ function isValid(s) {
 // Test
 console.log(isValid("([{}])"));  // true
 console.log(isValid("([)]"));    // false
----python
+[python]
 def is_valid(s: str) -> bool:
     """
     Check if parentheses are balanced.
@@ -297,7 +297,7 @@ def is_valid(s: str) -> bool:
 print(is_valid("([{}])"))  # True
 print(is_valid("([)]"))    # False
 print(is_valid("(("))      # False
----java
+[java]
 public static boolean isValid(String s) {
     Stack<Character> stack = new Stack<>();
     Map<Character, Character> pairs = Map.of(')', '(', '}', '{', ']', '[');
@@ -318,7 +318,7 @@ public static boolean isValid(String s) {
 // Test
 System.out.println(isValid("([{}])")); // true
 System.out.println(isValid("([)]"));   // false
----cpp
+[cpp]
 bool isValid(string s) {
     stack<char> st;
     unordered_map<char, char> pairs = {{')', '('}, {'}', '{'}, {']', '['}};
@@ -345,7 +345,7 @@ cout << isValid("([)]");    // false
 ### 2. Next Greater Element
 
 ```multi
----javascript
+[java]script
 function nextGreaterElement(arr) {
     const n = arr.length;
     const result = new Array(n).fill(-1);
@@ -369,7 +369,7 @@ function nextGreaterElement(arr) {
 }
 
 console.log(nextGreaterElement([4, 5, 2, 25]));  // [5, 25, 25, -1]
----python
+[python]
 def next_greater_element(arr):
     """
     For each element, find the next greater element to its right.
@@ -393,7 +393,7 @@ def next_greater_element(arr):
     return result
 
 print(next_greater_element([4, 5, 2, 25]))  # [5, 25, 25, -1]
----java
+[java]
 public static int[] nextGreaterElement(int[] arr) {
     int n = arr.length;
     int[] result = new int[n];
@@ -418,7 +418,7 @@ public static int[] nextGreaterElement(int[] arr) {
 }
 
 // [4, 5, 2, 25] → [5, 25, 25, -1]
----cpp
+[cpp]
 vector<int> nextGreaterElement(vector<int>& arr) {
     int n = arr.size();
     vector<int> result(n, -1);
@@ -447,7 +447,7 @@ vector<int> nextGreaterElement(vector<int>& arr) {
 ### 3. Min Stack (Get minimum in O(1))
 
 ```multi
----javascript
+[java]script
 class MinStack {
     constructor() {
         this.stack = [];
@@ -479,7 +479,7 @@ class MinStack {
         return this.minStack[this.minStack.length - 1];
     }
 }
----python
+[python]
 class MinStack:
     def __init__(self):
         self.stack = []
@@ -514,7 +514,7 @@ ms.pop()
 print(ms.get_min())  # 1
 ms.pop()
 print(ms.get_min())  # 3
----java
+[java]
 class MinStack {
     private Stack<Integer> stack;
     private Stack<Integer> minStack;
@@ -547,7 +547,7 @@ class MinStack {
         return minStack.peek();
     }
 }
----cpp
+[cpp]
 class MinStack {
 private:
     stack<int> st;
@@ -583,7 +583,7 @@ public:
 ### 4. Evaluate Reverse Polish Notation
 
 ```multi
----javascript
+[java]script
 function evalRPN(tokens) {
     const stack = [];
     const operators = {
@@ -607,7 +607,7 @@ function evalRPN(tokens) {
 }
 
 console.log(evalRPN(["2", "1", "+", "3", "*"]));  // 9
----python
+[python]
 def eval_rpn(tokens):
     """
     Evaluate expression in Reverse Polish Notation.
@@ -632,7 +632,7 @@ def eval_rpn(tokens):
     return stack[0]
 
 print(eval_rpn(["2", "1", "+", "3", "*"]))  # 9
----java
+[java]
 public static int evalRPN(String[] tokens) {
     Stack<Integer> stack = new Stack<>();
     
@@ -661,7 +661,7 @@ public static int evalRPN(String[] tokens) {
 }
 
 // evalRPN(["2", "1", "+", "3", "*"]) = 9
----cpp
+[cpp]
 int evalRPN(vector<string>& tokens) {
     stack<int> st;
     
@@ -688,7 +688,7 @@ int evalRPN(vector<string>& tokens) {
 ### 5. Daily Temperatures
 
 ```multi
----javascript
+[java]script
 function dailyTemperatures(temperatures) {
     const n = temperatures.length;
     const result = new Array(n).fill(0);
@@ -707,7 +707,7 @@ function dailyTemperatures(temperatures) {
 
 console.log(dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73]));
 // [1, 1, 4, 2, 1, 1, 0, 0]
----python
+[python]
 def daily_temperatures(temperatures):
     """
     Days until warmer temperature.
@@ -728,7 +728,7 @@ def daily_temperatures(temperatures):
 
 print(daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73]))
 # [1, 1, 4, 2, 1, 1, 0, 0]
----java
+[java]
 public static int[] dailyTemperatures(int[] temperatures) {
     int n = temperatures.length;
     int[] result = new int[n];
@@ -746,7 +746,7 @@ public static int[] dailyTemperatures(int[] temperatures) {
 }
 
 // [73, 74, 75, 71, 69, 72, 76, 73] → [1, 1, 4, 2, 1, 1, 0, 0]
----cpp
+[cpp]
 vector<int> dailyTemperatures(vector<int>& temperatures) {
     int n = temperatures.size();
     vector<int> result(n, 0);

@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { bitManipulationQuiz } from "@/data/content/markdown/advanced-techniques/bit-manipulation.quiz"
 
 export const bitManipulation: Topic = {
   id: "bit-manipulation",
@@ -11,5 +12,5 @@ export const bitManipulation: Topic = {
   order: 35,
   difficulty: "Medium",
   content: "# Bit Manipulation\n\nComing soon...",
-  quiz: [],
+  quiz: bitManipulationQuiz,
 }

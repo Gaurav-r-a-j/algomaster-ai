@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { flowchartsQuiz } from "@/data/content/markdown/foundations/flowcharts.quiz"
 
 export const flowcharts: Topic = {
   id: "flowcharts",
@@ -11,19 +12,6 @@ export const flowcharts: Topic = {
   order: 1,
   difficulty: "Easy",
   content: "", // Content loaded dynamically
-  quiz: [
-    {
-      id: 1,
-      question: "Which symbol represents a decision in a flowchart?",
-      options: [
-        "Rectangle",
-        "Oval",
-        "Diamond",
-        "Parallelogram"
-      ],
-      correctAnswer: 2,
-      explanation: "A diamond shape is used to represent a decision point (like an if/else statement) in a flowchart."
-    }
-  ],
+  quiz: flowchartsQuiz,
   practiceLinks: []
 }

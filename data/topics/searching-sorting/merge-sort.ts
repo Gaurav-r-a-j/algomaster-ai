@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { mergeSortQuiz } from "@/data/content/markdown/searching-sorting/merge-sort.quiz"
 
 export const mergeSort: Topic = {
   id: "merge-sort",
@@ -12,16 +13,7 @@ export const mergeSort: Topic = {
   order: 14,
   difficulty: "Medium",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What is the space complexity of Merge Sort?",
-      options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
-      correctAnswer: 2,
-      explanation:
-        "Merge Sort requires O(n) extra space for temporary arrays during merging.",
-    },
-  ],
+  quiz: mergeSortQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Sort an Array",

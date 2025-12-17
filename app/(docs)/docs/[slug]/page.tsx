@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { TableOfContents } from "@/components/features/docs/table-of-contents"
 import { CodePlayground } from "@/components/features/learning/code-editor/code-playground"
 import { DataStructureVisualizer } from "@/components/features/learning/visualizers/data-structure-visualizer"
 
@@ -111,37 +110,28 @@ export default async function DocsArticlePage({
         </TabsList>
 
         <TabsContent value="explanation" className="mt-6">
-          <div className="flex gap-10">
-            {/* Main Article Content */}
-            <div className="min-w-0 flex-1 space-y-6">
-              <Card className="border-none bg-transparent shadow-none">
-                <CardContent className="prose prose-slate dark:prose-invert prose-headings:scroll-m-20 prose-headings:font-bold prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-b prose-h2:pb-2 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-p:leading-7 prose-p:mb-6 prose-code:font-mono prose-code:text-sm prose-code:bg-muted prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:rounded prose-pre:p-0 prose-pre:bg-transparent prose-pre:border-none max-w-none p-0">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeHighlight, rehypeSlug]}
-                    components={{
-                      pre: ({ node: _node, ...props }) => (
-                        <div className="bg-muted/50 relative my-6 rounded-lg border p-4">
-                          <pre
-                            {...props}
-                            className="overflow-x-auto bg-transparent p-0"
-                          />
-                        </div>
-                      ),
-                    }}
-                  >
-                    {topic.content}
-                  </ReactMarkdown>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Sticky Table of Contents Sidebar */}
-            <div className="hidden w-64 shrink-0 xl:block">
-              <div className="sticky top-6">
-                <TableOfContents content={topic.content} />
-              </div>
-            </div>
+          {/* Main Article Content - Full Width */}
+          <div className="min-w-0 space-y-6">
+            <Card className="border-none bg-transparent shadow-none">
+              <CardContent className="prose prose-slate dark:prose-invert prose-headings:scroll-m-20 prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:border-b prose-h2:pb-2 prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:leading-7 prose-p:mb-6 prose-code:font-mono prose-code:text-sm prose-code:bg-muted prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:rounded prose-pre:p-0 prose-pre:bg-transparent prose-pre:border-none max-w-none p-0">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeHighlight, rehypeSlug]}
+                  components={{
+                    pre: ({ node: _node, ...props }) => (
+                      <div className="bg-muted/50 relative my-6 rounded-lg border p-4">
+                        <pre
+                          {...props}
+                          className="overflow-x-auto bg-transparent p-0"
+                        />
+                      </div>
+                    ),
+                  }}
+                >
+                  {topic.content}
+                </ReactMarkdown>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
 

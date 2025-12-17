@@ -16,6 +16,7 @@ import { CodeBlock, SimpleCodeBlock } from "./code-block"
 import { CodePreview } from "./code-preview"
 import { CopyButton } from "./copy-button"
 import { getPreviewComponent } from "./preview-registry"
+import { VisualDiagram } from "./visual-diagram"
 
 interface MarkdownRendererProps {
   content: string
@@ -23,10 +24,10 @@ interface MarkdownRendererProps {
 }
 
 // Parse multi-language code block
-// Format: ```multi\n---javascript\ncode\n---python\ncode\n```
+// Format: ```multi\n[javascript]\ncode\n[python]\ncode\n```
 function parseMultiLangCode(code: string): Record<string, string> | null {
-  // Split by language markers (---languagename)
-  const regex = /---(\w+)\s*\n([\s\S]*?)(?=---\w+|$)/g
+  // Split by language markers ([languagename])
+  const regex = /\[(\w+)\]\s*\n([\s\S]*?)(?=\[\w+\]|$)/g
   const result: Record<string, string> = {}
   
   let match
@@ -176,25 +177,25 @@ function MarkdownSection({ content }: { content: string }) {
       components={{
           h1: ({ ...props }: any) => (
             <h1
-              className="text-foreground border-border mt-0 mb-6 scroll-mt-24 border-b pb-4 text-3xl font-bold tracking-tight md:text-4xl"
+              className="text-foreground border-border mt-0 mb-4 scroll-mt-24 border-b pb-2 text-2xl font-bold tracking-tight md:text-3xl"
               {...props}
             />
           ),
           h2: ({ ...props }: any) => (
             <h2
-              className="text-foreground border-border mt-10 mb-4 scroll-mt-24 border-t pt-6 text-2xl font-bold tracking-tight first:mt-0 first:border-t-0 first:pt-0 md:text-3xl"
+              className="text-foreground mt-8 mb-3 scroll-mt-24 text-xl font-bold tracking-tight first:mt-0 md:text-2xl"
               {...props}
             />
           ),
           h3: ({ ...props }: any) => (
             <h3
-              className="text-foreground mt-8 mb-3 scroll-mt-24 text-xl font-semibold tracking-tight md:text-2xl"
+              className="text-foreground mt-6 mb-2 scroll-mt-24 text-lg font-semibold tracking-tight md:text-xl"
               {...props}
             />
           ),
           h4: ({ ...props }: any) => (
             <h4
-              className="text-foreground mt-6 mb-2 scroll-mt-24 text-lg font-semibold tracking-tight md:text-xl"
+              className="text-foreground mt-5 mb-2 scroll-mt-24 text-base font-semibold tracking-tight md:text-lg"
               {...props}
             />
           ),
@@ -237,7 +238,7 @@ function MarkdownSection({ content }: { content: string }) {
             />
           ),
           hr: ({ ...props }: any) => (
-            <hr className="border-border my-8" {...props} />
+            <hr className="border-border my-6" {...props} />
           ),
           table: ({ ...props }: any) => (
             <div className="my-6 overflow-x-auto rounded-lg border border-border">
@@ -295,9 +296,32 @@ function MarkdownSection({ content }: { content: string }) {
               }
             }
             
-            // Check if this is actual code or ASCII diagram
-            const isDiagram = isAsciiDiagram(code) || language === "text" || language === ""
+            // Check for visual diagram types
+            const isVisualDiagram = language === "diagram" || language === "visual"
+            const isDiagram = isAsciiDiagram(code) || language === "text" || language === "" || isVisualDiagram
             const shouldShowCopy = !isDiagram && COPYABLE_LANGUAGES.has(language)
+            
+            // Render visual diagrams
+            if (isVisualDiagram) {
+              try {
+                const diagramData = JSON.parse(code)
+                return (
+                  <VisualDiagram
+                    type={diagramData.type || "array"}
+                    data={diagramData.data}
+                  />
+                )
+              } catch {
+                // If not JSON, try to infer type from code
+                const lowerCode = code.toLowerCase()
+                let diagramType: "array" | "queue" | "stack" | "linked-list" = "array"
+                if (lowerCode.includes("queue")) diagramType = "queue"
+                else if (lowerCode.includes("stack")) diagramType = "stack"
+                else if (lowerCode.includes("linked") || lowerCode.includes("list")) diagramType = "linked-list"
+                
+                return <VisualDiagram type={diagramType} />
+              }
+            }
 
             if (isPreview && language) {
               // Preview code block
@@ -349,7 +373,7 @@ function MarkdownSection({ content }: { content: string }) {
             return (
               <div className="my-4 overflow-hidden rounded-lg border border-border bg-muted/30">
                 <pre
-                  className="m-0 overflow-x-auto p-4 font-mono text-sm"
+                  className="m-0 overflow-x-auto p-4 font-mono text-sm leading-relaxed"
                   {...props}
                 >
                   {children}

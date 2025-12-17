@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { bigOQuiz } from "@/data/content/markdown/foundations/big-o.quiz"
 
 export const bigO: Topic = {
   id: "big-o",
@@ -11,21 +12,7 @@ export const bigO: Topic = {
   order: 6,
   difficulty: "Medium",
   content: "", // Content loaded from data/content/markdown/foundations/big-o.md
-  quiz: [
-    {
-      id: 1,
-      question: "What does O(1) mean?",
-      options: [
-        "Linear time",
-        "Constant time",
-        "Quadratic time",
-        "Exponential time",
-      ],
-      correctAnswer: 1,
-      explanation:
-        "O(1) means constant time - the operation takes the same time regardless of input size.",
-    },
-  ],
+  quiz: bigOQuiz,
   practiceLinks: [
     {
       title: "GeeksforGeeks: Time Complexity",

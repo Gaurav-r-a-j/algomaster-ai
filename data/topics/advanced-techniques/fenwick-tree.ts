@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { fenwickTreeQuiz } from "@/data/content/markdown/advanced-techniques/fenwick-tree.quiz"
 
 export const fenwickTree: Topic = {
   id: "fenwick-tree",
@@ -11,5 +12,5 @@ export const fenwickTree: Topic = {
   order: 34,
   difficulty: "Hard",
   content: "# Fenwick Tree\n\nComing soon...",
-  quiz: [],
+  quiz: fenwickTreeQuiz,
 }

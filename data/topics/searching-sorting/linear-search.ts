@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { linearSearchQuiz } from "@/data/content/markdown/searching-sorting/linear-search.quiz"
 
 export const linearSearch: Topic = {
   id: "linear-search",
@@ -11,16 +12,7 @@ export const linearSearch: Topic = {
   order: 9,
   difficulty: "Easy",
   content: "", // Content loaded from external .md file
-  quiz: [
-    {
-      id: 1,
-      question: "What is the time complexity of linear search?",
-      options: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
-      correctAnswer: 2,
-      explanation:
-        "Linear search has O(n) time complexity as it may need to check all n elements.",
-    },
-  ],
+  quiz: linearSearchQuiz,
   practiceLinks: [
     {
       title: "LeetCode: Search in Rotated Sorted Array",

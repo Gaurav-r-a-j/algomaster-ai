@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { greedyIntroQuiz } from "@/data/content/markdown/algorithmic-paradigms/greedy-intro.quiz"
 
 export const greedyIntro: Topic = {
   id: "greedy-intro",
@@ -11,5 +12,5 @@ export const greedyIntro: Topic = {
   order: 28,
   difficulty: "Medium",
   content: "# Greedy Algorithms\n\nComing soon...",
-  quiz: [],
+  quiz: greedyIntroQuiz,
 }

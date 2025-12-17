@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { linkedListQuiz } from "@/data/content/markdown/core-data-structures/linked-list.quiz"
 
 export const linkedList: Topic = {
   id: "linked-list",
@@ -38,5 +39,5 @@ export const linkedList: Topic = {
       difficulty: "Medium",
     },
   ],
-  quiz: [],
+  quiz: linkedListQuiz,
 }

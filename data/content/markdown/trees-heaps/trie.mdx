@@ -39,101 +39,8 @@ Prefix "car": root → c → a → r → [d, e] = ["card", "care"]
 
 ## Implementation
 
-### Python
-
-```python
-class TrieNode:
-    def __init__(self):
-        self.children = {}  # char -> TrieNode
-        self.is_end = False  # Marks end of a word
-        self.word = None  # Store the complete word (optional)
-
-class Trie:
-    def __init__(self):
-        self.root = TrieNode()
-    
-    def insert(self, word: str) -> None:
-        """Insert a word into the trie - O(m)"""
-        node = self.root
-        for char in word:
-            if char not in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
-        node.is_end = True
-        node.word = word
-    
-    def search(self, word: str) -> bool:
-        """Search for exact word - O(m)"""
-        node = self._find_node(word)
-        return node is not None and node.is_end
-    
-    def starts_with(self, prefix: str) -> bool:
-        """Check if any word starts with prefix - O(p)"""
-        return self._find_node(prefix) is not None
-    
-    def _find_node(self, prefix: str) -> TrieNode:
-        """Helper to find node for a prefix"""
-        node = self.root
-        for char in prefix:
-            if char not in node.children:
-                return None
-            node = node.children[char]
-        return node
-    
-    def get_words_with_prefix(self, prefix: str) -> list:
-        """Get all words starting with prefix - O(p + k)"""
-        result = []
-        node = self._find_node(prefix)
-        if node:
-            self._collect_words(node, result)
-        return result
-    
-    def _collect_words(self, node: TrieNode, result: list) -> None:
-        """DFS to collect all words from a node"""
-        if node.is_end:
-            result.append(node.word)
-        for child in node.children.values():
-            self._collect_words(child, result)
-    
-    def delete(self, word: str) -> bool:
-        """Delete a word from trie - O(m)"""
-        def _delete(node, word, depth):
-            if depth == len(word):
-                if not node.is_end:
-                    return False
-                node.is_end = False
-                return len(node.children) == 0
-            
-            char = word[depth]
-            if char not in node.children:
-                return False
-            
-            should_delete = _delete(node.children[char], word, depth + 1)
-            
-            if should_delete:
-                del node.children[char]
-                return len(node.children) == 0 and not node.is_end
-            
-            return False
-        
-        _delete(self.root, word, 0)
-        return True
-
-# Usage
-trie = Trie()
-words = ["apple", "app", "application", "apply", "banana"]
-for word in words:
-    trie.insert(word)
-
-print(trie.search("app"))         # True
-print(trie.search("ap"))          # False
-print(trie.starts_with("app"))    # True
-print(trie.get_words_with_prefix("app"))  # ['apple', 'app', 'application', 'apply']
-```
-
-### JavaScript
-
-```javascript
+```multi
+[javascript]
 class TrieNode {
     constructor() {
         this.children = new Map();
@@ -200,20 +107,90 @@ class Trie {
 
 // Usage
 const trie = new Trie();
-['apple', 'app', 'application', 'apply'].forEach(w => trie.insert(w));
-console.log(trie.search('app'));           // true
-console.log(trie.getWordsWithPrefix('app')); // ['apple', 'app', 'application', 'apply']
-```
+const words = ["apple", "app", "application", "apply", "banana"];
+words.forEach(word => trie.insert(word));
 
-### Java
+console.log(trie.search("app"));         // true
+console.log(trie.search("ap"));          // false
+console.log(trie.startsWith("app"));     // true
+console.log(trie.getWordsWithPrefix("app"));  // ['apple', 'app', 'application', 'apply']
 
-```java
-import java.util.*;
+[python]
+class TrieNode:
+    def __init__(self):
+        self.children = {}  # char -> TrieNode
+        self.is_end = False  # Marks end of a word
+        self.word = None  # Store the complete word (optional)
 
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -> None:
+        """Insert a word into the trie - O(m)"""
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+        node.word = word
+    
+    def search(self, word: str) -> bool:
+        """Search for exact word - O(m)"""
+        node = self._find_node(word)
+        return node is not None and node.is_end
+    
+    def starts_with(self, prefix: str) -> bool:
+        """Check if any word starts with prefix - O(p)"""
+        return self._find_node(prefix) is not None
+    
+    def _find_node(self, prefix: str) -> TrieNode:
+        """Helper to find node for a prefix"""
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return None
+            node = node.children[char]
+        return node
+    
+    def get_words_with_prefix(self, prefix: str) -> list:
+        """Get all words starting with prefix - O(p + k)"""
+        result = []
+        node = self._find_node(prefix)
+        if node:
+            self._collect_words(node, result)
+        return result
+    
+    def _collect_words(self, node: TrieNode, result: list) -> None:
+        """DFS to collect all words from a node"""
+        if node.is_end:
+            result.append(node.word)
+        for child in node.children.values():
+            self._collect_words(child, result)
+
+# Usage
+trie = Trie()
+words = ["apple", "app", "application", "apply", "banana"]
+for word in words:
+    trie.insert(word)
+
+print(trie.search("app"))         # True
+print(trie.search("ap"))          # False
+print(trie.starts_with("app"))    # True
+print(trie.get_words_with_prefix("app"))  # ['apple', 'app', 'application', 'apply']
+
+[java]
 class TrieNode {
-    Map<Character, TrieNode> children = new HashMap<>();
-    boolean isEnd = false;
-    String word = null;
+    Map<Character, TrieNode> children;
+    boolean isEnd;
+    String word;
+    
+    TrieNode() {
+        children = new HashMap<>();
+        isEnd = false;
+        word = null;
+    }
 }
 
 class Trie {
@@ -271,33 +248,27 @@ class Trie {
         }
     }
 }
-```
 
-### C++
-
-```cpp
+[cpp]
 #include <unordered_map>
 #include <vector>
 #include <string>
+using namespace std;
 
 class TrieNode {
 public:
-    std::unordered_map<char, TrieNode*> children;
-    bool isEnd = false;
-    std::string word;
+    unordered_map<char, TrieNode*> children;
+    bool isEnd;
+    string word;
     
-    ~TrieNode() {
-        for (auto& pair : children) {
-            delete pair.second;
-        }
-    }
+    TrieNode() : isEnd(false), word("") {}
 };
 
 class Trie {
 private:
     TrieNode* root;
     
-    TrieNode* findNode(const std::string& prefix) {
+    TrieNode* findNode(string prefix) {
         TrieNode* node = root;
         for (char c : prefix) {
             if (node->children.find(c) == node->children.end()) {
@@ -308,7 +279,7 @@ private:
         return node;
     }
     
-    void collectWords(TrieNode* node, std::vector<std::string>& result) {
+    void collectWords(TrieNode* node, vector<string>& result) {
         if (node->isEnd) {
             result.push_back(node->word);
         }
@@ -316,17 +287,13 @@ private:
             collectWords(pair.second, result);
         }
     }
-
+    
 public:
     Trie() {
         root = new TrieNode();
     }
     
-    ~Trie() {
-        delete root;
-    }
-    
-    void insert(const std::string& word) {
+    void insert(string word) {
         TrieNode* node = root;
         for (char c : word) {
             if (node->children.find(c) == node->children.end()) {
@@ -338,19 +305,19 @@ public:
         node->word = word;
     }
     
-    bool search(const std::string& word) {
+    bool search(string word) {
         TrieNode* node = findNode(word);
         return node != nullptr && node->isEnd;
     }
     
-    bool startsWith(const std::string& prefix) {
+    bool startsWith(string prefix) {
         return findNode(prefix) != nullptr;
     }
     
-    std::vector<std::string> getWordsWithPrefix(const std::string& prefix) {
-        std::vector<std::string> result;
+    vector<string> getWordsWithPrefix(string prefix) {
+        vector<string> result;
         TrieNode* node = findNode(prefix);
-        if (node) {
+        if (node != nullptr) {
             collectWords(node, result);
         }
         return result;
@@ -364,7 +331,42 @@ public:
 
 ### 1. Autocomplete System
 
-```python
+```multi
+[javascript]
+class AutocompleteSystem {
+    constructor(sentences, times) {
+        this.trie = new Trie();
+        this.counts = {};  // word -> frequency
+        this.currentInput = "";
+        
+        for (let i = 0; i < sentences.length; i++) {
+            this.trie.insert(sentences[i]);
+            this.counts[sentences[i]] = times[i];
+        }
+    }
+    
+    input(c) {
+        if (c === '#') {
+            // End of sentence, save it
+            this.trie.insert(this.currentInput);
+            this.counts[this.currentInput] = (this.counts[this.currentInput] || 0) + 1;
+            this.currentInput = "";
+            return [];
+        }
+        
+        this.currentInput += c;
+        const words = this.trie.getWordsWithPrefix(this.currentInput);
+        
+        // Sort by frequency (desc), then alphabetically
+        words.sort((a, b) => {
+            const freqDiff = (this.counts[b] || 0) - (this.counts[a] || 0);
+            return freqDiff !== 0 ? freqDiff : a.localeCompare(b);
+        });
+        return words.slice(0, 3);
+    }
+}
+
+[python]
 class AutocompleteSystem:
     def __init__(self, sentences, times):
         self.trie = Trie()
@@ -389,11 +391,131 @@ class AutocompleteSystem:
         # Sort by frequency (desc), then alphabetically
         words.sort(key=lambda w: (-self.counts.get(w, 0), w))
         return words[:3]
+
+[java]
+class AutocompleteSystem {
+    private Trie trie;
+    private Map<String, Integer> counts;
+    private StringBuilder currentInput;
+    
+    public AutocompleteSystem(String[] sentences, int[] times) {
+        trie = new Trie();
+        counts = new HashMap<>();
+        currentInput = new StringBuilder();
+        
+        for (int i = 0; i < sentences.length; i++) {
+            trie.insert(sentences[i]);
+            counts.put(sentences[i], times[i]);
+        }
+    }
+    
+    public List<String> input(char c) {
+        if (c == '#') {
+            String word = currentInput.toString();
+            trie.insert(word);
+            counts.put(word, counts.getOrDefault(word, 0) + 1);
+            currentInput.setLength(0);
+            return new ArrayList<>();
+        }
+        
+        currentInput.append(c);
+        List<String> words = trie.getWordsWithPrefix(currentInput.toString());
+        
+        // Sort by frequency (desc), then alphabetically
+        words.sort((a, b) -> {
+            int freqDiff = counts.getOrDefault(b, 0) - counts.getOrDefault(a, 0);
+            return freqDiff != 0 ? freqDiff : a.compareTo(b);
+        });
+        return words.subList(0, Math.min(3, words.size()));
+    }
+}
+
+[cpp]
+class AutocompleteSystem {
+private:
+    Trie trie;
+    unordered_map<string, int> counts;
+    string currentInput;
+    
+public:
+    AutocompleteSystem(vector<string>& sentences, vector<int>& times) {
+        for (int i = 0; i < sentences.size(); i++) {
+            trie.insert(sentences[i]);
+            counts[sentences[i]] = times[i];
+        }
+    }
+    
+    vector<string> input(char c) {
+        if (c == '#') {
+            trie.insert(currentInput);
+            counts[currentInput]++;
+            currentInput = "";
+            return {};
+        }
+        
+        currentInput += c;
+        vector<string> words = trie.getWordsWithPrefix(currentInput);
+        
+        // Sort by frequency (desc), then alphabetically
+        sort(words.begin(), words.end(), [this](const string& a, const string& b) {
+            int freqDiff = counts[b] - counts[a];
+            return freqDiff != 0 ? freqDiff > 0 : a < b;
+        });
+        return vector<string>(words.begin(), words.begin() + min(3, (int)words.size()));
+    }
+};
 ```
 
 ### 2. Word Search II (Find all words in grid)
 
-```python
+```multi
+[javascript]
+function findWords(board, words) {
+    // Find all words from dictionary in the grid
+    const trie = new Trie();
+    for (const word of words) {
+        trie.insert(word);
+    }
+    
+    const result = new Set();
+    const rows = board.length;
+    const cols = board[0].length;
+    
+    function dfs(r, c, node) {
+        if (node.isEnd) {
+            result.add(node.word);
+        }
+        
+        if (r < 0 || r >= rows || c < 0 || c >= cols) {
+            return;
+        }
+        
+        const char = board[r][c];
+        if (char === '#' || !node.children.has(char)) {
+            return;
+        }
+        
+        board[r][c] = '#';  // Mark visited
+        const nextNode = node.children.get(char);
+        
+        const directions = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+        for (const [dr, dc] of directions) {
+            dfs(r + dr, c + dc, nextNode);
+        }
+        
+        board[r][c] = char;  // Restore
+    }
+    
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            dfs(r, c, trie.root);
+        }
+    }
+    
+    return Array.from(result);
+}
+
+[python]
 def find_words(board, words):
     """Find all words from dictionary in the grid."""
     trie = Trie()
@@ -427,11 +549,134 @@ def find_words(board, words):
             dfs(r, c, trie.root, "")
     
     return list(result)
+
+[java]
+public List<String> findWords(char[][] board, String[] words) {
+    // Find all words from dictionary in the grid
+    Trie trie = new Trie();
+    for (String word : words) {
+        trie.insert(word);
+    }
+    
+    Set<String> result = new HashSet<>();
+    int rows = board.length;
+    int cols = board[0].length;
+    
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            dfs(board, r, c, trie.root, result, rows, cols);
+        }
+    }
+    
+    return new ArrayList<>(result);
+}
+
+private void dfs(char[][] board, int r, int c, TrieNode node, 
+                 Set<String> result, int rows, int cols) {
+    if (node.isEnd) {
+        result.add(node.word);
+    }
+    
+    if (r < 0 || r >= rows || c < 0 || c >= cols) {
+        return;
+    }
+    
+    char ch = board[r][c];
+    if (ch == '#' || !node.children.containsKey(ch)) {
+        return;
+    }
+    
+    board[r][c] = '#';  // Mark visited
+    TrieNode nextNode = node.children.get(ch);
+    
+    int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    for (int[] dir : directions) {
+        dfs(board, r + dir[0], c + dir[1], nextNode, result, rows, cols);
+    }
+    
+    board[r][c] = ch;  // Restore
+}
+
+[cpp]
+vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+    // Find all words from dictionary in the grid
+    Trie trie;
+    for (const string& word : words) {
+        trie.insert(word);
+    }
+    
+    set<string> result;
+    int rows = board.size();
+    int cols = board[0].size();
+    
+    function<void(int, int, TrieNode*)> dfs = [&](int r, int c, TrieNode* node) {
+        if (node->isEnd) {
+            result.insert(node->word);
+        }
+        
+        if (r < 0 || r >= rows || c < 0 || c >= cols) {
+            return;
+        }
+        
+        char ch = board[r][c];
+        if (ch == '#' || node->children.find(ch) == node->children.end()) {
+            return;
+        }
+        
+        board[r][c] = '#';  // Mark visited
+        TrieNode* nextNode = node->children[ch];
+        
+        vector<pair<int, int>> directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        for (auto [dr, dc] : directions) {
+            dfs(r + dr, c + dc, nextNode);
+        }
+        
+        board[r][c] = ch;  // Restore
+    };
+    
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            dfs(r, c, trie.root);
+        }
+    }
+    
+    return vector<string>(result.begin(), result.end());
+}
 ```
 
 ### 3. Replace Words (Shortest prefix)
 
-```python
+```multi
+[javascript]
+function replaceWords(dictionary, sentence) {
+    // Replace words with their shortest root from dictionary
+    const trie = new Trie();
+    for (const root of dictionary) {
+        trie.insert(root);
+    }
+    
+    function getShortestRoot(word) {
+        let node = trie.root;
+        for (let i = 0; i < word.length; i++) {
+            const char = word[i];
+            if (!node.children.has(char)) {
+                break;
+            }
+            node = node.children.get(char);
+            if (node.isEnd) {
+                return word.substring(0, i + 1);
+            }
+        }
+        return word;
+    }
+    
+    const words = sentence.split(' ');
+    return words.map(w => getShortestRoot(w)).join(' ');
+}
+// Example: replaceWords(["cat", "bat", "rat"], "the cattle was rattled")
+// Returns: "the cat was rat"
+
+[python]
 def replace_words(dictionary, sentence):
     """Replace words with their shortest root from dictionary."""
     trie = Trie()
@@ -450,14 +695,128 @@ def replace_words(dictionary, sentence):
     
     words = sentence.split()
     return ' '.join(get_shortest_root(w) for w in words)
-
 # Example: replace_words(["cat", "bat", "rat"], "the cattle was rattled")
 # Returns: "the cat was rat"
+
+[java]
+public String replaceWords(List<String> dictionary, String sentence) {
+    // Replace words with their shortest root from dictionary
+    Trie trie = new Trie();
+    for (String root : dictionary) {
+        trie.insert(root);
+    }
+    
+    String[] words = sentence.split(" ");
+    StringBuilder result = new StringBuilder();
+    
+    for (String word : words) {
+        if (result.length() > 0) result.append(" ");
+        result.append(getShortestRoot(trie, word));
+    }
+    
+    return result.toString();
+}
+
+private String getShortestRoot(Trie trie, String word) {
+    TrieNode node = trie.root;
+    for (int i = 0; i < word.length(); i++) {
+        char c = word.charAt(i);
+        if (!node.children.containsKey(c)) {
+            break;
+        }
+        node = node.children.get(c);
+        if (node.isEnd) {
+            return word.substring(0, i + 1);
+        }
+    }
+    return word;
+}
+
+[cpp]
+string replaceWords(vector<string>& dictionary, string sentence) {
+    // Replace words with their shortest root from dictionary
+    Trie trie;
+    for (const string& root : dictionary) {
+        trie.insert(root);
+    }
+    
+    stringstream ss(sentence);
+    string word;
+    string result;
+    
+    while (ss >> word) {
+        if (!result.empty()) result += " ";
+        result += getShortestRoot(trie, word);
+    }
+    return result;
+}
+
+string getShortestRoot(Trie& trie, const string& word) {
+    TrieNode* node = trie.root;
+    for (int i = 0; i < word.length(); i++) {
+        char c = word[i];
+        if (node->children.find(c) == node->children.end()) {
+            break;
+        }
+        node = node->children[c];
+        if (node->isEnd) {
+            return word.substr(0, i + 1);
+        }
+    }
+    return word;
+}
 ```
 
 ### 4. Maximum XOR of Two Numbers
 
-```python
+```multi
+[javascript]
+class BitTrie {
+    // Trie for bits - useful for XOR problems
+    constructor() {
+        this.root = {};
+    }
+    
+    insert(num) {
+        let node = this.root;
+        for (let i = 31; i >= 0; i--) {
+            const bit = (num >> i) & 1;
+            if (!(bit in node)) {
+                node[bit] = {};
+            }
+            node = node[bit];
+        }
+    }
+    
+    findMaxXor(num) {
+        let node = this.root;
+        let xorVal = 0;
+        for (let i = 31; i >= 0; i--) {
+            const bit = (num >> i) & 1;
+            // Try to go opposite direction for max XOR
+            const toggle = 1 - bit;
+            if (toggle in node) {
+                xorVal |= (1 << i);
+                node = node[toggle];
+            } else {
+                node = node[bit];
+            }
+        }
+        return xorVal;
+    }
+}
+
+function findMaximumXor(nums) {
+    const trie = new BitTrie();
+    let maxXor = 0;
+    for (const num of nums) {
+        trie.insert(num);
+        maxXor = Math.max(maxXor, trie.findMaxXor(num));
+    }
+    return maxXor;
+}
+
+[python]
 class BitTrie:
     """Trie for bits - useful for XOR problems"""
     def __init__(self):
@@ -492,13 +851,135 @@ def find_maximum_xor(nums):
         trie.insert(num)
         max_xor = max(max_xor, trie.find_max_xor(num))
     return max_xor
+
+[java]
+class BitTrie {
+    // Trie for bits - useful for XOR problems
+    private Map<Integer, Map<Integer, Map>> root;
+    
+    public BitTrie() {
+        root = new HashMap<>();
+    }
+    
+    public void insert(int num) {
+        Map<Integer, Map> node = root;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            node.putIfAbsent(bit, new HashMap<>());
+            node = (Map<Integer, Map>) node.get(bit);
+        }
+    }
+    
+    public int findMaxXor(int num) {
+        Map<Integer, Map> node = root;
+        int xorVal = 0;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            int toggle = 1 - bit;
+            if (node.containsKey(toggle)) {
+                xorVal |= (1 << i);
+                node = (Map<Integer, Map>) node.get(toggle);
+            } else {
+                node = (Map<Integer, Map>) node.get(bit);
+            }
+        }
+        return xorVal;
+    }
+}
+
+public int findMaximumXor(int[] nums) {
+    BitTrie trie = new BitTrie();
+    int maxXor = 0;
+    for (int num : nums) {
+        trie.insert(num);
+        maxXor = Math.max(maxXor, trie.findMaxXor(num));
+    }
+    return maxXor;
+}
+
+[cpp]
+class BitTrie {
+    // Trie for bits - useful for XOR problems
+private:
+    unordered_map<int, unordered_map<int, unordered_map<int, int>>> root;
+    
+public:
+    void insert(int num) {
+        auto* node = &root;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            if (node->find(bit) == node->end()) {
+                (*node)[bit] = {};
+            }
+            node = (unordered_map<int, unordered_map<int, int>>*)&(*node)[bit];
+        }
+    }
+    
+    int findMaxXor(int num) {
+        auto* node = &root;
+        int xorVal = 0;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            int toggle = 1 - bit;
+            if (node->find(toggle) != node->end()) {
+                xorVal |= (1 << i);
+                node = (unordered_map<int, unordered_map<int, int>>*)&(*node)[toggle];
+            } else {
+                node = (unordered_map<int, unordered_map<int, int>>*)&(*node)[bit];
+            }
+        }
+        return xorVal;
+    }
+};
+
+int findMaximumXor(vector<int>& nums) {
+    BitTrie trie;
+    int maxXor = 0;
+    for (int num : nums) {
+        trie.insert(num);
+        maxXor = max(maxXor, trie.findMaxXor(num));
+    }
+    return maxXor;
+}
 ```
 
 ---
 
 ## Optimized Trie with Array
 
-```python
+```multi
+[javascript]
+class TrieNodeOptimized {
+    // Use array instead of hashmap for lowercase letters only
+    constructor() {
+        this.children = new Array(26).fill(null);  // a-z
+        this.isEnd = false;
+    }
+    
+    charToIdx(c) {
+        return c.charCodeAt(0) - 'a'.charCodeAt(0);
+    }
+}
+
+class TrieOptimized {
+    constructor() {
+        this.root = new TrieNodeOptimized();
+    }
+    
+    insert(word) {
+        let node = this.root;
+        for (const c of word) {
+            const idx = c.charCodeAt(0) - 'a'.charCodeAt(0);
+            if (!node.children[idx]) {
+                node.children[idx] = new TrieNodeOptimized();
+            }
+            node = node.children[idx];
+        }
+        node.isEnd = true;
+    }
+}
+
+[python]
 class TrieNodeOptimized:
     """Use array instead of hashmap for lowercase letters only"""
     def __init__(self):
@@ -520,6 +1001,82 @@ class TrieOptimized:
                 node.children[idx] = TrieNodeOptimized()
             node = node.children[idx]
         node.is_end = True
+
+[java]
+class TrieNodeOptimized {
+    // Use array instead of hashmap for lowercase letters only
+    TrieNodeOptimized[] children;
+    boolean isEnd;
+    
+    TrieNodeOptimized() {
+        children = new TrieNodeOptimized[26];  // a-z
+        isEnd = false;
+    }
+    
+    int charToIdx(char c) {
+        return c - 'a';
+    }
+}
+
+class TrieOptimized {
+    private TrieNodeOptimized root;
+    
+    public TrieOptimized() {
+        root = new TrieNodeOptimized();
+    }
+    
+    public void insert(String word) {
+        TrieNodeOptimized node = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) {
+                node.children[idx] = new TrieNodeOptimized();
+            }
+            node = node.children[idx];
+        }
+        node.isEnd = true;
+    }
+}
+
+[cpp]
+class TrieNodeOptimized {
+    // Use array instead of hashmap for lowercase letters only
+public:
+    TrieNodeOptimized* children[26];  // a-z
+    bool isEnd;
+    
+    TrieNodeOptimized() : isEnd(false) {
+        for (int i = 0; i < 26; i++) {
+            children[i] = nullptr;
+        }
+    }
+    
+    int charToIdx(char c) {
+        return c - 'a';
+    }
+};
+
+class TrieOptimized {
+private:
+    TrieNodeOptimized* root;
+    
+public:
+    TrieOptimized() {
+        root = new TrieNodeOptimized();
+    }
+    
+    void insert(string word) {
+        TrieNodeOptimized* node = root;
+        for (char c : word) {
+            int idx = c - 'a';
+            if (node->children[idx] == nullptr) {
+                node->children[idx] = new TrieNodeOptimized();
+            }
+            node = node->children[idx];
+        }
+        node->isEnd = true;
+    }
+};
 ```
 
 ---

@@ -1,4 +1,5 @@
 import { AlgorithmType, Topic, VisualizerType } from "@/types/curriculum"
+import { backtrackingIntroQuiz } from "@/data/content/markdown/algorithmic-paradigms/backtracking-intro.quiz"
 
 export const backtrackingIntro: Topic = {
   id: "backtracking-intro",
@@ -12,5 +13,5 @@ export const backtrackingIntro: Topic = {
   order: 32,
   difficulty: "Medium",
   content: "# Backtracking\n\nComing soon...",
-  quiz: [],
+  quiz: backtrackingIntroQuiz,
 }
