@@ -95,7 +95,7 @@ export function VisualizerLayout({
   return (
     <div className="bg-background h-full w-full overflow-hidden">
       <ResizablePanelGroup direction="horizontal" className="h-full w-full">
-        {/* LEFT PANEL: Information (Collapsible) */}
+            {/* LEFT PANEL: Information (Collapsible) */}
         {showInfoPanel && (
           <>
             <ResizablePanel
@@ -113,7 +113,12 @@ export function VisualizerLayout({
                 !isInfoPanelOpen && "min-w-0 border-none"
               )}
             >
-              <div className="min-h-0 flex-1 overflow-y-auto custom-scrollbar">
+              <div className="flex h-full flex-col overflow-hidden">
+                {/* Sticky Header in Left Panel */}
+                <div className="border-border/50 bg-muted/30 sticky top-0 z-20 w-full shrink-0 border-b backdrop-blur-sm supports-[backdrop-filter]:bg-muted/40">
+                  {/* Optional: Can add controls here if needed */}
+                </div>
+                <div className="min-h-0 flex-1 overflow-y-auto custom-scrollbar">
                 {infoPanel ? (
                   infoPanel
                 ) : (
@@ -140,6 +145,7 @@ export function VisualizerLayout({
                     )}
                   </div>
                 )}
+                </div>
               </div>
             </ResizablePanel>
 
@@ -156,12 +162,12 @@ export function VisualizerLayout({
           minSize={30}
           className="flex h-full flex-col bg-background"
         >
-          <div className="flex h-full flex-col">
-            {/* Header Section */}
-            <div className="border-border/50 bg-background/95 sticky top-0 z-10 w-full shrink-0 border-b backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex h-full flex-col overflow-hidden">
+            {/* Header Section - Sticky Controls */}
+            <div className="border-border/50 bg-background/95 sticky top-0 z-30 w-full shrink-0 border-b backdrop-blur-sm supports-[backdrop-filter]:bg-background/80 shadow-sm">
               <div className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4">
-                {/* Controls Row */}
-                <div className="flex flex-wrap items-center gap-3">
+                {/* Controls Row - Always Visible */}
+                <div className="flex flex-wrap items-center gap-2.5">
                   {renderControls ? (
                     renderControls(
                       isInfoPanelOpen,
@@ -171,7 +177,7 @@ export function VisualizerLayout({
                   ) : (
                     <>
                       {/* Toggle Button + Controls */}
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2.5">
                         {showInfoPanel && <ToggleButton />}
 
                         {showInfoPanel && controls && (
@@ -182,7 +188,7 @@ export function VisualizerLayout({
                         )}
 
                         {controls && (
-                          <div className="flex-none">{controls}</div>
+                          <div className="flex-1 min-w-0">{controls}</div>
                         )}
                       </div>
 
@@ -207,7 +213,7 @@ export function VisualizerLayout({
 
                 {/* Mobile Header Description (if hidden above) */}
                 {!renderControls && headerDescription && (
-                  <div className="flex w-full items-center gap-2 rounded-md border border-primary/10 bg-primary/5 px-3 py-2 sm:hidden">
+                  <div className="flex w-full items-center gap-2 rounded-md border border-primary/10 bg-primary/5 px-3 py-2 sm:hidden mx-3 mb-3 sm:mx-4 sm:mb-4">
                     <div className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-primary" />
                     <span className="text-sm font-medium text-primary">
                       {headerDescription}
@@ -217,8 +223,8 @@ export function VisualizerLayout({
               </div>
             </div>
 
-            {/* Visualization Area */}
-            <div className="relative min-h-0 flex-1 overflow-auto bg-dot-pattern">
+            {/* Visualization Area - Scrollable */}
+            <div className="relative min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-dot-pattern">
               <div className="flex h-full w-full items-center justify-center p-6 sm:p-8">
                 <div className="mx-auto flex h-full w-full max-w-[1920px] flex-col items-center justify-center">
                   {children}
