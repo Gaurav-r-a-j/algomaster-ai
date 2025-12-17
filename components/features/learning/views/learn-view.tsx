@@ -1,12 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import Link from "next/link"
-import { ROUTES } from "@/constants/routes"
+import { useState } from "react"
 import { useProgress } from "@/context/progress-context"
-import { getTopicsByModule, TOPICS } from "@/data/curriculum"
 import { getDefaultQuiz } from "@/data/default-quiz"
-import { generateTopicSlug } from "@/utils/common/slug"
 import { motion } from "motion/react"
 
 import type { Topic } from "@/types/curriculum"
@@ -14,16 +10,11 @@ import { VisualizerType } from "@/types/curriculum"
 import { fadeIn, slideUpWithDelay, transitions } from "@/lib/animations"
 import {
   CheckmarkCircleIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ClockIcon,
-  LayersIcon,
   PlayIcon,
 } from "@/lib/icons"
 import { cn } from "@/lib/utils"
 import { useTopicContent } from "@/hooks/curriculum"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { CodePreview } from "@/components/common/code/code-preview"
@@ -41,29 +32,7 @@ export function LearnView({ topic }: LearnViewProps) {
   const codeExamples = topicContent?.codeExamples || []
 
   const [useAIQuestions, setUseAIQuestions] = useState(false)
-  const { completedTopics: _completedTopics, isCompleted } = useProgress()
-
-  // Get related topics and navigation
-  const { prevTopic, nextTopic, moduleTopics, moduleProgress, completedCount } =
-    useMemo(() => {
-      const topicIndex = TOPICS.findIndex((t) => t.id === topic.id)
-      const prevTopic = topicIndex > 0 ? TOPICS[topicIndex - 1] : null
-      const nextTopic =
-        topicIndex < TOPICS.length - 1 ? TOPICS[topicIndex + 1] : null
-
-      const moduleTopics = getTopicsByModule(topic.module).sort(
-        (a, b) => a.order - b.order
-      )
-      const completedCount = moduleTopics.filter((t) =>
-        isCompleted(t.id)
-      ).length
-      const moduleProgress =
-        moduleTopics.length > 0
-          ? Math.round((completedCount / moduleTopics.length) * 100)
-          : 0
-
-      return { prevTopic, nextTopic, moduleTopics, moduleProgress, completedCount }
-    }, [topic, isCompleted])
+  const { isCompleted } = useProgress()
 
   // Default to common questions, AI questions are optional (if available in future)
   const commonQuestions = topic.quiz || getDefaultQuiz(topic)
@@ -210,68 +179,6 @@ export function LearnView({ topic }: LearnViewProps) {
           </div>
         </motion.div>
       </div>
-
-      {/* Bottom Navigation - Moved from sidebar */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ ...transitions.smooth, delay: 0.3 }}
-        className="mt-12 px-4 md:px-6 lg:px-8 flex items-center justify-between border-t border-border/50 pt-8"
-      >
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
-            <IconWrapper icon={ClockIcon} size={16} className="text-muted-foreground/70" />
-            <span className="font-medium">Time:</span>
-            <code className="font-mono text-foreground">{topic.complexity.time}</code>
-          </div>
-          <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
-            <IconWrapper icon={LayersIcon} size={16} className="text-muted-foreground/70" />
-            <span className="font-medium">Space:</span>
-            <code className="font-mono text-foreground">{topic.complexity.space}</code>
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={!prevTopic}
-            className="h-9"
-            asChild={!!prevTopic}
-          >
-            {prevTopic ? (
-              <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
-                <IconWrapper icon={ChevronLeftIcon} size={14} className="mr-1" />
-                Previous
-              </Link>
-            ) : (
-              <span>
-                <IconWrapper icon={ChevronLeftIcon} size={14} className="mr-1" />
-                Previous
-              </span>
-            )}
-          </Button>
-          <Button
-            variant={nextTopic ? "default" : "outline"}
-            size="sm"
-            disabled={!nextTopic}
-            className="h-9"
-            asChild={!!nextTopic}
-          >
-            {nextTopic ? (
-              <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
-                Next
-                <IconWrapper icon={ChevronRightIcon} size={14} className="ml-1" />
-              </Link>
-            ) : (
-              <span>
-                Next
-                <IconWrapper icon={ChevronRightIcon} size={14} className="ml-1" />
-              </span>
-            )}
-          </Button>
-        </div>
-      </motion.div>
     </motion.div>
   )
 }

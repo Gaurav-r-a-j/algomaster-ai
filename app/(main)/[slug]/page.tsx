@@ -44,6 +44,7 @@ import { LearnView } from "@/components/features/learning/views/learn-view"
 import { PracticeView } from "@/components/features/learning/views/practice-view"
 import { TopicCard } from "@/components/features/learning/components/topic-card"
 import { VisualizeView } from "@/components/features/learning/views/visualize-view"
+import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
 
 interface SlugPageProps {
   params: Promise<{ slug: string }>
@@ -325,49 +326,60 @@ export default function SlugPage({ params }: SlugPageProps) {
           transition={transitions.smooth}
           className="relative h-full flex-1"
         >
-          <div className="flex h-full w-full flex-col">
-            <TabsContent value="learn" className="mt-0">
-              <motion.div
-                key="learn"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={transitions.smooth}
-                className="h-full w-full"
-              >
-                <LearnView topic={topic} />
-              </motion.div>
-            </TabsContent>
-
-            <TabsContent value="visualize" className="mt-0">
-              <motion.div
-                key="visualize"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={transitions.smooth}
-                className="h-full w-full"
-              >
-                <VisualizeView topic={topic} />
-              </motion.div>
-            </TabsContent>
-
-            <TabsContent
-              value="code"
-              className="mt-0 h-[calc(100vh-120px)] w-full"
+          {/* Learn Tab - With Sidebar */}
+          <TabsContent value="learn" className="mt-0">
+            <motion.div
+              key="learn"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={transitions.smooth}
+              className="flex h-full w-full"
             >
-              <motion.div
-                key="code"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={transitions.smooth}
-                className="h-full w-full"
-              >
-                <PracticeView topic={topic} />
-              </motion.div>
-            </TabsContent>
-          </div>
+              {/* Main Content */}
+              <div className="flex-1 min-w-0 overflow-y-auto">
+                <LearnView topic={topic} />
+              </div>
+
+              {/* Right Sidebar - Topic Details & Navigation (Only in Learn Tab) */}
+              <TopicSidebar
+                topic={topic}
+                prevTopic={_prevTopic}
+                nextTopic={_nextTopic}
+              />
+            </motion.div>
+          </TabsContent>
+
+          {/* Visualize Tab - Full Width */}
+          <TabsContent value="visualize" className="mt-0">
+            <motion.div
+              key="visualize"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={transitions.smooth}
+              className="h-full w-full"
+            >
+              <VisualizeView topic={topic} />
+            </motion.div>
+          </TabsContent>
+
+          {/* Practice Tab - Full Width */}
+          <TabsContent
+            value="code"
+            className="mt-0 h-[calc(100vh-120px)] w-full"
+          >
+            <motion.div
+              key="code"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={transitions.smooth}
+              className="h-full w-full"
+            >
+              <PracticeView topic={topic} />
+            </motion.div>
+          </TabsContent>
         </motion.div>
       </Tabs>
     </div>

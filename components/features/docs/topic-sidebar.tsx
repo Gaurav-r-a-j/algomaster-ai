@@ -1,9 +1,11 @@
 "use client"
 
 import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
 import { ExternalLinkIcon } from "lucide-react"
 import { ClockIcon, CpuChipIcon } from "@heroicons/react/24/outline"
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline"
+import { ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/icons"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -19,8 +21,9 @@ interface TopicSidebarProps {
 
 export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps) {
   return (
-    <aside className="w-80 shrink-0 space-y-8 overflow-y-auto border-l-2 border-border bg-background px-6 py-10">
-      <div className="space-y-5">
+    <aside className="sticky top-16 h-[calc(100vh-4rem)] w-80 shrink-0 overflow-hidden border-l-2 border-border bg-background">
+      <div className="h-full overflow-y-auto px-6 py-10 space-y-8">
+        <div className="space-y-5">
         <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
           Topic Details
         </h3>
@@ -120,8 +123,12 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
               className="w-full justify-start group h-auto py-3"
               asChild
             >
-              <Link href={`/docs/${generateTopicSlug(prevTopic.title)}`}>
-                <ChevronLeftIcon className="h-4 w-4 mr-3 group-hover:-translate-x-0.5 transition-transform shrink-0" />
+              <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
+                <IconWrapper 
+                  icon={ArrowLeft01Icon} 
+                  size={16} 
+                  className="mr-3 group-hover:-translate-x-0.5 transition-transform shrink-0" 
+                />
                 <div className="flex-1 text-left min-w-0">
                   <p className="text-xs text-muted-foreground mb-0.5">Previous</p>
                   <p className="text-sm font-semibold truncate text-foreground">{prevTopic.title}</p>
@@ -136,12 +143,16 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
               className="w-full justify-start group h-auto py-3"
               asChild
             >
-              <Link href={`/docs/${generateTopicSlug(nextTopic.title)}`}>
+              <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
                 <div className="flex-1 text-left min-w-0">
                   <p className="text-xs text-white/80 mb-0.5">Next</p>
                   <p className="text-sm font-semibold truncate">{nextTopic.title}</p>
                 </div>
-                <ChevronRightIcon className="h-4 w-4 ml-3 group-hover:translate-x-0.5 transition-transform shrink-0" />
+                <IconWrapper 
+                  icon={ArrowRight01Icon} 
+                  size={16} 
+                  className="ml-3 group-hover:translate-x-0.5 transition-transform shrink-0" 
+                />
               </Link>
             </Button>
           )}
@@ -152,6 +163,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
             </p>
           )}
         </div>
+      </div>
       </div>
     </aside>
   )
