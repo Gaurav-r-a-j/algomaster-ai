@@ -75,7 +75,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
         <Separator />
       )}
 
-      {(topic as any).youtubeLink && (
+      {topic.youtubeLink && (
         <div className="space-y-3">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
             Learn More
@@ -86,7 +86,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
             asChild
           >
             <Link
-              href={(topic as any).youtubeLink}
+              href={topic.youtubeLink}
               target="_blank"
               rel="noopener noreferrer"
             >

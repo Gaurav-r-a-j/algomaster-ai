@@ -2,6 +2,6 @@
 export * from "./views"
 export * from "./layout"
 export * from "./components"
-export { QuizSection } from "./quiz-section"
+export * from "./quiz"
 export * from "./visualizers"
 

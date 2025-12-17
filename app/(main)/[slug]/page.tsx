@@ -22,7 +22,7 @@ import {
   useModuleTopics,
   useTopicBySlug,
   useTopics,
-} from "@/hooks/use-curriculum"
+} from "@/hooks/curriculum"
 import { Badge } from "@/components/ui/badge"
 import {
   Breadcrumb,

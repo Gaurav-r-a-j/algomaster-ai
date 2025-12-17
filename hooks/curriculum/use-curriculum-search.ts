@@ -7,7 +7,7 @@ import {
   searchModules,
   highlightMatches,
 } from "@/lib/fuse-search"
-import { useModules, useTopics } from "@/hooks/use-curriculum"
+import { useModules, useTopics } from "./use-curriculum"
 
 export interface SearchResult<T> {
   item: T

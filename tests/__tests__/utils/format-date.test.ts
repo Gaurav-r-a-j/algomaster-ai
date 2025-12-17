@@ -1,4 +1,4 @@
-import { formatDate } from "@/utils/format-date"
+import { formatDate } from "@/utils/formatting"
 
 describe("formatDate", () => {
   it("should format date correctly", () => {

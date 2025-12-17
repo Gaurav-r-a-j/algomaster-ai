@@ -67,6 +67,7 @@ export interface Topic {
   quiz?: QuizQuestion[]
   practiceProblems?: PracticeProblem[]
   tags?: string[] // Search tags for fuzzy matching
+  youtubeLink?: string // Optional YouTube tutorial link
 }
 
 export interface PracticeProblem {

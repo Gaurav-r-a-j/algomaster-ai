@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { getFirstModuleUrl, getFirstTopicUrl } from "@/utils/curriculum-helpers"
+import { getFirstModuleUrl, getFirstTopicUrl } from "@/utils/curriculum"
 
 import { HeroArrowRightIcon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"

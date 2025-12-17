@@ -5,7 +5,7 @@ import type { PracticeProblem } from "@/services/content/content-service"
 import type { ImperativePanelHandle } from "react-resizable-panels"
 
 import type { Topic } from "@/types/curriculum"
-import { useTopicContent } from "@/hooks/use-curriculum"
+import { useTopicContent } from "@/hooks/curriculum"
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline"
 
 import { cn } from "@/lib/utils"

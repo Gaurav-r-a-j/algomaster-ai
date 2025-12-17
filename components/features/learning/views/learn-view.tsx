@@ -21,7 +21,7 @@ import {
   PlayIcon,
 } from "@/lib/icons"
 import { cn } from "@/lib/utils"
-import { useTopicContent } from "@/hooks/use-curriculum"
+import { useTopicContent } from "@/hooks/curriculum"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -29,7 +29,7 @@ import { Separator } from "@/components/ui/separator"
 import { CodePreview } from "@/components/common/code/code-preview"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { MarkdownRenderer } from "@/components/common/markdown-renderer"
-import { QuizSection } from "@/components/features/learning/quiz-section"
+import { QuizSection } from "@/components/features/learning/quiz"
 
 interface LearnViewProps {
   topic: Topic

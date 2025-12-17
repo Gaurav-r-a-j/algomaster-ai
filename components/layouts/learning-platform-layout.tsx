@@ -13,7 +13,7 @@ import {
   Home01Icon,
   SearchIcon,
 } from "@/lib/icons"
-import { useCurriculumSearch } from "@/hooks/use-curriculum-search"
+import { useCurriculumSearch } from "@/hooks/curriculum"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"

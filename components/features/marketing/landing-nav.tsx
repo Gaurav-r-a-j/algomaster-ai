@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { ROUTES } from "@/constants/routes"
-import { getFirstTopicUrl } from "@/utils/curriculum-helpers"
+import { getFirstTopicUrl } from "@/utils/curriculum"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
