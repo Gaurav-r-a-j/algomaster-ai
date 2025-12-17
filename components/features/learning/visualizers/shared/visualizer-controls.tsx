@@ -157,37 +157,14 @@ export function VisualizerControls({
 
   // Full mode - with sliders and detailed controls
   return (
-    <div className="flex w-full flex-col gap-3">
+    <div className="flex w-full flex-col gap-4">
       {/* Primary Controls Row */}
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2.5">
         {extraControlsLeft && (
-          <div className="mr-2 border-r border-border/40 pr-2">
+          <div className="mr-1 border-r border-border/40 pr-2.5">
             {extraControlsLeft}
           </div>
         )}
-
-        {/* Reset Button */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onReset}
-              disabled={disabled || isPlaying}
-              className="h-9"
-              aria-label="Reset visualization"
-            >
-              <motion.div
-                animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
-                transition={transitions.quick}
-              >
-                <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
-              </motion.div>
-              <span className="hidden sm:inline">Reset</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Reset visualization</TooltipContent>
-        </Tooltip>
 
         {/* Previous Step */}
         <Tooltip>
@@ -197,39 +174,52 @@ export function VisualizerControls({
               size="icon"
               onClick={onPreviousStep}
               disabled={disabled || isPlaying || !canGoPrevious}
-              className="h-9 w-9"
+              className="h-10 w-10 rounded-lg"
               aria-label="Previous step"
             >
-              <IconWrapper icon={ChevronLeftIcon} size={16} />
+              <IconWrapper icon={ChevronLeftIcon} size={18} />
             </Button>
           </TooltipTrigger>
           <TooltipContent>Previous step</TooltipContent>
         </Tooltip>
 
-        {/* Play/Pause Button */}
+        {/* Reset Button */}
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
+              variant="outline"
               size="sm"
-              onClick={isPlaying ? onPause : onPlay}
-              disabled={disabled}
-              className="h-9 min-w-[100px]"
-              aria-label={isPlaying ? "Pause" : "Play"}
+              onClick={onReset}
+              disabled={disabled || isPlaying}
+              className="h-10 rounded-lg px-4"
+              aria-label="Reset visualization"
             >
               <motion.div
-                animate={isPlaying ? { scale: [1, 1.1, 1] } : {}}
-                transition={{
-                  duration: 1,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
+                transition={transitions.quick}
               >
-                <IconWrapper
-                  icon={isPlaying ? PauseIcon : PlayIcon}
-                  size={16}
-                  className="mr-2"
-                />
+                <IconWrapper icon={RefreshCwIcon} size={16} className="mr-2" />
               </motion.div>
+              Reset
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Reset visualization</TooltipContent>
+        </Tooltip>
+
+        {/* Play/Pause Button - Prominent */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={isPlaying ? onPause : onPlay}
+              disabled={disabled}
+              className="h-10 min-w-[110px] rounded-lg bg-foreground text-background hover:bg-foreground/90 font-semibold"
+              aria-label={isPlaying ? "Pause" : "Play"}
+            >
+              <IconWrapper
+                icon={isPlaying ? PauseIcon : PlayIcon}
+                size={18}
+                className="mr-2"
+              />
               {isPlaying ? "Pause" : "Play"}
             </Button>
           </TooltipTrigger>
@@ -246,10 +236,10 @@ export function VisualizerControls({
               size="icon"
               onClick={onNextStep}
               disabled={disabled || isPlaying || !canGoNext}
-              className="h-9 w-9"
+              className="h-10 w-10 rounded-lg"
               aria-label="Next step"
             >
-              <IconWrapper icon={ChevronRightIcon} size={16} />
+              <IconWrapper icon={ChevronRightIcon} size={18} />
             </Button>
           </TooltipTrigger>
           <TooltipContent>Next step</TooltipContent>
@@ -260,24 +250,25 @@ export function VisualizerControls({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={transitions.smooth}
-          className="hidden items-center gap-2 rounded-md border border-border/40 bg-muted px-2.5 py-1.5 sm:flex"
+          className="ml-auto hidden items-center gap-2 rounded-lg border border-border/40 bg-muted/50 px-3 py-2 sm:flex"
         >
-          <span className="font-mono text-xs font-semibold text-muted-foreground">
+          <span className="font-mono text-sm font-semibold text-foreground">
             Step {currentStep + 1} / {totalSteps || 1}
           </span>
         </motion.div>
       </div>
 
       {/* Timeline + Size + Speed Sliders */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:gap-6">
+      <div className="flex flex-col gap-4 border-t border-border/40 pt-4">
         {/* Timeline Slider */}
         {showTimelineControl && (
-          <div className="flex min-w-[180px] flex-1 flex-col gap-1.5">
-            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <span>Timeline</span>
-              <span className="font-mono">
-                {Math.min(currentStep + 1, totalSteps || 1)} /{" "}
-                {Math.max(totalSteps, 1)}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                TIMELINE
+              </span>
+              <span className="font-mono text-sm font-semibold text-foreground">
+                {Math.min(currentStep + 1, totalSteps || 1)} / {Math.max(totalSteps, 1)}
               </span>
             </div>
             <Slider
@@ -285,7 +276,7 @@ export function VisualizerControls({
               min={0}
               max={maxStep}
               step={1}
-              className="flex-1"
+              className="w-full"
               disabled={disabled || totalSteps <= 1}
               onValueChange={([value]) => {
                 if (onStepChange) {
@@ -300,10 +291,14 @@ export function VisualizerControls({
         {showArraySizeControl &&
           arraySize !== undefined &&
           onArraySizeChange && (
-            <div className="flex min-w-[150px] flex-col gap-1.5 sm:w-[180px]">
-              <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                <span>Array Size</span>
-                <span className="font-mono">{arraySize}</span>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  ARRAY SIZE
+                </span>
+                <span className="font-mono text-sm font-semibold text-foreground">
+                  {arraySize}
+                </span>
               </div>
               <Slider
                 value={[arraySize]}
@@ -311,7 +306,7 @@ export function VisualizerControls({
                 min={5}
                 max={30}
                 step={1}
-                className="flex-1"
+                className="w-full"
                 disabled={disabled || isPlaying}
               />
             </div>
@@ -319,10 +314,14 @@ export function VisualizerControls({
 
         {/* Speed Control */}
         {showSpeedControl && (
-          <div className="flex min-w-[150px] flex-col gap-1.5 sm:w-[180px]">
-            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <span>Speed</span>
-              <span className="font-mono">{playbackSpeed}ms</span>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                SPEED
+              </span>
+              <span className="font-mono text-sm font-semibold text-foreground uppercase">
+                {playbackSpeed}MS
+              </span>
             </div>
             <Slider
               value={[playbackSpeed]}
@@ -330,7 +329,7 @@ export function VisualizerControls({
               min={100}
               max={2000}
               step={50}
-              className="flex-1"
+              className="w-full"
               disabled={disabled}
             />
           </div>
