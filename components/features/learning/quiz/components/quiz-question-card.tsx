@@ -28,12 +28,12 @@ export function QuizQuestionCard({
   const hasAnswered = selectedAnswer !== undefined
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <p className="text-foreground mb-6 text-lg font-semibold leading-relaxed">
+        <p className="text-foreground mb-5 text-lg font-semibold leading-relaxed lg:text-xl">
           {question.question}
         </p>
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {question.options.map((opt, optIdx) => {
                 const isCorrectOption = optIdx === correctAnswer
                 const isUserAnswer = selectedAnswer === optIdx

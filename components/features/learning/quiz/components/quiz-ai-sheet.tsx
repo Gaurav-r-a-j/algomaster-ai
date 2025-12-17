@@ -7,6 +7,7 @@ import { SparklesIcon } from "@/lib/icons"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Sheet,
   SheetContent,
@@ -55,56 +56,81 @@ export function QuizAISheet({
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
+      <SheetContent side="right" className="w-full sm:max-w-2xl overflow-y-auto">
+        <SheetHeader className="px-6 pt-6 pb-4">
+          <SheetTitle className="flex items-center gap-2 text-xl">
             <IconWrapper
               icon={SparklesIcon}
-              size={20}
+              size={22}
               className="text-yellow-500"
             />
             AI Question Generation
           </SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="text-sm mt-2">
             {hasQuestions
               ? `AI-generated questions for ${topicTitle}`
               : `Generate custom quiz questions based on ${topicTitle} using AI.`}
           </SheetDescription>
         </SheetHeader>
 
-        <div className="mt-6 space-y-4">
+        <div className="px-6 pb-6 space-y-6">
           {isGenerating ? (
-            <Alert>
-              <AlertDescription className="flex items-center gap-2">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                >
-                  <IconWrapper
-                    icon={SparklesIcon}
-                    size={16}
-                    className="text-yellow-500"
-                  />
-                </motion.div>
-                Generating AI questions...
-              </AlertDescription>
-            </Alert>
+            <div className="space-y-6">
+              <Alert className="border-primary/20 bg-primary/5">
+                <AlertDescription className="flex items-center gap-3 py-2">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  >
+                    <IconWrapper
+                      icon={SparklesIcon}
+                      size={18}
+                      className="text-yellow-500"
+                    />
+                  </motion.div>
+                  <span className="font-medium">Generating AI questions...</span>
+                </AlertDescription>
+              </Alert>
+              
+              {/* Skeleton Loading */}
+              <div className="space-y-5">
+                <Skeleton className="h-6 w-3/4" />
+                <div className="space-y-3">
+                  <Skeleton className="h-20 w-full rounded-lg" />
+                  <Skeleton className="h-20 w-full rounded-lg" />
+                  <Skeleton className="h-20 w-full rounded-lg" />
+                  <Skeleton className="h-20 w-full rounded-lg" />
+                </div>
+              </div>
+            </div>
           ) : hasQuestions ? (
             <>
               {/* Show AI Questions in Sheet */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-muted-foreground">
+              <div className="space-y-5">
+                <div className="flex items-center justify-between pb-2 border-b border-border/40">
+                  <p className="text-sm font-semibold text-foreground">
                     Question {currentQuestionIndex + 1} of {aiQuestions.length}
                   </p>
+                  <div className="flex items-center gap-2">
+                    <div className="h-1.5 w-24 bg-muted rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full bg-primary rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{
+                          width: `${((currentQuestionIndex + 1) / aiQuestions.length) * 100}%`,
+                        }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {currentQuestion && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base">AI-Generated Question</CardTitle>
+                  <Card className="border-border/40">
+                    <CardHeader className="px-6 py-4">
+                      <CardTitle className="text-base font-semibold">AI-Generated Question</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="px-6 pb-6">
                       <QuizQuestionCard
                         question={currentQuestion}
                         questionIndex={currentQuestionIndex}
@@ -122,7 +148,7 @@ export function QuizAISheet({
                 )}
 
                 {/* Navigation */}
-                <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center justify-between gap-3 pt-4 border-t border-border/40">
                   <Button
                     variant="outline"
                     onClick={() => setCurrentQuestionIndex((prev) => Math.max(0, prev - 1))}
@@ -148,13 +174,20 @@ export function QuizAISheet({
             </>
           ) : (
             <>
-              <p className="text-sm text-muted-foreground">
-                AI will generate personalized questions based on the topic content.
-              </p>
-              <Button onClick={onGenerate} className="w-full" disabled={isGenerating}>
-                <IconWrapper icon={SparklesIcon} size={16} className="mr-2" />
-                Generate AI Questions
-              </Button>
+              <div className="space-y-4 py-4">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  AI will generate personalized questions based on the topic content. 
+                  Click the button below to start generating custom quiz questions.
+                </p>
+                <Button 
+                  onClick={onGenerate} 
+                  className="w-full h-11 gap-2 font-semibold" 
+                  disabled={isGenerating}
+                >
+                  <IconWrapper icon={SparklesIcon} size={18} />
+                  Generate AI Questions
+                </Button>
+              </div>
             </>
           )}
         </div>
