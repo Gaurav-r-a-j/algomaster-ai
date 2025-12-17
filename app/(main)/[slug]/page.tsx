@@ -15,7 +15,7 @@ import { motion } from "motion/react"
 
 import { VisualizerType } from "@/types/curriculum"
 import { fadeIn, slideDown, transitions } from "@/lib/animations"
-import { BookOpenIcon, CodeIcon, PlayIcon } from "@/lib/icons"
+import { BookOpenIcon, CodeIcon, PlayIcon, ShareIcon, UserIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
 import {
   useModuleBySlug,
@@ -24,6 +24,7 @@ import {
   useTopics,
 } from "@/hooks/curriculum"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -246,36 +247,73 @@ export default function SlugPage({ params }: SlugPageProps) {
                 </div>
               </div>
 
-              {/* Right: Tabs */}
-              <TabsList className="grid h-9 shrink-0 grid-cols-3">
-                <TabsTrigger
-                  value="learn"
-                  className="flex items-center gap-1.5 px-3 text-xs"
-                >
-                  <IconWrapper icon={BookOpenIcon} size={14} />
-                  <span className="hidden sm:inline">Learn</span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="visualize"
-                  disabled={topic.visualizerType === VisualizerType.NONE}
-                  className="flex items-center gap-1.5 px-3 text-xs"
-                  title={
-                    topic.visualizerType === VisualizerType.NONE
-                      ? "No visualizer available"
-                      : "Interactive Mode"
-                  }
-                >
-                  <IconWrapper icon={PlayIcon} size={14} />
-                  <span className="hidden sm:inline">Visualize</span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="code"
-                  className="flex items-center gap-1.5 px-3 text-xs"
-                >
-                  <IconWrapper icon={CodeIcon} size={14} />
-                  <span className="hidden sm:inline">Practice</span>
-                </TabsTrigger>
-              </TabsList>
+              {/* Right: Actions & Tabs */}
+              <div className="flex items-center gap-3">
+                {/* Share & Profile Icons */}
+                <div className="hidden items-center gap-2 sm:flex">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9"
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({
+                          title: topic.title,
+                          text: `Learn ${topic.title} on AlgoMaster AI`,
+                          url: window.location.href,
+                        }).catch(() => {})
+                      } else {
+                        navigator.clipboard.writeText(window.location.href)
+                      }
+                    }}
+                    title="Share this topic"
+                  >
+                    <IconWrapper icon={ShareIcon} size={16} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9"
+                    asChild
+                    title="Profile"
+                  >
+                    <Link href={ROUTES.DASHBOARD}>
+                      <IconWrapper icon={UserIcon} size={16} />
+                    </Link>
+                  </Button>
+                </div>
+
+                {/* Tabs */}
+                <TabsList className="grid h-9 shrink-0 grid-cols-3">
+                  <TabsTrigger
+                    value="learn"
+                    className="flex items-center gap-1.5 px-3 text-xs"
+                  >
+                    <IconWrapper icon={BookOpenIcon} size={14} />
+                    <span className="hidden sm:inline">Learn</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="visualize"
+                    disabled={topic.visualizerType === VisualizerType.NONE}
+                    className="flex items-center gap-1.5 px-3 text-xs"
+                    title={
+                      topic.visualizerType === VisualizerType.NONE
+                        ? "No visualizer available"
+                        : "Interactive Mode"
+                    }
+                  >
+                    <IconWrapper icon={PlayIcon} size={14} />
+                    <span className="hidden sm:inline">Visualize</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="code"
+                    className="flex items-center gap-1.5 px-3 text-xs"
+                  >
+                    <IconWrapper icon={CodeIcon} size={14} />
+                    <span className="hidden sm:inline">Practice</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
             </div>
           </div>
         </motion.header>

@@ -10,8 +10,9 @@ import { generateTopicSlug } from "@/utils/common/slug"
 import {
   BookOpenIcon,
   CheckmarkCircleIcon,
-  Home01Icon,
   SearchIcon,
+  ShareIcon,
+  UserIcon,
 } from "@/lib/icons"
 import { useCurriculumSearch } from "@/hooks/curriculum"
 import { Input } from "@/components/ui/input"
@@ -61,17 +62,14 @@ export function LearningPlatformLayout({
 
   return (
     <SidebarProvider>
-      <Sidebar className="border-border border-r">
-        <SidebarHeader className="border-border border-b px-4 py-4">
-          <div className="mb-4 flex items-center justify-between gap-2">
-            <Link
-              href={ROUTES.HOME}
-              className="transition-opacity hover:opacity-80"
-            >
-              <Logo />
-            </Link>
-            <ThemeToggle size="sm" />
-          </div>
+      <Sidebar className="border-border border-r ml-2">
+        <SidebarHeader className="border-border border-b px-5 py-5">
+          <Link
+            href={ROUTES.HOME}
+            className="mb-5 flex items-center gap-3 transition-opacity hover:opacity-80"
+          >
+            <Logo className="text-lg" />
+          </Link>
           <div className="relative">
             <IconWrapper
               icon={SearchIcon}
@@ -119,40 +117,6 @@ export function LearningPlatformLayout({
             ) : (
               // Normal Navigation
               <>
-                <SidebarGroup>
-                  <SidebarGroupLabel>Quick Links</SidebarGroupLabel>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={isActive(ROUTES.HOME)}
-                          tooltip="Home"
-                        >
-                          <Link href={ROUTES.HOME}>
-                            <IconWrapper icon={Home01Icon} size={16} />
-                            <span>Home</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={isActive(ROUTES.DASHBOARD)}
-                          tooltip="Dashboard"
-                        >
-                          <Link href={ROUTES.DASHBOARD}>
-                            <IconWrapper icon={BookOpenIcon} size={16} />
-                            <span>Dashboard</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </SidebarGroup>
-
-                <Separator />
-
                 <SidebarModuleList
                   modules={modules}
                   allTopics={topics}

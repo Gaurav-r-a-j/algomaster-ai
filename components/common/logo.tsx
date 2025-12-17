@@ -2,9 +2,9 @@ import { cn } from "@/lib/utils"
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <div className={cn("flex items-center gap-2 font-bold", className)}>
+    <div className={cn("flex items-center gap-2.5 font-bold", className)}>
       {/* Brain + Algorithm Icon */}
-      <div className="relative flex h-7 w-7 items-center justify-center">
+      <div className="relative flex h-8 w-8 shrink-0 items-center justify-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -13,7 +13,7 @@ export function Logo({ className }: { className?: string }) {
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-primary h-7 w-7"
+          className="text-primary h-8 w-8"
         >
           {/* Neural network / brain pattern */}
           <circle cx="12" cy="12" r="10" className="opacity-20" fill="currentColor" />
@@ -30,12 +30,12 @@ export function Logo({ className }: { className?: string }) {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="text-primary absolute -right-1 -top-1 h-3 w-3"
+          className="text-primary absolute -right-1 -top-1 h-3.5 w-3.5"
         >
           <path d="M12 0L14 8L22 10L14 12L12 20L10 12L2 10L10 8L12 0Z" />
         </svg>
       </div>
-      <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-xl tracking-tight text-transparent">
+      <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-lg tracking-tight text-transparent sm:text-xl">
         AlgoMaster
         <span className="text-primary ml-1 font-semibold">AI</span>
       </span>

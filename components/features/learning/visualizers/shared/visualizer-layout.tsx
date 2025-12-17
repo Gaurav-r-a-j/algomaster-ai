@@ -119,22 +119,22 @@ export function VisualizerLayout({
                 ) : (
                   <div className="p-6">
                     {!hideTitle && (
-                      <div className="mb-6">
-                        <div className="flex items-center gap-3">
+                      <div className="mb-8">
+                        <div className="flex items-center gap-3.5">
                           {icon}
                           <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
                             {title}
                           </h2>
                         </div>
                         {headerBadges && (
-                          <div className="mt-3 flex flex-wrap gap-2">
+                          <div className="mt-4 flex flex-wrap gap-2.5">
                             {headerBadges}
                           </div>
                         )}
                       </div>
                     )}
                     {description && (
-                      <div className="prose dark:prose-invert max-w-none text-sm text-muted-foreground">
+                      <div className="prose dark:prose-invert max-w-none text-sm text-muted-foreground leading-relaxed">
                         {description}
                       </div>
                     )}
@@ -219,7 +219,7 @@ export function VisualizerLayout({
 
             {/* Visualization Area */}
             <div className="relative min-h-0 flex-1 overflow-hidden bg-dot-pattern">
-              <div className="absolute inset-0 flex items-center justify-center overflow-auto p-4 sm:p-6">
+              <div className="absolute inset-0 flex items-center justify-center overflow-auto p-6 sm:p-8">
                 <div className="mx-auto flex min-h-min w-full max-w-[1920px] flex-col items-center justify-center">
                   {children}
                 </div>
@@ -228,8 +228,8 @@ export function VisualizerLayout({
 
             {/* Bottom Description (Optional) */}
             {!hideDescription && description && (
-              <div className="border-border/40 bg-background/95 w-full shrink-0 border-t px-4 py-3 sm:px-6 sm:py-4">
-                <div className="mx-auto w-full max-w-[1920px] text-sm text-muted-foreground">
+              <div className="border-border/40 bg-background/95 w-full shrink-0 border-t px-6 py-4 sm:px-8 sm:py-5">
+                <div className="mx-auto w-full max-w-[1920px] text-sm text-muted-foreground leading-relaxed">
                   {description}
                 </div>
               </div>

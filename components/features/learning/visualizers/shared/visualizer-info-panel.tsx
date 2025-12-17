@@ -75,7 +75,7 @@ export function VisualizerInfoPanel({
         <CardContent className="flex-1 overflow-y-auto p-0">
           <div className="flex flex-col">
             {/* Description Section */}
-            <div className="p-6 pb-2">
+            <div className="p-6 pb-4">
               <p className="text-muted-foreground text-sm leading-relaxed">
                 {topic.description}
               </p>
@@ -83,7 +83,7 @@ export function VisualizerInfoPanel({
 
             {/* Badges */}
             <div className="px-6 pt-2 pb-6">
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <Badge
                   variant="outline"
                   className="bg-background font-mono font-semibold"
@@ -107,15 +107,15 @@ export function VisualizerInfoPanel({
                 variants={slideUp}
                 transition={{ ...transitions.spring, delay: 0.1 }}
               >
-                <h4 className="text-foreground mb-3 flex items-center gap-2 text-xs font-bold tracking-wider uppercase">
+                <h4 className="text-foreground mb-4 flex items-center gap-2.5 text-xs font-bold tracking-wider uppercase">
                   <IconWrapper
                     icon={ComputerIcon}
                     size={14}
-                    className="text-primary"
+                    className="text-primary shrink-0"
                   />
                   Complexity Analysis
                 </h4>
-                <div className="bg-muted/30 border-border/50 space-y-3 rounded-lg border p-4">
+                <div className="bg-muted/30 border-border/50 space-y-3.5 rounded-lg border p-4">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground text-sm font-medium">
                       Time Complexity
@@ -141,15 +141,15 @@ export function VisualizerInfoPanel({
                   variants={slideUp}
                   transition={{ ...transitions.spring, delay: 0.15 }}
                 >
-                  <h4 className="text-foreground mb-3 flex items-center gap-2 text-xs font-bold tracking-wider uppercase">
-                    <IconWrapper
-                      icon={ClockIcon}
-                      size={14}
-                      className="text-primary"
-                    />
-                    Step Information
-                  </h4>
-                  <div className="bg-muted/30 border-border/50 space-y-4 rounded-lg border p-4">
+                <h4 className="text-foreground mb-4 flex items-center gap-2.5 text-xs font-bold tracking-wider uppercase">
+                  <IconWrapper
+                    icon={ClockIcon}
+                    size={14}
+                    className="text-primary shrink-0"
+                  />
+                  Step Information
+                </h4>
+                <div className="bg-muted/30 border-border/50 space-y-4 rounded-lg border p-4">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground text-sm font-medium">
                         Current Step
@@ -169,7 +169,7 @@ export function VisualizerInfoPanel({
                       </div>
                     </div>
                     {currentData?.description && (
-                      <div className="bg-background border-border/50 flex min-h-[60px] items-start gap-3 rounded-md border p-3">
+                      <div className="bg-background border-border/50 flex min-h-[60px] items-start gap-3.5 rounded-md border p-3.5">
                         <IconWrapper
                           icon={HelpCircleIcon}
                           size={16}
@@ -190,10 +190,10 @@ export function VisualizerInfoPanel({
                   variants={slideUp}
                   transition={{ ...transitions.spring, delay: 0.2 }}
                 >
-                  <h4 className="text-foreground mb-3 text-xs font-bold tracking-wider uppercase">
+                  <h4 className="text-foreground mb-4 text-xs font-bold tracking-wider uppercase">
                     Category
                   </h4>
-                  <Badge variant="secondary" className="px-3 py-1 font-medium">
+                  <Badge variant="secondary" className="px-3 py-1.5 font-medium">
                     {topic.category}
                   </Badge>
                 </motion.div>

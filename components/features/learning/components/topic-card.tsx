@@ -57,10 +57,10 @@ export function TopicCard({ topic }: TopicCardProps) {
           )}
         >
           <CardContent className="p-6">
-            <div className="mb-4 flex items-start justify-between">
+            <div className="mb-5 flex items-start justify-between">
               <div
                 className={cn(
-                  "flex h-10 w-10 items-center justify-center rounded-xl text-lg transition-colors",
+                  "flex h-12 w-12 items-center justify-center rounded-xl text-lg transition-colors shrink-0",
                   isDone
                     ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400"
                     : "bg-primary/10 text-primary"
@@ -71,19 +71,19 @@ export function TopicCard({ topic }: TopicCardProps) {
               {isDone && (
                 <Badge
                   variant="secondary"
-                  className="border-none bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                  className="border-none bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 shrink-0"
                 >
                   <IconWrapper
                     icon={CheckmarkCircleIcon}
-                    size={10}
-                    className="mr-1"
+                    size={12}
+                    className="mr-1.5"
                   />
                   DONE
                 </Badge>
               )}
             </div>
 
-            <h3 className="text-foreground group-hover:text-primary mb-2 text-lg font-bold transition-colors">
+            <h3 className="text-foreground group-hover:text-primary mb-3 text-lg font-bold transition-colors leading-tight">
               <span className="text-muted-foreground mr-2 text-sm font-normal">
                 #{topic.order + 1}
               </span>
@@ -93,7 +93,7 @@ export function TopicCard({ topic }: TopicCardProps) {
               {topic.description}
             </p>
           </CardContent>
-          <CardFooter className="bg-muted/50 border-border text-muted-foreground group-hover:text-primary flex items-center justify-between border-t px-6 py-3 text-xs font-bold transition-colors">
+          <CardFooter className="bg-muted/50 border-border text-muted-foreground group-hover:text-primary flex items-center justify-between border-t px-6 py-3.5 text-xs font-bold transition-colors">
             <div className="flex items-center gap-2">
               {isDone ? (
                 <IconWrapper icon={RefreshCwIcon} size={12} />
