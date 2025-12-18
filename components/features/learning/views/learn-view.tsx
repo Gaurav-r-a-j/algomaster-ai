@@ -80,7 +80,7 @@ export function LearnView({ topic }: LearnViewProps) {
           animate="animate"
           variants={slideUpWithDelay(0.1)}
         >
-          <div className="px-4 pt-4 pb-8 md:px-6 md:pt-6 md:pb-10 lg:px-8 lg:pt-8 lg:pb-12">
+          <div className="px-4 pt-6 pb-8 md:px-6 md:pt-8 md:pb-10 lg:px-8 lg:pt-10 lg:pb-12">
             {displayContent && displayContent.trim() ? (
               <MarkdownRenderer
                 content={displayContent}
@@ -150,6 +150,25 @@ export function LearnView({ topic }: LearnViewProps) {
                 ))}
               </div>
             </div>
+          </motion.div>
+        )}
+
+        {/* Quiz Section */}
+        {quizQuestions.length > 0 && (
+          <motion.div
+            initial="initial"
+            animate="animate"
+            variants={slideUpWithDelay(0.3)}
+            className="px-4 pb-8 md:px-6 md:pb-10 lg:px-8 lg:pb-12 border-t border-border/50"
+          >
+            <QuizSection
+              topicId={topic.id}
+              questions={quizQuestions}
+              useAIQuestions={useAIQuestions}
+              onToggleAIQuestions={setUseAIQuestions}
+              hasAIQuestions={true}
+              topicTitle={topic.title}
+            />
           </motion.div>
         )}
 

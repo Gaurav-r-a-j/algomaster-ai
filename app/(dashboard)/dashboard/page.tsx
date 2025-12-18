@@ -171,9 +171,13 @@ export default function DashboardPage() {
                   <Button asChild>
                     <Link href={ROUTES.HOME}>Browse All Topics</Link>
                   </Button>
-                  <Button variant="outline" asChild>
-                    <Link href={ROUTES.DASHBOARD}>View Progress</Link>
-                  </Button>
+                  {recommendedTopics.length > 0 && (
+                    <Button variant="outline" asChild>
+                      <Link href={ROUTES.TOPIC(generateTopicSlug(recommendedTopics[0].title))}>
+                        Start Learning
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -238,7 +242,7 @@ export default function DashboardPage() {
                   animate="animate"
                   className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
                 >
-                  {TOPICS.slice(0, 3).map((topic, _idx) => {
+                  {recommendedTopics.slice(0, 6).map((topic, _idx) => {
                     const topicSlug = generateTopicSlug(topic.title)
                     return (
                       <motion.div key={topic.id} variants={staggerItem}>

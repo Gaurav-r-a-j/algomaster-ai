@@ -177,43 +177,43 @@ function MarkdownSection({ content }: { content: string }) {
       components={{
           h1: ({ ...props }: any) => (
             <h1
-              className="text-foreground border-border mt-0 mb-4 scroll-mt-24 border-b pb-2 text-2xl font-bold tracking-tight md:text-3xl"
+              className="text-foreground border-border mt-0 mb-4 scroll-mt-24 border-b pb-2 text-xl font-bold tracking-tight md:text-2xl"
               {...props}
             />
           ),
           h2: ({ ...props }: any) => (
             <h2
-              className="text-foreground mt-8 mb-3 scroll-mt-24 text-xl font-bold tracking-tight first:mt-0 md:text-2xl"
+              className="text-foreground mt-8 mb-3 scroll-mt-24 text-lg font-bold tracking-tight first:mt-0 md:text-xl"
               {...props}
             />
           ),
           h3: ({ ...props }: any) => (
             <h3
-              className="text-foreground mt-6 mb-2 scroll-mt-24 text-lg font-semibold tracking-tight md:text-xl"
+              className="text-foreground mt-6 mb-2 scroll-mt-24 text-base font-semibold tracking-tight md:text-lg"
               {...props}
             />
           ),
           h4: ({ ...props }: any) => (
             <h4
-              className="text-foreground mt-5 mb-2 scroll-mt-24 text-base font-semibold tracking-tight md:text-lg"
+              className="text-foreground mt-5 mb-2 scroll-mt-24 text-sm font-semibold tracking-tight md:text-base"
               {...props}
             />
           ),
           p: ({ ...props }: any) => (
             <p
-              className="text-foreground/90 mb-5 text-base leading-relaxed md:text-lg"
+              className="text-foreground/90 mb-4 text-base leading-relaxed"
               {...props}
             />
           ),
           ul: ({ ...props }: any) => (
             <ul
-              className="text-foreground mb-5 ml-6 list-outside list-disc space-y-2.5 text-base md:text-lg"
+              className="text-foreground mb-4 ml-6 list-outside list-disc space-y-2 text-base"
               {...props}
             />
           ),
           ol: ({ ...props }: any) => (
             <ol
-              className="text-foreground mb-5 ml-6 list-outside list-decimal space-y-2.5 text-base md:text-lg"
+              className="text-foreground mb-4 ml-6 list-outside list-decimal space-y-2 text-base"
               {...props}
             />
           ),

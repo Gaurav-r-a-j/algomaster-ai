@@ -144,7 +144,7 @@ cout << binarySearch(arr, 9);  // 4
 ### 1. Find First Occurrence
 
 ```multi
-[java]script
+[javascript]
 function findFirst(arr, target) {
     let left = 0, right = arr.length - 1;
     let result = -1;
@@ -234,7 +234,7 @@ int findFirst(vector<int>& arr, int target) {
 ### 2. Find Last Occurrence
 
 ```multi
-[java]script
+[javascript]
 function findLast(arr, target) {
     let left = 0, right = arr.length - 1;
     let result = -1;
@@ -324,7 +324,7 @@ int findLast(vector<int>& arr, int target) {
 ### 3. Find Insertion Position
 
 ```multi
-[java]script
+[javascript]
 function searchInsert(nums, target) {
     let left = 0, right = nums.length - 1;
     
@@ -410,7 +410,7 @@ int searchInsert(vector<int>& nums, int target) {
 ### 4. Search in Rotated Sorted Array
 
 ```multi
-[java]script
+[javascript]
 function searchRotated(nums, target) {
     let left = 0, right = nums.length - 1;
     
@@ -534,7 +534,7 @@ int searchRotated(vector<int>& nums, int target) {
 ### 5. Find Peak Element
 
 ```multi
-[java]script
+[javascript]
 function findPeak(nums) {
     let left = 0, right = nums.length - 1;
     
@@ -608,7 +608,7 @@ int findPeak(vector<int>& nums) {
 ### 6. Find Minimum in Rotated Array
 
 ```multi
-[java]script
+[javascript]
 function findMin(nums) {
     let left = 0, right = nums.length - 1;
     
@@ -696,7 +696,7 @@ int findMin(vector<int>& nums) {
 ### 1. Integer Overflow
 
 ```multi
-[java]script
+[javascript]
 // JavaScript handles big numbers, but be aware in other languages
 const mid = Math.floor((left + right) / 2);
 // Safer: const mid = left + Math.floor((right - left) / 2);
@@ -717,7 +717,7 @@ int mid = left + (right - left) / 2;
 ### 2. Off-by-One Errors
 
 ```multi
-[java]script
+[javascript]
 // Common mistake: using < instead of <=
 // while (left < right)   // Wrong for some cases
 while (left <= right) {   // Correct
