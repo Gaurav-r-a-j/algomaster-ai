@@ -34,13 +34,10 @@ export function Header() {
         <div className="flex items-center gap-2">
           {/* Theme Toggle */}
           <ThemeToggle />
-          <Link href={ROUTES.LOGIN}>
+          <Link href={ROUTES.DASHBOARD}>
             <Button variant="ghost" size="sm">
-              Log In
+              Dashboard
             </Button>
-          </Link>
-          <Link href={ROUTES.REGISTER}>
-            <Button size="sm">Sign Up</Button>
           </Link>
         </div>
       </div>

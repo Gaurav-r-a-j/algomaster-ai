@@ -24,12 +24,12 @@ export function LandingNav() {
         <div className="flex items-center gap-4">
           <ThemeToggle />
           <Link
-            href={ROUTES.LOGIN}
+            href={ROUTES.DASHBOARD}
             className={cn(
               "text-muted-foreground hover:text-foreground hidden text-sm font-semibold transition-colors md:block"
             )}
           >
-            Login
+            Dashboard
           </Link>
           <Button asChild size="sm" className="rounded-full">
             <Link href={getFirstTopicUrl()}>Get Started</Link>

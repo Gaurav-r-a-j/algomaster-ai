@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { ROUTES } from "@/constants/routes"
+import { getFirstTopicUrl } from "@/utils/curriculum"
 
 import { HeroArrowRightIcon, StarIcon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
@@ -29,7 +30,7 @@ export function HeroSection() {
 
           <div className="animate-in fade-in slide-in-from-bottom-8 flex flex-col items-center justify-center gap-4 delay-300 duration-1000 sm:flex-row">
             <Button size="lg" asChild className="group w-full sm:w-auto">
-              <Link href={ROUTES.REGISTER}>
+              <Link href={getFirstTopicUrl()}>
                 Get Started
                 <HeroArrowRightIcon className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>

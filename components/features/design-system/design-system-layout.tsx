@@ -60,13 +60,10 @@ export function DesignSystemLayout({ children }: DesignSystemLayoutProps) {
               />
             </div>
 
-            {/* Auth buttons */}
+            {/* Dashboard button */}
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" asChild>
-                <Link href={ROUTES.LOGIN}>Log in</Link>
-              </Button>
-              <Button size="sm" asChild>
-                <Link href={ROUTES.REGISTER}>Sign up</Link>
+                <Link href={ROUTES.DASHBOARD}>Dashboard</Link>
               </Button>
             </div>
           </div>

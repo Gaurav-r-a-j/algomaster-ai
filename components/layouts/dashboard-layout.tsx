@@ -9,8 +9,6 @@ import {
   BookOpenIcon,
   CheckmarkCircleIcon,
   Home01Icon,
-  SettingsIcon,
-  UserIcon,
 } from "@/lib/icons"
 import { useProgressStats } from "@/hooks/use-progress-stats"
 import { Progress } from "@/components/ui/progress"
@@ -47,16 +45,6 @@ const menuItems = [
     title: "Home",
     url: ROUTES.HOME,
     icon: BookOpenIcon,
-  },
-  {
-    title: "Profile",
-    url: ROUTES.PROFILE,
-    icon: UserIcon,
-  },
-  {
-    title: "Settings",
-    url: ROUTES.SETTINGS,
-    icon: SettingsIcon,
   },
 ]
 

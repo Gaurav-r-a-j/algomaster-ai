@@ -2,11 +2,6 @@ export const ROUTES = {
   // Public routes
   HOME: "/",
 
-  // Auth routes
-  LOGIN: "/login",
-  REGISTER: "/register",
-  FORGOT_PASSWORD: "/forgot-password",
-
   // Main Learning Platform routes (primary interface) - all dynamic at root
   TOPIC: (slug: string) => `/${slug}`,
   MODULE: (slug: string) => `/${slug}`,
