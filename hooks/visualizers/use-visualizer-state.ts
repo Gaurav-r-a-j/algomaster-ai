@@ -19,7 +19,14 @@ export function useVisualizerState(options: UseVisualizerStateOptions = {}) {
 
   // Auto-play effect
   useEffect(() => {
-    if (isPlaying && steps.length > 0) {
+    // Clear any existing timer first
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+
+    // Start new timer if playing and we have steps
+    if (isPlaying && steps.length > 0 && currentStep < steps.length) {
       timerRef.current = window.setInterval(() => {
         setCurrentStep((prev) => {
           if (prev >= steps.length - 1) {
@@ -29,9 +36,6 @@ export function useVisualizerState(options: UseVisualizerStateOptions = {}) {
           return prev + 1
         })
       }, playbackSpeed)
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current)
-      timerRef.current = null
     }
 
     return () => {
@@ -40,7 +44,7 @@ export function useVisualizerState(options: UseVisualizerStateOptions = {}) {
         timerRef.current = null
       }
     }
-  }, [isPlaying, steps.length, playbackSpeed])
+  }, [isPlaying, steps.length, playbackSpeed, currentStep])
 
   const handlePlay = useCallback(() => {
     setIsPlaying(true)

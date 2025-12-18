@@ -11,6 +11,8 @@ interface SortingNumbersViewProps {
 export function SortingNumbersView({
   currentData,
 }: SortingNumbersViewProps) {
+  // Use value + index for keys to ensure proper re-rendering when values change
+  // This ensures the play button works correctly by forcing re-renders on step changes
   return (
     <div className="flex min-h-[300px] w-full flex-wrap items-center justify-center gap-3 p-6 sm:gap-4">
       <AnimatePresence mode="popLayout">
@@ -20,8 +22,8 @@ export function SortingNumbersView({
 
           return (
             <NumberBox
-              key={`num-${value}-${idx}`}
-              layoutId={`num-${value}-${idx}`}
+              key={`sorting-${value}-${idx}-${currentData.array.length}`}
+              layoutId={`sorting-${idx}`}
               value={value}
               index={idx}
               isActive={isActive}

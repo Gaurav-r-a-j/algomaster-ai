@@ -43,6 +43,7 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
   const [arraySize, setArraySize] = useState(DEFAULT_ARRAY_SIZE)
   const [array, setArray] = useState<number[]>([])
   const [viewMode, setViewMode] = useState<"bars" | "numbers">("bars")
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const { generateSteps } = useSortingSteps(topic.id)
   const {
@@ -61,35 +62,63 @@ export function SortingVisualizer({ topic }: SortingVisualizerProps) {
     reset,
   } = useVisualizerState({ defaultSpeed: DEFAULT_SPEED_MS })
 
+  // Reset when steps change after generation
+  useEffect(() => {
+    if (isGenerating && steps.length > 0) {
+      reset()
+      setIsGenerating(false)
+    }
+  }, [steps.length, isGenerating, reset])
+
   const generateArray = useCallback(
-    (size: number = arraySize) => {
+    (size: number) => {
+      // Pause first to stop any ongoing animation
+      handlePause()
+      
+      // Set generating flag
+      setIsGenerating(true)
+      
+      // Clear current steps immediately to prevent flash
+      setSteps([])
+      
+      // Generate new array
       const newArray = Array.from(
         { length: size },
         () => Math.floor(Math.random() * 90) + 10
       )
+      
+      // Update array state immediately
       setArray(newArray)
+      
+      // Generate steps synchronously
       const newSteps = generateSteps(newArray)
+      
+      // Set new steps - reset will happen in useEffect
       setSteps(newSteps)
-      reset()
     },
-    [arraySize, generateSteps, setSteps, reset]
+    [generateSteps, setSteps, handlePause]
   )
 
   const handleArraySizeChange = useCallback(
     (size: number) => {
+      // Update size state first
       setArraySize(size)
+      // Generate new array with new size immediately
       generateArray(size)
     },
     [generateArray]
   )
 
-  const handleReset = () => {
-    generateArray()
-  }
+  const handleReset = useCallback(() => {
+    handlePause()
+    generateArray(arraySize)
+  }, [arraySize, generateArray, handlePause])
 
+  // Only regenerate on topic change, not on arraySize change
   useEffect(() => {
-    generateArray()
-  }, [topic.id, arraySize, generateArray])
+    generateArray(arraySize)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topic.id])
 
   const renderControls = (
     isPanelOpen: boolean,
