@@ -140,13 +140,13 @@ export function QuizSection({
           <div className="flex-1 min-w-0">
             <Card className="border-border/40 shadow-sm h-full flex flex-col">
               {/* Header with Progress and Controls */}
-              <div className="border-border/40 border-b px-6 py-4">
+              <div className="border-border/40 border-b px-6 py-5">
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div className="flex items-center gap-4 flex-1 min-w-0">
                     {/* Progress Info */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-muted-foreground">
+                      <div className="flex items-center justify-between mb-2.5">
+                        <span className="text-sm font-semibold text-foreground">
                           Question {currentStep + 1} of {displayQuestions.length}
                         </span>
                         {isAlreadyCompleted && (
@@ -158,7 +158,7 @@ export function QuizSection({
                           </Badge>
                         )}
                       </div>
-                      <Progress value={progress} className="h-1.5" />
+                      <Progress value={progress} className="h-2" />
                     </div>
                   </div>
                   
@@ -175,7 +175,7 @@ export function QuizSection({
                         open={isAISheetOpen}
                         onOpenChange={setIsAISheetOpen}
                         trigger={
-                          <Button variant="outline" size="sm" className="gap-2">
+                          <Button variant="outline" size="sm" className="gap-2 border-border/60 hover:bg-muted/50">
                             <IconWrapper
                               icon={SparklesIcon}
                               size={14}
@@ -190,7 +190,7 @@ export function QuizSection({
                 </div>
               </div>
               
-              <CardContent className="p-6 flex-1 flex flex-col">
+              <CardContent className="p-8 flex-1 flex flex-col">
 
                 {showResults && score !== null ? (
                   <div className="flex-1 overflow-y-auto">
@@ -225,7 +225,7 @@ export function QuizSection({
                       </div>
 
                       {/* Navigation */}
-                      <div className="mt-6 pt-6 border-t border-border/40 flex items-center justify-between gap-4">
+                      <div className="mt-8 pt-6 border-t border-border/40 flex items-center justify-between gap-4">
                         <Button
                           variant="outline"
                           onClick={handlePrevious}

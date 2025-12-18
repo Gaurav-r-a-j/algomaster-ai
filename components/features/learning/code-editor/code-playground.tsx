@@ -116,7 +116,7 @@ export function CodePlayground({
   return (
     <div className="bg-card flex h-full min-h-[600px] flex-col overflow-hidden">
       {/* Toolbar */}
-      <div className="bg-muted/30 flex items-center justify-between border-b p-3 backdrop-blur-sm">
+      <div className="bg-muted/30 flex items-center justify-between border-b p-3.5 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           {/* Sidebar Toggle */}
           {onToggleSidebar && (
@@ -237,7 +237,7 @@ export function CodePlayground({
           {/* Bottom Panel: Console */}
           <ResizablePanel defaultSize={30} minSize={10}>
             <div className="flex h-full flex-col bg-[#1e1e1e]">
-              <div className="flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-2">
+              <div className="flex items-center justify-between border-b border-white/10 bg-white/5 px-4 py-2.5">
                 <span className="text-[11px] font-bold tracking-wider text-zinc-400 uppercase">
                   Console Output
                 </span>
@@ -252,7 +252,7 @@ export function CodePlayground({
                   </span>
                 )}
               </div>
-              <div className="flex-1 overflow-auto p-4 font-mono text-sm">
+              <div className="flex-1 overflow-auto p-5 font-mono text-sm">
                 {output ? (
                   <pre
                     className={cn(

@@ -123,7 +123,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
               onOpenChange={setIsProblemListOpen}
               className="w-full"
             >
-              <div className="bg-muted/20 flex items-center justify-between border-b px-4 py-2">
+              <div className="bg-muted/20 flex items-center justify-between border-b px-4 py-2.5">
                 <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
                   Practice Problems
                 </span>
@@ -143,7 +143,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
               </div>
 
               <CollapsibleContent>
-                <div className="max-h-[200px] overflow-y-auto p-2">
+                <div className="max-h-[200px] overflow-y-auto p-3">
                   {practiceProblems.length > 0 ? (
                     <div className="space-y-1">
                       {practiceProblems.map((problem) => (
