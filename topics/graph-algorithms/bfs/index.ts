@@ -41,7 +41,6 @@ export const bfs: Topic = {
       difficulty: "Medium",
     },
   ],
-  quiz: bfsQuiz,
   youtubeLink: {
     en: "https://www.youtube.com/watch?v=oDqjPvD54Ss", // BFS Algorithm
     hi: "https://www.youtube.com/watch?v=vf-cxgUXcMk" // BFS Hindi

@@ -4,6 +4,7 @@ import * as React from "react"
 import {
   ReactFlow,
   Background,
+  BackgroundVariant,
   Controls,
   MiniMap,
   Node,
@@ -82,7 +83,7 @@ export function FlowchartRenderer({
           nodesConnectable={false}
           elementsSelectable={true}
         >
-          <Background variant="dots" gap={12} size={1} />
+          <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
           <Controls 
             showInteractive={false}
             className="bg-background/80 border border-border rounded-lg shadow-md"
