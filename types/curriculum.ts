@@ -55,8 +55,8 @@ export interface Topic {
   id: string
   title: string
   description: string
-  categoryId: CategoryId // Extensible: dsa, frontend, system-design, etc.
-  category: AlgorithmType // Legacy - for DSA topics
+  categoryId: CategoryId // Category identifier: dsa, frontend, system-design, etc.
+  category: AlgorithmType // Algorithm category for DSA topics
   complexity: {
     time: string
     space: string

@@ -8,12 +8,9 @@ export const ROUTES = {
   // Examples: /dsa/bubble-sort, /frontend/react-hooks, /system-design/caching
   TOPIC: (categoryId: string, topicSlug: string) => `/${categoryId}/${topicSlug}`,
   
-  // Category landing pages
+  // Category and module routes
   CATEGORY: (categoryId: string) => `/${categoryId}`,
-  
-  // Legacy routes (backward compatibility - redirects to /dsa/{slug})
-  LEGACY_TOPIC: (slug: string) => `/dsa/${slug}`,
-  LEGACY_MODULE: (slug: string) => `/dsa/${slug}`,
+  MODULE: (slug: string) => `/dsa/${slug}`,
 
   // Dashboard routes (separate for stats/progress)
   DASHBOARD: "/dashboard",
@@ -26,12 +23,9 @@ export const ROUTES = {
   SUBSCRIPTION: "/subscription",
   NOTIFICATIONS: "/notifications",
 
-  // Authentication routes
+  // Authentication routes (OAuth only - GitHub & LinkedIn)
   LOGIN: "/login",
   REGISTER: "/register",
-  FORGOT_PASSWORD: "/forgot-password",
-  RESET_PASSWORD: "/reset-password",
-  VERIFY_EMAIL: "/verify-email",
   AUTH_CALLBACK: "/auth/callback", // OAuth callback
 
   // Marketing routes

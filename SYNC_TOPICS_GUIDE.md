@@ -64,7 +64,7 @@ Each topic in code has:
   id: "bubble-sort",
   title: "Bubble Sort",
   description: "...",
-  category: AlgorithmType.SORTING, // Legacy field
+  category: AlgorithmType.SORTING, // Algorithm category
   categoryId: "dsa", // New extensible field
   module: "3. Searching & Sorting",
   order: 11,
