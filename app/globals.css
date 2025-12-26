@@ -122,6 +122,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -129,18 +130,15 @@
 
 @layer utilities {
   .bg-dot-pattern {
-    background-image: radial-gradient(
-      circle,
-      rgba(128, 128, 128, 0.15) 1px,
-      transparent 1px
-    );
+    background-image: radial-gradient(circle,
+        rgba(128, 128, 128, 0.15) 1px,
+        transparent 1px);
     background-size: 24px 24px;
   }
+
   .dark .bg-dot-pattern {
-    background-image: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    );
+    background-image: radial-gradient(circle,
+        rgba(255, 255, 255, 0.1) 1px,
+        transparent 1px);
   }
 }

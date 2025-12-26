@@ -574,13 +574,7 @@ export function CodePlayground({
                 onCheckedChange={(checked) => {
                   const newTheme = checked ? "vs-dark" : "light"
                   setEditorTheme(newTheme)
-                  // Update theme using editor instance
-                  if (editorRef.current) {
-                    const monaco = editorRef.current.getModel()?.getModeId ? window.monaco : null
-                    if (monaco) {
-                      monaco.editor.setTheme(newTheme)
-                    }
-                  }
+
                 }}
               >
                 Dark Theme

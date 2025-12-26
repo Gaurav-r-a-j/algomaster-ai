@@ -12,13 +12,12 @@ import { IconWrapper } from "@/components/common/icon-wrapper"
 export function LandingHero() {
   return (
     <section className="bg-background border-border relative overflow-hidden border-b px-4 pt-32 pb-24 sm:px-6">
-      {/* Grid Background */}
+      {/* Dot Grid Background */}
       <div
-        className="absolute inset-0 z-0 opacity-[0.03]"
+        className="absolute inset-0 z-0 opacity-[0.15]"
         style={{
-          backgroundImage:
-            "linear-gradient(var(--primary) 1px, transparent 1px), linear-gradient(90deg, var(--primary) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
+          backgroundImage: `radial-gradient(circle, hsl(var(--primary) / 0.4) 1px, transparent 1px)`,
+          backgroundSize: "24px 24px",
         }}
       />
 
@@ -53,7 +52,7 @@ export function LandingHero() {
           className="text-foreground mb-8 text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl"
         >
           Master Data Structures <br />
-          <span className="from-primary animate-gradient-x bg-gradient-to-r via-indigo-500 to-purple-600 bg-clip-text text-transparent">
+          <span className="from-primary to-primary/60 animate-gradient-x bg-gradient-to-r via-primary/80 bg-clip-text text-transparent">
             & Algorithms
           </span>
         </motion.h1>
