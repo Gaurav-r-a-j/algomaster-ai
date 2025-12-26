@@ -8,6 +8,7 @@ import { useProgress } from "@/context/progress-context"
 import { isModuleSlug } from "@/data/curriculum"
 import { removeModulePrefix } from "@/utils/common/path-utils"
 import { generateModuleSlug } from "@/utils/common/slug"
+import { getTopicNavigation } from "@/utils/curriculum/topic-navigation"
 import { motion } from "motion/react"
 
 import { VisualizerType } from "@/types/curriculum"
@@ -219,11 +220,7 @@ export default function SlugPage({ params }: SlugPageProps) {
     notFound()
   }
 
-  const topicIndex = allTopics.findIndex((t) => t.id === topic.id)
-
-  const _prevTopic = topicIndex > 0 ? allTopics[topicIndex - 1] : null
-  const _nextTopic =
-    topicIndex < allTopics.length - 1 ? allTopics[topicIndex + 1] : null
+  const { prevTopic: _prevTopic, nextTopic: _nextTopic } = getTopicNavigation(topic, allTopics)
 
   // Generate slugs
   // const _topicSlug = slug || "arrays" // slug is already defined

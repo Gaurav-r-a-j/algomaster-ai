@@ -5,11 +5,10 @@ import hljs from "highlight.js"
 import { motion } from "motion/react"
 
 import { fadeIn, transitions } from "@/lib/animations"
-import { CheckmarkCircleIcon, FloppyDiskIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { IconWrapper } from "@/components/common/icon-wrapper"
+import { CopyButtonWrapper } from "@/components/common/ui/copy-button-wrapper"
+import { useLocalStorage } from "@/hooks/common/use-local-storage"
 
 interface CodeBlock {
   language: string
@@ -43,38 +42,20 @@ const LANGUAGE_LABELS: Record<string, string> = {
   kotlin: "Kotlin",
 }
 
-// MultiLangCodeBlock - Component to show code in multiple languages with tabs
-// Example: <MultiLangCodeBlock blocks={[{language: "javascript", code: "..."}, {language: "python", code: "..."}]} />
 export function MultiLangCodeBlock({
   blocks,
   className,
 }: MultiLangCodeBlockProps) {
-  const [copied, setCopied] = React.useState(false)
-  const [activeTab, setActiveTab] = React.useState(blocks[0]?.language || "")
-
-  // Get storage key for remembering preference
-  const storageKey = "preferred-code-language"
+  const [activeTab, setActiveTab] = useLocalStorage("preferred-code-language", blocks[0]?.language || "")
 
   React.useEffect(() => {
-    // Load preferred language from localStorage
-    const saved = localStorage.getItem(storageKey)
-    if (saved && blocks.some((b) => b.language === saved)) {
-      setActiveTab(saved)
+    if (blocks.length > 0 && !blocks.some((b) => b.language === activeTab)) {
+      setActiveTab(blocks[0].language)
     }
-  }, [blocks, storageKey])
+  }, [blocks, activeTab, setActiveTab])
 
   const handleTabChange = (value: string) => {
     setActiveTab(value)
-    localStorage.setItem(storageKey, value)
-  }
-
-  const handleCopy = async () => {
-    const activeBlock = blocks.find((b) => b.language === activeTab)
-    if (activeBlock) {
-      await navigator.clipboard.writeText(activeBlock.code)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }
   }
 
   const getLabel = (block: CodeBlock) => {
@@ -111,18 +92,12 @@ export function MultiLangCodeBlock({
           <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             {getLabel(block)}
           </span>
-          <Button
+          <CopyButtonWrapper
+            value={block.code}
             variant="ghost"
             size="sm"
-            onClick={handleCopy}
             className="h-7 px-2"
-          >
-            <IconWrapper
-              icon={copied ? CheckmarkCircleIcon : FloppyDiskIcon}
-              size={14}
-              className={copied ? "text-emerald-500" : ""}
-            />
-          </Button>
+          />
         </div>
         <pre className="bg-muted m-0 overflow-x-auto p-4 font-mono text-sm">
           <code
@@ -134,7 +109,6 @@ export function MultiLangCodeBlock({
     )
   }
 
-  // Multiple languages - render tabs
   return (
     <motion.div
       initial="initial"
@@ -159,18 +133,12 @@ export function MultiLangCodeBlock({
               </TabsTrigger>
             ))}
           </TabsList>
-          <Button
+          <CopyButtonWrapper
+            value={blocks.find((b) => b.language === activeTab)?.code || ""}
             variant="ghost"
             size="sm"
-            onClick={handleCopy}
             className="h-7 px-2"
-          >
-            <IconWrapper
-              icon={copied ? CheckmarkCircleIcon : FloppyDiskIcon}
-              size={14}
-              className={copied ? "text-emerald-500" : ""}
-            />
-          </Button>
+          />
         </div>
 
         {blocks.map((block) => {

@@ -1,4 +1,5 @@
 import { trackEvent } from "./core"
+import { calculatePercentage } from "@/utils/common/math"
 
 // Track when user views a topic page
 export function trackTopicView(
@@ -88,7 +89,7 @@ export function trackModuleView(
     module_index: moduleIndex,
     module_topics_count: topicsCount,
     module_completed_count: completedCount,
-    module_progress_percent: Math.round((completedCount / topicsCount) * 100),
+    module_progress_percent: calculatePercentage(completedCount, topicsCount),
   })
 }
 
@@ -141,7 +142,7 @@ export function trackProgressMilestone(
     milestone: milestone,
     completed_count: completedCount,
     total_topics: totalTopics,
-    progress_percent: Math.round((completedCount / totalTopics) * 100),
+    progress_percent: calculatePercentage(completedCount, totalTopics),
   })
 }
 

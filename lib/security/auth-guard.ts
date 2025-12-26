@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+import { storage } from "@/utils/common/storage"
 
 type AuthUser = {
   id: string
@@ -34,12 +35,7 @@ export async function requireUserId(userId: string, redirectTo: string = "/login
 
 // Check if user is authenticated (client-side)
 export function isAuthenticatedClient(): boolean {
-  if (typeof window === "undefined") {
-    return false
-  }
-  
-  const authUser = localStorage.getItem("auth_user")
-  return !!authUser
+  return !!storage.get("auth_user")
 }
 
 // Validate user can access a resource

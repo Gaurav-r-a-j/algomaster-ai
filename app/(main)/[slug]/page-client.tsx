@@ -2,6 +2,7 @@
 
 import { Tabs } from "@/components/ui/tabs"
 import { TopicPageContent, TopicPageHeader, TopicPageTabs } from "@/components/features/learning/pages"
+import { getTopicNavigation } from "@/utils/curriculum/topic-navigation"
 import type { Topic } from "@/types/curriculum"
 
 interface TopicPageClientProps {
@@ -10,10 +11,7 @@ interface TopicPageClientProps {
 }
 
 export function TopicPageClient({ topic, allTopics }: TopicPageClientProps) {
-  
-  const topicIndex = allTopics.findIndex((t) => t.id === topic.id)
-  const prevTopic = topicIndex > 0 ? allTopics[topicIndex - 1] : null
-  const nextTopic = topicIndex < allTopics.length - 1 ? allTopics[topicIndex + 1] : null
+  const { prevTopic, nextTopic } = getTopicNavigation(topic, allTopics)
 
   return (
     <div className="bg-background flex h-full flex-col overflow-y-auto">

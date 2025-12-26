@@ -44,10 +44,8 @@ export default async function DocsArticlePage({
 
   // 2. Navigation Logic (Prev/Next)
   const { TOPICS } = await import("@/data/curriculum")
-  const currentIndex = TOPICS.findIndex((t) => t.id === topic.id)
-  const prevTopic = currentIndex > 0 ? TOPICS[currentIndex - 1] : null
-  const nextTopic =
-    currentIndex < TOPICS.length - 1 ? TOPICS[currentIndex + 1] : null
+  const { getTopicNavigation } = await import("@/utils/curriculum/topic-navigation")
+  const { prevTopic, nextTopic } = getTopicNavigation(topic, TOPICS)
 
   return (
     <div className="flex w-full h-full">

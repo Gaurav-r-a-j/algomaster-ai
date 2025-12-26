@@ -5,6 +5,7 @@ import { ROUTES } from "@/constants/routes"
 import { useProgress } from "@/context/progress-context"
 import { removeModulePrefix } from "@/utils/common/path-utils"
 import { generateModuleSlug, generateTopicSlug } from "@/utils/common/slug"
+import { calculatePercentage } from "@/utils/common/math"
 import { motion } from "motion/react"
 import { fadeIn, transitions } from "@/lib/animations"
 import { cn } from "@/lib/utils"
@@ -33,9 +34,7 @@ export function ModulePageContent({
     completedTopics.includes(t.id)
   ).length
   const totalInModule = sortedTopics.length
-  const progressPercentage = Math.round(
-    (completedCount / totalInModule) * 100
-  )
+  const progressPercentage = calculatePercentage(completedCount, totalInModule)
 
   const uniqueModules = Array.from(
     new Set(allTopics.map((t) => t.module))

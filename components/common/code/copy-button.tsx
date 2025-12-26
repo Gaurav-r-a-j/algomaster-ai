@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { motion, AnimatePresence } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 
 import { CopiedIcon, CopyIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { IconWrapper } from "@/components/common/icon-wrapper"
+import { useCopyToClipboard } from "@/hooks/common/use-copy-to-clipboard"
 
 interface CopyButtonProps {
   value: string
@@ -27,16 +28,10 @@ export function CopyButton({
   variant = "ghost",
   size = "icon",
 }: CopyButtonProps) {
-  const [copied, setCopied] = React.useState(false)
+  const { copied, copy } = useCopyToClipboard()
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(value)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error("Failed to copy:", err)
-    }
+  const handleCopy = () => {
+    copy(value)
   }
 
   return (
