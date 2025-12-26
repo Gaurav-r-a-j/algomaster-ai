@@ -1,15 +1,12 @@
 "use client"
 
 import { useEffect, useRef, useState, useMemo, useCallback } from "react"
-import { javascriptExecutor } from "@/services/code-execution/javascript-executor"
-import { pythonExecutor } from "@/services/code-execution/python-executor"
-import { cppExecutor } from "@/services/code-execution/cpp-executor"
-import { javaExecutor } from "@/services/code-execution/java-executor"
+import { pistonExecutor } from "@/services/code-execution/piston-executor"
 import { PlayIcon } from "@/lib/icons"
 import { ArrowPathIcon } from "@heroicons/react/24/solid"
 import Editor, { OnMount, loader } from "@monaco-editor/react"
 
-// Configure Monaco to load from node_modules instead of CDN
+// Configure Monaco to load from CDN
 loader.config({
   paths: {
     vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/min/vs'
@@ -151,21 +148,8 @@ export function CodePlayground({
     setOutput("Running...")
 
     try {
-      let result
-      if (language === "javascript") {
-        result = await javascriptExecutor.execute(currentCode)
-      } else if (language === "python") {
-        result = await pythonExecutor.execute(currentCode)
-      } else if (language === "cpp") {
-        result = await cppExecutor.execute(currentCode)
-      } else if (language === "java") {
-        result = await javaExecutor.execute(currentCode)
-      } else {
-        result = {
-          output: `Unsupported language: ${language}`,
-          status: "error" as const,
-        }
-      }
+      // Use unified Piston executor for all languages
+      const result = await pistonExecutor.execute(currentCode, language)
 
       setOutput(result.output || "(No output)")
       if (result.error) {
@@ -406,13 +390,38 @@ export function CodePlayground({
 function getDefaultStarterCode(lang: SupportedLanguage): string {
   switch (lang) {
     case "javascript":
-      return "console.log('Hello from JavaScript!');"
+      return `// Common libraries available (Node.js environment)
+// const assert = require('assert');
+// const fs = require('fs');
+
+console.log('Hello from JavaScript!');`
     case "python":
-      return "print('Hello from Python!')"
+      return `# Common libraries available
+# import sys
+# import math
+# import collections
+# from typing import List, Dict, Set
+
+print('Hello from Python!')`
     case "cpp":
-      return '#include <iostream>\n\nint main() {\n    std::cout << "Hello from C++!" << std::endl;\n    return 0;\n}'
+      return `#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+int main() {
+    cout << "Hello from C++!" << endl;
+    return 0;
+}`
     case "java":
-      return 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello from Java!");\n    }\n}'
+      return `import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello from Java!");
+    }
+}`
     default:
       return ""
   }

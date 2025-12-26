@@ -104,7 +104,7 @@ export function middleware(request: NextRequest) {
     "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
     "img-src 'self' data: https:",
     "font-src 'self' data: https://cdn.jsdelivr.net",
-    "connect-src 'self' https://api.github.com https://*.neon.tech https://*.posthog.com https://cdn.jsdelivr.net",
+    "connect-src 'self' https://api.github.com https://*.neon.tech https://*.posthog.com https://cdn.jsdelivr.net https://emkc.org",
     "worker-src 'self' blob:",
     "frame-src 'self'",
     "object-src 'none'",

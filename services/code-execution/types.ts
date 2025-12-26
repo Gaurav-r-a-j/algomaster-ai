@@ -3,7 +3,7 @@ export type SupportedLanguage = "python" | "javascript" | "cpp" | "java"
 export interface ExecutionResult {
   output: string
   error?: string | null
-  status: "success" | "error"
+  status: "success" | "error" | "timeout"
   executionTime?: number
 }
 
