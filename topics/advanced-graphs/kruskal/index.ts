@@ -13,6 +13,28 @@ export const kruskal: Topic = {
   difficulty: "Hard",
   content: "", // Content loaded from external .mdx file
   quiz: kruskalQuiz,
+  practiceLinks: [
+    {
+      title: "LeetCode: Connecting Cities With Minimum Cost",
+      url: "https://leetcode.com/problems/connecting-cities-with-minimum-cost/",
+      difficulty: "Medium",
+    },
+    {
+      title: "GeeksforGeeks: Kruskal's Algorithm",
+      url: "https://www.geeksforgeeks.org/kruskals-minimum-spanning-tree-algorithm-greedy-algo-2/",
+      difficulty: "Medium",
+    },
+    {
+      title: "LeetCode: Min Cost to Connect All Points",
+      url: "https://leetcode.com/problems/min-cost-to-connect-all-points/",
+      difficulty: "Medium",
+    },
+    {
+      title: "LeetCode: Optimize Water Distribution",
+      url: "https://leetcode.com/problems/optimize-water-distribution-in-a-village/",
+      difficulty: "Hard",
+    },
+  ],
   youtubeLink: {
     en: "https://www.youtube.com/watch?v=4ZlRH0eK-qQ", // Kruskal's Algorithm
     hi: "https://www.youtube.com/watch?v=1KRmCzBl_mQ" // Kruskal Hindi

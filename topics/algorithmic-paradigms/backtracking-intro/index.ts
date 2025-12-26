@@ -14,6 +14,33 @@ export const backtrackingIntro: Topic = {
   difficulty: "Medium",
   content: "", // Content loaded from external .mdx file
   quiz: backtrackingIntroQuiz,
+  practiceLinks: [
+    {
+      title: "LeetCode: N-Queens",
+      url: "https://leetcode.com/problems/n-queens/",
+      difficulty: "Hard",
+    },
+    {
+      title: "LeetCode: Generate Parentheses",
+      url: "https://leetcode.com/problems/generate-parentheses/",
+      difficulty: "Medium",
+    },
+    {
+      title: "GeeksforGeeks: Backtracking Algorithms",
+      url: "https://www.geeksforgeeks.org/backtracking-algorithms/",
+      difficulty: "Medium",
+    },
+    {
+      title: "LeetCode: Combination Sum",
+      url: "https://leetcode.com/problems/combination-sum/",
+      difficulty: "Medium",
+    },
+    {
+      title: "LeetCode: Sudoku Solver",
+      url: "https://leetcode.com/problems/sudoku-solver/",
+      difficulty: "Hard",
+    },
+  ],
   youtubeLink: {
     en: "https://www.youtube.com/watch?v=A80YzvNwqXA", // Backtracking
     hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Backtracking Hindi

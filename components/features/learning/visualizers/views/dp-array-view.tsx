@@ -15,7 +15,7 @@ export function DPArrayView({ dp, activeIndices }: DPArrayViewProps) {
       initial="initial"
       animate="animate"
       variants={staggerContainer}
-      className="flex flex-wrap items-center justify-center gap-3 sm:gap-4"
+      className="flex flex-wrap items-center justify-center gap-3 rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-6 shadow-lg sm:gap-4"
     >
       {dp.map((val: number | null, idx: number) => {
         const isActive = activeIndices.includes(idx)

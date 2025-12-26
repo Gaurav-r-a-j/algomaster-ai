@@ -10,7 +10,7 @@ interface SearchNumbersViewProps {
 
 export function SearchNumbersView({ currentData }: SearchNumbersViewProps) {
   return (
-    <div className="flex min-h-[300px] w-full flex-wrap items-center justify-center gap-3 p-6 sm:gap-4">
+    <div className="flex min-h-[300px] w-full flex-wrap items-center justify-center gap-3 rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-6 shadow-lg sm:gap-4">
       <AnimatePresence mode="popLayout">
         {currentData.array.map((value, idx) => {
           const isActive = currentData.activeIndices.includes(idx)

@@ -5,7 +5,7 @@ export const bubbleSort: Topic = {
   id: "bubble-sort",
   title: "Bubble Sort",
   description:
-    "Simple sorting algorithm that repeatedly steps through the list.",
+    "Simple sorting algorithm that repeatedly steps through the list, comparing adjacent elements and swapping them if needed.",
   category: AlgorithmType.SORTING,
   complexity: { time: "O(n²)", space: "O(1)" },
   visualizerType: VisualizerType.BAR_CHART,

@@ -7,7 +7,7 @@ export const arraysStrings: Topic = {
   description: "Fundamental data structures for storing sequences of data.",
   category: AlgorithmType.DATA_STRUCTURE,
   complexity: { time: "O(n)", space: "O(n)" },
-  visualizerType: VisualizerType.NONE,
+  visualizerType: VisualizerType.GRID,
   module: "2. Core Data Structures",
   order: 4,
   difficulty: "Easy",

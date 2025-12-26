@@ -13,6 +13,33 @@ export const greedyIntro: Topic = {
   difficulty: "Medium",
   content: "", // Content loaded from external .mdx file
   quiz: greedyIntroQuiz,
+  practiceLinks: [
+    {
+      title: "LeetCode: Jump Game",
+      url: "https://leetcode.com/problems/jump-game/",
+      difficulty: "Medium",
+    },
+    {
+      title: "LeetCode: Gas Station",
+      url: "https://leetcode.com/problems/gas-station/",
+      difficulty: "Medium",
+    },
+    {
+      title: "GeeksforGeeks: Greedy Algorithms",
+      url: "https://www.geeksforgeeks.org/greedy-algorithms/",
+      difficulty: "Medium",
+    },
+    {
+      title: "LeetCode: Maximum Subarray",
+      url: "https://leetcode.com/problems/maximum-subarray/",
+      difficulty: "Easy",
+    },
+    {
+      title: "LeetCode: Assign Cookies",
+      url: "https://leetcode.com/problems/assign-cookies/",
+      difficulty: "Easy",
+    },
+  ],
   youtubeLink: {
     en: "https://www.youtube.com/watch?v=HzeK7g8cD0Y", // Greedy Algorithms
     hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Greedy Hindi

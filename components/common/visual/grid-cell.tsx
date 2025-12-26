@@ -58,7 +58,7 @@ export function GridCell({
           : "0 2px 8px -2px rgb(0 0 0 / 0.1)",
       }}
       transition={transitions.spring}
-      className={cn("aspect-square rounded-lg border backdrop-blur-sm", className)}
+      className={cn("aspect-square rounded-lg border-2 backdrop-blur-sm transition-all duration-300 hover:scale-105", className)}
     />
   )
 }

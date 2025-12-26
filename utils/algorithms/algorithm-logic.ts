@@ -1235,24 +1235,56 @@ export function generateGraphSteps(algo: string = "bfs"): VisualizationStep[] {
 
   const steps: VisualizationStep[] = []
 
+  // Algorithm-specific descriptions and paths
+  let description = ""
+  let path: number[] = []
+
+  switch (algo.toLowerCase()) {
+    case "graph-reps":
+      description = "Graph Representations: Adjacency List, Matrix, Edge List"
+      path = [0, 1, 2, 3, 4]
+      break
+    case "topo-sort":
+    case "topological-sort":
+      description = "Topological Sort: Linear ordering of vertices in DAG"
+      path = [0, 1, 2, 3, 4] // Valid topological order
+      break
+    case "kruskal":
+      description = "Kruskal's Algorithm: Finding Minimum Spanning Tree"
+      path = [0, 1, 3, 2, 4] // MST edges
+      break
+    case "union-find":
+    case "disjoint-set":
+      description = "Union-Find: Tracking connected components"
+      path = [0, 1, 2, 3, 4] // Union operations
+      break
+    case "bellman-ford":
+      description = "Bellman-Ford Algorithm: Shortest paths with negative weights"
+      path = [0, 1, 3, 2, 4] // Shortest path traversal
+      break
+    case "dijkstra":
+      description = "Dijkstra's Algorithm: Shortest paths (non-negative weights)"
+      path = [0, 1, 2, 3, 4] // Shortest path order
+      break
+    default:
+      description = `Graph Algorithm: ${algo}. Initial State.`
+      path = [0, 1, 2, 3, 4]
+  }
+
   steps.push({
     array: [],
     activeIndices: [],
     sortedIndices: [],
-    description: `Graph Algorithm: ${algo}. Initial State.`,
+    description: `${description}. Initial State.`,
     auxiliary: { nodes, edges, activeNode: null, visited: [] },
   })
-
-  // Simulate Topo Sort: 0 -> 1 -> 2 -> 3 -> 4
-  // Just a fake trace for visual confirmation of "Graph Visualizer"
-  const path = [0, 1, 3, 2, 4]
 
   path.forEach((nodeId, idx) => {
     steps.push({
       array: [],
       activeIndices: [],
       sortedIndices: [],
-      description: `Visiting Node ${nodeId}`,
+      description: `${description}. Processing Node ${nodeId}`,
       auxiliary: {
         nodes,
         edges,
@@ -1260,6 +1292,19 @@ export function generateGraphSteps(algo: string = "bfs"): VisualizationStep[] {
         visited: path.slice(0, idx + 1),
       },
     })
+  })
+
+  steps.push({
+    array: [],
+    activeIndices: [],
+    sortedIndices: [],
+    description: `${description}. Complete!`,
+    auxiliary: {
+      nodes,
+      edges,
+      activeNode: null,
+      visited: path,
+    },
   })
 
   return steps

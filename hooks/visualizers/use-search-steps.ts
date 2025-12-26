@@ -14,6 +14,9 @@ export function useSearchSteps(topicId: string) {
         return generateBinarySearchSteps(array, target)
       } else if (topicId === "linear-search") {
         return generateLinearSearchSteps(array, target)
+      } else if (topicId === "arrays-strings") {
+        // For arrays-strings, show array traversal operations
+        return generateLinearSearchSteps(array, target)
       } else {
         return [
           {

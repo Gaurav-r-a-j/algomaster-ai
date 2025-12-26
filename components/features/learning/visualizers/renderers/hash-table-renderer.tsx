@@ -31,7 +31,7 @@ export function HashTableRenderer({ currentData }: HashTableRendererProps) {
   }
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-3xl flex-col items-center justify-center gap-3 p-6 sm:p-8">
+    <div className="mx-auto flex h-full w-full max-w-3xl flex-col items-center justify-center gap-4 rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-6 shadow-lg sm:p-8">
       {buckets.map((bucket, idx) => {
         const isTargetBucket = auxiliary.currentBucket === idx
         return (
@@ -89,7 +89,7 @@ export function HashTableRenderer({ currentData }: HashTableRendererProps) {
                           : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
                       }}
                       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                      className="flex h-12 w-12 items-center justify-center rounded-xl border-2 text-base font-bold shadow-lg backdrop-blur-sm sm:h-14 sm:w-14 sm:text-lg"
+                      className="flex h-12 w-12 items-center justify-center rounded-xl border-2 text-base font-bold shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 sm:h-14 sm:w-14 sm:text-lg"
                     >
                       {val}
                     </motion.div>

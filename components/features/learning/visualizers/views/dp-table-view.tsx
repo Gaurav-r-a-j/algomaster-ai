@@ -14,7 +14,7 @@ export function DPTableView({
   activeCol,
 }: DPTableViewProps) {
   return (
-    <div className="flex flex-col gap-1.5 sm:gap-2">
+    <div className="flex flex-col gap-2 rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-4 shadow-lg sm:gap-2.5">
       {dpTable.map((rowArr, rowIndex) => (
         <div key={rowIndex} className="flex gap-1.5 sm:gap-2">
           {rowArr.map((val, colIndex) => {

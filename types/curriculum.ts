@@ -90,6 +90,7 @@ export interface GraphAuxiliary {
   nodes?: Array<{ id: string | number; x: number; y: number }>
   edges?: Array<{ from: string | number; to: string | number }>
   activeNode?: string | number
+  visited?: (string | number)[]
 }
 
 export interface HashTableAuxiliary {

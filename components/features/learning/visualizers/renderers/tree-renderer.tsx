@@ -84,7 +84,7 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
   const treeData = renderTreeNodes(root || null, highlightNodeId || null)
 
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden p-6 sm:h-[550px]">
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-6 shadow-lg sm:h-[550px]">
       <svg className="pointer-events-none absolute inset-0 h-full w-full">
         {treeData.edges.map((edge) => (
           <motion.line
@@ -131,7 +131,7 @@ export function TreeRenderer({ currentData }: TreeRendererProps) {
                   : "0 4px 12px -2px rgb(0 0 0 / 0.1)",
               }}
               transition={transitions.spring}
-              className="absolute flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border-2 text-lg font-bold backdrop-blur-sm shadow-lg sm:h-18 sm:w-18 sm:text-xl md:h-20 md:w-20 md:text-2xl"
+              className="absolute flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full border-2 text-lg font-bold backdrop-blur-sm shadow-lg transition-all duration-300 hover:scale-110 sm:h-18 sm:w-18 sm:text-xl md:h-20 md:w-20 md:text-2xl"
             >
               {node.val}
             </motion.div>

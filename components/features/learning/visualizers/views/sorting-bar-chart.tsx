@@ -45,22 +45,61 @@ export function SortingBarChart({
       .nice()
       .range([height, 0])
 
-    // Create SVG group
-    const g = d3
+    // Set SVG dimensions first
+    const svgSelection = d3
       .select(svg)
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
+
+    // Add gradient and filter definitions to SVG (before creating bars)
+    const defs = svgSelection.append("defs")
+    
+    // Add glow filter for active bars
+    const glowFilter = defs.append("filter").attr("id", "glow")
+    glowFilter.append("feGaussianBlur")
+      .attr("stdDeviation", "3")
+      .attr("result", "coloredBlur")
+    const feMerge = glowFilter.append("feMerge")
+    feMerge.append("feMergeNode").attr("in", "coloredBlur")
+    feMerge.append("feMergeNode").attr("in", "SourceGraphic")
+
+    // Create SVG group
+    const g = svgSelection
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`)
-
-    // Color function
+    
+    // Active gradient (amber/orange)
+    const activeGradient = defs.append("linearGradient")
+      .attr("id", "activeGradient")
+      .attr("x1", "0%").attr("y1", "0%")
+      .attr("x2", "0%").attr("y2", "100%")
+    activeGradient.append("stop").attr("offset", "0%").attr("stop-color", "#f59e0b")
+    activeGradient.append("stop").attr("offset", "100%").attr("stop-color", "#d97706")
+    
+    // Sorted gradient (green)
+    const sortedGradient = defs.append("linearGradient")
+      .attr("id", "sortedGradient")
+      .attr("x1", "0%").attr("y1", "0%")
+      .attr("x2", "0%").attr("y2", "100%")
+    sortedGradient.append("stop").attr("offset", "0%").attr("stop-color", "#10b981")
+    sortedGradient.append("stop").attr("offset", "100%").attr("stop-color", "#059669")
+    
+    // Default gradient (gray)
+    const defaultGradient = defs.append("linearGradient")
+      .attr("id", "defaultGradient")
+      .attr("x1", "0%").attr("y1", "0%")
+      .attr("x2", "0%").attr("y2", "100%")
+    defaultGradient.append("stop").attr("offset", "0%").attr("stop-color", "#6b7280")
+    defaultGradient.append("stop").attr("offset", "100%").attr("stop-color", "#4b5563")
+    
+    // Enhanced color function with gradients
     const getColor = (index: number) => {
-      if (activeIndices.includes(index)) return "#f59e0b" // amber-500
-      if (sortedIndices.includes(index)) return "#10b981" // emerald-500
-      return "#6b7280" // gray-500
+      if (activeIndices.includes(index)) return "url(#activeGradient)" // Active comparison
+      if (sortedIndices.includes(index)) return "url(#sortedGradient)" // Already sorted
+      return "url(#defaultGradient)" // Default state
     }
 
-    // Create bars
+    // Create bars with initial state
     const bars = g
       .selectAll(".bar")
       .data(data)
@@ -68,14 +107,24 @@ export function SortingBarChart({
       .append("rect")
       .attr("class", "bar")
       .attr("x", (_, i) => xScale(i.toString()) || 0)
-      .attr("y", (d) => yScale(d))
+      .attr("y", height) // Start from bottom
       .attr("width", xScale.bandwidth())
-      .attr("height", (d) => height - yScale(d))
+      .attr("height", 0) // Start with height 0
       .attr("fill", (_, i) => getColor(i))
-      .attr("rx", 4)
+      .attr("rx", 6)
+      .attr("ry", 6)
       .attr("stroke", "#fff")
-      .attr("stroke-width", 1)
-      .attr("opacity", (_, i) => (activeIndices.includes(i) ? 1 : 0.8))
+      .attr("stroke-width", 2)
+      .attr("opacity", (_, i) => (activeIndices.includes(i) ? 1 : 0.85))
+      .attr("filter", (_, i) => activeIndices.includes(i) ? "url(#glow)" : "none")
+    
+    // Animate bars appearing
+    bars
+      .transition()
+      .duration(500)
+      .ease(d3.easeElasticOut)
+      .attr("y", (d) => yScale(d))
+      .attr("height", (d) => height - yScale(d))
 
     // Add value labels on bars
     g.selectAll(".value-label")
@@ -134,15 +183,17 @@ export function SortingBarChart({
       .attr("stroke", "#9ca3af")
       .attr("stroke-dasharray", "2,2")
 
-    // Animate bars
+    // Enhanced animation with better easing
     bars
       .transition()
-      .duration(300)
-      .ease(d3.easeCubicOut)
+      .duration(400)
+      .ease(d3.easeCubicInOut)
       .attr("y", (d) => yScale(d))
       .attr("height", (d) => height - yScale(d))
       .attr("fill", (_, i) => getColor(i))
-      .attr("opacity", (_, i) => (activeIndices.includes(i) ? 1 : 0.8))
+      .attr("opacity", (_, i) => (activeIndices.includes(i) ? 1 : 0.85))
+      .attr("filter", (_, i) => activeIndices.includes(i) ? "url(#glow)" : "none")
+      .attr("stroke-width", (_, i) => activeIndices.includes(i) ? 2.5 : 2)
 
     // Animate labels
     g.selectAll<SVGTextElement, number>(".value-label")
@@ -160,7 +211,7 @@ export function SortingBarChart({
   return (
     <div
       ref={containerRef}
-      className="w-full min-h-[400px] rounded-lg border border-border/50 bg-background p-4"
+      className="w-full min-h-[400px] rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-6 shadow-lg"
     >
       <svg ref={svgRef} className="w-full h-full" />
     </div>

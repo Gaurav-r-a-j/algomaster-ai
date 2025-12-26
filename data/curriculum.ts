@@ -150,6 +150,7 @@ try {
     "bellman-ford": VisualizerType.GRAPH,
     "segment-tree": VisualizerType.BINARY_TREE, // Reuse Tree visualizer
     "fenwick-tree": VisualizerType.BINARY_TREE, // Reuse Tree visualizer
+    "arrays-strings": VisualizerType.GRID, // Array operations visualization
   }
 
   TOPICS.forEach((topic) => {

@@ -184,7 +184,7 @@ export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
   return (
     <div
       ref={containerRef}
-      className="flex h-full w-full items-center justify-center overflow-x-auto p-6 sm:p-8"
+      className="flex h-full w-full items-center justify-center overflow-x-auto rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-6 shadow-lg sm:p-8"
     >
       <motion.svg
         ref={svgRef}

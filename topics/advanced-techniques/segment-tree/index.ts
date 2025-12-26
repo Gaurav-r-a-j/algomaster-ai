@@ -13,6 +13,28 @@ export const segmentTree: Topic = {
   difficulty: "Hard",
   content: "", // Content loaded from external .mdx file
   quiz: segmentTreeQuiz,
+  practiceLinks: [
+    {
+      title: "LeetCode: Range Sum Query - Mutable",
+      url: "https://leetcode.com/problems/range-sum-query-mutable/",
+      difficulty: "Medium",
+    },
+    {
+      title: "GeeksforGeeks: Segment Tree",
+      url: "https://www.geeksforgeeks.org/segment-tree-data-structure/",
+      difficulty: "Hard",
+    },
+    {
+      title: "LeetCode: Count of Smaller Numbers After Self",
+      url: "https://leetcode.com/problems/count-of-smaller-numbers-after-self/",
+      difficulty: "Hard",
+    },
+    {
+      title: "LeetCode: Range Sum Query 2D - Mutable",
+      url: "https://leetcode.com/problems/range-sum-query-2d-mutable/",
+      difficulty: "Hard",
+    },
+  ],
   youtubeLink: {
     en: "https://www.youtube.com/watch?v=2bSS8rtFym4", // Segment Tree
     hi: "https://www.youtube.com/watch?v=wn49b9Y0FYM" // Segment Tree Hindi

@@ -17,7 +17,7 @@ export function PathfindingGridView({
   const pathSet = new Set(auxiliary.path || [])
 
   return (
-    <motion.div className="mx-auto grid w-full max-w-[350px] grid-cols-5 gap-1.5 p-6 sm:max-w-[400px] sm:gap-2">
+    <motion.div className="mx-auto grid w-full max-w-[350px] grid-cols-5 gap-2 rounded-xl border border-border/50 bg-gradient-to-br from-background to-muted/20 p-6 shadow-lg sm:max-w-[400px] sm:gap-2.5">
       {currentData.array.map((val, idx) => {
         const isStart = val === 2
         const isEnd = val === 3
