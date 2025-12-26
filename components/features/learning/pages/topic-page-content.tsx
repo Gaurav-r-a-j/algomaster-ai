@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/resizable"
 import { LearnView, PracticeView, TestView, VisualizeView } from "@/components/features/learning/views"
 import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
+import { TopicPageTabs } from "./topic-page-tabs"
 import type { Topic } from "@/types/curriculum"
 
 interface TopicPageContentProps {
@@ -39,8 +40,11 @@ export function TopicPageContent({ topic, prevTopic, nextTopic }: TopicPageConte
         >
           <ResizablePanelGroup direction="horizontal" className="h-full">
             <ResizablePanel defaultSize={70} minSize={40}>
-              <div className="h-full overflow-y-auto">
-                <LearnView topic={topic} />
+              <div className="h-full flex flex-col">
+                <TopicPageTabs topic={topic} />
+                <div className="flex-1 overflow-y-auto">
+                  <LearnView topic={topic} />
+                </div>
               </div>
             </ResizablePanel>
             <ResizableHandle withHandle className="bg-border/50" />
