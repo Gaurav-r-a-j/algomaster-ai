@@ -20,7 +20,7 @@ export async function GET(request: Request) {
       {
         status: "ok",
         timestamp: new Date().toISOString(),
-        version: process.env.npm_package_version || "1.0.0",
+        version: "0.1.0",
       },
       {
         status: 200,

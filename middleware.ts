@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { env } from "@/config/common/env"
 
 // Rate limiting store (in-memory for simplicity, use Redis in production)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
@@ -124,7 +125,7 @@ export function middleware(request: NextRequest) {
   response.headers.set("Content-Security-Policy", csp)
 
   // Strict Transport Security (HSTS) - only in production
-  if (process.env.NODE_ENV === "production") {
+  if (env.NODE_ENV === "production") {
     response.headers.set(
       "Strict-Transport-Security",
       "max-age=31536000; includeSubDomains; preload"

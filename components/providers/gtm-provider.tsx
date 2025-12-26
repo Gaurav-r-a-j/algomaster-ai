@@ -61,5 +61,5 @@ export {
   trackQuizComplete,
   trackSignUp,
   trackLogin,
-} from "@/lib/analytics/gtm"
+} from "@/lib/analytics"
 

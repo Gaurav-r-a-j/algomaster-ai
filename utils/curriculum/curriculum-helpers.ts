@@ -14,7 +14,7 @@ export function getFirstTopicUrl(): string {
   if (!firstTopic) {
     return ROUTES.HOME
   }
-  return ROUTES.TOPIC(firstTopic.categoryId || "dsa", generateTopicSlug(firstTopic.title))
+  return ROUTES.TOPIC(generateTopicSlug(firstTopic.title))
 }
 
 /**
@@ -38,5 +38,5 @@ export function getRandomTopicUrl(): string {
   if (!topic) {
     return ROUTES.HOME
   }
-  return ROUTES.TOPIC(topic.categoryId || "dsa", generateTopicSlug(topic.title))
+  return ROUTES.TOPIC(generateTopicSlug(topic.title))
 }

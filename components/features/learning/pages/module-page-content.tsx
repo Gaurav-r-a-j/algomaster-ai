@@ -85,7 +85,7 @@ export function ModulePageContent({
               return (
                 <Link
                   key={topic.id}
-                  href={ROUTES.TOPIC("dsa", topicSlug)}
+                  href={ROUTES.TOPIC(topicSlug)}
                   className="block"
                 >
                   <TopicCard topic={topic} />

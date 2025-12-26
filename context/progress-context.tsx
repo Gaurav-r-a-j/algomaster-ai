@@ -2,7 +2,7 @@
 
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
-import { trackTopicComplete, trackProgressMilestone } from "@/lib/analytics/gtm"
+import { trackTopicComplete, trackProgressMilestone } from "@/lib/analytics"
 import { TOPICS } from "@/data/curriculum"
 
 interface ProgressState {

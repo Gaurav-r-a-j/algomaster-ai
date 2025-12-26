@@ -143,7 +143,7 @@ export function LearningPlatformLayout({
                                 return null
                               }
                               const topicSlug = generateTopicSlug(topic.title)
-                              const topicPath = ROUTES.TOPIC(topic.categoryId || "dsa", topicSlug)
+                              const topicPath = ROUTES.TOPIC(topicSlug)
                               return (
                                 <SidebarMenuItem key={topicId}>
                                   <SidebarMenuButton

@@ -3,8 +3,9 @@
 
 import { useAuthStore } from "@/store/auth-store"
 import { storage } from "@/utils/common/storage"
+import { env } from "@/config/common/env"
 
-const hasDatabase = !!process.env.DATABASE_URL
+const hasDatabase = !!env.DATABASE_URL
 
 let userService: typeof import("@/db/services").userService | null = null
 

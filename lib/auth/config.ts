@@ -10,8 +10,8 @@ export const authConfig: NextAuthConfig = {
   adapter: db ? DrizzleAdapter(db) : undefined,
   providers: [
     GitHub({
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
       allowDangerousEmailAccountLinking: true,
     }),
   ],
@@ -22,7 +22,7 @@ export const authConfig: NextAuthConfig = {
   },
   callbacks: {
     async session({ session, user }) {
-      if (session.user) {
+      if (session.user && user) {
         session.user.id = user.id
         if (db) {
           const [account] = await db
@@ -53,14 +53,14 @@ export const authConfig: NextAuthConfig = {
   useSecureCookies: env.NODE_ENV === "production",
   cookies: {
     sessionToken: {
-      name: process.env.NODE_ENV === "production" 
+      name: env.NODE_ENV === "production" 
         ? "__Secure-next-auth.session-token" 
         : "next-auth.session-token",
       options: {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production",
+        secure: env.NODE_ENV === "production",
       },
     },
   },

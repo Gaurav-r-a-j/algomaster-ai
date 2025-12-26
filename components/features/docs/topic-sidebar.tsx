@@ -177,7 +177,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                   className="w-full justify-start h-auto p-0 hover:bg-transparent"
                   asChild
                 >
-                  <Link href={ROUTES.TOPIC(prevTopic.categoryId || "dsa", generateTopicSlug(prevTopic.title))}>
+                  <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
                     <CardContent className="p-3 w-full">
                       <div className="flex items-center gap-3">
                         <div className="shrink-0 rounded-md bg-muted/50 group-hover:bg-primary/10 p-2 transition-colors">
@@ -209,7 +209,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                   className="w-full justify-start h-auto p-0 hover:bg-transparent"
                   asChild
                 >
-                  <Link href={ROUTES.TOPIC(nextTopic.categoryId || "dsa", generateTopicSlug(nextTopic.title))}>
+                  <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
                     <CardContent className="p-3 w-full">
                       <div className="flex items-center gap-3">
                         <div className="flex-1 text-left min-w-0">

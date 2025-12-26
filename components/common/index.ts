@@ -18,7 +18,6 @@ export * from "./visual"
 
 // Other common components
 export { IconWrapper } from "./icon-wrapper"
-export { Icon } from "./icon"
 export { MarkdownRenderer } from "./markdown-renderer"
 export { Logo } from "./logo"
 // PreviewRegistry is not exported, it's used internally

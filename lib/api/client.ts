@@ -1,8 +1,7 @@
-// Client-side API client - handles both real API calls and client-side mocks
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
+import { env } from "@/config/common/env"
 
-// Check if we're in a client-side only mode (no backend)
-const isClientOnlyMode = !process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_URL === "/api"
+const API_BASE_URL = env.NEXT_PUBLIC_API_URL || "/api"
+const isClientOnlyMode = !env.NEXT_PUBLIC_API_URL || env.NEXT_PUBLIC_API_URL === "/api"
 
 export async function apiClient<T>(
   endpoint: string,

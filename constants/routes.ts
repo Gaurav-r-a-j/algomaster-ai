@@ -3,14 +3,13 @@ export const ROUTES = {
   // Public routes
   HOME: "/",
 
-  // Category-based routes (extensible)
-  // Format: /{category}/{topic-slug}
-  // Examples: /dsa/bubble-sort, /frontend/react-hooks, /system-design/caching
-  TOPIC: (categoryId: string, topicSlug: string) => `/${categoryId}/${topicSlug}`,
+  // Topic routes - direct slug (unique across all topics)
+  // Format: /{topic-slug}
+  // Examples: /bubble-sort, /what-is-programming, /binary-search
+  TOPIC: (topicSlug: string) => `/${topicSlug}`,
   
-  // Category and module routes
-  CATEGORY: (categoryId: string) => `/${categoryId}`,
-  MODULE: (slug: string) => `/dsa/${slug}`,
+  // Module routes
+  MODULE: (slug: string) => `/${slug}`,
 
   // Dashboard routes (separate for stats/progress)
   DASHBOARD: "/dashboard",

@@ -1,21 +1,13 @@
-// NeonDB Connection for Next.js - Best Practices
-// Using @neondatabase/serverless for optimal Next.js performance
-
 import { neon, neonConfig } from "@neondatabase/serverless"
 import { drizzle } from "drizzle-orm/neon-http"
+import { env } from "@/config/common/env"
 import * as schema from "./schema"
 
-// Configure Neon for Next.js serverless environment
-// This optimizes connection handling for edge/serverless functions
 neonConfig.fetchConnectionCache = true
 
-// Get database URL from environment
-const databaseUrl = process.env.DATABASE_URL
+const databaseUrl = env.DATABASE_URL
 
-// Database is optional - app works in client-side only mode without it
-// Progress tracking uses localStorage when database is not available
-if (!databaseUrl && process.env.NODE_ENV === "production") {
-  // Only warn in production, but don't throw - allow graceful degradation
+if (!databaseUrl && env.NODE_ENV === "production") {
   console.warn("⚠️  DATABASE_URL not set - running in client-side only mode")
 }
 

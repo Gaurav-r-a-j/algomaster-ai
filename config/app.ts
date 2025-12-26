@@ -29,8 +29,8 @@ export const APP_CONFIG = {
   ],
   twitter: "@algomasterai",
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
-    yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
-    bing: process.env.NEXT_PUBLIC_BING_VERIFICATION,
+    google: env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    yandex: env.NEXT_PUBLIC_YANDEX_VERIFICATION,
+    bing: env.NEXT_PUBLIC_BING_VERIFICATION,
   },
 } as const

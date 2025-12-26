@@ -29,7 +29,7 @@ export function TopicNavigation({
               size="lg"
               className="flex-1 sm:flex-initial"
             >
-              <Link href={ROUTES.TOPIC(prevTopic.categoryId || "dsa", generateTopicSlug(prevTopic.title))}>
+              <Link href={ROUTES.TOPIC(generateTopicSlug(prevTopic.title))}>
                 <IconWrapper
                   icon={ChevronLeftIcon}
                   size={16}
@@ -50,7 +50,7 @@ export function TopicNavigation({
               size="lg"
               className="flex-1 sm:flex-initial"
             >
-              <Link href={ROUTES.TOPIC(nextTopic.categoryId || "dsa", generateTopicSlug(nextTopic.title))}>
+              <Link href={ROUTES.TOPIC(generateTopicSlug(nextTopic.title))}>
                 <span className="hidden sm:inline">Next: </span>
                 <span className="truncate">{nextTopic.title}</span>
                 <IconWrapper

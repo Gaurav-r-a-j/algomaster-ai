@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation"
 import { storage } from "@/utils/common/storage"
+import { auth } from "@/lib/auth"
 
 type AuthUser = {
   id: string
@@ -8,7 +9,16 @@ type AuthUser = {
 
 // Get current authenticated user (server-side)
 export async function getCurrentUser(): Promise<AuthUser | null> {
-  return null
+  const session = await auth()
+  
+  if (!session?.user) {
+    return null
+  }
+  
+  return {
+    id: session.user.id,
+    email: session.user.email || "",
+  }
 }
 
 // Require authentication or redirect to login
