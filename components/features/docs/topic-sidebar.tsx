@@ -35,21 +35,21 @@ function getYouTubeLink(topic: Topic, language: "en" | "hi" = "en"): string | nu
   if (!topic.youtubeLink) {
     return null
   }
-  
+
   if (typeof topic.youtubeLink === "string") {
     return topic.youtubeLink
   }
-  
+
   if (typeof topic.youtubeLink === "object") {
     return topic.youtubeLink[language] || topic.youtubeLink.en || null
   }
-  
+
   return null
 }
 
 export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps) {
   const [videoLanguage, setVideoLanguage] = useState<"en" | "hi">("en")
-  
+
   const getDifficultyVariant = () => {
     if (topic.difficulty === "Easy") {
       return "default"
@@ -62,11 +62,11 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
 
   const youtubeLink = getYouTubeLink(topic, videoLanguage)
   const videoId = youtubeLink ? getYouTubeId(youtubeLink) : null
-  const hasMultipleLanguages = typeof topic.youtubeLink === "object" && 
+  const hasMultipleLanguages = typeof topic.youtubeLink === "object" &&
     topic.youtubeLink.en && topic.youtubeLink.hi
 
   return (
-    <aside className="sticky top-16 h-[calc(100vh-4rem)] w-80 shrink-0 overflow-hidden border-l border-border/30 bg-background/95 backdrop-blur-sm">
+    <aside className="h-full w-full shrink-0 overflow-hidden border-l border-border/30 bg-background/95 backdrop-blur-sm">
       <div className="h-full overflow-y-auto px-5 py-6 space-y-6 custom-scrollbar">
         {/* Topic Details Section */}
         <div className="space-y-4">
@@ -75,7 +75,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
               Topic Details
             </h3>
           </div>
-          
+
           <div className="space-y-3">
             {/* Difficulty */}
             <Card className="border-border/40 p-0 bg-background">
@@ -93,8 +93,8 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
             </Card>
 
             {/* Complexity */}
-            {(topic.complexity?.time && topic.complexity.time !== "N/A") || 
-             (topic.complexity?.space && topic.complexity.space !== "N/A") ? (
+            {(topic.complexity?.time && topic.complexity.time !== "N/A") ||
+              (topic.complexity?.space && topic.complexity.space !== "N/A") ? (
               <Card className="border-border/40 bg-background p-0">
                 <CardContent className="p-3">
                   <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
@@ -175,7 +175,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
           <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
             Navigation
           </h3>
-          
+
           <div className="space-y-2.5">
             {prevTopic && (
               <Card className="border-border/40 hover:border-primary/40 transition-all p-0 cursor-pointer group">
@@ -188,10 +188,10 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                     <CardContent className="p-3 w-full">
                       <div className="flex items-center gap-3">
                         <div className="shrink-0 rounded-md bg-muted/50 group-hover:bg-primary/10 p-2 transition-colors">
-                          <IconWrapper 
-                            icon={ArrowLeft01Icon} 
-                            size={14} 
-                            className="text-muted-foreground group-hover:text-primary transition-colors" 
+                          <IconWrapper
+                            icon={ArrowLeft01Icon}
+                            size={14}
+                            className="text-muted-foreground group-hover:text-primary transition-colors"
                           />
                         </div>
                         <div className="flex-1 text-left min-w-0">
@@ -228,10 +228,10 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                           </p>
                         </div>
                         <div className="shrink-0 rounded-md bg-primary/20 group-hover:bg-primary/30 p-2 transition-colors">
-                          <IconWrapper 
-                            icon={ArrowRight01Icon} 
-                            size={14} 
-                            className="text-primary" 
+                          <IconWrapper
+                            icon={ArrowRight01Icon}
+                            size={14}
+                            className="text-primary"
                           />
                         </div>
                       </div>
