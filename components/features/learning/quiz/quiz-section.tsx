@@ -4,14 +4,13 @@ import React from "react"
 import { useState, useMemo, useCallback } from "react"
 import { useProgress } from "@/context/progress-context"
 import { motion } from "motion/react"
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline"
 
 import type { QuizQuestion } from "@/types/curriculum"
 import {
   fadeIn,
   transitions,
 } from "@/lib/animations"
-import { SparklesIcon } from "@/lib/icons"
+import { StarIcon, ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/icons"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -177,7 +176,7 @@ export function QuizSection({
                         trigger={
                           <Button variant="outline" size="sm" className="gap-2 border-border/60 hover:bg-muted/50">
                             <IconWrapper
-                              icon={SparklesIcon}
+                              icon={StarIcon}
                               size={14}
                               className="text-yellow-500"
                             />
@@ -232,7 +231,7 @@ export function QuizSection({
                           disabled={isFirstQuestion}
                           className="gap-2"
                         >
-                          <ChevronLeftIcon className="h-4 w-4" />
+                          <IconWrapper icon={ArrowLeft01Icon} size={16} />
                           Previous
                         </Button>
 
@@ -243,7 +242,7 @@ export function QuizSection({
                         >
                           {isLastQuestion ? "Submit Quiz" : "Next"}
                           {!isLastQuestion && (
-                            <ChevronRightIcon className="h-4 w-4" />
+                            <IconWrapper icon={ArrowRight01Icon} size={16} />
                           )}
                         </Button>
                       </div>

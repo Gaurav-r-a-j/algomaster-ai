@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { motion } from "motion/react"
 import type { QuizQuestion } from "@/types/curriculum"
-import { SparklesIcon } from "@/lib/icons"
+import { StarIcon } from "@/lib/icons"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -60,7 +60,7 @@ export function QuizAISheet({
         <SheetHeader className="px-6 pt-6 pb-4">
           <SheetTitle className="flex items-center gap-2 text-xl">
             <IconWrapper
-              icon={SparklesIcon}
+              icon={StarIcon}
               size={22}
               className="text-yellow-500"
             />
@@ -83,7 +83,7 @@ export function QuizAISheet({
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                   >
                     <IconWrapper
-                      icon={SparklesIcon}
+                      icon={StarIcon}
                       size={18}
                       className="text-yellow-500"
                     />
@@ -148,28 +148,42 @@ export function QuizAISheet({
                 )}
 
                 {/* Navigation */}
-                <div className="flex items-center justify-between gap-3 pt-4 border-t border-border/40">
-                  <Button
-                    variant="outline"
-                    onClick={() => setCurrentQuestionIndex((prev) => Math.max(0, prev - 1))}
-                    disabled={currentQuestionIndex === 0}
-                    className="flex-1"
-                  >
-                    Previous
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() =>
-                      setCurrentQuestionIndex((prev) =>
-                        Math.min(aiQuestions.length - 1, prev + 1)
-                      )
-                    }
-                    disabled={currentQuestionIndex === aiQuestions.length - 1}
-                    className="flex-1"
-                  >
-                    Next
-                  </Button>
-                </div>
+                {currentQuestion && (
+                  <div className="flex items-center justify-between gap-3 pt-4 border-t border-border/40">
+                    <Button
+                      variant="outline"
+                      onClick={() => setCurrentQuestionIndex((prev) => Math.max(0, prev - 1))}
+                      disabled={currentQuestionIndex === 0}
+                      className="flex-1"
+                    >
+                      Previous
+                    </Button>
+                    {currentQuestionIndex === aiQuestions.length - 1 ? (
+                      <Button
+                        onClick={() => {
+                          if (onOpenChange) {
+                            onOpenChange(false)
+                          }
+                        }}
+                        className="flex-1"
+                      >
+                        Submit Quiz
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          setCurrentQuestionIndex((prev) =>
+                            Math.min(aiQuestions.length - 1, prev + 1)
+                          )
+                        }
+                        className="flex-1"
+                      >
+                        Next
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             </>
           ) : (
@@ -184,7 +198,7 @@ export function QuizAISheet({
                   className="w-full h-11 gap-2 font-semibold" 
                   disabled={isGenerating}
                 >
-                  <IconWrapper icon={SparklesIcon} size={18} />
+                  <IconWrapper icon={StarIcon} size={18} />
                   Generate AI Questions
                 </Button>
               </div>
