@@ -14,7 +14,7 @@ export function LandingHero() {
     <section className="bg-background relative overflow-hidden px-4 pt-32 pb-24 sm:px-6">
       {/* Minimal Background Pattern */}
       <div
-        className="absolute inset-0 z-0 opacity-[0.05]"
+        className="absolute inset-0 z-0 opacity-[0.2]"
         style={{
           backgroundImage: `radial-gradient(circle, currentColor 1px, transparent 1px)`,
           backgroundSize: "32px 32px",
