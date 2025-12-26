@@ -2,12 +2,17 @@
 // Note: Content (MDX, quizzes) stays in code, this only manages metadata
 
 import { eq, and, asc } from "drizzle-orm"
-import { db } from "../index"
+import { db, isDatabaseAvailable } from "../index"
 import { topics, type NewTopic, type Topic } from "../schema"
+import type { CategoryId } from "@/types/category"
 
 export class TopicService {
   // Create or update topic
   async upsertTopic(data: NewTopic): Promise<Topic> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     const [topic] = await db
       .insert(topics)
       .values({
@@ -33,6 +38,10 @@ export class TopicService {
 
   // Get topic by ID
   async getTopicById(id: string): Promise<Topic | null> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     const [topic] = await db
       .select()
       .from(topics)
@@ -44,7 +53,11 @@ export class TopicService {
 
   // Get all topics for a category (ordered)
   async getTopicsByCategory(categoryId: string, enabledOnly: boolean = true): Promise<Topic[]> {
-    const conditions = [eq(topics.categoryId, categoryId as any)]
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
+    const conditions = [eq(topics.categoryId, categoryId as CategoryId)]
     if (enabledOnly) {
       conditions.push(eq(topics.enabled, true))
     }
@@ -58,6 +71,10 @@ export class TopicService {
 
   // Get all enabled topics (for sidebar)
   async getAllEnabledTopics(): Promise<Topic[]> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     return db
       .select()
       .from(topics)
@@ -80,6 +97,10 @@ export class TopicService {
 
   // Enable/disable topic
   async setTopicEnabled(id: string, enabled: boolean): Promise<Topic | null> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     const [topic] = await db
       .update(topics)
       .set({ enabled, updatedAt: new Date() })
@@ -91,6 +112,10 @@ export class TopicService {
 
   // Delete topic (soft delete - set enabled to false)
   async deleteTopic(id: string): Promise<boolean> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     const result = await db
       .update(topics)
       .set({ enabled: false, updatedAt: new Date() })
@@ -117,7 +142,7 @@ export class TopicService {
         id: data.id,
         title: data.title,
         description: data.description,
-        categoryId: data.categoryId as any,
+        categoryId: data.categoryId as CategoryId,
         module: data.module,
         order: data.order,
         difficulty: data.difficulty || null,

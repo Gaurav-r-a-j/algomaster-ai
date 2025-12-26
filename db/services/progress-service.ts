@@ -1,10 +1,14 @@
 import { eq, and, desc } from "drizzle-orm"
-import { db } from "../index"
+import { db, isDatabaseAvailable } from "../index"
 import { userProgress, type NewUserProgress, type UserProgress } from "../schema"
 
 export class ProgressService {
   // Create or update progress
   async upsertProgress(data: NewUserProgress): Promise<UserProgress> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     const existing = await db
       .select()
       .from(userProgress)
@@ -35,6 +39,10 @@ export class ProgressService {
 
   // Get progress for a user and topic
   async getProgress(userId: string, topicId: string): Promise<UserProgress | null> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     const [progress] = await db
       .select()
       .from(userProgress)
@@ -51,6 +59,10 @@ export class ProgressService {
 
   // Get all progress for a user
   async getUserProgress(userId: string): Promise<UserProgress[]> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     return db
       .select()
       .from(userProgress)
@@ -60,6 +72,10 @@ export class ProgressService {
 
   // Get completed topics for a user
   async getCompletedTopics(userId: string): Promise<string[]> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     const completed = await db
       .select({ topicId: userProgress.topicId })
       .from(userProgress)
@@ -103,6 +119,10 @@ export class ProgressService {
 
   // Update last accessed
   async updateLastAccessed(userId: string, topicId: string): Promise<void> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     await db
       .update(userProgress)
       .set({ lastAccessedAt: new Date() })

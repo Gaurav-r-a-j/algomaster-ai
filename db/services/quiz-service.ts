@@ -1,17 +1,24 @@
 import { eq, and, desc } from "drizzle-orm"
-import { type NewQuizAttempt } from "../schema"
-import { db } from "../index"
+import { db, isDatabaseAvailable } from "../index"
 import { quizAttempts, type NewQuizAttempt, type QuizAttempt } from "../schema"
 
 export class QuizService {
   // Create a quiz attempt
   async createAttempt(data: NewQuizAttempt): Promise<QuizAttempt> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     const [attempt] = await db.insert(quizAttempts).values(data).returning()
     return attempt!
   }
 
   // Get quiz attempts for a user and topic
   async getAttempts(userId: string, topicId: string): Promise<QuizAttempt[]> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     return db
       .select()
       .from(quizAttempts)
@@ -35,6 +42,10 @@ export class QuizService {
 
   // Get all attempts for a user
   async getUserAttempts(userId: string): Promise<QuizAttempt[]> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     return db
       .select()
       .from(quizAttempts)
@@ -51,6 +62,10 @@ export class QuizService {
 
   // Upsert quiz attempt - keep only best score per user/topic
   async upsertBestAttempt(data: NewQuizAttempt): Promise<QuizAttempt> {
+    if (!isDatabaseAvailable || !db) {
+      throw new Error("Database not available - app running in client-side only mode")
+    }
+    
     const existing = await this.getBestAttempt(data.userId, data.topicId)
     
     if (existing) {

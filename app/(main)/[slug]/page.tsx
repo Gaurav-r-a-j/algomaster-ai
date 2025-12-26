@@ -15,7 +15,7 @@ import { motion } from "motion/react"
 
 import { VisualizerType } from "@/types/curriculum"
 import { fadeIn, slideDown, transitions } from "@/lib/animations"
-import { BookOpenIcon, CheckmarkCircleIcon, CodeIcon, PlayIcon, ShareIcon, UserIcon } from "@/lib/icons"
+import { File01Icon, CheckmarkCircleIcon, CodeIcon, PlayIcon, ShareIcon, UserIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
 import {
   useModuleBySlug,
@@ -46,6 +46,27 @@ import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
 
 interface SlugPageProps {
   params: Promise<{ slug: string }>
+}
+
+// Generate static params for build-time generation (SSG)
+export async function generateStaticParams() {
+  const { TOPICS } = await import("@/data/curriculum")
+  const { generateTopicSlug, generateModuleSlug } = await import("@/utils/common/slug")
+  
+  const params: { slug: string }[] = []
+  
+  // Add all topic slugs for static generation
+  TOPICS.forEach((topic) => {
+    params.push({ slug: generateTopicSlug(topic.title) })
+  })
+  
+  // Add all module slugs for static generation
+  const uniqueModules = Array.from(new Set(TOPICS.map((t) => t.module)))
+  uniqueModules.forEach((module) => {
+    params.push({ slug: generateModuleSlug(module) })
+  })
+  
+  return params
 }
 
 export default function SlugPage({ params }: SlugPageProps) {
@@ -319,7 +340,7 @@ export default function SlugPage({ params }: SlugPageProps) {
                     value="learn"
                     className="flex items-center gap-1.5 px-3 text-xs"
                   >
-                    <IconWrapper icon={BookOpenIcon} size={14} />
+                    <IconWrapper icon={File01Icon} size={14} />
                     <span className="hidden sm:inline">Learn</span>
                   </TabsTrigger>
                   <TabsTrigger

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { ROUTES } from "@/constants/routes"
 
-import { HeroHomeIcon } from "@/lib/icons"
+import { Home01Icon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
 import { Container } from "@/components/common/container"
 
@@ -105,7 +105,7 @@ export default function NotFound() {
         <div className="flex flex-col justify-center gap-4 sm:flex-row">
           <Button size="lg" asChild className="w-full sm:w-auto">
             <Link href={ROUTES.HOME}>
-              <HeroHomeIcon className="mr-2 h-5 w-5" />
+              <Home01Icon className="mr-2 h-5 w-5" />
               Go Home
             </Link>
           </Button>

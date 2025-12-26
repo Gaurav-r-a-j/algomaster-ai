@@ -1,7 +1,13 @@
 import { defineConfig } from "drizzle-kit"
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL environment variable is not set")
+// Database URL is optional - app works in client-side only mode without it
+// Only required when running database commands (db:push, db:generate, etc.)
+const databaseUrl = process.env.DATABASE_URL
+
+if (!databaseUrl) {
+  // Allow config to be created but warn - commands will fail gracefully
+  console.warn("⚠️  DATABASE_URL not set - database commands will not work")
+  console.warn("   App will run in client-side only mode (localStorage)")
 }
 
 export default defineConfig({
@@ -9,7 +15,7 @@ export default defineConfig({
   out: "./drizzle",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: databaseUrl || "postgresql://placeholder", // Placeholder for config validation
   },
   verbose: true,
   strict: true,

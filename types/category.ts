@@ -1,5 +1,7 @@
 // Category/Topic Type System - Extensible for multiple interview topics
 
+export type CategoryId = "dsa" | "frontend" | "system-design" | "backend" | "database" | "devops" | "mobile"
+
 export enum CategoryType {
   DSA = "dsa", // Data Structures & Algorithms (Primary)
   FRONTEND = "frontend", // Frontend (React, Vue, etc.)

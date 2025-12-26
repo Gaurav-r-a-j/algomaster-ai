@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import Link from "next/link"
 import { ROUTES } from "@/constants/routes"
 
-import { HeroArrowRightIcon, HeroHomeIcon } from "@/lib/icons"
+import { ArrowRight01Icon, Home01Icon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
 import { Container } from "@/components/common/container"
 
@@ -101,7 +101,7 @@ export default function GlobalError({
 
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Button size="lg" onClick={reset} className="w-full sm:w-auto">
-                <HeroArrowRightIcon className="mr-2 h-5 w-5" />
+                <ArrowRight01Icon className="mr-2 h-5 w-5" />
                 Reload Application
               </Button>
               <Button
@@ -111,7 +111,7 @@ export default function GlobalError({
                 className="w-full sm:w-auto"
               >
                 <Link href={ROUTES.HOME}>
-                  <HeroHomeIcon className="mr-2 h-5 w-5" />
+                  <Home01Icon className="mr-2 h-5 w-5" />
                   Go Home
                 </Link>
               </Button>
