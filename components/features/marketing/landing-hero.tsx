@@ -12,12 +12,12 @@ import { IconWrapper } from "@/components/common/icon-wrapper"
 export function LandingHero() {
   return (
     <section className="bg-background border-border relative overflow-hidden border-b px-4 pt-32 pb-24 sm:px-6">
-      {/* Dot Grid Background */}
+      {/* Minimal Background Pattern */}
       <div
-        className="absolute inset-0 z-0 opacity-[0.15]"
+        className="absolute inset-0 z-0 opacity-[0.05]"
         style={{
-          backgroundImage: `radial-gradient(circle, hsl(var(--primary) / 0.4) 1px, transparent 1px)`,
-          backgroundSize: "24px 24px",
+          backgroundImage: `radial-gradient(circle, currentColor 1px, transparent 1px)`,
+          backgroundSize: "32px 32px",
         }}
       />
 
@@ -31,17 +31,10 @@ export function LandingHero() {
           transition={{ duration: 0.5 }}
         >
           <Badge
-            variant="secondary"
-            className="border-primary/10 bg-primary/5 hover:bg-primary/10 mb-8 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors"
+            variant="outline"
+            className="border-border bg-muted/30 mb-8 rounded-full px-4 py-1 text-xs font-bold uppercase tracking-widest text-muted-foreground transition-none"
           >
-            <IconWrapper
-              icon={SparklesIcon}
-              size={14}
-              className="text-primary mr-1.5"
-            />
-            <span className="text-primary/90">
-              AI-Powered Learning Platform
-            </span>
+            AI-Powered Platform
           </Badge>
         </motion.div>
 
@@ -49,12 +42,10 @@ export function LandingHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-foreground mb-8 text-5xl leading-[1.1] font-extrabold tracking-tight md:text-7xl"
+          className="text-foreground mb-8 text-5xl leading-[1.1] font-black tracking-tighter md:text-7xl"
         >
           Master Data Structures <br />
-          <span className="from-primary to-primary/60 animate-gradient-x bg-gradient-to-r via-primary/80 bg-clip-text text-transparent">
-            & Algorithms
-          </span>
+          & Algorithms
         </motion.h1>
 
         <motion.p
@@ -101,16 +92,16 @@ export function LandingHero() {
           className="border-border/40 text-muted-foreground mt-16 flex flex-wrap items-center justify-center gap-8 border-t pt-8 opacity-70 grayscale md:gap-16"
         >
           {/* Simple Trust Signals */}
-          <div className="flex items-center gap-2 text-sm font-semibold tracking-widest uppercase">
-            <span className="h-2 w-2 rounded-full bg-green-500" /> Trusted by
+          <div className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-foreground/20" /> Trusted by
             1000+ Students
           </div>
-          <div className="flex items-center gap-2 text-sm font-semibold tracking-widest uppercase">
-            <span className="h-2 w-2 rounded-full bg-blue-500" /> Interactive
+          <div className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-foreground/20" /> Interactive
             Visualizers
           </div>
-          <div className="flex items-center gap-2 text-sm font-semibold tracking-widest uppercase">
-            <span className="h-2 w-2 rounded-full bg-purple-500" /> AI
+          <div className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-foreground/20" /> AI
             Assistance
           </div>
         </motion.div>
