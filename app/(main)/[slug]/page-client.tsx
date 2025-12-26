@@ -17,15 +17,13 @@ export function TopicPageClient({ topic, allTopics }: TopicPageClientProps) {
     <div className="bg-background flex h-full flex-col overflow-y-auto">
       <Tabs defaultValue="learn" className="flex flex-1 flex-col">
         <TopicPageHeader topic={topic} />
-        
-        <div className="px-4 sm:px-6 lg:px-8">
-          <TopicPageTabs topic={topic} />
-        </div>
 
-        <TopicPageContent 
-          topic={topic} 
-          prevTopic={prevTopic} 
-          nextTopic={nextTopic} 
+        <TopicPageTabs topic={topic} />
+
+        <TopicPageContent
+          topic={topic}
+          prevTopic={prevTopic}
+          nextTopic={nextTopic}
         />
       </Tabs>
     </div>

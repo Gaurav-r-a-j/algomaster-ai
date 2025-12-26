@@ -1,16 +1,25 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useMemo, useCallback } from "react"
 import { javascriptExecutor } from "@/services/code-execution/javascript-executor"
 import { pythonExecutor } from "@/services/code-execution/python-executor"
 import { cppExecutor } from "@/services/code-execution/cpp-executor"
 import { javaExecutor } from "@/services/code-execution/java-executor"
-import { ArrowPathIcon, PlayIcon } from "@heroicons/react/24/solid"
-import Editor, { OnMount } from "@monaco-editor/react"
+import { PlayIcon } from "@/lib/icons"
+import { ArrowPathIcon } from "@heroicons/react/24/solid"
+import Editor, { OnMount, loader } from "@monaco-editor/react"
+
+// Configure Monaco to load from node_modules instead of CDN
+loader.config({
+  paths: {
+    vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/min/vs'
+  }
+})
 
 import { SupportedLanguage, Topic } from "@/types/curriculum"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 import {
   ResizableHandle,
   ResizablePanel,
@@ -51,29 +60,89 @@ export function CodePlayground({
   const [status, setStatus] = useState<
     "idle" | "running" | "success" | "error" | "timeout"
   >("idle")
+  const [isEditorReady, setIsEditorReady] = useState(false)
+  const [editorError, setEditorError] = useState<string | null>(null)
+  const [editorLoadTimeout, setEditorLoadTimeout] = useState(false)
+  const [editorKey, setEditorKey] = useState(0)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorRef = useRef<any>(null)
 
+  // Add timeout for editor loading
   useEffect(() => {
-    // Reset code when topic, language, or initialCode changes
-    const starter =
+    const timeout = setTimeout(() => {
+      if (!isEditorReady && !editorError) {
+        setEditorLoadTimeout(true)
+        setEditorError("Editor is taking too long to load. Please try refreshing or retry.")
+      }
+    }, 30000) // 30 second timeout for initial editor load
+
+    return () => clearTimeout(timeout)
+  }, [isEditorReady, editorError])
+
+  // Reset editor state when retrying
+  const handleRetryEditor = useCallback(() => {
+    setEditorError(null)
+    setEditorLoadTimeout(false)
+    setIsEditorReady(false)
+    setEditorKey((prev) => prev + 1) // Force remount
+  }, [])
+
+  // Memoize starter code calculation
+  const starterCode = useMemo(() => {
+    return (
       initialCode?.[language] ||
       topic?.starterCode?.[language] ||
       getDefaultStarterCode(language)
-    setCode(starter)
+    )
+  }, [initialCode, topic?.starterCode, language])
+
+  useEffect(() => {
+    // Reset code when topic, language, or initialCode changes
+    setCode(starterCode)
     if (editorRef.current) {
-      editorRef.current.setValue(starter)
+      editorRef.current.setValue(starterCode)
     }
     setOutput("")
     setStatus("idle")
-  }, [topic, language, initialCode])
+  }, [starterCode])
 
-  const handleEditorDidMount: OnMount = (editor, _monaco) => {
-    editorRef.current = editor
+  const handleEditorDidMount: OnMount = useCallback((editor, monaco) => {
+    try {
+      editorRef.current = editor
+      setIsEditorReady(true)
+      setEditorError(null)
+      setEditorLoadTimeout(false)
+
+      if (monaco) {
+        monaco.editor.setTheme("vs-dark")
+      }
+
+      // Set initial code if editor is ready
+      if (editor && starterCode) {
+        editor.setValue(starterCode)
+        setCode(starterCode)
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Monaco editor initialization error:", error)
+      }
+      const errorMessage = error instanceof Error
+        ? error.message
+        : typeof error === 'string'
+          ? error
+          : "Failed to initialize editor"
+      setEditorError(errorMessage)
+      setIsEditorReady(false)
+    }
+  }, [starterCode])
+
+  const handleEditorWillMount = () => {
+    setIsEditorReady(false)
+    setEditorError(null)
   }
 
-  const handleRun = async () => {
+  const handleRun = useCallback(async () => {
     // Get latest code from state or editor
     const currentCode = editorRef.current ? editorRef.current.getValue() : code
 
@@ -106,12 +175,17 @@ export function CodePlayground({
         setStatus(result.status)
       }
     } catch (e) {
-      setOutput(`Error: ${e}`)
+      const errorMessage = e instanceof Error
+        ? e.message
+        : typeof e === 'string'
+          ? e
+          : String(e)
+      setOutput(`Error: ${errorMessage}`)
       setStatus("error")
     } finally {
       setIsRunning(false)
     }
-  }
+  }, [code, language])
 
   return (
     <div className="bg-card flex h-full min-h-[600px] flex-col overflow-hidden">
@@ -186,17 +260,19 @@ export function CodePlayground({
             className={cn(
               "h-9 gap-2 px-4 font-semibold transition-all",
               status === "success" &&
-                "bg-emerald-600 text-white hover:bg-emerald-700",
+              "bg-emerald-600 text-white hover:bg-emerald-700",
               status === "error" &&
-                "bg-destructive hover:bg-destructive/90 text-white"
+              "bg-destructive hover:bg-destructive/90 text-white"
             )}
             onClick={handleRun}
             disabled={isRunning}
+            aria-label={isRunning ? "Code is running" : "Run code"}
+            aria-busy={isRunning}
           >
             {isRunning ? (
               <ArrowPathIcon className="h-4 w-4 animate-spin" />
             ) : (
-              <PlayIcon className="h-4 w-4" />
+              <IconWrapper icon={PlayIcon} size={16} />
             )}
             {isRunning ? "Running..." : "Run"}
           </Button>
@@ -208,27 +284,77 @@ export function CodePlayground({
           {/* Top Panel: Editor */}
           <ResizablePanel defaultSize={70} minSize={30}>
             <div className="relative h-full w-full">
-              <Editor
-                height="100%"
-                defaultLanguage={language === "cpp" ? "cpp" : language}
-                language={language === "cpp" ? "cpp" : language}
-                theme="vs-dark"
-                value={code}
-                onChange={(value) => setCode(value || "")}
-                onMount={handleEditorDidMount}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  lineNumbers: "on",
-                  roundedSelection: false,
-                  scrollBeyondLastLine: false,
-                  readOnly: false,
-                  automaticLayout: true,
-                  padding: { top: 16, bottom: 16 },
-                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-                  fontLigatures: true,
-                }}
-              />
+              {editorError || editorLoadTimeout ? (
+                <div
+                  className="flex h-full items-center justify-center bg-[#1e1e1e] p-8"
+                  role="alert"
+                  aria-live="assertive"
+                >
+                  <div className="text-center space-y-3">
+                    <p className="text-red-400 font-semibold">Editor Error</p>
+                    <p className="text-zinc-400 text-sm" aria-label="Error message">
+                      {editorError || "Editor failed to load"}
+                    </p>
+                    <div className="flex gap-2 justify-center">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setEditorError(null)
+                          setEditorLoadTimeout(false)
+                          setIsEditorReady(false)
+                          // Force remount by changing key
+                          window.location.reload()
+                        }}
+                      >
+                        Reload Page
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRetryEditor}
+                      >
+                        Retry
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Editor
+                  key={`editor-${language}-${editorKey}`}
+                  height="100%"
+                  defaultLanguage={language === "cpp" ? "cpp" : language}
+                  language={language === "cpp" ? "cpp" : language}
+                  theme="vs-dark"
+                  value={code}
+                  onChange={(value) => setCode(value || "")}
+                  onMount={handleEditorDidMount}
+                  beforeMount={handleEditorWillMount}
+                  loading={
+                    <div className="flex h-full items-center justify-center bg-[#1e1e1e]">
+                      <div className="text-center space-y-3">
+                        <ArrowPathIcon className="h-8 w-8 animate-spin text-primary mx-auto" />
+                        <div className="space-y-1">
+                          <p className="text-zinc-300 text-sm font-medium">Loading editor...</p>
+                          <p className="text-zinc-500 text-xs">Initializing Monaco Editor</p>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    lineNumbers: "on",
+                    roundedSelection: false,
+                    scrollBeyondLastLine: false,
+                    readOnly: false,
+                    automaticLayout: true,
+                    padding: { top: 16, bottom: 16 },
+                    fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                    fontLigatures: true,
+                  }}
+                />
+              )}
             </div>
           </ResizablePanel>
 
@@ -264,7 +390,7 @@ export function CodePlayground({
                   </pre>
                 ) : (
                   <div className="flex h-full flex-col items-center justify-center space-y-2 text-zinc-600 opacity-50">
-                    <PlayIcon className="h-8 w-8" />
+                    <IconWrapper icon={PlayIcon} size={32} />
                     <span className="text-xs">Run code to see output</span>
                   </div>
                 )}

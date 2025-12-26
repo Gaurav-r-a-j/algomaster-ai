@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { PracticeProblem } from "@/services/content/content-service"
 import type { ImperativePanelHandle } from "react-resizable-panels"
 
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/resizable"
 import { CodePlayground } from "@/components/features/learning/code-editor/code-playground"
 import { InstructionsPanel } from "@/components/features/learning/layout/instructions-panel"
+import { PracticeViewSkeleton } from "@/components/features/learning/skeletons/practice-view-skeleton"
 
 interface PracticeViewProps {
   topic: Topic
@@ -40,7 +41,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const leftPanelRef = useRef<ImperativePanelHandle>(null)
 
-  const toggleSidebar = () => {
+  const toggleSidebar = useCallback(() => {
     const panel = leftPanelRef.current
     if (panel) {
       if (isSidebarOpen) {
@@ -50,7 +51,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
       }
       setIsSidebarOpen(!isSidebarOpen)
     }
-  }
+  }, [isSidebarOpen])
 
   // Set initial selected problem when data loads
   useEffect(() => {
@@ -80,22 +81,20 @@ export function PracticeView({ topic }: PracticeViewProps) {
   }, [topicContent, loading, topic]) // simplified dependency on data source
 
   if (loading) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <p className="text-muted-foreground animate-pulse">
-          Loading workspace...
-        </p>
-      </div>
-    )
+    return <PracticeViewSkeleton />
   }
 
-  const currentProblem = selectedProblem || {
-    id: "default",
-    title: topic.title,
-    description: topic.description,
-    difficulty: topic.difficulty || "Medium",
-    starterCode: topic.starterCode,
-  }
+  const currentProblem = useMemo(
+    () =>
+      selectedProblem || {
+        id: "default",
+        title: topic.title,
+        description: topic.description,
+        difficulty: topic.difficulty || "Medium",
+        starterCode: topic.starterCode,
+      },
+    [selectedProblem, topic]
+  )
 
   return (
     <div className="bg-background h-full w-full overflow-hidden">
@@ -194,6 +193,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
         <ResizablePanel defaultSize={60} minSize={30}>
           <div className="flex h-full flex-col">
             <CodePlayground
+              topic={topic}
               initialCode={currentProblem.starterCode || topic.starterCode}
               onToggleSidebar={toggleSidebar}
               isSidebarOpen={isSidebarOpen}

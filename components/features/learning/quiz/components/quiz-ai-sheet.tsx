@@ -22,7 +22,7 @@ import { QuizQuestionCard } from "./quiz-question-card"
 interface QuizAISheetProps {
   topicTitle?: string
   isGenerating: boolean
-  onGenerate: () => void
+  onGenerate: (questionCount?: number) => void
   trigger: React.ReactNode
   aiQuestions?: QuizQuestion[]
   onQuestionSelect?: (questionId: number, optionIdx: number) => void
@@ -43,6 +43,7 @@ export function QuizAISheet({
   onOpenChange,
 }: QuizAISheetProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [questionCount, setQuestionCount] = useState<number | "auto">("auto")
   const hasQuestions = aiQuestions.length > 0
   const currentQuestion = hasQuestions ? aiQuestions[currentQuestionIndex] : null
 
@@ -50,8 +51,17 @@ export function QuizAISheet({
   React.useEffect(() => {
     if (hasQuestions) {
       setCurrentQuestionIndex(0)
+      setQuestionCount("auto")
     }
   }, [hasQuestions])
+  
+  // Reset question count when sheet closes
+  React.useEffect(() => {
+    if (!open && !hasQuestions) {
+      setQuestionCount("auto")
+      setCurrentQuestionIndex(0)
+    }
+  }, [open, hasQuestions])
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -188,19 +198,54 @@ export function QuizAISheet({
             </>
           ) : (
             <>
-              <div className="space-y-4 py-4">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  AI will generate personalized questions based on the topic content. 
-                  Click the button below to start generating custom quiz questions.
-                </p>
-                <Button 
-                  onClick={onGenerate} 
-                  className="w-full h-11 gap-2 font-semibold" 
-                  disabled={isGenerating}
-                >
-                  <IconWrapper icon={StarIcon} size={18} />
-                  Generate AI Questions
-                </Button>
+              <div className="space-y-5 py-4">
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-foreground">
+                    Number of Questions
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Choose how many questions to generate. Leave as "Auto" for AI to decide based on topic complexity.
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-5 gap-2">
+                  <Button
+                    variant={questionCount === "auto" ? "default" : "outline"}
+                    onClick={() => setQuestionCount("auto")}
+                    className="h-10 text-xs font-medium"
+                    disabled={isGenerating}
+                  >
+                    Auto
+                  </Button>
+                  {[3, 5, 7, 10].map((count) => (
+                    <Button
+                      key={count}
+                      variant={questionCount === count ? "default" : "outline"}
+                      onClick={() => setQuestionCount(count)}
+                      className="h-10 text-xs font-medium"
+                      disabled={isGenerating}
+                    >
+                      {count}
+                    </Button>
+                  ))}
+                </div>
+
+                <div className="pt-2 space-y-3">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    AI will generate personalized questions based on the topic content.
+                  </p>
+                  <Button 
+                    onClick={() => {
+                      const count = questionCount === "auto" ? undefined : questionCount
+                      onGenerate(count)
+                    }} 
+                    className="w-full h-11 gap-2 font-semibold" 
+                    disabled={isGenerating}
+                  >
+                    <IconWrapper icon={StarIcon} size={18} />
+                    {isGenerating ? "Generating..." : "Generate AI Questions"}
+                  </Button>
+                </div>
               </div>
             </>
           )}

@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { Suspense } from "react"
 import ReactMarkdown from "react-markdown"
 import rehypeHighlight from "rehype-highlight"
 import rehypeSlug from "rehype-slug"
@@ -7,11 +8,13 @@ import remarkGfm from "remark-gfm"
 
 import "highlight.js/styles/github-dark.css"
 
-import { getTopicBySlug, TOPICS } from "@/data/curriculum"
+import { getTopicBySlug } from "@/data/curriculum"
 import { generateTopicSlug } from "@/utils/common/slug"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Skeleton } from "@/components/ui/skeleton"
+import { LoadingSpinner } from "@/components/common/ui/loading-spinner"
 import { CodePlayground } from "@/components/features/learning/code-editor/code-playground"
 import { DataStructureVisualizer } from "@/components/features/learning/visualizers/data-structure-visualizer"
 import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
@@ -106,12 +109,31 @@ export default async function DocsArticlePage({
 
               <TabsContent value="visualizer" className="mt-6">
                 <div className="min-h-[500px]">
-                  <DataStructureVisualizer topic={topic} />
+                  <Suspense
+                    fallback={
+                      <div className="flex h-[500px] items-center justify-center">
+                        <LoadingSpinner size="lg" />
+                      </div>
+                    }
+                  >
+                    <DataStructureVisualizer topic={topic} />
+                  </Suspense>
                 </div>
               </TabsContent>
 
               <TabsContent value="code" className="mt-6">
-                <CodePlayground topic={topic} />
+                <Suspense
+                  fallback={
+                    <div className="flex h-[600px] items-center justify-center rounded-lg border bg-muted/50">
+                      <div className="text-center space-y-3">
+                        <LoadingSpinner size="lg" />
+                        <p className="text-sm text-muted-foreground">Loading code editor...</p>
+                      </div>
+                    </div>
+                  }
+                >
+                  <CodePlayground topic={topic} />
+                </Suspense>
               </TabsContent>
             </Tabs>
           </div>

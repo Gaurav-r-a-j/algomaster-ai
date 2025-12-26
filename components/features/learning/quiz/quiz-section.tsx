@@ -67,15 +67,19 @@ export function QuizSection({
     questions: displayQuestions,
   })
 
-  const generateAIQuestions = useCallback(async () => {
+  const generateAIQuestions = useCallback(async (questionCount?: number) => {
     if (!topicTitle) return
     setIsGeneratingAI(true)
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500))
-      const generated: QuizQuestion[] = [
-        {
-          id: questions.length + 1,
-          question: `What is a key concept related to ${topicTitle}?`,
+      
+      const count = questionCount || 5
+      const generated: QuizQuestion[] = []
+      
+      for (let i = 0; i < count; i++) {
+        generated.push({
+          id: questions.length + i + 1,
+          question: `Question ${i + 1}: What is a key concept related to ${topicTitle}?`,
           options: [
             "Basic understanding",
             "Core principle",
@@ -84,22 +88,10 @@ export function QuizSection({
           ],
           correctAnswer: 3,
           explanation: `All options represent important aspects of ${topicTitle}.`,
-        },
-        {
-          id: questions.length + 2,
-          question: `When would you apply ${topicTitle} in practice?`,
-          options: [
-            "Never",
-            "In specific problem scenarios",
-            "Always",
-            "Only for beginners",
-          ],
-          correctAnswer: 1,
-          explanation: `${topicTitle} should be applied when it matches the problem requirements.`,
-        },
-      ]
+        })
+      }
+      
       setAiQuestions(generated)
-      // Keep sheet open and switch to AI questions
       if (onToggleAIQuestions) {
         onToggleAIQuestions(true)
       }

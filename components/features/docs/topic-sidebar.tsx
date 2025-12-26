@@ -23,14 +23,18 @@ interface TopicSidebarProps {
 
 // Extract YouTube video ID from URL
 function getYouTubeId(url: string): string | null {
-  if (!url) return null
+  if (!url) {
+    return null
+  }
   const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)
   return match ? match[1] : null
 }
 
 // Get YouTube link based on language preference
 function getYouTubeLink(topic: Topic, language: "en" | "hi" = "en"): string | null {
-  if (!topic.youtubeLink) return null
+  if (!topic.youtubeLink) {
+    return null
+  }
   
   if (typeof topic.youtubeLink === "string") {
     return topic.youtubeLink
@@ -47,8 +51,12 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
   const [videoLanguage, setVideoLanguage] = useState<"en" | "hi">("en")
   
   const getDifficultyVariant = () => {
-    if (topic.difficulty === "Easy") return "default"
-    if (topic.difficulty === "Hard") return "destructive"
+    if (topic.difficulty === "Easy") {
+      return "default"
+    }
+    if (topic.difficulty === "Hard") {
+      return "destructive"
+    }
     return "secondary"
   }
 

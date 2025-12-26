@@ -8,6 +8,7 @@ import { ArrowRight01Icon, Home01Icon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
 import { Container } from "@/components/common/container"
 import { IconWrapper } from "@/components/common/icon-wrapper"
+import { extractErrorMessage } from "@/lib/utils/error-handler"
 
 export default function GlobalError({
   error: _error,
@@ -16,9 +17,16 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  // Safely extract error message
+  const errorMessage = extractErrorMessage(_error) || "A critical error occurred"
+
   useEffect(() => {
     // Log error to monitoring service
-    console.error("Global error occurred:", _error)
+    if (process.env.NODE_ENV === "development") {
+      console.error("Global error occurred:", _error)
+    }
+    // In production, send to error tracking service
+    // Example: Sentry.captureException(_error)
   }, [_error])
 
   return (
@@ -99,6 +107,11 @@ export default function GlobalError({
             <p className="text-muted-foreground mx-auto mb-8 max-w-lg text-xl">
               A critical error occurred. Please refresh the page or return home.
             </p>
+            {errorMessage && errorMessage !== 'A critical error occurred' && (
+              <div className="mx-auto mb-6 max-w-lg rounded-lg border border-destructive/20 bg-destructive/10 p-4">
+                <p className="text-sm font-mono text-destructive">{errorMessage}</p>
+              </div>
+            )}
 
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Button size="lg" onClick={reset} className="w-full sm:w-auto">

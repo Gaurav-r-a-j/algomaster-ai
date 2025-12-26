@@ -12,7 +12,7 @@ interface TopicPageTabsProps {
 
 export function TopicPageTabs({ topic }: TopicPageTabsProps) {
   return (
-    <TabsList className="grid h-9 shrink-0 grid-cols-4">
+    <TabsList className="grid h-9 shrink-0 grid-cols-4 px-4 sm:px-6 lg:px-8">
       <TabsTrigger
         value="learn"
         className="flex items-center gap-1.5 px-3 text-xs"
