@@ -1,6 +1,13 @@
 import { env } from "./common/env"
 
-// Application configuration - centralized app settings
+/**
+ * Application Configuration
+ * 
+ * Centralized app settings that use environment variables.
+ * 
+ * @see .env.example for environment variable documentation
+ * @see docs/development/configuration.md for complete configuration guide
+ */
 export const APP_CONFIG = {
   name: "AlgoMaster AI",
   shortName: "AlgoMaster",

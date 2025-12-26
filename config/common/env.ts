@@ -1,6 +1,13 @@
 import { z } from "zod"
 
-// Environment variable schema with validation
+/**
+ * Environment Variable Schema
+ * 
+ * Type-safe validation for all environment variables using Zod.
+ * 
+ * @see .env.example for all available environment variables
+ * @see docs/development/configuration.md for configuration documentation
+ */
 const envSchema = z.object({
   DATABASE_URL: z.string().url().optional(),
   NEXT_PUBLIC_API_URL: z.string().url().optional(),

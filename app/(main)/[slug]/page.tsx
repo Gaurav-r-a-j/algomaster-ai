@@ -78,13 +78,44 @@ export default function SlugPage({ params }: SlugPageProps) {
     return (
       <div className="bg-background min-h-screen py-8">
         <Container>
-          <div className="space-y-4">
-            <Skeleton className="h-12 w-3/4" />
-            <Skeleton className="h-6 w-1/2" />
-            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="h-48 rounded-xl" />
-              ))}
+          <div className="space-y-6">
+            {/* Breadcrumb skeleton */}
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-4" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+            
+            {/* Header skeleton */}
+            <div className="space-y-3">
+              <Skeleton className="h-10 w-3/4" />
+              <Skeleton className="h-5 w-1/2" />
+              <div className="flex gap-2">
+                <Skeleton className="h-6 w-16 rounded-full" />
+                <Skeleton className="h-6 w-20 rounded-full" />
+              </div>
+            </div>
+
+            {/* Tabs skeleton */}
+            <div className="flex gap-4 border-b">
+              <Skeleton className="h-10 w-24" />
+              <Skeleton className="h-10 w-24" />
+              <Skeleton className="h-10 w-24" />
+              <Skeleton className="h-10 w-24" />
+            </div>
+
+            {/* Content skeleton */}
+            <div className="grid gap-6 md:grid-cols-3">
+              <div className="md:col-span-2 space-y-4">
+                <Skeleton className="h-64 w-full rounded-lg" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+              </div>
+              <div className="space-y-4">
+                <Skeleton className="h-48 w-full rounded-lg" />
+                <Skeleton className="h-32 w-full rounded-lg" />
+              </div>
             </div>
           </div>
         </Container>

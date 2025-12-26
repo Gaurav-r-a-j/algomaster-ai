@@ -37,7 +37,7 @@ export default function RootLayout({
     name: APP_CONFIG.name,
     url: APP_CONFIG.url,
     description: APP_CONFIG.description,
-    logo: `${APP_CONFIG.url}/logo.png`,
+    logo: `${APP_CONFIG.url}/logo.svg`, // Use SVG logo for better quality
   })
 
   const websiteJsonLd = generateWebSiteJsonLd({

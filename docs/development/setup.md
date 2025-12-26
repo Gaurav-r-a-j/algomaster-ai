@@ -28,14 +28,18 @@
    cp .env.example .env.local
    ```
    
-   Then edit `.env.local` and fill in your values. See [.env.example](../.env.example) for detailed documentation of all available options.
+   Then edit `.env.local` and fill in your values.
+   
+   **Documentation:**
+   - See [.env.example](../../.env.example) for all available options with detailed comments
+   - See [Configuration Guide](./configuration.md) for complete configuration documentation
    
    **Quick Start Options:**
    - **Client-Side Only**: No environment variables needed! The app works out of the box.
    - **With Database**: Add `DATABASE_URL` for progress tracking
    - **With OAuth**: Add GitHub OAuth credentials for authentication
    
-   **Note**: Never commit `.env.local` files. See [SECURITY.md](../SECURITY.md) for security best practices.
+   **Note**: Never commit `.env.local` files. See [SECURITY.md](../../SECURITY.md) for security best practices.
 
 4. **Run development server**
 

@@ -13,6 +13,7 @@ docs/
 │   └── architecture.md         # Technical architecture
 ├── development/                 # Development documentation
 │   ├── setup.md                # Setup and installation guide
+│   ├── configuration.md        # Configuration guide (env vars, app settings)
 │   ├── contributing.md         # Contribution guidelines
 │   ├── coding-standards.md     # Code style and standards
 │   └── testing.md              # Testing guidelines

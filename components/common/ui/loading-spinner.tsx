@@ -1,13 +1,30 @@
-export function LoadingSpinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
+import { cn } from "@/lib/utils"
+
+export function LoadingSpinner({ 
+  size = "md", 
+  className 
+}: { 
+  size?: "sm" | "md" | "lg"
+  className?: string 
+}) {
   const sizeClasses = {
-    sm: "h-4 w-4",
-    md: "h-8 w-8",
-    lg: "h-12 w-12",
+    sm: "h-4 w-4 border-2",
+    md: "h-8 w-8 border-2",
+    lg: "h-12 w-12 border-3",
   }
 
   return (
     <div
-      className={`${sizeClasses[size]} animate-spin rounded-full border-2 border-gray-300 border-t-gray-900`}
-    />
+      className={cn(
+        "animate-spin rounded-full",
+        sizeClasses[size],
+        "border-muted border-t-primary",
+        className
+      )}
+      role="status"
+      aria-label="Loading"
+    >
+      <span className="sr-only">Loading...</span>
+    </div>
   )
 }
