@@ -1,7 +1,7 @@
 "use client"
 
 import { VisualizerType } from "@/types/curriculum"
-import { File01Icon, CheckmarkCircleIcon, CodeIcon, PlayIcon } from "@/lib/icons"
+import { CheckmarkCircleIcon, CodeIcon, File01Icon, PlayIcon } from "@/lib/icons"
 import { TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import type { Topic } from "@/types/curriculum"

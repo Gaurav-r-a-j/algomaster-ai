@@ -1,12 +1,11 @@
 import { db } from "@/db"
-import { topicVideos, type NewTopicVideo } from "@/db/schema"
-import { eq, and } from "drizzle-orm"
-import { sql } from "drizzle-orm"
+import { type NewTopicVideo, topicVideos } from "@/db/schema"
+import { and, eq } from "drizzle-orm"
 
 export class TopicVideoService {
   // Get all videos for a topic
   async getVideosByTopic(topicId: string) {
-    if (!db) return []
+    if (!db) {return []}
     
     return await db
       .select()
@@ -16,7 +15,7 @@ export class TopicVideoService {
 
   // Get video for a specific topic and language
   async getVideoByTopicAndLanguage(topicId: string, language: string = "en") {
-    if (!db) return null
+    if (!db) {return null}
     
     const [video] = await db
       .select()
@@ -34,7 +33,7 @@ export class TopicVideoService {
 
   // Upsert video for a topic and language
   async upsertVideo(data: NewTopicVideo) {
-    if (!db) return null
+    if (!db) {return null}
     
     const existing = await this.getVideoByTopicAndLanguage(
       data.topicId,
@@ -64,7 +63,7 @@ export class TopicVideoService {
 
   // Sync videos from topic data (supports string or object format)
   async syncVideos(topicId: string, youtubeLink?: string | { en?: string; hi?: string }) {
-    if (!db || !youtubeLink) return []
+    if (!db || !youtubeLink) {return []}
     
     const synced: typeof topicVideos.$inferSelect[] = []
     
@@ -74,7 +73,7 @@ export class TopicVideoService {
         language: "en",
         videoUrl: youtubeLink,
       })
-      if (video) synced.push(video)
+      if (video) {synced.push(video)}
     } else {
       for (const [lang, url] of Object.entries(youtubeLink)) {
         if (url) {
@@ -83,7 +82,7 @@ export class TopicVideoService {
             language: lang,
             videoUrl: url,
           })
-          if (video) synced.push(video)
+          if (video) {synced.push(video)}
         }
       }
     }
@@ -93,7 +92,7 @@ export class TopicVideoService {
 
   // Delete video for a topic and language
   async deleteVideo(topicId: string, language: string) {
-    if (!db) return false
+    if (!db) {return false}
     
     await db
       .delete(topicVideos)
@@ -109,7 +108,7 @@ export class TopicVideoService {
 
   // Delete all videos for a topic
   async deleteVideosByTopic(topicId: string) {
-    if (!db) return false
+    if (!db) {return false}
     
     await db
       .delete(topicVideos)

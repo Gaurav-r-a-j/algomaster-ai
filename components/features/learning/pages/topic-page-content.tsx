@@ -2,8 +2,8 @@
 
 import { motion } from "motion/react"
 import { fadeIn, transitions } from "@/lib/animations"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { LearnView, PracticeView, VisualizeView, TestView } from "@/components/features/learning/views"
+import { TabsContent } from "@/components/ui/tabs"
+import { LearnView, PracticeView, TestView, VisualizeView } from "@/components/features/learning/views"
 import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
 import type { Topic } from "@/types/curriculum"
 

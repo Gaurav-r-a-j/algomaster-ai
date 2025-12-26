@@ -1,10 +1,10 @@
 "use client"
 
 import { 
-  createHighlighter, 
+  type BundledLanguage, 
+  type BundledTheme,
   type Highlighter,
-  type BundledLanguage,
-  type BundledTheme 
+  createHighlighter 
 } from "shiki"
 
 // Singleton highlighter instance

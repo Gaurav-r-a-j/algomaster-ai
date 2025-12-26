@@ -1,6 +1,6 @@
-import { eq, and, desc } from "drizzle-orm"
+import { and, desc, eq } from "drizzle-orm"
 import { db, isDatabaseAvailable } from "../index"
-import { userProgress, type NewUserProgress, type UserProgress } from "../schema"
+import { type NewUserProgress, type UserProgress, userProgress } from "../schema"
 import { validateUserAccess } from "@/lib/security/auth-guard"
 
 export class ProgressService {

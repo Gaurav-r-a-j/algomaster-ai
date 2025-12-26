@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, ReactNode } from "react"
+import { ReactNode, Suspense } from "react"
 import { LoadingSpinner } from "@/components/common/ui/loading-spinner"
 import { Skeleton } from "@/components/ui/skeleton"
 

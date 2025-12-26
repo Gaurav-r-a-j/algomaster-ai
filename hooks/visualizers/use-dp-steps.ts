@@ -2,9 +2,9 @@
 
 import { useCallback } from "react"
 import {
+  generateDPSteps,
   generateKnapsackSteps,
   generateLCSSteps,
-  generateDPSteps,
 } from "@/utils/algorithms/algorithm-logic"
 import type { VisualizationStep } from "@/types/curriculum"
 

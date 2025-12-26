@@ -55,7 +55,7 @@ export function PracticeView({ topic }: PracticeViewProps) {
 
   // Set initial selected problem when data loads
   useEffect(() => {
-    if (loading) return
+    if (loading) {return}
 
     // Only set if not already set (or if topic changed which resets this component instance normally,
     // but React Query might keep data fresh. Actually if topic changes, this component rerenders.

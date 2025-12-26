@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useState, useMemo, useCallback } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { useProgress } from "@/context/progress-context"
 import { motion } from "motion/react"
 
@@ -10,14 +10,14 @@ import {
   fadeIn,
   transitions,
 } from "@/lib/animations"
-import { StarIcon, ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/icons"
+import { ArrowLeft01Icon, ArrowRight01Icon, StarIcon } from "@/lib/icons"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { Progress } from "@/components/ui/progress"
 
-import { QuizQuestionCard, QuizResults, QuizAISheet } from "./components"
+import { QuizAISheet, QuizQuestionCard, QuizResults } from "./components"
 import { useQuizState } from "./hooks"
 
 interface QuizSectionProps {
@@ -68,7 +68,7 @@ export function QuizSection({
   })
 
   const generateAIQuestions = useCallback(async (questionCount?: number) => {
-    if (!topicTitle) return
+    if (!topicTitle) {return}
     setIsGeneratingAI(true)
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500))

@@ -1,9 +1,9 @@
 // Topic Service - Manage topics metadata
 // Note: Content (MDX, quizzes) stays in code, this only manages metadata
 
-import { eq, and, asc } from "drizzle-orm"
+import { and, asc, eq } from "drizzle-orm"
 import { db, isDatabaseAvailable } from "../index"
-import { topics, type NewTopic, type Topic } from "../schema"
+import { type NewTopic, type Topic, topics } from "../schema"
 import type { CategoryId } from "@/types/category"
 
 export class TopicService {

@@ -18,7 +18,7 @@ export function SortingBarChart({
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!svgRef.current || !containerRef.current || data.length === 0) return
+    if (!svgRef.current || !containerRef.current || data.length === 0) {return}
 
     const container = containerRef.current
     const svg = svgRef.current
@@ -94,8 +94,8 @@ export function SortingBarChart({
     
     // Enhanced color function with gradients
     const getColor = (index: number) => {
-      if (activeIndices.includes(index)) return "url(#activeGradient)" // Active comparison
-      if (sortedIndices.includes(index)) return "url(#sortedGradient)" // Already sorted
+      if (activeIndices.includes(index)) {return "url(#activeGradient)"} // Active comparison
+      if (sortedIndices.includes(index)) {return "url(#sortedGradient)"} // Already sorted
       return "url(#defaultGradient)" // Default state
     }
 

@@ -14,7 +14,6 @@ import { cn } from "@/lib/utils"
 
 import { CodeBlock, SimpleCodeBlock } from "./code/code-block"
 import { CodePreview } from "./code/code-preview"
-import { CopyButton } from "./code/copy-button"
 import { getPreviewComponent } from "./preview-registry"
 import { VisualDiagram } from "./visual/visual-diagram"
 
@@ -320,9 +319,9 @@ function MarkdownSection({ content }: { content: string }) {
                 // If not JSON, try to infer type from code
                 const lowerCode = code.toLowerCase()
                 let diagramType: "array" | "queue" | "stack" | "linked-list" = "array"
-                if (lowerCode.includes("queue")) diagramType = "queue"
-                else if (lowerCode.includes("stack")) diagramType = "stack"
-                else if (lowerCode.includes("linked") || lowerCode.includes("list")) diagramType = "linked-list"
+                if (lowerCode.includes("queue")) {diagramType = "queue"}
+                else if (lowerCode.includes("stack")) {diagramType = "stack"}
+                else if (lowerCode.includes("linked") || lowerCode.includes("list")) {diagramType = "linked-list"}
                 
                 return <VisualDiagram type={diagramType} />
               }

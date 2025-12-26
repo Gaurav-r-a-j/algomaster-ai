@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 // Manage localStorage with React state
 export function useLocalStorage<T>(key: string, initialValue: T) {

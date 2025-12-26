@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react"
 import { DPCell } from "@/components/common/visual/dp-cell"
-import { staggerItem, staggerContainer } from "@/lib/animations"
+import { staggerContainer, staggerItem } from "@/lib/animations"
 
 interface DPArrayViewProps {
   dp: (number | null)[]

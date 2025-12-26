@@ -6,12 +6,11 @@ import type { Topic } from "@/types/curriculum"
 import { VisualizerType } from "@/types/curriculum"
 import { fadeIn, slideUp, transitions } from "@/lib/animations"
 import { HelpCircleIcon } from "@/lib/icons"
-import { Card } from "@/components/ui/card"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
 import {
-  DataStructureVisualizer,
   DPVisualizer,
+  DataStructureVisualizer,
   HeapVisualizer,
   PathfindingVisualizer,
   SearchVisualizer,

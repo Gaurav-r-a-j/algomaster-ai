@@ -1,11 +1,11 @@
-import { useMemo, useState, useCallback } from "react"
+import { useCallback, useMemo, useState } from "react"
 import type { FuseResult } from "fuse.js"
 
 import type { Topic } from "@/types/curriculum"
 import {
-  searchTopics,
-  searchModules,
   highlightMatches,
+  searchModules,
+  searchTopics,
 } from "@/lib/fuse-search"
 import { useModules, useTopics } from "./use-curriculum"
 

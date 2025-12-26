@@ -3,7 +3,7 @@
 import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
 import type { QuizQuestion } from "@/types/curriculum"
-import { hoverScaleSmall, tapScale } from "@/lib/animations"
+import { hoverScaleSmall } from "@/lib/animations"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { CheckmarkCircleIcon } from "@/lib/icons"
 

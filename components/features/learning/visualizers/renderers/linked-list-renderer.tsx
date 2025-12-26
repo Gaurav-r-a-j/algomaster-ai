@@ -27,7 +27,7 @@ export function LinkedListRenderer({ currentData }: LinkedListRendererProps) {
   }
 
   useEffect(() => {
-    if (!svgRef.current || !containerRef.current) return
+    if (!svgRef.current || !containerRef.current) {return}
 
     const svg = d3.select(svgRef.current)
     svg.selectAll("*").remove() // Clear previous render

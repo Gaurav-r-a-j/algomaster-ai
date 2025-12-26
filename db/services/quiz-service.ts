@@ -1,6 +1,6 @@
-import { eq, and, desc } from "drizzle-orm"
+import { and, desc, eq } from "drizzle-orm"
 import { db, isDatabaseAvailable } from "../index"
-import { quizAttempts, type NewQuizAttempt, type QuizAttempt } from "../schema"
+import { type NewQuizAttempt, type QuizAttempt, quizAttempts } from "../schema"
 import { validateUserAccess } from "@/lib/security/auth-guard"
 
 export class QuizService {
@@ -50,7 +50,7 @@ export class QuizService {
     authenticatedUserId: string
   ): Promise<QuizAttempt | null> {
     const attempts = await this.getAttempts(userId, topicId, authenticatedUserId)
-    if (attempts.length === 0) return null
+    if (attempts.length === 0) {return null}
     
     // Since we only store best score, return the first (and only) attempt
     return attempts[0]
@@ -82,7 +82,7 @@ export class QuizService {
     passingScore: number = 70
   ): Promise<boolean> {
     const bestAttempt = await this.getBestAttempt(userId, topicId, authenticatedUserId)
-    if (!bestAttempt) return false
+    if (!bestAttempt) {return false}
     return bestAttempt.score >= passingScore
   }
 

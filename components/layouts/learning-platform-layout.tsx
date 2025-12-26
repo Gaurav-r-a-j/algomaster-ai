@@ -8,11 +8,8 @@ import { isActivePath } from "@/utils/common/path-utils"
 import { generateTopicSlug } from "@/utils/common/slug"
 
 import {
-  BookOpenIcon,
   CheckmarkCircleIcon,
   SearchIcon,
-  ShareIcon,
-  UserIcon,
 } from "@/lib/icons"
 import { useCurriculumSearch } from "@/hooks/curriculum"
 import { Input } from "@/components/ui/input"
@@ -34,7 +31,6 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { Logo } from "@/components/common/logo"
-import { ThemeToggle } from "@/components/common/theme-toggle"
 
 import { SidebarModuleList } from "./sidebar/sidebar-module-list"
 import { SidebarSearchResults } from "./sidebar/sidebar-search-results"

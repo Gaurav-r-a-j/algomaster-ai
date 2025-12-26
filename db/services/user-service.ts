@@ -1,6 +1,6 @@
-import { eq, and } from "drizzle-orm"
+import { eq } from "drizzle-orm"
 import { db } from "../index"
-import { users, type NewUser, type User } from "../schema"
+import { type NewUser, type User, users } from "../schema"
 
 // Note: Services should only be used server-side where db is always available
 // If DATABASE_URL is not set, db will be null and these will throw
@@ -9,7 +9,7 @@ import { users, type NewUser, type User } from "../schema"
 export class UserService {
   // Create a new user with referral code generation
   async createUser(data: NewUser): Promise<User> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const [user] = await db.insert(users).values({
       ...data,
       // Generate referral code if not provided
@@ -27,28 +27,28 @@ export class UserService {
 
   // Get user by ID
   async getUserById(id: string): Promise<User | null> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1)
     return user || null
   }
 
   // Get user by email
   async getUserByEmail(email: string): Promise<User | null> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1)
     return user || null
   }
 
   // Get user by referral code
   async getUserByReferralCode(code: string): Promise<User | null> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const [user] = await db.select().from(users).where(eq(users.referralCode, code)).limit(1)
     return user || null
   }
 
   // Update user
   async updateUser(id: string, data: Partial<Omit<User, "id" | "createdAt">>): Promise<User | null> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const [updated] = await db
       .update(users)
       .set({ ...data, updatedAt: new Date() })
@@ -60,9 +60,9 @@ export class UserService {
 
   // Update last active timestamp
   async updateLastActive(userId: string): Promise<void> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const user = await this.getUserById(userId)
-    if (!user) return
+    if (!user) {return}
 
     await db
       .update(users)
@@ -75,9 +75,9 @@ export class UserService {
 
   // Update learning streak
   async updateStreak(userId: string, increment: boolean = true): Promise<void> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const user = await this.getUserById(userId)
-    if (!user) return
+    if (!user) {return}
 
     const newStreak = increment ? user.streakDays + 1 : 0
     const longestStreak = Math.max(user.longestStreak, newStreak)
@@ -93,7 +93,7 @@ export class UserService {
 
   // Get user referrals (users referred by this user)
   async getUserReferrals(userId: string): Promise<User[]> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     return db
       .select()
       .from(users)
@@ -114,7 +114,7 @@ export class UserService {
 
   // Search users (for community features)
   async searchUsers(query: string, limit: number = 10): Promise<User[]> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const allUsers = await db.select().from(users)
     const searchLower = query.toLowerCase()
     
@@ -129,7 +129,7 @@ export class UserService {
 
   // Get active users (for engagement tracking)
   async getActiveUsers(days: number = 7): Promise<User[]> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const cutoffDate = new Date()
     cutoffDate.setDate(cutoffDate.getDate() - days)
 
@@ -141,7 +141,7 @@ export class UserService {
 
   // Delete user
   async deleteUser(id: string): Promise<boolean> {
-    if (!db) throw new Error("Database not available")
+    if (!db) {throw new Error("Database not available")}
     const result = await db.delete(users).where(eq(users.id, id))
     return result.rowCount > 0
   }
