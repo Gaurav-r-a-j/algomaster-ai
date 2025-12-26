@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { motion, AnimatePresence } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import { CopyButton } from "./copy-button"
@@ -40,7 +40,9 @@ export function CodeTabs({ blocks, className }: CodeTabsProps) {
   const [activeIndex, setActiveIndex] = React.useState(0)
   const activeBlock = blocks[activeIndex]
 
-  if (!blocks.length) return null
+  if (!blocks.length) {
+    return null
+  }
 
   return (
     <div className={cn("my-4 overflow-hidden rounded-lg border border-border bg-[#0d1117]", className)}>
@@ -133,10 +135,13 @@ export function parseCodeGroups(content: string): Map<string, CodeBlock[]> {
       groups.set(groupName, [])
     }
     
-    groups.get(groupName)!.push({
-      language,
-      code: code.trim()
-    })
+    const group = groups.get(groupName)
+    if (group) {
+      group.push({
+        language,
+        code: code.trim()
+      })
+    }
   }
   
   return groups

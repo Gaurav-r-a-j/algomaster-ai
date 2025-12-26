@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ROUTES } from "@/constants/routes"
 import { getFirstTopicUrl } from "@/utils/curriculum"
 import { CheckmarkCircleIcon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"

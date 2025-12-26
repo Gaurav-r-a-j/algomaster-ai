@@ -42,14 +42,27 @@ function PostHogPageViewInternal() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    if (pathname && posthogClient && typeof window !== "undefined") {
+    if (pathname && typeof window !== "undefined") {
       let url = window.origin + pathname
       if (searchParams && searchParams.toString()) {
         url = url + `?${searchParams.toString()}`
       }
-      posthogClient.capture("$pageview", {
-        $current_url: url,
-      })
+
+      // Track in PostHog
+      if (posthogClient) {
+        posthogClient.capture("$pageview", {
+          $current_url: url,
+        })
+      }
+
+      // Also track pageview in GTM if available
+      if ((window as any).dataLayer) {
+        ;(window as any).dataLayer.push({
+          event: "page_view",
+          page_path: pathname,
+          page_title: document.title,
+        })
+      }
     }
   }, [pathname, searchParams])
 

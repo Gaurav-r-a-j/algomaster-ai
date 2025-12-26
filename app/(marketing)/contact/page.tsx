@@ -26,7 +26,7 @@ export default function ContactPage() {
                 Get in Touch
               </h1>
               <p className="text-muted-foreground mb-12 text-lg leading-relaxed">
-                Have questions or feedback? We'd love to hear from you!
+                Have questions or feedback? We&apos;d love to hear from you!
               </p>
 
               <Card>

@@ -35,7 +35,7 @@ export default function BlogPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
-                    We're working on bringing you valuable content about Data Structures
+                    We&apos;re working on bringing you valuable content about Data Structures
                     and Algorithms. Check back soon!
                   </p>
                   <Button asChild>

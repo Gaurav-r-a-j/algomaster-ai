@@ -6,6 +6,7 @@ import {
 } from "@/components/providers/posthog-provider"
 import { QueryProvider } from "@/components/providers/query-provider"
 import { ThemeProvider } from "@/components/providers/theme-provider"
+import { GTMProvider } from "@/components/providers/gtm-provider"
 
 // Root providers wrapper - combines all providers
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -16,6 +17,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
+      <GTMProvider />
       <PHProvider>
         <PostHogPageView />
         <QueryProvider>{children}</QueryProvider>

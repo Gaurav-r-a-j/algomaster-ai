@@ -72,9 +72,15 @@ export function CodeBlock({
   
   // Compute initial language
   const getInitialLanguage = () => {
-    if (availableLanguages.includes(defaultLanguage)) return defaultLanguage
-    if (defaultLanguage === "javascript" && availableLanguages.includes("js")) return "js"
-    if (defaultLanguage === "python" && availableLanguages.includes("py")) return "py"
+    if (availableLanguages.includes(defaultLanguage)) {
+      return defaultLanguage
+    }
+    if (defaultLanguage === "javascript" && availableLanguages.includes("js")) {
+      return "js"
+    }
+    if (defaultLanguage === "python" && availableLanguages.includes("py")) {
+      return "py"
+    }
     return availableLanguages[0] || "javascript"
   }
   

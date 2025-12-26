@@ -5,17 +5,14 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ROUTES } from "@/constants/routes"
 import { useProgress } from "@/context/progress-context"
-import {
-  isModuleSlug,
-  TOPICS, // Still needed for some static types/comparisons if not fully replaced, but we aim to replace logic
-} from "@/data/curriculum"
+import { isModuleSlug } from "@/data/curriculum"
 import { removeModulePrefix } from "@/utils/common/path-utils"
 import { generateModuleSlug } from "@/utils/common/slug"
 import { motion } from "motion/react"
 
 import { VisualizerType } from "@/types/curriculum"
 import { fadeIn, slideDown, transitions } from "@/lib/animations"
-import { File01Icon, CheckmarkCircleIcon, CodeIcon, PlayIcon, ShareIcon, UserIcon } from "@/lib/icons"
+import { CheckmarkCircleIcon, CodeIcon, File01Icon, PlayIcon, ShareIcon, UserIcon } from "@/lib/icons"
 import { cn } from "@/lib/utils"
 import {
   useModuleBySlug,
@@ -40,7 +37,7 @@ import { Container } from "@/components/common/container"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { PageHeader } from "@/components/common/page-header"
 import { Section } from "@/components/common/section"
-import { LearnView, PracticeView, VisualizeView, TestView } from "@/components/features/learning/views"
+import { LearnView, PracticeView, TestView, VisualizeView } from "@/components/features/learning/views"
 import { TopicCard } from "@/components/features/learning/components/topic-card"
 import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
 
@@ -118,22 +115,26 @@ export default function SlugPage({ params }: SlugPageProps) {
             </div>
 
             {/* Tabs skeleton */}
-            <div className="flex gap-4 border-b">
-              <Skeleton className="h-10 w-24" />
-              <Skeleton className="h-10 w-24" />
-              <Skeleton className="h-10 w-24" />
-              <Skeleton className="h-10 w-24" />
+            <div className="flex gap-4 border-b pb-2">
+              <Skeleton className="h-9 w-24" />
+              <Skeleton className="h-9 w-24" />
+              <Skeleton className="h-9 w-24" />
+              <Skeleton className="h-9 w-24" />
             </div>
 
             {/* Content skeleton */}
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="md:col-span-2 space-y-4">
+            <div className="grid gap-6 md:grid-cols-[1fr_280px]">
+              <div className="space-y-6">
                 <Skeleton className="h-64 w-full rounded-lg" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-5/6" />
+                <div className="space-y-3">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-5/6" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-4/5" />
+                </div>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <Skeleton className="h-48 w-full rounded-lg" />
                 <Skeleton className="h-32 w-full rounded-lg" />
               </div>

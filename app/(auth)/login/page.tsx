@@ -12,7 +12,7 @@ export default function LoginPage() {
       description="Sign in to continue your learning journey"
       footer={
         <>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href={ROUTES.REGISTER} className="text-primary hover:underline font-medium">
             Sign up
           </Link>

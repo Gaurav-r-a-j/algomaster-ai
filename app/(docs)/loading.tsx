@@ -1,8 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton"
+import { Container } from "@/components/common/container"
 
 export default function DocsLoading() {
   return (
-    <div className="space-y-6">
+    <Container className="py-8">
+      <div className="space-y-6">
       {/* Header skeleton */}
       <div className="space-y-2">
         <Skeleton className="h-10 w-64" />
@@ -19,7 +21,8 @@ export default function DocsLoading() {
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-4/5" />
       </div>
-    </div>
+      </div>
+    </Container>
   )
 }
 

@@ -1,13 +1,19 @@
 import { eq, and, desc } from "drizzle-orm"
 import { db, isDatabaseAvailable } from "../index"
 import { userProgress, type NewUserProgress, type UserProgress } from "../schema"
+import { validateUserAccess } from "@/lib/security/auth-guard"
 
 export class ProgressService {
-  // Create or update progress
-  async upsertProgress(data: NewUserProgress): Promise<UserProgress> {
+  // Create or update user progress
+  async upsertProgress(
+    data: NewUserProgress,
+    authenticatedUserId: string
+  ): Promise<UserProgress> {
     if (!isDatabaseAvailable || !db) {
       throw new Error("Database not available - app running in client-side only mode")
     }
+    
+    validateUserAccess(data.userId, authenticatedUserId)
     
     const existing = await db
       .select()
@@ -38,10 +44,16 @@ export class ProgressService {
   }
 
   // Get progress for a user and topic
-  async getProgress(userId: string, topicId: string): Promise<UserProgress | null> {
+  async getProgress(
+    userId: string,
+    topicId: string,
+    authenticatedUserId: string
+  ): Promise<UserProgress | null> {
     if (!isDatabaseAvailable || !db) {
       throw new Error("Database not available - app running in client-side only mode")
     }
+    
+    validateUserAccess(userId, authenticatedUserId)
     
     const [progress] = await db
       .select()
@@ -58,10 +70,15 @@ export class ProgressService {
   }
 
   // Get all progress for a user
-  async getUserProgress(userId: string): Promise<UserProgress[]> {
+  async getUserProgress(
+    userId: string,
+    authenticatedUserId: string
+  ): Promise<UserProgress[]> {
     if (!isDatabaseAvailable || !db) {
       throw new Error("Database not available - app running in client-side only mode")
     }
+    
+    validateUserAccess(userId, authenticatedUserId)
     
     return db
       .select()
@@ -71,10 +88,15 @@ export class ProgressService {
   }
 
   // Get completed topics for a user
-  async getCompletedTopics(userId: string): Promise<string[]> {
+  async getCompletedTopics(
+    userId: string,
+    authenticatedUserId: string
+  ): Promise<string[]> {
     if (!isDatabaseAvailable || !db) {
       throw new Error("Database not available - app running in client-side only mode")
     }
+    
+    validateUserAccess(userId, authenticatedUserId)
     
     const completed = await db
       .select({ topicId: userProgress.topicId })
@@ -90,8 +112,8 @@ export class ProgressService {
   }
 
   // Get progress statistics for a user
-  async getProgressStats(userId: string) {
-    const allProgress = await this.getUserProgress(userId)
+  async getProgressStats(userId: string, authenticatedUserId: string) {
+    const allProgress = await this.getUserProgress(userId, authenticatedUserId)
     
     const total = allProgress.length
     const completed = allProgress.filter((p) => p.status === "completed").length
@@ -108,20 +130,33 @@ export class ProgressService {
   }
 
   // Mark topic as completed
-  async markCompleted(userId: string, topicId: string): Promise<UserProgress> {
-    return this.upsertProgress({
-      userId,
-      topicId,
-      status: "completed",
-      completedAt: new Date(),
-    })
+  async markCompleted(
+    userId: string,
+    topicId: string,
+    authenticatedUserId: string
+  ): Promise<UserProgress> {
+    return this.upsertProgress(
+      {
+        userId,
+        topicId,
+        status: "completed",
+        completedAt: new Date(),
+      },
+      authenticatedUserId
+    )
   }
 
-  // Update last accessed
-  async updateLastAccessed(userId: string, topicId: string): Promise<void> {
+  // Update last accessed timestamp
+  async updateLastAccessed(
+    userId: string,
+    topicId: string,
+    authenticatedUserId: string
+  ): Promise<void> {
     if (!isDatabaseAvailable || !db) {
       throw new Error("Database not available - app running in client-side only mode")
     }
+    
+    validateUserAccess(userId, authenticatedUserId)
     
     await db
       .update(userProgress)

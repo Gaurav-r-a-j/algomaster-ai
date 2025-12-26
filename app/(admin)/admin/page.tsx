@@ -62,7 +62,7 @@ export default function AdminPage() {
           <CardContent>
             <div className="text-2xl font-bold">-</div>
             <p className="text-xs text-muted-foreground mt-1">
-              Today's activity
+              Today&apos;s activity
             </p>
           </CardContent>
         </Card>

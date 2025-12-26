@@ -8,6 +8,29 @@ This document explains all configuration options for AlgoMaster AI, including en
 - **App Configuration**: Defined in `config/app.ts`
 - **Environment Schema**: Validated in `config/common/env.ts`
 
+## 🎯 Key Concept: Single Base URL
+
+**Most Important Variable**: `NEXT_PUBLIC_APP_URL`
+
+This is the **only URL you need to set** for most deployments! All other URLs are automatically derived:
+- `NEXTAUTH_URL` → Auto-set to `NEXT_PUBLIC_APP_URL` (for OAuth callbacks)
+- `NEXT_PUBLIC_API_URL` → Auto-set to `${NEXT_PUBLIC_APP_URL}/api` (if not explicitly set)
+
+**Why One Variable?**
+- ✅ **Simpler**: Set your domain once, everything else is derived
+- ✅ **Consistent**: All URLs stay in sync automatically
+- ✅ **Flexible**: You can still override individual URLs if needed (e.g., different API server)
+
+**Example**:
+```bash
+# Just set this one:
+NEXT_PUBLIC_APP_URL=https://algomaster.designbyte.dev
+
+# These are auto-derived:
+# NEXTAUTH_URL=https://algomaster.designbyte.dev
+# NEXT_PUBLIC_API_URL=https://algomaster.designbyte.dev/api
+```
+
 ## 🔧 Configuration Files
 
 ### 1. Environment Variables (`.env.local`)
@@ -79,8 +102,8 @@ const envSchema = z.object({
 **Variables**:
 - `GITHUB_CLIENT_ID` - GitHub OAuth App Client ID
 - `GITHUB_CLIENT_SECRET` - GitHub OAuth App Client Secret
-- `NEXTAUTH_URL` - Base URL of your application
-- `NEXTAUTH_SECRET` - Secret key for encrypting tokens
+- `NEXTAUTH_URL` - Base URL for OAuth callbacks (auto-derived from `NEXT_PUBLIC_APP_URL` if not set)
+- `NEXTAUTH_SECRET` - Secret key for encrypting tokens (min 32 characters)
 
 **Purpose**: Enable GitHub OAuth authentication
 
@@ -92,32 +115,101 @@ const envSchema = z.object({
 
 **Setup Steps**:
 1. Create OAuth App on GitHub
-2. Set callback URL: `https://yourdomain.com/api/auth/callback/github`
+2. Set callback URL: `${NEXT_PUBLIC_APP_URL}/api/auth/callback/github` (auto-derived!)
 3. Copy Client ID and Secret to `.env.local`
+4. Generate `NEXTAUTH_SECRET`: `openssl rand -base64 32`
 
 ### Application URLs
 
-**Variables**:
-- `NEXT_PUBLIC_APP_URL` - Base URL of your application
-- `NEXT_PUBLIC_API_URL` - API base URL (optional)
+**Primary Variable**:
+- `NEXT_PUBLIC_APP_URL` - **Base URL of your application** (this is the main one!)
 
-**Purpose**: Configure application URLs for different environments
+**Purpose**: This single variable is used to derive all other URLs automatically:
+- `NEXTAUTH_URL` - Auto-derived from `NEXT_PUBLIC_APP_URL` (for OAuth callbacks)
+- `NEXT_PUBLIC_API_URL` - Auto-derived as `${NEXT_PUBLIC_APP_URL}/api` (if not explicitly set)
 
 **Defaults**:
 - `NEXT_PUBLIC_APP_URL`: `http://localhost:3000` (development)
-- `NEXT_PUBLIC_API_URL`: `/api` (relative, client-side only mode)
+- `NEXTAUTH_URL`: Same as `NEXT_PUBLIC_APP_URL` (auto-derived)
+- `NEXT_PUBLIC_API_URL`: `${NEXT_PUBLIC_APP_URL}/api` (auto-derived)
+
+**Why One Variable?**
+- **Simpler**: Set your domain once, everything else is derived
+- **Consistent**: All URLs stay in sync automatically
+- **Flexible**: You can still override individual URLs if needed
 
 **Usage**: 
 - Used in `config/app.ts` for app metadata
 - Used in `lib/api/client.ts` for API calls
+- Used in `lib/auth/config.ts` for OAuth callbacks
 
-### Analytics (PostHog)
+### Analytics
+
+#### Google Tag Manager (GTM) - Recommended
+
+**Variable**:
+- `NEXT_PUBLIC_GTM_ID` - Your GTM container ID (format: `GTM-XXXXXXX`)
+
+**Purpose**: Manage all analytics and marketing tags from one place
+- Google Analytics
+- Facebook Pixel
+- LinkedIn Insight Tag
+- Custom events
+- And more - all without code changes!
+
+**Required**: No
+
+**Where to get it**: [Google Tag Manager](https://tagmanager.google.com)
+1. Create a GTM account
+2. Create a container
+3. Copy the Container ID (GTM-XXXXXXX)
+
+**Usage**: Used in `components/providers/gtm-provider.tsx`
+
+**Tracking Events in Code**:
+```tsx
+import { trackEvent, trackButtonClick, trackTopicComplete } from '@/lib/analytics/gtm'
+
+// Track custom events
+trackEvent('custom_event', { key: 'value' })
+
+// Track button clicks
+trackButtonClick('signup_button', '/home')
+
+// Track topic completion
+trackTopicComplete('bubble-sort', 'Bubble Sort')
+
+// Track quiz completion
+trackQuizComplete('bubble-sort', 85)
+
+// Track user actions
+trackSignUp('github')
+trackLogin('github')
+```
+
+**What You Can Manage via GTM Dashboard** (no code changes needed):
+- Google Analytics 4
+- Facebook Pixel
+- LinkedIn Insight Tag
+- Twitter Pixel
+- Custom conversion tracking
+- Heatmaps (Hotjar, etc.)
+- A/B testing tools
+- And much more!
+
+**Benefits**:
+- ✅ Manage all tags from GTM dashboard (no code changes needed)
+- ✅ Easy to add/remove tracking tools
+- ✅ Preview and debug before publishing
+- ✅ Version control for tag configurations
+
+#### PostHog (Alternative)
 
 **Variables**:
 - `NEXT_PUBLIC_POSTHOG_KEY` - PostHog project API key
 - `NEXT_PUBLIC_POSTHOG_HOST` - PostHog API host
 
-**Purpose**: Enable analytics tracking
+**Purpose**: Alternative analytics solution (open-source)
 
 **Required**: No
 
@@ -126,6 +218,8 @@ const envSchema = z.object({
 **Usage**: Used in `components/providers/posthog-provider.tsx`
 
 **Default**: `https://us.i.posthog.com`
+
+**Note**: You can use both GTM and PostHog together if needed
 
 ### Search Engine Verification
 

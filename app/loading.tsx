@@ -21,8 +21,8 @@ export default function Loading() {
         <div className="space-y-12">
           {/* Hero section skeleton */}
           <div className="space-y-6 text-center">
-            <Skeleton className="h-16 w-3/4 mx-auto" />
-            <Skeleton className="h-6 w-1/2 mx-auto" />
+            <Skeleton className="mx-auto h-16 w-3/4" />
+            <Skeleton className="mx-auto h-6 w-1/2" />
             <div className="flex justify-center gap-4">
               <Skeleton className="h-12 w-40 rounded-full" />
               <Skeleton className="h-12 w-32 rounded-full" />

@@ -61,7 +61,7 @@ export function MultiLangCodeBlock({
     if (saved && blocks.some((b) => b.language === saved)) {
       setActiveTab(saved)
     }
-  }, [blocks])
+  }, [blocks, storageKey])
 
   const handleTabChange = (value: string) => {
     setActiveTab(value)
@@ -85,7 +85,9 @@ export function MultiLangCodeBlock({
     )
   }
 
-  if (blocks.length === 0) return null
+  if (blocks.length === 0) {
+    return null
+  }
 
   // Single language - render simple code block
   if (blocks.length === 1) {

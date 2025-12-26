@@ -1,8 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton"
+import { Container } from "@/components/common/container"
 
 export default function MarketingLoading() {
   return (
-    <div className="space-y-8">
+    <Container className="py-8">
+      <div className="space-y-8">
       {/* Hero section skeleton */}
       <div className="space-y-4 text-center">
         <Skeleton className="h-12 w-3/4 mx-auto" />
@@ -23,7 +25,8 @@ export default function MarketingLoading() {
           </div>
         ))}
       </div>
-    </div>
+      </div>
+    </Container>
   )
 }
 

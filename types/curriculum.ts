@@ -55,7 +55,7 @@ export interface Topic {
   id: string
   title: string
   description: string
-  categoryId: CategoryId // Category identifier: dsa, frontend, system-design, etc.
+  categoryId?: CategoryId // Category identifier: dsa, frontend, system-design, etc. (defaults to "dsa")
   category: AlgorithmType // Algorithm category for DSA topics
   complexity: {
     time: string

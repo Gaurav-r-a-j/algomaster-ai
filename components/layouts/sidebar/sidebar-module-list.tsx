@@ -58,7 +58,7 @@ export function SidebarModuleList({
             // Check if any topic in this module is active
             const hasActiveTopic = moduleTopics.some((topic) => {
               const topicSlug = generateTopicSlug(topic.title)
-              const topicPath = ROUTES.TOPIC(topicSlug)
+              const topicPath = ROUTES.TOPIC(topic.categoryId || "dsa", topicSlug)
               return isActive(topicPath)
             })
 
@@ -103,7 +103,7 @@ export function SidebarModuleList({
                     <SidebarMenu className="mt-1 ml-2 space-y-0.5">
                       {moduleTopics.map((topic) => {
                         const topicSlug = generateTopicSlug(topic.title)
-                        const topicPath = ROUTES.TOPIC(topicSlug)
+                        const topicPath = ROUTES.TOPIC(topic.categoryId || "dsa", topicSlug)
                         const isTopicActive = isActive(topicPath)
                         const isDone = completedTopics.includes(topic.id)
 

@@ -21,6 +21,7 @@ import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
 // For now, let's just make it work.
 
 export async function generateStaticParams() {
+  const { TOPICS } = await import("@/data/curriculum")
   return TOPICS.map((topic) => ({
     slug: generateTopicSlug(topic.title),
   }))
@@ -42,6 +43,7 @@ export default async function DocsArticlePage({
   }
 
   // 2. Navigation Logic (Prev/Next)
+  const { TOPICS } = await import("@/data/curriculum")
   const currentIndex = TOPICS.findIndex((t) => t.id === topic.id)
   const prevTopic = currentIndex > 0 ? TOPICS[currentIndex - 1] : null
   const nextTopic =

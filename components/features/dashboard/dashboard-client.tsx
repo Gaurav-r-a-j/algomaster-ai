@@ -17,7 +17,10 @@ type FilterType = "all" | "easy" | "medium" | "hard" | "todo" | "completed"
 
 export function DashboardClient() {
   const { completedTopics, isCompleted } = useProgress()
-  const { progressPercent, totalTopics, completedCount } = useProgressStats()
+  const stats = useProgressStats()
+  const progressPercent = stats.percentage
+  const totalTopics = stats.total
+  const completedCount = stats.completed
   const [filter, setFilter] = useState<FilterType>("all")
 
   // Filter topics based on selected filter

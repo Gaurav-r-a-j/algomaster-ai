@@ -94,7 +94,7 @@ export function SidebarSearchResults({
             <SidebarMenu>
               {filteredTopics.slice(0, 10).map((topic) => {
                 const topicSlug = generateTopicSlug(topic.title)
-                const topicPath = ROUTES.TOPIC(topicSlug)
+                const topicPath = ROUTES.TOPIC(topic.categoryId || "dsa", topicSlug)
                 const isTopicActive = isActive(topicPath)
                 const isDone = completedTopics.includes(topic.id)
 

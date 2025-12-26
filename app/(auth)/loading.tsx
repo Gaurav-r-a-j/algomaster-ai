@@ -1,9 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Container } from "@/components/common/container"
 
 export default function AuthLoading() {
   return (
-    <div className="w-full max-w-md space-y-6">
+    <Container className="flex min-h-screen items-center justify-center py-12">
+      <div className="w-full max-w-md space-y-6">
       <div className="flex justify-center">
         <Skeleton className="h-10 w-48" />
       </div>
@@ -20,7 +22,8 @@ export default function AuthLoading() {
       </Card>
       
       <Skeleton className="h-4 w-full" />
-    </div>
+      </div>
+    </Container>
   )
 }
 

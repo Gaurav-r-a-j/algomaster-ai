@@ -1,9 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Container } from "@/components/common/container"
 
 export default function DashboardLoading() {
   return (
-    <div className="space-y-6">
+    <Container className="py-8">
+      <div className="space-y-6">
       {/* Header skeleton */}
       <div className="space-y-2">
         <Skeleton className="h-8 w-64" />
@@ -56,7 +58,8 @@ export default function DashboardLoading() {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </Container>
   )
 }
 
