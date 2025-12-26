@@ -89,11 +89,7 @@ export function ModulePageContent({
                   href={ROUTES.TOPIC("dsa", topicSlug)}
                   className="block"
                 >
-                  <TopicCard
-                    topic={topic}
-                    isCompleted={isCompleted}
-                    showProgress={false}
-                  />
+                  <TopicCard topic={topic} />
                 </Link>
               )
             })}

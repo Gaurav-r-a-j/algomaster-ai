@@ -7,6 +7,7 @@ import { ROUTES } from "@/constants/routes"
 import { ArrowRight01Icon, Home01Icon } from "@/lib/icons"
 import { Button } from "@/components/ui/button"
 import { Container } from "@/components/common/container"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 export default function GlobalError({
   error: _error,
@@ -101,7 +102,7 @@ export default function GlobalError({
 
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Button size="lg" onClick={reset} className="w-full sm:w-auto">
-                <ArrowRight01Icon className="mr-2 h-5 w-5" />
+                <IconWrapper icon={ArrowRight01Icon} size={20} className="mr-2" />
                 Reload Application
               </Button>
               <Button
@@ -111,7 +112,7 @@ export default function GlobalError({
                 className="w-full sm:w-auto"
               >
                 <Link href={ROUTES.HOME}>
-                  <Home01Icon className="mr-2 h-5 w-5" />
+                  <IconWrapper icon={Home01Icon} size={20} className="mr-2" />
                   Go Home
                 </Link>
               </Button>

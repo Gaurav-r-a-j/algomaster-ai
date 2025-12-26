@@ -40,9 +40,10 @@ export function TopicCard({ topic }: TopicCardProps) {
   const { isCompleted } = useProgress()
   const isDone = isCompleted(topic.id)
   const topicSlug = generateTopicSlug(topic.title)
+  const categoryId = topic.categoryId || "dsa"
 
   return (
-    <Link href={ROUTES.TOPIC(topicSlug)}>
+    <Link href={ROUTES.TOPIC(categoryId, topicSlug)}>
       <motion.div
         whileHover={{ y: -4, scale: 1.02 }}
         whileTap={{ scale: 0.98 }}

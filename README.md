@@ -124,7 +124,7 @@ See `.env.example` for complete configuration including:
 ### For Users
 - [Getting Started Guide](./docs/development/setup.md) - Complete setup instructions
 - [Configuration Guide](./docs/development/configuration.md) - All configuration options explained
-- [Database Setup](./DATABASE_SETUP.md) - Database configuration guide
+- [Database Setup](./db/README.md) - Database schema and setup guide
 - [Client-Side Mode](./CLIENT_SIDE_ONLY.md) - Run without a backend
 
 ### For Developers

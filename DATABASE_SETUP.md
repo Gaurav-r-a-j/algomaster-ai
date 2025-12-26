@@ -1,5 +1,7 @@
 # Database Setup Guide
 
+> **Note**: For detailed database schema information, see [`db/README.md`](./db/README.md)
+
 ## Quick Start
 
 1. **Get NeonDB Connection String**
@@ -9,17 +11,23 @@
 
 2. **Add to Environment**
    ```bash
-   # Add to .env file
+   # Add to .env.local file
    DATABASE_URL=postgresql://user:password@host:5432/database?sslmode=require
    ```
+   
+   See [`.env.example`](./.env.example) for all required environment variables.
 
 3. **Generate and Push Schema**
    ```bash
-   pnpm db:generate  # Generate migration files
    pnpm db:push      # Push schema to database
    ```
 
-4. **Verify Setup**
+4. **Sync Topics**
+   ```bash
+   pnpm db:sync-topics  # Sync topic metadata from code to database
+   ```
+
+5. **Verify Setup**
    ```bash
    pnpm db:studio    # Open Drizzle Studio to view database
    ```
@@ -52,11 +60,14 @@ pnpm db:drop
 
 The database includes these tables:
 
-- **users** - User accounts and authentication
+- **users** - User accounts, authentication, and engagement tracking
+- **accounts** - OAuth provider accounts (GitHub, LinkedIn)
+- **sessions** - NextAuth session management
+- **topics** - Topic metadata (content stays in code)
 - **user_progress** - Learning progress tracking per topic
-- **quiz_attempts** - Quiz results and history
-- **user_preferences** - User settings and preferences
-- **user_sessions** - Authentication sessions (for future use)
+- **quiz_attempts** - Best quiz scores per topic
+
+See [`db/README.md`](./db/README.md) for detailed schema information.
 
 ## Using the Database in Code
 

@@ -82,3 +82,47 @@ pnpm db:studio
 2. Add to `categoryIdEnum` in `/db/schema.ts`
 3. Create topics in `/topics/{new-category}/`
 4. Update routes to handle new category
+
+## Syncing Topics to Database
+
+After adding or updating topics in code, sync them to the database:
+
+```bash
+# Sync all topics from code to database
+pnpm db:sync-topics
+```
+
+This script:
+- Reads all topics from `/data/curriculum.ts`
+- Maps topic metadata to database format
+- Upserts topics to the `topics` table
+- Shows summary of synced topics
+
+**What gets synced:**
+- Topic ID, title, description
+- Category ID (defaults to "dsa")
+- Module name, display order, difficulty
+- Enabled status
+
+**What stays in code:**
+- Content (MDX files)
+- Quiz questions
+- Code examples
+- Practice problems
+
+## What We Store
+
+### ✅ In Database (Synced Across Devices)
+- **Users**: Authentication, profile (name, GitHub username), engagement tracking
+- **User Progress**: Topic completion status, last accessed time
+- **Quiz Attempts**: Best score per topic (for gamification)
+- **Auth Tables**: OAuth accounts, sessions (NextAuth)
+
+### ❌ NOT in Database (Client-Side Only)
+- Topic content (MDX files in code)
+- Quiz questions (in code)
+- User preferences (localStorage)
+- User notes (localStorage)
+- Code playground state (localStorage)
+
+**Why?** Content in code = easy open source contributions via PRs. No database migrations needed for content changes.
