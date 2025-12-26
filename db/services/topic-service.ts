@@ -134,6 +134,7 @@ export class TopicService {
     module: string
     order: number
     difficulty?: string
+    youtubeLink?: string | { en?: string; hi?: string }
   }>): Promise<number> {
     let synced = 0
     
@@ -148,6 +149,12 @@ export class TopicService {
         difficulty: data.difficulty || null,
         enabled: true,
       })
+      
+      if (data.youtubeLink) {
+        const { topicVideoService } = await import("./topic-video-service")
+        await topicVideoService.syncVideos(data.id, data.youtubeLink)
+      }
+      
       synced++
     }
     

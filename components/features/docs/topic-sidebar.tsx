@@ -5,8 +5,7 @@ import Link from "next/link"
 import LiteYouTubeEmbed from "react-lite-youtube-embed"
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css"
 import { ROUTES } from "@/constants/routes"
-import { ClockIcon, CpuChipIcon } from "@heroicons/react/24/outline"
-import { ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/icons"
+import { ClockIcon, ComputerIcon, ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/icons"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
 import { Badge } from "@/components/ui/badge"
@@ -97,7 +96,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                     {topic.complexity?.time && topic.complexity.time !== "N/A" && (
                       <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-2.5">
                         <div className="shrink-0 rounded-md bg-primary/10 p-2">
-                          <ClockIcon className="h-3.5 w-3.5 text-primary" />
+                          <IconWrapper icon={ClockIcon} size={14} className="text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-semibold text-muted-foreground mb-0.5 uppercase tracking-wide">
@@ -112,7 +111,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                     {topic.complexity?.space && topic.complexity.space !== "N/A" && (
                       <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-2.5">
                         <div className="shrink-0 rounded-md bg-primary/10 p-2">
-                          <CpuChipIcon className="h-3.5 w-3.5 text-primary" />
+                          <IconWrapper icon={ComputerIcon} size={14} className="text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-semibold text-muted-foreground mb-0.5 uppercase tracking-wide">
