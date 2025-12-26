@@ -1,6 +1,18 @@
-# DSA Learning Platform
+# AlgoMaster AI
 
-An interactive Data Structures and Algorithms learning platform built with Next.js 16, featuring algorithm visualizers, comprehensive curriculum, and AI-powered tutoring.
+<div align="center">
+
+**An open-source, interactive Data Structures and Algorithms learning platform**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+
+[Features](#-features) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Contributing](#-contributing) • [License](#-license)
+
+</div>
+
+An interactive Data Structures and Algorithms learning platform built with Next.js 16, featuring algorithm visualizers, comprehensive curriculum, and AI-powered tutoring. Perfect for students, developers, and anyone preparing for technical interviews.
 
 ## 🚀 Getting Started
 
@@ -49,15 +61,18 @@ All platform documentation is organized in the `docs/` folder:
 
 Visit `/design-system` to see all UI components, icons, and design patterns in action.
 
-## 🏗️ Key Features
+## ✨ Features
 
-- **Next.js 16** with App Router
-- **TypeScript** with strict mode
-- **Tailwind CSS** for styling
-- **shadcn/ui** for UI components
-- **Zustand** for state management
-- **Zod** for validation
-- **Production-ready** folder structure with common subfolders
+- 🎯 **39+ DSA Topics** - Comprehensive curriculum covering all essential algorithms and data structures
+- 🎨 **Interactive Visualizations** - Watch algorithms come to life with step-by-step visualizations
+- 🤖 **AI-Powered Tutor** - Get instant explanations and guidance (requires your own API key)
+- 📝 **Practice Problems** - Curated problems from easy to hard with detailed solutions
+- 📊 **Progress Tracking** - Track your learning progress across all topics
+- 🎓 **Quiz System** - Test your knowledge with interactive quizzes
+- 🌙 **Dark Mode** - Beautiful UI with dark mode support
+- 📱 **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+- 🔐 **GitHub OAuth** - Secure authentication with GitHub
+- 🚀 **Production Ready** - Built with modern best practices and TypeScript
 
 ## 📦 Tech Stack
 
@@ -79,18 +94,49 @@ Visit `/design-system` to see all UI components, icons, and design patterns in a
 
 ## 🔧 Environment Variables
 
-Create a `.env.local` file:
+### Quick Setup
 
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3000/api
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NODE_ENV=development
-```
+1. **Copy the example file:**
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. **Fill in your values** in `.env.local`
+
+3. **See [.env.example](./.env.example)** for all available options with detailed comments
+
+### Minimal Setup (Client-Side Only)
+
+The app works without any environment variables! It will run in client-side only mode using localStorage.
+
+### Full Setup (With Database & OAuth)
+
+See `.env.example` for complete configuration including:
+- Database connection (PostgreSQL/Neon)
+- GitHub OAuth authentication
+- Analytics (PostHog)
+- Search engine verification
+
+**Note**: Never commit `.env.local` files. See [SECURITY.md](./SECURITY.md) for security best practices.
 
 ## 📚 Documentation
 
-- [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) - Complete project structure guide
-- [AI_REFERENCE.md](./AI_REFERENCE.md) - AI assistant reference guide
+### For Users
+- [Getting Started Guide](./docs/development/setup.md) - Complete setup instructions
+- [Database Setup](./DATABASE_SETUP.md) - Database configuration guide
+- [Client-Side Mode](./CLIENT_SIDE_ONLY.md) - Run without a backend
+
+### For Developers
+- [Project Structure](./docs/project/PROJECT_STRUCTURE.md) - Complete project structure guide
+- [AI Reference](./docs/project/AI_REFERENCE.md) - AI assistant guidelines
+- [Contributing Guide](./CONTRIBUTING.md) - How to contribute to this project
+- [Security Guidelines](./SECURITY.md) - Security best practices
+
+### Platform Documentation
+All platform documentation is in the [`docs/`](./docs/) folder:
+- `docs/platform/` - Platform overview, features, and architecture
+- `docs/development/` - Development setup and guidelines
+- `docs/components/` - Component documentation
 
 ## 🧪 Testing
 
@@ -114,6 +160,29 @@ Many directories use a `common/` subfolder for shared utilities:
 - `constants/common/` - Common constants
 - `config/common/` - Common configuration
 
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
+
+### Quick Start for Contributors
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Commit your changes (`git commit -m 'Add some amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+## 📄 License
+
+This project is open source and available under the [MIT License](./LICENSE).
+
+## 🙏 Acknowledgments
+
+- Built with [Next.js](https://nextjs.org/)
+- UI components from [shadcn/ui](https://ui.shadcn.com)
+- Icons from [HugeIcons](https://hugeicons.com/) and [Heroicons](https://heroicons.com/)
+
 ## 📖 Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
@@ -121,3 +190,13 @@ Many directories use a `common/` subfolder for shared utilities:
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Zustand Documentation](https://zustand-demo.pmnd.rs)
 - [Zod Documentation](https://zod.dev)
+
+---
+
+<div align="center">
+
+Made with ❤️ by the AlgoMaster AI team
+
+[Report Bug](https://github.com/yourusername/algomaster-ai/issues) • [Request Feature](https://github.com/yourusername/algomaster-ai/issues) • [Documentation](./docs/)
+
+</div>

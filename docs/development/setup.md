@@ -22,14 +22,20 @@
    ```
 
 3. **Set up environment variables**
-   Create a `.env.local` file:
-
-   ```env
-   NEXT_PUBLIC_API_URL=http://localhost:3000/api
-   NEXT_PUBLIC_APP_URL=http://localhost:3000
-   GEMINI_API_KEY=your_gemini_api_key_here
-   NODE_ENV=development
+   
+   ```bash
+   # Copy the example file
+   cp .env.example .env.local
    ```
+   
+   Then edit `.env.local` and fill in your values. See [.env.example](../.env.example) for detailed documentation of all available options.
+   
+   **Quick Start Options:**
+   - **Client-Side Only**: No environment variables needed! The app works out of the box.
+   - **With Database**: Add `DATABASE_URL` for progress tracking
+   - **With OAuth**: Add GitHub OAuth credentials for authentication
+   
+   **Note**: Never commit `.env.local` files. See [SECURITY.md](../SECURITY.md) for security best practices.
 
 4. **Run development server**
 

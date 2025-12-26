@@ -48,11 +48,15 @@ export interface QuizQuestion {
   explanation: string
 }
 
+// Category reference for extensibility
+export type CategoryId = "dsa" | "frontend" | "system-design" | "backend" | "database" | "devops" | "mobile"
+
 export interface Topic {
   id: string
   title: string
   description: string
-  category: AlgorithmType
+  categoryId: CategoryId // Extensible: dsa, frontend, system-design, etc.
+  category: AlgorithmType // Legacy - for DSA topics
   complexity: {
     time: string
     space: string

@@ -2,6 +2,7 @@ import { z } from "zod"
 
 // Environment variable schema with validation
 const envSchema = z.object({
+  DATABASE_URL: z.string().url().optional(),
   NEXT_PUBLIC_API_URL: z.string().url().optional(),
   NEXT_PUBLIC_APP_URL: z
     .string()
@@ -20,6 +21,7 @@ const envSchema = z.object({
 
 // Parse and validate environment variables
 export const env = envSchema.parse({
+  DATABASE_URL: process.env.DATABASE_URL,
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   NODE_ENV: process.env.NODE_ENV || "development",
