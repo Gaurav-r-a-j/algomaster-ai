@@ -1,5 +1,6 @@
 "use client"
 
+import NextTopLoader from "nextjs-toploader"
 import {
   PHProvider,
   PostHogPageView,
@@ -17,6 +18,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
+      <NextTopLoader
+        color="hsl(var(--primary))"
+        height={3}
+        showSpinner={false}
+        easing="ease"
+        speed={200}
+        shadow="0 0 10px hsl(var(--primary)),0 0 5px hsl(var(--primary))"
+      />
       <GTMProvider />
       <PHProvider>
         <PostHogPageView />

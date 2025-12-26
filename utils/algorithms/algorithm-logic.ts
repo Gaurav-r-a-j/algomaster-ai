@@ -846,7 +846,7 @@ export interface TreeNode {
 }
 
 function cloneTree(node: TreeNode | null): TreeNode | null {
-  if (!node) return null
+  if (!node) {return null}
   return {
     ...node,
     left: cloneTree(node.left),
@@ -1148,7 +1148,7 @@ export function generateTrieSteps(): VisualizationStep[] {
   const steps: VisualizationStep[] = []
 
   // Step 0
-  let root = { id: "root", val: "root", children: [] as any[] }
+  const root = { id: "root", val: "root", children: [] as any[] }
   steps.push({
     array: [],
     activeIndices: [],

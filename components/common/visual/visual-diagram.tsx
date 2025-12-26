@@ -18,7 +18,9 @@ export function VisualDiagram({
   const svgRef = React.useRef<SVGSVGElement>(null)
 
   React.useEffect(() => {
-    if (!svgRef.current) return
+    if (!svgRef.current) {
+      return
+    }
 
     const svg = d3.select(svgRef.current)
     svg.selectAll("*").remove()

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useCallback, useMemo, useState } from "react"
 import type { QuizQuestion } from "@/types/curriculum"
 
 interface UseQuizStateProps {
@@ -22,7 +22,7 @@ export function useQuizState({ questions }: UseQuizStateProps) {
   const isFirstQuestion = currentStep === 0
 
   const score = useMemo(() => {
-    if (!showResults) return null
+    if (!showResults) {return null}
     const correct = displayQuestions.filter(
       (q) => selectedAnswers[q.id] === q.correctAnswer
     ).length
@@ -31,7 +31,7 @@ export function useQuizState({ questions }: UseQuizStateProps) {
 
   const handleSelect = useCallback(
     (qId: number, optionIdx: number) => {
-      if (showResults) return
+      if (showResults) {return}
       setSelectedAnswers((prev) => ({ ...prev, [qId]: optionIdx }))
     },
     [showResults]

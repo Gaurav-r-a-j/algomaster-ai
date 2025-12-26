@@ -5,14 +5,13 @@ import Link from "next/link"
 import LiteYouTubeEmbed from "react-lite-youtube-embed"
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css"
 import { ROUTES } from "@/constants/routes"
-import { ClockIcon, CpuChipIcon } from "@heroicons/react/24/outline"
-import { ArrowLeft01Icon, ArrowRight01Icon } from "@/lib/icons"
+import { ArrowLeft01Icon, ArrowRight01Icon, ClockIcon, ComputerIcon } from "@/lib/icons"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Topic } from "@/types/curriculum"
 import { generateTopicSlug } from "@/utils/common/slug"
 
@@ -24,42 +23,50 @@ interface TopicSidebarProps {
 
 // Extract YouTube video ID from URL
 function getYouTubeId(url: string): string | null {
-  if (!url) return null
+  if (!url) {
+    return null
+  }
   const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)
   return match ? match[1] : null
 }
 
 // Get YouTube link based on language preference
 function getYouTubeLink(topic: Topic, language: "en" | "hi" = "en"): string | null {
-  if (!topic.youtubeLink) return null
-  
+  if (!topic.youtubeLink) {
+    return null
+  }
+
   if (typeof topic.youtubeLink === "string") {
     return topic.youtubeLink
   }
-  
+
   if (typeof topic.youtubeLink === "object") {
     return topic.youtubeLink[language] || topic.youtubeLink.en || null
   }
-  
+
   return null
 }
 
 export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps) {
   const [videoLanguage, setVideoLanguage] = useState<"en" | "hi">("en")
-  
+
   const getDifficultyVariant = () => {
-    if (topic.difficulty === "Easy") return "default"
-    if (topic.difficulty === "Hard") return "destructive"
+    if (topic.difficulty === "Easy") {
+      return "default"
+    }
+    if (topic.difficulty === "Hard") {
+      return "destructive"
+    }
     return "secondary"
   }
 
   const youtubeLink = getYouTubeLink(topic, videoLanguage)
   const videoId = youtubeLink ? getYouTubeId(youtubeLink) : null
-  const hasMultipleLanguages = typeof topic.youtubeLink === "object" && 
+  const hasMultipleLanguages = typeof topic.youtubeLink === "object" &&
     topic.youtubeLink.en && topic.youtubeLink.hi
 
   return (
-    <aside className="sticky top-16 h-[calc(100vh-4rem)] w-80 shrink-0 overflow-hidden border-l border-border/30 bg-background/95 backdrop-blur-sm">
+    <aside className="h-full w-full shrink-0 overflow-hidden border-l border-border/30 bg-background/95 backdrop-blur-sm">
       <div className="h-full overflow-y-auto px-5 py-6 space-y-6 custom-scrollbar">
         {/* Topic Details Section */}
         <div className="space-y-4">
@@ -68,7 +75,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
               Topic Details
             </h3>
           </div>
-          
+
           <div className="space-y-3">
             {/* Difficulty */}
             <Card className="border-border/40 p-0 bg-background">
@@ -86,8 +93,8 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
             </Card>
 
             {/* Complexity */}
-            {(topic.complexity?.time && topic.complexity.time !== "N/A") || 
-             (topic.complexity?.space && topic.complexity.space !== "N/A") ? (
+            {(topic.complexity?.time && topic.complexity.time !== "N/A") ||
+              (topic.complexity?.space && topic.complexity.space !== "N/A") ? (
               <Card className="border-border/40 bg-background p-0">
                 <CardContent className="p-3">
                   <p className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
@@ -97,7 +104,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                     {topic.complexity?.time && topic.complexity.time !== "N/A" && (
                       <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-2.5">
                         <div className="shrink-0 rounded-md bg-primary/10 p-2">
-                          <ClockIcon className="h-3.5 w-3.5 text-primary" />
+                          <IconWrapper icon={ClockIcon} size={14} className="text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-semibold text-muted-foreground mb-0.5 uppercase tracking-wide">
@@ -112,7 +119,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                     {topic.complexity?.space && topic.complexity.space !== "N/A" && (
                       <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-2.5">
                         <div className="shrink-0 rounded-md bg-primary/10 p-2">
-                          <CpuChipIcon className="h-3.5 w-3.5 text-primary" />
+                          <IconWrapper icon={ComputerIcon} size={14} className="text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-semibold text-muted-foreground mb-0.5 uppercase tracking-wide">
@@ -168,7 +175,7 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
           <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
             Navigation
           </h3>
-          
+
           <div className="space-y-2.5">
             {prevTopic && (
               <Card className="border-border/40 hover:border-primary/40 transition-all p-0 cursor-pointer group">
@@ -181,10 +188,10 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                     <CardContent className="p-3 w-full">
                       <div className="flex items-center gap-3">
                         <div className="shrink-0 rounded-md bg-muted/50 group-hover:bg-primary/10 p-2 transition-colors">
-                          <IconWrapper 
-                            icon={ArrowLeft01Icon} 
-                            size={14} 
-                            className="text-muted-foreground group-hover:text-primary transition-colors" 
+                          <IconWrapper
+                            icon={ArrowLeft01Icon}
+                            size={14}
+                            className="text-muted-foreground group-hover:text-primary transition-colors"
                           />
                         </div>
                         <div className="flex-1 text-left min-w-0">
@@ -221,10 +228,10 @@ export function TopicSidebar({ topic, prevTopic, nextTopic }: TopicSidebarProps)
                           </p>
                         </div>
                         <div className="shrink-0 rounded-md bg-primary/20 group-hover:bg-primary/30 p-2 transition-colors">
-                          <IconWrapper 
-                            icon={ArrowRight01Icon} 
-                            size={14} 
-                            className="text-primary" 
+                          <IconWrapper
+                            icon={ArrowRight01Icon}
+                            size={14}
+                            className="text-primary"
                           />
                         </div>
                       </div>

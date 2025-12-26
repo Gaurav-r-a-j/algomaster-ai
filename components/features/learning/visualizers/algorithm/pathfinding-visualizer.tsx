@@ -3,8 +3,7 @@
 import { useCallback, useEffect } from "react"
 import { useVisualizerState } from "@/hooks/visualizers/use-visualizer-state"
 import { usePathfindingSteps } from "@/hooks/visualizers/use-pathfinding-steps"
-import type { Topic, VisualizationStep } from "@/types/curriculum"
-import { transitions } from "@/lib/animations"
+import type { Topic } from "@/types/curriculum"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,

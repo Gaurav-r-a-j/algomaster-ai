@@ -1,8 +1,6 @@
 import { TreeNode as TreeNodeType } from "@/utils/algorithms/algorithm-logic"
 import { Squares2X2Icon } from "@heroicons/react/24/outline"
 import { AnimatePresence, motion } from "motion/react"
-import { useEffect, useRef } from "react"
-import * as d3 from "d3"
 
 import type { VisualizationStep } from "@/types/curriculum"
 import { transitions } from "@/lib/animations"
@@ -12,7 +10,7 @@ const renderTreeNodes = (
   root: TreeNodeType | null,
   highlightId: string | null
 ) => {
-  if (!root) return { nodes: [], edges: [] }
+  if (!root) {return { nodes: [], edges: [] }}
 
   const nodes: TreeNodeType[] = []
   const edges: {

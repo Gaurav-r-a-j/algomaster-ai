@@ -10,28 +10,27 @@ import { Section } from "@/components/common/section"
 
 export function CTASection() {
   return (
-    <Section className="from-muted/50 to-background bg-gradient-to-b py-20">
+    <Section className="border-t border-border py-32">
       <Container>
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="mb-6 text-4xl font-bold md:text-5xl">
+          <h2 className="mb-6 text-4xl font-black tracking-tighter md:text-5xl">
             Ready to Get Started?
           </h2>
-          <p className="text-muted-foreground mb-10 text-xl">
+          <p className="text-muted-foreground mb-12 text-lg font-medium">
             Start your DSA learning journey today. Master algorithms and data
             structures with interactive visualizations and practice problems.
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Button size="lg" asChild className="group w-full sm:w-auto">
+            <Button size="lg" asChild className="w-full rounded-full sm:w-auto font-bold px-10 h-14">
               <Link href={getFirstTopicUrl()}>
-                Start Learning
-                <HeroArrowRightIcon className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                Start Learning Now
               </Link>
             </Button>
             <Button
               variant="outline"
               size="lg"
               asChild
-              className="w-full sm:w-auto"
+              className="w-full rounded-full sm:w-auto font-bold px-10 h-14"
             >
               <Link href={getFirstModuleUrl()}>Browse All Topics</Link>
             </Button>

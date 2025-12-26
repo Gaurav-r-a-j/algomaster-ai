@@ -19,7 +19,6 @@ const sql = databaseUrl ? neon(databaseUrl) : null
 // Only create if database URL is available (for client-side only mode fallback)
 // Note: Services should only be used server-side where db is always available
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http"
-import type { ExtractTablesWithRelations } from "drizzle-orm"
 
 type Database = NeonHttpDatabase<typeof schema> & {
   $client: ReturnType<typeof neon>

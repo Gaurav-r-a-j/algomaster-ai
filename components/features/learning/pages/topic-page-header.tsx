@@ -1,5 +1,7 @@
 "use client"
 
+import * as React from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { ROUTES } from "@/constants/routes"
 import { removeModulePrefix } from "@/utils/common/path-utils"
@@ -7,6 +9,7 @@ import { generateModuleSlug } from "@/utils/common/slug"
 import { motion } from "motion/react"
 import { slideDown, transitions } from "@/lib/animations"
 import { ShareIcon, UserIcon } from "@/lib/icons"
+import { Squares2X2Icon, ArrowsPointingInIcon } from "@heroicons/react/24/outline"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,6 +21,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { IconWrapper } from "@/components/common/icon-wrapper"
+import { TopicPageTabs } from "./topic-page-tabs"
 import type { Topic } from "@/types/curriculum"
 
 interface TopicPageHeaderProps {
@@ -26,6 +30,27 @@ interface TopicPageHeaderProps {
 
 export function TopicPageHeader({ topic }: TopicPageHeaderProps) {
   const moduleSlug = generateModuleSlug(topic.module)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen()
+    } else {
+      document.exitFullscreen()
+    }
+  }
+
+  // Listen for fullscreen changes
+  React.useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement)
+    }
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange)
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange)
+    }
+  }, [])
 
   return (
     <motion.header
@@ -97,6 +122,15 @@ export function TopicPageHeader({ topic }: TopicPageHeaderProps) {
 
           {/* Right: Actions */}
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 hover:bg-muted/50 transition-all"
+              onClick={toggleFullscreen}
+              title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+            >
+              <IconWrapper icon={isFullscreen ? ArrowsPointingInIcon : Squares2X2Icon} size={16} />
+            </Button>
             <div className="hidden items-center gap-1.5 sm:flex">
               <Button
                 variant="outline"
@@ -108,7 +142,7 @@ export function TopicPageHeader({ topic }: TopicPageHeaderProps) {
                       title: topic.title,
                       text: `Learn ${topic.title} on AlgoMaster AI`,
                       url: window.location.href,
-                    }).catch(() => {})
+                    }).catch(() => { })
                   } else {
                     navigator.clipboard.writeText(window.location.href)
                   }
@@ -131,6 +165,9 @@ export function TopicPageHeader({ topic }: TopicPageHeaderProps) {
             </div>
           </div>
         </div>
+
+        {/* Tabs - Integrated into header */}
+        <TopicPageTabs topic={topic} />
       </div>
     </motion.header>
   )

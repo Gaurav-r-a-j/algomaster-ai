@@ -72,7 +72,7 @@ export function FeaturesGrid() {
     <Section className="py-20">
       <Container>
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-4xl font-bold md:text-5xl">
+          <h2 className="mb-4 text-4xl font-black tracking-tighter md:text-5xl">
             Everything You Need
           </h2>
           <p className="text-muted-foreground mx-auto max-w-2xl text-xl">
@@ -85,13 +85,13 @@ export function FeaturesGrid() {
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="bg-card group rounded-xl border p-8 transition-all duration-300 hover:shadow-lg"
+              className="bg-card group rounded-2xl border p-10 shadow-none transition-none"
             >
-              <div className="bg-primary/10 group-hover:bg-primary/20 mb-6 flex h-12 w-12 items-center justify-center rounded-lg transition-colors">
+              <div className="bg-muted mb-8 flex h-10 w-10 items-center justify-center rounded-xl">
                 <IconWrapper
                   icon={feature.icon}
-                  size={24}
-                  className="text-primary"
+                  size={20}
+                  className="text-foreground"
                 />
               </div>
               <h3 className="mb-3 text-2xl font-semibold">{feature.title}</h3>

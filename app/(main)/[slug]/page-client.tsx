@@ -1,7 +1,7 @@
 "use client"
 
 import { Tabs } from "@/components/ui/tabs"
-import { TopicPageContent, TopicPageHeader, TopicPageTabs } from "@/components/features/learning/pages"
+import { TopicPageContent, TopicPageHeader } from "@/components/features/learning/pages"
 import { getTopicNavigation } from "@/utils/curriculum/topic-navigation"
 import type { Topic } from "@/types/curriculum"
 
@@ -17,15 +17,11 @@ export function TopicPageClient({ topic, allTopics }: TopicPageClientProps) {
     <div className="bg-background flex h-full flex-col overflow-y-auto">
       <Tabs defaultValue="learn" className="flex flex-1 flex-col">
         <TopicPageHeader topic={topic} />
-        
-        <div className="px-4 sm:px-6 lg:px-8">
-          <TopicPageTabs topic={topic} />
-        </div>
 
-        <TopicPageContent 
-          topic={topic} 
-          prevTopic={prevTopic} 
-          nextTopic={nextTopic} 
+        <TopicPageContent
+          topic={topic}
+          prevTopic={prevTopic}
+          nextTopic={nextTopic}
         />
       </Tabs>
     </div>

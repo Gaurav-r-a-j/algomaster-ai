@@ -1,24 +1,23 @@
 "use client"
 
 import React from "react"
-import { useState, useMemo, useCallback } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { useProgress } from "@/context/progress-context"
 import { motion } from "motion/react"
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline"
 
 import type { QuizQuestion } from "@/types/curriculum"
 import {
   fadeIn,
   transitions,
 } from "@/lib/animations"
-import { SparklesIcon } from "@/lib/icons"
+import { ArrowLeft01Icon, ArrowRight01Icon, StarIcon } from "@/lib/icons"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { IconWrapper } from "@/components/common/icon-wrapper"
 import { Progress } from "@/components/ui/progress"
 
-import { QuizQuestionCard, QuizResults, QuizAISheet } from "./components"
+import { QuizAISheet, QuizQuestionCard, QuizResults } from "./components"
 import { useQuizState } from "./hooks"
 
 interface QuizSectionProps {
@@ -68,15 +67,19 @@ export function QuizSection({
     questions: displayQuestions,
   })
 
-  const generateAIQuestions = useCallback(async () => {
-    if (!topicTitle) return
+  const generateAIQuestions = useCallback(async (questionCount?: number) => {
+    if (!topicTitle) {return}
     setIsGeneratingAI(true)
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500))
-      const generated: QuizQuestion[] = [
-        {
-          id: questions.length + 1,
-          question: `What is a key concept related to ${topicTitle}?`,
+      
+      const count = questionCount || 5
+      const generated: QuizQuestion[] = []
+      
+      for (let i = 0; i < count; i++) {
+        generated.push({
+          id: questions.length + i + 1,
+          question: `Question ${i + 1}: What is a key concept related to ${topicTitle}?`,
           options: [
             "Basic understanding",
             "Core principle",
@@ -85,22 +88,10 @@ export function QuizSection({
           ],
           correctAnswer: 3,
           explanation: `All options represent important aspects of ${topicTitle}.`,
-        },
-        {
-          id: questions.length + 2,
-          question: `When would you apply ${topicTitle} in practice?`,
-          options: [
-            "Never",
-            "In specific problem scenarios",
-            "Always",
-            "Only for beginners",
-          ],
-          correctAnswer: 1,
-          explanation: `${topicTitle} should be applied when it matches the problem requirements.`,
-        },
-      ]
+        })
+      }
+      
       setAiQuestions(generated)
-      // Keep sheet open and switch to AI questions
       if (onToggleAIQuestions) {
         onToggleAIQuestions(true)
       }
@@ -177,7 +168,7 @@ export function QuizSection({
                         trigger={
                           <Button variant="outline" size="sm" className="gap-2 border-border/60 hover:bg-muted/50">
                             <IconWrapper
-                              icon={SparklesIcon}
+                              icon={StarIcon}
                               size={14}
                               className="text-yellow-500"
                             />
@@ -232,7 +223,7 @@ export function QuizSection({
                           disabled={isFirstQuestion}
                           className="gap-2"
                         >
-                          <ChevronLeftIcon className="h-4 w-4" />
+                          <IconWrapper icon={ArrowLeft01Icon} size={16} />
                           Previous
                         </Button>
 
@@ -243,7 +234,7 @@ export function QuizSection({
                         >
                           {isLastQuestion ? "Submit Quiz" : "Next"}
                           {!isLastQuestion && (
-                            <ChevronRightIcon className="h-4 w-4" />
+                            <IconWrapper icon={ArrowRight01Icon} size={16} />
                           )}
                         </Button>
                       </div>

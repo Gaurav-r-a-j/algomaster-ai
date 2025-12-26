@@ -3,14 +3,12 @@
 import { useCallback, useEffect } from "react"
 import { useVisualizerState } from "@/hooks/visualizers/use-visualizer-state"
 import { useDPSteps } from "@/hooks/visualizers/use-dp-steps"
-import { motion } from "motion/react"
 
-import type { DPAuxiliary, Topic, VisualizationStep } from "@/types/curriculum"
-import { transitions } from "@/lib/animations"
+import type { DPAuxiliary, Topic } from "@/types/curriculum"
 import {
-  ArrowUp01Icon,
   ArrowLeftIcon,
   ArrowRightIcon,
+  ArrowUp01Icon,
   PauseIcon,
   PlayIcon,
   RefreshCwIcon,

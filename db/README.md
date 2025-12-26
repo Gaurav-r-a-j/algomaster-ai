@@ -103,6 +103,7 @@ This script:
 - Category ID (defaults to "dsa")
 - Module name, display order, difficulty
 - Enabled status
+- YouTube video links (with language support)
 
 **What stays in code:**
 - Content (MDX files)
@@ -116,6 +117,7 @@ This script:
 - **Users**: Authentication, profile (name, GitHub username), engagement tracking
 - **User Progress**: Topic completion status, last accessed time
 - **Quiz Attempts**: Best score per topic (for gamification)
+- **Topic Videos**: YouTube video links with multi-language support (en, hi, etc.)
 - **Auth Tables**: OAuth accounts, sessions (NextAuth)
 
 ### ❌ NOT in Database (Client-Side Only)

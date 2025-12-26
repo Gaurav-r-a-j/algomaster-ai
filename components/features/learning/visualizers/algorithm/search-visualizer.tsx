@@ -3,10 +3,8 @@
 import { useCallback, useEffect, useState } from "react"
 import { useVisualizerState } from "@/hooks/visualizers/use-visualizer-state"
 import { useSearchSteps } from "@/hooks/visualizers/use-search-steps"
-import { motion } from "motion/react"
 
-import type { Topic, VisualizationStep } from "@/types/curriculum"
-import { staggerItem, transitions } from "@/lib/animations"
+import type { Topic } from "@/types/curriculum"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,

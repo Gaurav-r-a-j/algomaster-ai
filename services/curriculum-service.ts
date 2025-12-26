@@ -1,8 +1,8 @@
 import {
+  TOPICS,
   getModuleBySlug,
   getModules,
   getTopicBySlug,
-  TOPICS,
 } from "@/data/curriculum"
 
 import { Topic } from "@/types/curriculum"

@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid, boolean, integer, pgEnum, index } from "drizzle-orm/pg-core"
+import { boolean, index, integer, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
 import { relations } from "drizzle-orm"
 
 // Enums
@@ -132,6 +132,20 @@ export const quizAttempts = pgTable("quiz_attempts", {
   userTopicIdx: index("quiz_attempts_user_topic_idx").on(table.userId, table.topicId), // Unique: one best score per user/topic
 }))
 
+// Topic Videos Table - YouTube video links with language support
+export const topicVideos = pgTable("topic_videos", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  topicId: text("topic_id").notNull().references(() => topics.id, { onDelete: "cascade" }),
+  language: text("language").notNull().default("en"), // Language code: en, hi, etc.
+  videoUrl: text("video_url").notNull(), // YouTube URL
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => ({
+  topicIdIdx: index("topic_videos_topic_id_idx").on(table.topicId),
+  topicLanguageIdx: index("topic_videos_topic_language_idx").on(table.topicId, table.language),
+  // Unique constraint: one video per topic per language (enforced in application layer via upsert logic)
+}))
+
 // Note: Groups are managed externally (WhatsApp, Discord, etc.)
 // We only track referral codes for community growth
 // No need for complex group management in database
@@ -140,6 +154,7 @@ export const quizAttempts = pgTable("quiz_attempts", {
 export const topicsRelations = relations(topics, ({ many }) => ({
   progress: many(userProgress),
   quizAttempts: many(quizAttempts),
+  videos: many(topicVideos),
 }))
 
 export const usersRelations = relations(users, ({ many, one }) => ({
@@ -193,6 +208,13 @@ export const quizAttemptsRelations = relations(quizAttempts, ({ one }) => ({
   }),
 }))
 
+export const topicVideosRelations = relations(topicVideos, ({ one }) => ({
+  topic: one(topics, {
+    fields: [topicVideos.topicId],
+    references: [topics.id],
+  }),
+}))
+
 
 // Type exports
 export type User = typeof users.$inferSelect
@@ -207,3 +229,5 @@ export type UserProgress = typeof userProgress.$inferSelect
 export type NewUserProgress = typeof userProgress.$inferInsert
 export type QuizAttempt = typeof quizAttempts.$inferSelect
 export type NewQuizAttempt = typeof quizAttempts.$inferInsert
+export type TopicVideo = typeof topicVideos.$inferSelect
+export type NewTopicVideo = typeof topicVideos.$inferInsert

@@ -6,16 +6,12 @@ import { useSortingSteps } from "@/hooks/visualizers/use-sorting-steps"
 import { ChartBarIcon } from "@heroicons/react/24/outline"
 import { motion } from "motion/react"
 
-import type { Topic, VisualizationStep } from "@/types/curriculum"
-import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
+import type { Topic } from "@/types/curriculum"
+import { transitions } from "@/lib/animations"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  PauseIcon,
-  PlayIcon,
-  RefreshCwIcon,
 } from "@/lib/icons"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {

@@ -2,16 +2,16 @@
 
 import * as React from "react"
 import {
-  ReactFlow,
   Background,
   BackgroundVariant,
   Controls,
+  Edge,
+  Handle,
+  MarkerType,
   MiniMap,
   Node,
-  Edge,
-  MarkerType,
-  Handle,
   Position,
+  ReactFlow,
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 
@@ -91,7 +91,9 @@ export function FlowchartRenderer({
           <MiniMap 
             className="bg-background/80 border border-border rounded-lg"
             nodeColor={(node) => {
-              if (node.type === "diamond") return "hsl(var(--primary))"
+              if (node.type === "diamond") {
+                return "hsl(var(--primary))"
+              }
               return "hsl(var(--muted-foreground))"
             }}
           />
@@ -116,11 +118,13 @@ export function createFlowchartFromText(description: string): {
 
   lines.forEach((line) => {
     const trimmed = line.trim()
-    if (!trimmed || trimmed.startsWith("#")) return
+    if (!trimmed || trimmed.startsWith("#")) {
+      return
+    }
 
     // Detect node type
     let nodeType = "default"
-    let label = trimmed
+    const label = trimmed
 
     if (trimmed.toUpperCase().includes("START") || trimmed.toUpperCase().includes("END")) {
       nodeType = "ellipse"

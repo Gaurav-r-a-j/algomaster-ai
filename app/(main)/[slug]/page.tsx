@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
-import { isModuleSlug, getTopicBySlug, TOPICS } from "@/data/curriculum"
+import { TOPICS, getTopicBySlug, isModuleSlug } from "@/data/curriculum"
 import { generateModuleSlug } from "@/utils/common/slug"
-import { getTopicNavigation } from "@/utils/curriculum/topic-navigation"
 import { ModulePageContent } from "@/components/features/learning/pages/module-page-content"
 import { TopicPageClient } from "./page-client"
 

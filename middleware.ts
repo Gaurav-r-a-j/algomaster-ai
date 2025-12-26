@@ -16,8 +16,8 @@ function getRateLimitKey(request: NextRequest): string {
   // Use IP address for rate limiting
   const forwarded = request.headers.get("x-forwarded-for")
   const realIp = request.headers.get("x-real-ip")
-  const ip = forwarded 
-    ? forwarded.split(",")[0].trim() 
+  const ip = forwarded
+    ? forwarded.split(",")[0].trim()
     : realIp || "unknown"
   return ip
 }
@@ -100,11 +100,12 @@ export function middleware(request: NextRequest) {
   // Content Security Policy
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // 'unsafe-eval' needed for Monaco Editor
-    "style-src 'self' 'unsafe-inline'",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net", // 'unsafe-eval' needed for Monaco Editor
+    "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
     "img-src 'self' data: https:",
-    "font-src 'self' data:",
-    "connect-src 'self' https://api.github.com https://*.neon.tech https://*.posthog.com",
+    "font-src 'self' data: https://cdn.jsdelivr.net",
+    "connect-src 'self' https://api.github.com https://*.neon.tech https://*.posthog.com https://cdn.jsdelivr.net https://emkc.org",
+    "worker-src 'self' blob:",
     "frame-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",

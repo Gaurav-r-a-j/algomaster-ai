@@ -1,9 +1,9 @@
 // Topic Service - Manage topics metadata
 // Note: Content (MDX, quizzes) stays in code, this only manages metadata
 
-import { eq, and, asc } from "drizzle-orm"
+import { and, asc, eq } from "drizzle-orm"
 import { db, isDatabaseAvailable } from "../index"
-import { topics, type NewTopic, type Topic } from "../schema"
+import { type NewTopic, type Topic, topics } from "../schema"
 import type { CategoryId } from "@/types/category"
 
 export class TopicService {
@@ -134,6 +134,7 @@ export class TopicService {
     module: string
     order: number
     difficulty?: string
+    youtubeLink?: string | { en?: string; hi?: string }
   }>): Promise<number> {
     let synced = 0
     
@@ -148,6 +149,12 @@ export class TopicService {
         difficulty: data.difficulty || null,
         enabled: true,
       })
+      
+      if (data.youtubeLink) {
+        const { topicVideoService } = await import("./topic-video-service")
+        await topicVideoService.syncVideos(data.id, data.youtubeLink)
+      }
+      
       synced++
     }
     

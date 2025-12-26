@@ -67,7 +67,7 @@ export function GraphRenderer({ currentData }: GraphRendererProps) {
         {graphEdges.map((edge, i) => {
           const n1 = graphNodes.find((n) => n.id === edge.from)
           const n2 = graphNodes.find((n) => n.id === edge.to)
-          if (!n1 || !n2) return null
+          if (!n1 || !n2) {return null}
           const isActiveEdge = activeNodeId === edge.from || activeNodeId === edge.to
           const isVisitedEdge = visitedNodes.has(edge.from) && visitedNodes.has(edge.to)
           return (

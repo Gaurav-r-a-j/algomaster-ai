@@ -8,7 +8,8 @@ import java from "highlight.js/lib/languages/java"
 import cpp from "highlight.js/lib/languages/cpp"
 import typescript from "highlight.js/lib/languages/typescript"
 import go from "highlight.js/lib/languages/go"
-import { ChevronDownIcon } from "lucide-react"
+import { ArrowDown01Icon } from "@/lib/icons"
+import { IconWrapper } from "@/components/common/icon-wrapper"
 
 import "highlight.js/styles/github-dark.css"
 
@@ -131,7 +132,7 @@ export function CodeBlock({
                     style={{ backgroundColor: activeLangConfig.color }}
                   />
                   {activeLangConfig.label}
-                  <ChevronDownIcon className="h-3 w-3 opacity-50" />
+                  <IconWrapper icon={ArrowDown01Icon} size={12} className="opacity-50" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 

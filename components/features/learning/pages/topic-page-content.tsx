@@ -2,8 +2,13 @@
 
 import { motion } from "motion/react"
 import { fadeIn, transitions } from "@/lib/animations"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { LearnView, PracticeView, VisualizeView, TestView } from "@/components/features/learning/views"
+import { TabsContent } from "@/components/ui/tabs"
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import { LearnView, PracticeView, TestView, VisualizeView } from "@/components/features/learning/views"
 import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
 import type { Topic } from "@/types/curriculum"
 
@@ -22,24 +27,31 @@ export function TopicPageContent({ topic, prevTopic, nextTopic }: TopicPageConte
       transition={transitions.smooth}
       className="relative h-full flex-1"
     >
-      {/* Learn Tab - With Sidebar */}
-      <TabsContent value="learn" className="mt-0">
+      {/* Learn Tab - With Resizable Sidebar */}
+      <TabsContent value="learn" className="mt-0 h-[calc(100vh-130px)]">
         <motion.div
           key="learn"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={transitions.smooth}
-          className="flex h-full w-full"
+          className="h-full w-full"
         >
-          <div className="flex-1 min-w-0 overflow-y-auto">
-            <LearnView topic={topic} />
-          </div>
-          <TopicSidebar
-            topic={topic}
-            prevTopic={prevTopic}
-            nextTopic={nextTopic}
-          />
+          <ResizablePanelGroup direction="horizontal" className="h-full">
+            <ResizablePanel defaultSize={70} minSize={40}>
+              <div className="h-full overflow-y-auto">
+                <LearnView topic={topic} />
+              </div>
+            </ResizablePanel>
+            <ResizableHandle withHandle className="bg-border/50" />
+            <ResizablePanel defaultSize={30} minSize={20} maxSize={40}>
+              <TopicSidebar
+                topic={topic}
+                prevTopic={prevTopic}
+                nextTopic={nextTopic}
+              />
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </motion.div>
       </TabsContent>
 
@@ -60,7 +72,7 @@ export function TopicPageContent({ topic, prevTopic, nextTopic }: TopicPageConte
       {/* Practice Tab - Full Width */}
       <TabsContent
         value="code"
-        className="mt-0 h-[calc(100vh-120px)] w-full"
+        className="mt-0 h-[calc(100vh-130px)] w-full"
       >
         <motion.div
           key="code"

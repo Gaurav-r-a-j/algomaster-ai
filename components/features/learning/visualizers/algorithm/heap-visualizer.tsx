@@ -5,7 +5,7 @@ import { useVisualizerState } from "@/hooks/visualizers/use-visualizer-state"
 import { useHeapSteps } from "@/hooks/visualizers/use-heap-steps"
 import { motion } from "motion/react"
 
-import type { HeapAuxiliary, Topic, VisualizationStep } from "@/types/curriculum"
+import type { HeapAuxiliary, Topic } from "@/types/curriculum"
 import { staggerContainer, staggerItem, transitions } from "@/lib/animations"
 import {
   ArrowLeftIcon,
@@ -340,7 +340,7 @@ export function HeapVisualizer({ topic }: HeapVisualizerProps) {
           {/* Draw connecting lines first */}
           <svg className="pointer-events-none absolute inset-0 h-full w-full">
             {heap.map((_, idx) => {
-              if (idx === 0) return null
+              if (idx === 0) {return null}
               const parentIdx = Math.floor((idx - 1) / 2)
 
               const level = Math.floor(Math.log2(idx + 1))

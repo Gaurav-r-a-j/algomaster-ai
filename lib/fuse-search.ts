@@ -1,4 +1,4 @@
-import Fuse, { type IFuseOptions, type FuseResult, type FuseResultMatch } from "fuse.js"
+import Fuse, { type FuseResult, type FuseResultMatch, type IFuseOptions } from "fuse.js"
 
 import type { Topic } from "@/types/curriculum"
 
