@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/resizable"
 import { LearnView, PracticeView, TestView, VisualizeView } from "@/components/features/learning/views"
 import { TopicSidebar } from "@/components/features/docs/topic-sidebar"
-import { TopicPageTabs } from "./topic-page-tabs"
 import type { Topic } from "@/types/curriculum"
 
 interface TopicPageContentProps {
@@ -29,7 +28,7 @@ export function TopicPageContent({ topic, prevTopic, nextTopic }: TopicPageConte
       className="relative h-full flex-1"
     >
       {/* Learn Tab - With Resizable Sidebar */}
-      <TabsContent value="learn" className="mt-0 h-[calc(100vh-120px)]">
+      <TabsContent value="learn" className="mt-0 h-[calc(100vh-130px)]">
         <motion.div
           key="learn"
           initial={{ opacity: 0 }}
@@ -40,11 +39,8 @@ export function TopicPageContent({ topic, prevTopic, nextTopic }: TopicPageConte
         >
           <ResizablePanelGroup direction="horizontal" className="h-full">
             <ResizablePanel defaultSize={70} minSize={40}>
-              <div className="h-full flex flex-col">
-                <TopicPageTabs topic={topic} />
-                <div className="flex-1 overflow-y-auto">
-                  <LearnView topic={topic} />
-                </div>
+              <div className="h-full overflow-y-auto">
+                <LearnView topic={topic} />
               </div>
             </ResizablePanel>
             <ResizableHandle withHandle className="bg-border/50" />
@@ -76,7 +72,7 @@ export function TopicPageContent({ topic, prevTopic, nextTopic }: TopicPageConte
       {/* Practice Tab - Full Width */}
       <TabsContent
         value="code"
-        className="mt-0 h-[calc(100vh-120px)] w-full"
+        className="mt-0 h-[calc(100vh-130px)] w-full"
       >
         <motion.div
           key="code"
