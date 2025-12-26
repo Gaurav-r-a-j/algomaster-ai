@@ -11,7 +11,7 @@ import { IconWrapper } from "@/components/common/icon-wrapper"
 
 export function LandingHero() {
   return (
-    <section className="bg-background border-border relative overflow-hidden border-b px-4 pt-32 pb-24 sm:px-6">
+    <section className="bg-background relative overflow-hidden px-4 pt-32 pb-24 sm:px-6">
       {/* Minimal Background Pattern */}
       <div
         className="absolute inset-0 z-0 opacity-[0.05]"
@@ -68,7 +68,7 @@ export function LandingHero() {
           <Button
             asChild
             size="lg"
-            className="h-14 w-full rounded-full px-10 text-lg transition-all duration-300 sm:w-auto"
+            className="h-14 w-full rounded-full px-10 text-lg transition-all duration-300 sm:w-auto font-bold"
           >
             <Link href={getFirstTopicUrl()}>
               Start Learning Now
@@ -79,7 +79,7 @@ export function LandingHero() {
             variant="outline"
             size="lg"
             asChild
-            className="bg-background/50 hover:bg-muted h-14 w-full rounded-full border-2 px-10 text-lg backdrop-blur-sm transition-all duration-300 sm:w-auto"
+            className="bg-background/50 hover:bg-muted h-14 w-full rounded-full border-2 px-10 text-lg backdrop-blur-sm transition-all duration-300 sm:w-auto font-bold text-foreground"
           >
             <Link href={getFirstModuleUrl()}>Browse Topics</Link>
           </Button>
