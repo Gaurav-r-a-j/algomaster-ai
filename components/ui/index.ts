@@ -1,6 +1,5 @@
 // UI Components - shadcn/ui components
 export { Button, buttonVariants } from "./button"
-export type { ButtonProps } from "./button"
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "./accordion"
 export { Alert, AlertTitle, AlertDescription } from "./alert"
